@@ -864,6 +864,22 @@ p {
     display: flex;
   }
 
+  /* Language switcher mobile - compact for 5 languages */
+  .lang-switcher {
+    gap: 0.25rem;
+    padding: 0.125rem;
+  }
+
+  .lang-btn {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .footer .lang-switcher {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .problems-grid {
     grid-template-columns: 1fr;
   }
