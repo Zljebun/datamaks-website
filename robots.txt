@@ -1,0 +1,11 @@
+# Datamaks Website
+# https://datamaks.net
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://datamaks.net/sitemap.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1
