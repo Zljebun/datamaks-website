@@ -368,7 +368,12 @@
           </div>
         </div>
 
-        <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <form class="contact-form" action="https://formsubmit.co/info@datamaks.net" method="POST">
+          <input type="hidden" name="_subject" value="Nova poruka sa datamaks.net">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://datamaks.net/?sent=true">
+          <input type="text" name="_honey" style="display:none">
+
           <div class="form-group">
             <label for="name">Vaše ime *</label>
             <input type="text" id="name" name="name" required placeholder="Ime i prezime">
