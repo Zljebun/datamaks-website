@@ -354,6 +354,11 @@ p {
   font-size: 0.8rem;
 }
 
+.lang-btn .lang-flag {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
 /* Mobile Menu */
 .mobile-toggle {
   display: none;
