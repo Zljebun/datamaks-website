@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datamaks LinkedIn Cover</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .cover {
+      width: 1128px;
+      height: 191px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative elements */
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: 200px;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+
+    .left-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1;
+    }
+
+    .tagline {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .tagline span {
+      color: #93c5fd;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 400;
+    }
+
+    .right-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      z-index: 1;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .contact-item {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .website {
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      background: rgba(255,255,255,0.15);
+      padding: 8px 20px;
+      border-radius: 6px;
+    }
+
+    /* Alternative versions */
+    .cover.minimal {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .cover.minimal .left-content {
+      align-items: center;
+    }
+
+    .cover.dark {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .cover.gradient2 {
+      background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    }
+
+    .instructions {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      max-width: 800px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .instructions h3 {
+      margin-bottom: 10px;
+      color: #1e40af;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+      color: #555;
+    }
+
+    .instructions li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="instructions">
+    <h3>Kako napraviti screenshot:</h3>
+    <ol>
+      <li>Pritisni <strong>F12</strong> da otvoriš Developer Tools</li>
+      <li>Pritisni <strong>Ctrl+Shift+P</strong> i ukucaj "screenshot"</li>
+      <li>Odaberi <strong>"Capture node screenshot"</strong></li>
+      <li>Klikni na cover koji ti se sviđa</li>
+      <li>Ili koristi Windows Snipping Tool (Win+Shift+S)</li>
+    </ol>
+  </div>
+
+  <h2>Opcija 1: Standardna (preporučeno)</h2>
+  <div class="cover" id="cover1">
+    <div class="left-content">
+      <div class="tagline">Digitalizacija poslovanja.<br><span>Automatizacija procesa.</span></div>
+      <div class="subtitle">Custom softverska rješenja za mala i srednja preduzeća</div>
+    </div>
+    <div class="right-content">
+      <div class="website">datamaks.net</div>
+      <div class="contact-info">
+        <div class="contact-item">info@datamaks.net</div>
+        <div class="contact-item">+387 65 469 565</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Opcija 2: Engleski</h2>
+  <div class="cover" id="cover2">
+    <div class="left-content">
+      <div class="tagline">Business Digitalization.<br><span>Process Automation.</span></div>
+      <div class="subtitle">Custom software solutions for small and medium enterprises</div>
+    </div>
+    <div class="right-content">
+      <div class="website">datamaks.net</div>
+      <div class="contact-info">
+        <div class="contact-item">info@datamaks.net</div>
+        <div class="contact-item">+387 65 469 565</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Opcija 3: Njemački</h2>
+  <div class="cover" id="cover3">
+    <div class="left-content">
+      <div class="tagline">Geschäftsdigitalisierung.<br><span>Prozessautomatisierung.</span></div>
+      <div class="subtitle">Maßgeschneiderte Softwarelösungen für KMU</div>
+    </div>
+    <div class="right-content">
+      <div class="website">datamaks.net</div>
+      <div class="contact-info">
+        <div class="contact-item">info@datamaks.net</div>
+        <div class="contact-item">+43 667 797 0082</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Opcija 4: Minimalistička (centrirana)</h2>
+  <div class="cover minimal" id="cover4">
+    <div class="left-content">
+      <div class="tagline">Digitalizacija. <span>Automatizacija.</span> Rezultati.</div>
+      <div class="subtitle">datamaks.net | info@datamaks.net</div>
+    </div>
+  </div>
+
+  <h2>Opcija 5: Tamna varijanta</h2>
+  <div class="cover dark" id="cover5">
+    <div class="left-content">
+      <div class="tagline">Digitalizacija poslovanja.<br><span>Automatizacija procesa.</span></div>
+      <div class="subtitle">Custom softverska rješenja za mala i srednja preduzeća</div>
+    </div>
+    <div class="right-content">
+      <div class="website">datamaks.net</div>
+      <div class="contact-info">
+        <div class="contact-item">info@datamaks.net</div>
+        <div class="contact-item">+387 65 469 565</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
