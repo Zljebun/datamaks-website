@@ -144,11 +144,18 @@
           </ul>
 
           <div class="lang-switcher">
-            <a href="/" class="lang-btn active">BS</a>
-            <a href="/hr/" class="lang-btn">HR</a>
-            <a href="/sr/" class="lang-btn">SR</a>
-            <a href="/en/" class="lang-btn">EN</a>
-            <a href="/de/" class="lang-btn">DE</a>
+            <button class="lang-toggle" aria-label="Odaberi jezik">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span class="current-lang">BS</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="lang-dropdown">
+              <a href="/" class="lang-btn active"><span class="lang-code">BS</span><span class="lang-name">Bosanski</span></a>
+              <a href="/hr/" class="lang-btn"><span class="lang-code">HR</span><span class="lang-name">Hrvatski</span></a>
+              <a href="/sr/" class="lang-btn"><span class="lang-code">SR</span><span class="lang-name">Srpski</span></a>
+              <a href="/en/" class="lang-btn"><span class="lang-code">EN</span><span class="lang-name">English</span></a>
+              <a href="/de/" class="lang-btn"><span class="lang-code">DE</span><span class="lang-name">Deutsch</span></a>
+            </div>
           </div>
 
           <a href="#kontakt" class="btn btn-primary">Zakažite razgovor</a>
@@ -459,9 +466,18 @@
       <div class="footer-bottom">
         <p>&copy; 2026 Datamaks d.o.o. Sva prava zadržana.</p>
         <div class="lang-switcher">
-          <a href="/" class="lang-btn active">BS</a>
-          <a href="/en/" class="lang-btn">EN</a>
-          <a href="/de/" class="lang-btn">DE</a>
+          <button class="lang-toggle" aria-label="Odaberi jezik">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span class="current-lang">BS</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="lang-dropdown">
+            <a href="/" class="lang-btn active"><span class="lang-code">BS</span><span class="lang-name">Bosanski</span></a>
+            <a href="/hr/" class="lang-btn"><span class="lang-code">HR</span><span class="lang-name">Hrvatski</span></a>
+            <a href="/sr/" class="lang-btn"><span class="lang-code">SR</span><span class="lang-name">Srpski</span></a>
+            <a href="/en/" class="lang-btn"><span class="lang-code">EN</span><span class="lang-name">English</span></a>
+            <a href="/de/" class="lang-btn"><span class="lang-code">DE</span><span class="lang-name">Deutsch</span></a>
+          </div>
         </div>
       </div>
     </div>
@@ -501,6 +517,23 @@
         navLinks.classList.toggle('active');
       });
     }
+
+    // Language switcher dropdown
+    document.querySelectorAll('.lang-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const switcher = toggle.closest('.lang-switcher');
+        document.querySelectorAll('.lang-switcher').forEach(s => {
+          if (s !== switcher) s.classList.remove('open');
+        });
+        switcher.classList.toggle('open');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.lang-switcher').forEach(s => s.classList.remove('open'));
+    });
   </script>
 </body>
 </html>
