@@ -192,7 +192,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 90px;
+  height: 110px;
 }
 
 .logo {
@@ -206,8 +206,9 @@ p {
 }
 
 .logo img {
-  height: 70px;
+  height: 90px;
   width: auto;
+  max-height: none;
 }
 
 .nav {
