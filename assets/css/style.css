@@ -192,7 +192,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 90px;
 }
 
 .logo {
@@ -206,7 +206,7 @@ p {
 }
 
 .logo img {
-  height: 50px;
+  height: 70px;
   width: auto;
 }
 
