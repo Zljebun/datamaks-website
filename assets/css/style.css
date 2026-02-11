@@ -501,7 +501,7 @@ p {
 }
 
 .section-header p {
-  color: var(--gray-400);
+  color: var(--gray-500);
   font-size: 1.125rem;
 }
 
