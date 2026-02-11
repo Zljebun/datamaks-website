@@ -505,6 +505,10 @@ p {
   font-size: 1.125rem;
 }
 
+.problems .section-header p {
+  color: var(--gray-400);
+}
+
 .problems-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
