@@ -156,6 +156,7 @@
   </script>
 </head>
 <body>
+  <a href="#kontakt" class="skip-link">Preskoči na sadržaj</a>
   <!-- Header -->
   <header class="header" id="header">
     <div class="container">
@@ -579,6 +580,16 @@
     if (mobileToggle) {
       mobileToggle.addEventListener('click', () => {
         navLinks.classList.toggle('active');
+        mobileToggle.classList.toggle('active');
+        mobileToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+      });
+      // Close menu when nav link clicked
+      navLinks.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          mobileToggle.classList.remove('active');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+        });
       });
     }
 

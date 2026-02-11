@@ -88,6 +88,7 @@
   </script>
 </head>
 <body>
+  <a href="#contact" class="skip-link">Skip to content</a>
   <!-- Header -->
   <header class="header" id="header">
     <div class="container">
@@ -544,6 +545,24 @@
         btn.setAttribute('aria-expanded', !isOpen);
       });
     });
+
+    // Mobile menu toggle
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        mobileToggle.classList.toggle('active');
+        mobileToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+      });
+      navLinks.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          mobileToggle.classList.remove('active');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
   </script>
 </body>
 </html>
