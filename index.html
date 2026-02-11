@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="bs">
 <head>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X15G07WDL9"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X15G07WDL9');</script>
   <!-- Essential Meta Tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,13 +43,15 @@
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 
-  <!-- Fonts -->
+  <!-- Fonts (non-render-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2">
+  <link rel="stylesheet" href="assets/css/style.min.css?v=3">
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
@@ -162,7 +161,7 @@
     <div class="container">
       <div class="header-inner">
         <a href="/" class="logo">
-          <img src="assets/images/logo.png" alt="Datamaks" height="100">
+          <img src="assets/images/logo.png" alt="Datamaks" width="183" height="100">
         </a>
 
         <nav class="nav">
@@ -509,7 +508,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="/" class="logo">
-            <img src="assets/images/logo.png" alt="Datamaks" height="100">
+            <img src="assets/images/logo.png" alt="Datamaks" width="183" height="100">
           </a>
           <p>Digitalizacija poslovanja za mala i srednja preduzeća. Automatizacija procesa, bolje odluke, manji troškovi.</p>
         </div>
@@ -653,6 +652,11 @@
         btn.setAttribute('aria-expanded', !isOpen);
       });
     });
+  </script>
+
+  <!-- Google Analytics (deferred) -->
+  <script>
+    window.requestIdleCallback?window.requestIdleCallback(a):window.addEventListener('load',a);function a(){var s=document.createElement('script');s.src='https://www.googletagmanager.com/gtag/js?id=G-X15G07WDL9';s.async=true;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-X15G07WDL9');}
   </script>
 </body>
 </html>
