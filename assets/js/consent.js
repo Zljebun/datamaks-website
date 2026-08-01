@@ -52,6 +52,12 @@
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', GA_ID, { anonymize_ip: true });
+    // Kontakt forma preusmjerava na /thank-you.html — svaka posjeta te strane je
+    // uspješno poslan upit. Šaljemo konverziju generate_lead samo kad je GA učitan
+    // (tj. uz pristanak na kolačiće). Registrovana kao key event u property 548110029.
+    if (location.pathname.indexOf('thank-you') !== -1) {
+      gtag('event', 'generate_lead');
+    }
   }
 
   function injectStyles() {
