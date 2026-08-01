@@ -101,6 +101,14 @@
     "mainEntity": [
       {
         "@type": "Question",
+        "name": "Koliko košta digitalizacija poslovanja?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cijena zavisi od obima projekta. Nudimo besplatan inicijalni razgovor gdje analiziramo vaše potrebe i dajemo procjenu. Radimo fazno, tako da ne morate investirati sve odjednom."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Šta je digitalizacija poslovanja?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -112,7 +120,7 @@
         "name": "Koliko traje implementacija poslovnog softvera?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Vrijeme implementacije zavisi od kompleksnosti projekta. Jednostavnija rješenja mogu biti gotova za 2-4 sedmice, dok kompleksniji sistemi zahtijevaju 2-3 mjeseca. Radimo faznu implementaciju kako bi vidjeli rezultate što prije."
+          "text": "Vrijeme implementacije zavisi od kompleksnosti projekta. Jednostavnija rješenja mogu biti gotova za 2 do 4 sedmice, dok kompleksniji sistemi zahtijevaju 2 do 3 mjeseca. Radimo faznu implementaciju kako bi vidjeli rezultate što prije."
         }
       },
       {
@@ -120,15 +128,7 @@
         "name": "Da li radite sa malim firmama?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Da, specijalizovani smo upravo za mala i srednja preduzeća. Naša rješenja su prilagođena vašim potrebama i budžetu - ne plaćate funkcije koje vam ne trebaju."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Koliko košta digitalizacija poslovanja?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Cijena zavisi od obima projekta. Nudimo besplatan inicijalni razgovor gdje analiziramo vaše potrebe i dajemo procjenu. Radimo fazno, tako da ne morate investirati sve odjednom."
+          "text": "Da, specijalizovani smo upravo za mala i srednja preduzeća. Naša rješenja su prilagođena vašim potrebama i budžetu, ne plaćate funkcije koje vam ne trebaju."
         }
       },
       {
@@ -218,7 +218,7 @@
         </div>
 
         <div class="hero-image">
-          <img src="assets/images/hero-dashboard.webp" alt="Poslovni dashboard - pregled podataka u realnom vremenu" width="600" height="450">
+          <img src="assets/images/hero-dashboard.webp" alt="Poslovni dashboard, pregled podataka u realnom vremenu" width="600" height="450">
         </div>
       </div>
     </div>
@@ -234,27 +234,31 @@
 
       <div class="problems-grid">
         <div class="problem-card">
-          <div class="problem-icon">📊</div>
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16M15 4v16"/></svg></div>
           <h3>Podaci razbacani u Excel tabelama</h3>
           <p>Svaki odjel ima svoje tabele. Verzije se miješaju. Niko nije siguran koji podaci su tačni i ažurni.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> jedna centralna baza, svi rade nad istim i uvijek tačnim podacima.</p>
         </div>
 
         <div class="problem-card">
-          <div class="problem-icon">⏱️</div>
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
           <h3>Ručni procesi koji troše vrijeme</h3>
           <p>Isti podaci se unose više puta. Copy-paste između sistema. Sati se gube na poslove koji bi mogli biti automatski.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> automatizacija ponavljajućih koraka i unos jednom umjesto više puta.</p>
         </div>
 
         <div class="problem-card">
-          <div class="problem-icon">🔍</div>
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 2 5-6"/></svg></div>
           <h3>Nedostatak uvida u poslovanje</h3>
           <p>Teško je dobiti jasnu sliku. Izvještaji kasne. Odluke se donose na osnovu osjećaja, ne podataka.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> dashboard sa ključnim brojkama i izvještaj u par klikova.</p>
         </div>
 
         <div class="problem-card">
-          <div class="problem-icon">🔄</div>
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12l-3-3M20 17H8l3 3"/></svg></div>
           <h3>Informacije se gube između odjela</h3>
-          <p>Proizvodnja ne zna šta je prodaja obećala. Nabavka ne zna šta je prodato. Kupac pita - niko ne zna odgovor.</p>
+          <p>Proizvodnja ne zna šta je prodaja obećala. Nabavka ne zna šta je prodato. Kupac pita, niko ne zna odgovor.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> svi odjeli u istom sistemu, ista informacija dostupna svima.</p>
         </div>
       </div>
     </div>
@@ -264,11 +268,12 @@
   <section class="services" id="usluge">
     <div class="container">
       <div class="section-header">
-        <h2>Kako vam možemo pomoći</h2>
-        <p>Radimo sa vama od analize do implementacije - i ostajemo uz vas nakon toga</p>
+        <h2>Kako radimo</h2>
+        <p>Od prvog razgovora do live rješenja, i ostajemo uz vas nakon toga.</p>
+        <p class="process-rok">Tipično 3 do 5 sedmica do prvog upotrebljivog rješenja (MVP), pa nastavljamo fazno.</p>
       </div>
 
-      <div class="services-grid">
+      <div class="services-grid process-steps">
         <div class="service-card">
           <div class="service-number">1</div>
           <div class="service-icon">🔍</div>
@@ -280,7 +285,7 @@
           <div class="service-number">2</div>
           <div class="service-icon">✏️</div>
           <h3>Dizajn rješenja</h3>
-          <p>Projektujemo sistem prilagođen vašoj logici rada - ne "gotovo rješenje" kojem se vi morate prilagođavati.</p>
+          <p>Projektujemo sistem prilagođen vašoj logici rada, ne „gotovo rješenje" kojem se vi morate prilagođavati.</p>
         </div>
 
         <div class="service-card">
@@ -294,7 +299,7 @@
           <div class="service-number">4</div>
           <div class="service-icon">🤝</div>
           <h3>Podrška</h3>
-          <p>Ostajemo uz vas - obuka tima, tehnička podrška, prilagođavanja kako vaše poslovanje raste i mijenja se.</p>
+          <p>Ostajemo uz vas: obuka tima, tehnička podrška i prilagođavanja kako vaše poslovanje raste i mijenja se.</p>
         </div>
       </div>
     </div>
@@ -333,7 +338,7 @@
         </div>
 
         <div class="why-us-image">
-          <img src="assets/images/partnership.webp" alt="Partnerski pristup - razgovor o vašem poslovanju" width="500" height="400" loading="lazy">
+          <img src="assets/images/partnership.webp" alt="Partnerski pristup, razgovor o vašem poslovanju" width="500" height="400" loading="lazy">
         </div>
       </div>
     </div>
@@ -358,6 +363,15 @@
       <div class="faq-grid">
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
+            <span>Koliko košta digitalizacija poslovanja?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Cijena zavisi od obima projekta. Nudimo besplatan inicijalni razgovor gdje analiziramo vaše potrebe i dajemo procjenu. Radimo fazno, tako da ne morate investirati sve odjednom.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
             <span>Šta je digitalizacija poslovanja?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -371,7 +385,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="faq-answer">
-            <p>Vrijeme implementacije zavisi od kompleksnosti projekta. Jednostavnija rješenja mogu biti gotova za 2-4 sedmice, dok kompleksniji sistemi zahtijevaju 2-3 mjeseca. Radimo faznu implementaciju kako bi vidjeli rezultate što prije.</p>
+            <p>Vrijeme implementacije zavisi od kompleksnosti projekta. Jednostavnija rješenja mogu biti gotova za 2 do 4 sedmice, dok kompleksniji sistemi zahtijevaju 2 do 3 mjeseca. Radimo faznu implementaciju kako bi vidjeli rezultate što prije.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -380,16 +394,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="faq-answer">
-            <p>Da, specijalizovani smo upravo za mala i srednja preduzeća. Naša rješenja su prilagođena vašim potrebama i budžetu - ne plaćate funkcije koje vam ne trebaju.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            <span>Koliko košta digitalizacija poslovanja?</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Cijena zavisi od obima projekta. Nudimo besplatan inicijalni razgovor gdje analiziramo vaše potrebe i dajemo procjenu. Radimo fazno, tako da ne morate investirati sve odjednom.</p>
+            <p>Da, specijalizovani smo upravo za mala i srednja preduzeća. Naša rješenja su prilagođena vašim potrebama i budžetu, ne plaćate funkcije koje vam ne trebaju.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -525,6 +530,12 @@
     .booking-cta{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:22px 28px;margin-bottom:36px}
     .booking-cta-text h2{margin:0 0 4px;font-size:1.25rem}
     .booking-cta-text p{margin:0;color:#475569}
+    .problem-icon svg{width:34px;height:34px;color:#1e40af}
+    .problem-solution{margin-top:12px;font-size:.95rem;color:#334155}
+    .problem-solution strong{color:#1e40af}
+    .process-rok{margin-top:10px;display:inline-block;background:#eff6ff;color:#1e40af;font-weight:600;padding:8px 14px;border-radius:999px;font-size:.95rem}
+    body[data-theme="dark"] .process-rok{background:#1e293b;color:#93c5fd}
+    body[data-theme="dark"] .problem-solution{color:#cbd5e1}
   </style>
 
   <!-- Click-to-chat: Viber (BiH broj) + WhatsApp (AT/EU broj) (DWEB-12) -->
