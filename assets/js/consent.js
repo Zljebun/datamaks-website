@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var GA_ID = 'G-X15G07WDL9';
+  var GA_ID = 'G-4WZCVMT7W1';
   var STORE_KEY = 'dm_consent';
 
   var TEXT = {
