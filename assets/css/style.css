@@ -209,6 +209,11 @@ p {
   height: 90px;
   width: auto;
   max-height: none;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .logo img { height: 56px; }
 }
 
 .nav {
