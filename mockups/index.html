@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datamaks — Prototipi</title>
+<meta name="description" content="Klikabilni prototipi rješenja koja Datamaks gradi. Izmišljeni podaci, stvarna logika i tok ekrana kao u produkciji.">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+<style>
+  :root{--brand:#1e40af;--brand2:#1e3a8a;--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--muted:#475569;--text:#0f172a}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  .top{background:#fff;border-bottom:1px solid var(--line)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+  .logo{font-weight:800;font-size:20px;color:var(--brand);text-decoration:none}
+  .top nav{margin-left:auto;display:flex;gap:18px}
+  .top nav a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}
+  .top nav a:hover{color:var(--brand)}
+  section{padding:44px 0}
+  .eyebrow{color:var(--brand);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+  h1{font-size:34px;margin:8px 0 10px}
+  .lead{color:var(--muted);font-size:17px;max-width:640px;line-height:1.55}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:28px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;text-decoration:none;color:inherit;transition:.15s}
+  .card:hover{border-color:var(--brand);box-shadow:0 8px 26px rgba(30,64,175,.12);transform:translateY(-2px)}
+  .tag{display:inline-block;background:#eff6ff;color:var(--brand);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+  .card h2{font-size:20px;margin:12px 0 6px}
+  .card p{color:var(--muted);margin:0 0 14px;line-height:1.5}
+  .card .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--muted)}
+  .card .go{color:var(--brand);font-weight:700;font-size:14px;margin-top:12px;display:inline-block}
+  .note{margin-top:18px;font-size:13px;color:var(--muted)}
+  .cta{border-top:1px solid var(--line);background:#fff}
+  .btn{display:inline-block;background:var(--brand);color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700}
+  footer{padding:22px 0;color:var(--muted);font-size:13px}
+  footer .wrap{display:flex;gap:12px;flex-wrap:wrap}
+  footer .sp{flex:1}
+  footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap">
+  <a class="logo" href="https://datamaks.net">datamaks</a>
+  <nav><a href="https://datamaks.net">Sajt</a><a href="https://datamaks.net/#kontakt">Kontakt</a></nav>
+</div></div>
+
+<section><div class="wrap">
+  <div class="eyebrow">Portfolio</div>
+  <h1>Prototipi koje možete kliknuti</h1>
+  <p class="lead">Umjesto slajdova — radni prikazi rješenja koja gradimo. Svaki prototip koristi izmišljene podatke, ali tok ekrana i logika su isti kao u produkciji.</p>
+
+  <div class="grid">
+    <a class="card" href="veletrade/">
+      <span class="tag">Veleprodaja · Distribucija</span>
+      <h2>Veletrade — sistem za veleprodaju</h2>
+      <p>Narudžbe kroz faze, zalihe sa alarmom niskog stanja, kartica kupca i izvještaji. Kreiranje narudžbe umanjuje zalihe, sve povezano i klikabilno.</p>
+      <div class="mono">Narudžbe · Zalihe · Kupci · Izvještaji</div>
+      <span class="go">Otvori prototip →</span>
+    </a>
+  </div>
+
+  <p class="note">Napomena: svi prototipi koriste izmišljene podatke.</p>
+</div></section>
+
+<section class="cta"><div class="wrap">
+  <h2>Zanima vas nešto slično?</h2>
+  <p class="lead">Pošaljite kratak opis problema — javljamo se sa procjenom obima i rokom.</p>
+  <a class="btn" href="https://datamaks.net/#kontakt">Zakaži razgovor</a>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Datamaks d.o.o.</span><span class="sp"></span>
+  <a href="https://datamaks.net">datamaks.net</a>
+</div></footer>
+
+</body>
+</html>

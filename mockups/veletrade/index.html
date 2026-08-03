@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Veletrade — veleprodaja prehrane (demo)</title>
+<style>
+  :root{
+    --brand:#14532d; --brand2:#166534; --accent:#ca8a04; --action:#15803d;
+    --bg:#f4f7f4; --card:#fff; --line:#e2e8e2; --muted:#5b6b60; --text:#14231a;
+    --ok:#15803d; --warn:#b45309; --late:#b91c1c; --track:#eef2ee;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:38px;height:38px;border-radius:9px;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#fde68a;letter-spacing:.3px;margin-top:3px}
+  header .spacer{flex:1}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:#b1442f}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 14px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--accent)}
+  .demo-flag{margin-left:10px;background:#fef9c3;color:#854d0e;border:1px solid #fde68a;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 13px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.08)}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow select,.frow input,.lines select,.lines input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow select:focus,.frow input:focus,.lines select:focus,.lines input:focus{outline:none;border-color:var(--brand2)}
+  .viewhead{display:flex;align-items:center;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:15px;color:var(--brand)}
+  .wrap{padding:18px 20px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .big{font-size:26px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:13.5px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--warn)}
+  .kpi.clk{cursor:pointer;transition:.12s}
+  .kpi.clk:hover{border-color:var(--brand2);box-shadow:0 3px 12px rgba(20,60,40,.12);transform:translateY(-1px)}
+  .lines tbody tr[onclick]{cursor:pointer}
+  .lines tbody tr[onclick]:hover{background:var(--track)}
+  @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .filterbar{display:flex;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap}
+  .filterbar input,.filterbar select{padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;background:#fff}
+  .filterbar input{flex:0 1 240px}
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 14px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:11px 14px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}
+  .tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+  .p-nova{background:#e0f2fe;color:#075985}
+  .p-priprema{background:#fef9c3;color:#854d0e}
+  .p-isporucena{background:#dcfce7;color:#166534}
+  .p-naplacena{background:#e5e7eb;color:#374151}
+  .p-kasni{background:#fee2e2;color:#b91c1c}
+  .muted{color:var(--muted)}
+  .link{color:var(--brand2);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  .stock-bad{color:var(--late);font-weight:700}
+  .stock-warn{color:var(--warn);font-weight:600}
+  .overlay{position:fixed;inset:0;background:rgba(10,25,15,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:14px;max-width:720px;width:100%;box-shadow:0 20px 60px rgba(5,20,10,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.85}
+  .mbody{padding:18px 20px;overflow-x:auto}
+  .kv{display:flex;font-size:14.5px;padding:4px 0}
+  .kv .k{width:130px;color:var(--muted)}
+  .lines{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+  .lines th,.lines td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 6px}
+  .actions{padding:14px 20px;background:#f5f9f5;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #c5d3d6;padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px}
+  button.secondary:hover{background:#eef4f0}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .hint.warn{color:var(--warn)}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+  .stub{padding:40px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:12px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .bar{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:14px}
+  .bar .blab{width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:16px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .bar .val{width:96px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .bar.clk-bar{cursor:pointer;border-radius:6px;padding:2px 4px;margin:6px -4px}
+  .bar.clk-bar:hover{background:var(--track)}
+  .bar.clk-bar:hover .blab{color:var(--brand)}
+  .cols{display:flex;align-items:flex-end;gap:12px;height:170px;padding-top:8px}
+  .colbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+  .colbar .cnt{font-size:12px;font-weight:700;color:var(--brand);margin-bottom:5px}
+  .colbar .barv{width:66%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--brand2),var(--brand));min-height:3px}
+  .colbar .clab{font-size:11px;color:var(--muted);margin-top:6px}
+  @media(max-width:560px){
+    .overlay{padding:14px 8px}
+    .mbody{padding:14px 12px}
+    .lines th,.lines td{padding:7px 8px;font-size:13px}
+    .kv .k{width:110px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">VT</div>
+  <div class="brand">
+    <div class="name">Veletrade</div>
+    <div class="tag">Veleprodaja prehrane</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="user"><span class="avatar">SK</span><span>Saša Kovačević — komercijala</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="narudzbe" onclick="setView('narudzbe')">Narudžbe</div>
+  <div class="tab" data-view="zalihe" onclick="setView('zalihe')">Zalihe</div>
+  <div class="tab" data-view="kupci" onclick="setView('kupci')">Kupci</div>
+  <div class="tab" data-view="izvjestaji" onclick="setView('izvjestaji')">Izvještaji</div>
+  <button class="newbtn" onclick="openNovaNarudzba()">+ Nova narudžba</button>
+  <span class="demo-flag">DEMO — izmišljeni podaci</span>
+</div>
+
+<div id="view" class="wrap"></div>
+<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Demo podaci ----------------------------------------------------------
+const ARTIKLI = {
+  A1:{n:"Brašno T-500 25kg", cijena:22.50, stanje:120, min:20},
+  A2:{n:"Ulje suncokret 1L (12/1)", cijena:31.90, stanje:140, min:40},
+  A3:{n:"Šećer kristal 1kg (10/1)", cijena:14.20, stanje:18, min:30},
+  A4:{n:"Mlijeko 2.8% 1L (12/1)", cijena:18.60, stanje:90, min:50},
+  A5:{n:"Kafa mljevena 200g", cijena:3.80, stanje:210, min:80},
+  A6:{n:"Tjestenina 500g (20/1)", cijena:9.40, stanje:60, min:25},
+  A7:{n:"Paradajz pelat 400g (24/1)", cijena:16.80, stanje:8, min:20},
+  A8:{n:"Riža dugozrna 1kg (10/1)", cijena:15.50, stanje:75, min:30},
+  A9:{n:"So kuhinjska 1kg (20/1)", cijena:6.90, stanje:160, min:40},
+  A10:{n:"Jaja M (30/1)", cijena:7.20, stanje:45, min:20},
+  A11:{n:"Margarin 250g (24/1)", cijena:12.30, stanje:34, min:20},
+  A12:{n:"Keks petit beure 200g", cijena:8.10, stanje:95, min:40},
+  A13:{n:"Sok narandža 1L (12/1)", cijena:21.40, stanje:52, min:30},
+  A14:{n:"Voda negazirana 1.5L (6/1)", cijena:5.60, stanje:300, min:100},
+  A15:{n:"Deterdžent za suđe 900ml", cijena:10.80, stanje:40, min:20},
+  A16:{n:"Toalet papir (10/1)", cijena:13.90, stanje:12, min:15},
+  A17:{n:"Kečap 500g (12/1)", cijena:14.70, stanje:68, min:25},
+  A18:{n:"Majoneza 620g (10/1)", cijena:17.30, stanje:41, min:20},
+};
+const KUPCI = {
+  K1:{naziv:"Market Kod Mije", grad:"Banja Luka", tel:"+387 65 111 222"},
+  K2:{naziv:"Restoran Dunav", grad:"Novi Sad", tel:"+381 61 333 444"},
+  K3:{naziv:"STR Zvijezda", grad:"Bijeljina", tel:"+387 66 555 666"},
+  K4:{naziv:"Pekara Klas", grad:"Doboj", tel:"+387 65 777 888"},
+  K5:{naziv:"Ugostiteljstvo San", grad:"Tuzla", tel:"+387 61 999 000"},
+  K6:{naziv:"Market Bingo Express", grad:"Prijedor", tel:"+387 65 121 314"},
+  K7:{naziv:"Hotel Bosna", grad:"Sarajevo", tel:"+387 61 222 333"},
+  K8:{naziv:"Restoran Stari Grad", grad:"Mostar", tel:"+387 63 444 555"},
+  K9:{naziv:"Market Voćko", grad:"Gradiška", tel:"+387 65 666 777"},
+  K10:{naziv:"Kafić Central", grad:"Trebinje", tel:"+387 65 888 999"},
+  K11:{naziv:"Trgovina Merkur", grad:"Zenica", tel:"+387 62 101 202"},
+  K12:{naziv:"Picerija Napoli", grad:"Brčko", tel:"+387 49 303 404"},
+};
+let NARUDZBE = [
+  {id:"N-2062", kupac:"K7", datum:"03.08.2026", status:"nova", stavke:[["A5",15],["A12",8],["A13",6]]},
+  {id:"N-2061", kupac:"K3", datum:"03.08.2026", status:"nova", stavke:[["A1",6],["A9",10]]},
+  {id:"N-2060", kupac:"K10", datum:"03.08.2026", status:"priprema", stavke:[["A5",20],["A17",5]]},
+  {id:"N-2059", kupac:"K2", datum:"02.08.2026", status:"priprema", stavke:[["A2",8],["A6",6],["A4",6]]},
+  {id:"N-2058", kupac:"K11", datum:"02.08.2026", status:"nova", stavke:[["A8",10],["A18",4]]},
+  {id:"N-2057", kupac:"K4", datum:"02.08.2026", status:"priprema", stavke:[["A1",12],["A11",6]]},
+  {id:"N-2056", kupac:"K8", datum:"02.08.2026", status:"kasni", stavke:[["A2",10],["A13",8],["A17",4]]},
+  {id:"N-2055", kupac:"K1", datum:"01.08.2026", status:"priprema", stavke:[["A4",10],["A5",12],["A14",20]]},
+  {id:"N-2054", kupac:"K12", datum:"01.08.2026", status:"nova", stavke:[["A6",8],["A15",5]]},
+  {id:"N-2053", kupac:"K9", datum:"01.08.2026", status:"isporucena", skinuto:true, stavke:[["A9",15],["A10",10]]},
+  {id:"N-2052", kupac:"K5", datum:"31.07.2026", status:"isporucena", skinuto:true, stavke:[["A2",12],["A4",8],["A17",6]]},
+  {id:"N-2051", kupac:"K3", datum:"31.07.2026", status:"naplacena", skinuto:true, stavke:[["A5",20],["A6",4]]},
+  {id:"N-2050", kupac:"K6", datum:"30.07.2026", status:"kasni", stavke:[["A1",8],["A18",6]]},
+  {id:"N-2049", kupac:"K2", datum:"30.07.2026", status:"naplacena", skinuto:true, stavke:[["A4",8],["A5",15],["A13",10]]},
+  {id:"N-2048", kupac:"K7", datum:"29.07.2026", status:"isporucena", skinuto:true, stavke:[["A12",12],["A14",30],["A2",10]]},
+  {id:"N-2047", kupac:"K1", datum:"29.07.2026", status:"naplacena", skinuto:true, stavke:[["A6",10],["A5",12]]},
+  {id:"N-2046", kupac:"K11", datum:"28.07.2026", status:"naplacena", skinuto:true, stavke:[["A8",14],["A18",8]]},
+  {id:"N-2045", kupac:"K4", datum:"28.07.2026", status:"isporucena", skinuto:true, stavke:[["A1",10],["A10",8]]},
+  {id:"N-2044", kupac:"K10", datum:"27.07.2026", status:"naplacena", skinuto:true, stavke:[["A5",18],["A17",6]]},
+  {id:"N-2043", kupac:"K8", datum:"27.07.2026", status:"isporucena", skinuto:true, stavke:[["A2",12],["A13",8]]},
+  {id:"N-2042", kupac:"K5", datum:"26.07.2026", status:"naplacena", skinuto:true, stavke:[["A4",10],["A9",12]]},
+  {id:"N-2041", kupac:"K12", datum:"26.07.2026", status:"naplacena", skinuto:true, stavke:[["A6",8],["A15",5]]},
+];
+const STATUS={nova:["Nova","p-nova"],priprema:["U pripremi","p-priprema"],isporucena:["Isporučena","p-isporucena"],naplacena:["Naplaćena","p-naplacena"],kasni:["Kasni","p-kasni"]};
+const FLOW=["nova","priprema","isporucena","naplacena"];
+
+const eur = v => v.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2})+" KM";
+const total = n => n.stavke.reduce((s,[a,q])=>s+ARTIKLI[a].cijena*q,0);
+const kn = id => KUPCI[id].naziv;
+const flowIdx = st => FLOW.indexOf(st==="kasni"?"priprema":st);
+
+// ---- Tok statusa + zalihe (VT-11) -----------------------------------------
+function stockDelta(n, sign){ n.stavke.forEach(([a,q])=>{ ARTIKLI[a].stanje += sign*q; }); }
+function moveStatus(id, dir){
+  const n=NARUDZBE.find(x=>x.id===id);
+  const i=flowIdx(n.status), ni=i+dir;
+  if(ni<0||ni>=FLOW.length) return;
+  const from=FLOW[i], to=FLOW[ni];
+  if(to==="isporucena" && !n.skinuto){
+    const manjak=n.stavke.filter(([a,q])=>ARTIKLI[a].stanje<q);
+    if(manjak.length){
+      alert("Nedovoljno na stanju za isporuku:\n\n• "+manjak.map(([a,q])=>`${ARTIKLI[a].n} — traži ${q}, na stanju ${ARTIKLI[a].stanje}`).join("\n• ")+"\n\nDopunite zalihe pa pokušajte ponovo.");
+      return;
+    }
+    stockDelta(n,-1); n.skinuto=true;
+  }
+  if(from==="isporucena" && dir<0 && n.skinuto){ stockDelta(n,1); n.skinuto=false; }
+  n.status=to;
+  rerender();
+  openNarudzba(id);
+}
+
+// ---- View switching -------------------------------------------------------
+let currentView="narudzbe";
+let flt={q:"",status:""};
+function setView(v){
+  currentView=v;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));
+  rerender();
+}
+function rerender(){
+  if(currentView==="narudzbe") renderNarudzbe();
+  else if(currentView==="zalihe") renderZalihe();
+  else if(currentView==="kupci") renderKupci();
+  else renderIzvjestaji();
+}
+
+function renderNarudzbe(){
+  const aktivne = NARUDZBE.filter(n=>n.status!=="naplacena").length;
+  const zaIsporuku = NARUDZBE.filter(n=>["nova","priprema","kasni"].includes(n.status)).length;
+  const prometM = NARUDZBE.reduce((s,n)=>s+total(n),0);
+  const nisko = Object.values(ARTIKLI).filter(a=>a.stanje<a.min).length;
+  const statusOpts = Object.keys(STATUS).map(k=>`<option value="${k}"${flt.status===k?" selected":""}>${STATUS[k][0]}</option>`).join("");
+  const list = NARUDZBE.filter(n=>{
+    if(flt.status && n.status!==flt.status) return false;
+    const q=flt.q.trim().toLowerCase();
+    if(q && !(n.id.toLowerCase().includes(q)||kn(n.kupac).toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const rows = list.map(n=>`
+    <tr onclick="openNarudzba('${n.id}')">
+      <td><b>${n.id}</b></td>
+      <td>${kn(n.kupac)}</td>
+      <td class="muted">${n.stavke.length} art. · ${n.stavke.reduce((s,[,q])=>s+q,0)} kom</td>
+      <td class="num">${eur(total(n))}</td>
+      <td><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></td>
+      <td class="muted">${n.datum}</td>
+    </tr>`).join("") || `<tr><td colspan="6" class="muted" style="padding:24px;text-align:center">Nema narudžbi za zadati filter.</td></tr>`;
+  document.getElementById("view").innerHTML=`
+    <div class="kpis">
+      <div class="kpi clk" onclick="openAktivne()"><div class="big">${aktivne}</div><div class="lab">Aktivne narudžbe</div></div>
+      <div class="kpi clk" onclick="openZaIsporuku()"><div class="big">${zaIsporuku}</div><div class="lab">Za isporuku</div></div>
+      <div class="kpi"><div class="big">${eur(prometM)}</div><div class="lab">Promet (prikazano)</div></div>
+      <div class="kpi warn clk" onclick="openNiskoStanje()"><div class="big">${nisko}</div><div class="lab">Artikala ispod minimuma</div></div>
+    </div>
+    <div class="filterbar">
+      <input id="f_q" placeholder="🔍 Pretraga (ID ili kupac)…" value="${flt.q.replace(/"/g,'&quot;')}" oninput="flt.q=this.value;renderNarudzbe()">
+      <select onchange="flt.status=this.value;renderNarudzbe()"><option value="">Svi statusi</option>${statusOpts}</select>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Narudžba</th><th>Kupac</th><th>Sadržaj</th><th class="num">Iznos</th><th>Status</th><th>Datum</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function openNarudzba(id){
+  const n=NARUDZBE.find(x=>x.id===id);
+  const lines=n.stavke.map(([a,q])=>{
+    const art=ARTIKLI[a];
+    return `<tr><td>${art.n}</td><td class="num">${q}</td><td class="num">${eur(art.cijena)}</td><td class="num">${eur(art.cijena*q)}</td></tr>`;
+  }).join("");
+  const i=flowIdx(n.status);
+  const canFwd = i<FLOW.length-1;
+  const canBack = i>0 && n.status!=="naplacena" || (i>0);
+  const nextLabel = canFwd?STATUS[FLOW[i+1]][0]:"";
+  const willReduce = canFwd && FLOW[i+1]==="isporucena" && !n.skinuto;
+  const manjak = willReduce ? n.stavke.filter(([a,q])=>ARTIKLI[a].stanje<q) : [];
+  const actions = `
+    <div class="actions">
+      ${canFwd?`<button class="primary" onclick="moveStatus('${n.id}',1)">Označi: ${nextLabel}</button>`:`<span class="hint">Narudžba je naplaćena (završeno).</span>`}
+      ${i>0?`<button class="secondary" onclick="moveStatus('${n.id}',-1)">← Vrati</button>`:``}
+      ${willReduce ? (manjak.length
+        ? `<span class="hint warn">Nedovoljno na stanju: ${manjak.map(([a,q])=>`${ARTIKLI[a].n} (${ARTIKLI[a].stanje}/${q})`).join(", ")}</span>`
+        : `<span class="hint warn">Isporuka će umanjiti zalihe za stavke narudžbe.</span>`) : ``}
+    </div>`;
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead">
+      <div><h2>${n.id}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${kn(n.kupac)} · ${n.datum}</div></div>
+      <div class="x" onclick="closeModal()">×</div>
+    </div>
+    <div class="mbody">
+      <div class="kv"><span class="k">Kupac</span><span><span class="link" onclick="openKupac('${n.kupac}')">${kn(n.kupac)}</span> · ${KUPCI[n.kupac].grad}</span></div>
+      <div class="kv"><span class="k">Status</span><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></div>
+      <div class="kv"><span class="k">Datum</span><span>${n.datum}</span></div>
+      <div class="sec-title">Stavke</div>
+      <table class="lines">
+        <thead><tr><th>Artikal</th><th class="num">Količina</th><th class="num">Cijena</th><th class="num">Ukupno</th></tr></thead>
+        <tbody>${lines}</tbody>
+        <tfoot><tr><td colspan="3" class="num"><b>Ukupno</b></td><td class="num"><b>${eur(total(n))}</b></td></tr></tfoot>
+      </table>
+    </div>
+    ${actions}`;
+  document.getElementById("overlay").classList.add("open");
+}
+function closeModal(){document.getElementById("overlay").classList.remove("open");}
+
+// ---- Klikabilne KPI liste -------------------------------------------------
+function openNarudzbaLista(naslov, arr){
+  const rows = arr.length ? arr.map(n=>`<tr onclick="openNarudzba('${n.id}')">
+      <td><b>${n.id}</b></td><td>${kn(n.kupac)}</td><td class="num">${eur(total(n))}</td>
+      <td><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></td><td class="muted">${n.datum}</td></tr>`).join("")
+    : `<tr><td colspan="5" class="muted" style="padding:16px;text-align:center">Nema narudžbi.</td></tr>`;
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>${naslov}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${arr.length===1?'narudžba':'narudžbi'} · klik za detalje</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody"><table class="lines">
+      <thead><tr><th>ID</th><th>Kupac</th><th class="num">Iznos</th><th>Status</th><th>Datum</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`;
+  document.getElementById("overlay").classList.add("open");
+}
+function openAktivne(){ openNarudzbaLista("Aktivne narudžbe", NARUDZBE.filter(n=>n.status!=="naplacena")); }
+function openSveNarudzbe(){ openNarudzbaLista("Sve narudžbe", NARUDZBE); }
+function openKupciLista(){
+  const ks=Object.keys(KUPCI).map(k=>({k,s:kupacStats(k)})).filter(x=>x.s.broj>0).sort((a,b)=>b.s.promet-a.s.promet);
+  const rows=ks.map(({k,s})=>`<tr onclick="openKupac('${k}')">
+      <td><b>${KUPCI[k].naziv}</b></td><td class="muted">${KUPCI[k].grad}</td><td class="num">${s.broj}</td><td class="num">${eur(s.promet)}</td></tr>`).join("");
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>Aktivni kupci</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${ks.length} kupaca · klik za karticu</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody"><table class="lines">
+      <thead><tr><th>Kupac</th><th>Grad</th><th class="num">Narudžbi</th><th class="num">Promet</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`;
+  document.getElementById("overlay").classList.add("open");
+}
+function openZaIsporuku(){ openNarudzbaLista("Za isporuku", NARUDZBE.filter(n=>["nova","priprema","kasni"].includes(n.status))); }
+function openNiskoStanje(){
+  const arr=Object.values(ARTIKLI).filter(a=>a.stanje<a.min).sort((x,y)=>(x.stanje-x.min)-(y.stanje-y.min));
+  const rows = arr.length ? arr.map(a=>`<tr onclick="closeModal();setView('zalihe')">
+      <td><b>${a.n}</b></td><td class="num ${a.stanje<=0?'stock-bad':'stock-warn'}">${a.stanje}</td><td class="num muted">${a.min}</td>
+      <td>${a.stanje<=0?'<span class="pill p-kasni">nema</span>':'<span class="pill p-priprema">nisko</span>'}</td></tr>`).join("")
+    : `<tr><td colspan="4" class="muted" style="padding:16px;text-align:center">Sve iznad minimuma. 👍</td></tr>`;
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>Artikli ispod minimuma</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${arr.length===1?'artikal':'artikala'} · klik vodi na Zalihe</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody"><table class="lines">
+      <thead><tr><th>Artikal</th><th class="num">Na stanju</th><th class="num">Min</th><th>Status</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`;
+  document.getElementById("overlay").classList.add("open");
+}
+
+function renderZalihe(){
+  const rows=Object.entries(ARTIKLI).map(([k,a])=>{
+    const cls = a.stanje<=0?"stock-bad":(a.stanje<a.min?"stock-warn":"");
+    const oznaka = a.stanje<=0?'<span class="pill p-kasni">nema</span>':(a.stanje<a.min?'<span class="pill p-priprema">nisko</span>':'<span class="pill p-isporucena">ok</span>');
+    return `<tr><td><b>${a.n}</b></td><td class="num ${cls}">${a.stanje}</td><td class="num muted">${a.min}</td><td class="num">${eur(a.cijena)}</td><td>${oznaka}</td></tr>`;
+  }).join("");
+  document.getElementById("view").innerHTML=`
+    <div class="viewhead"><h3>Zalihe</h3><button class="newbtn" onclick="openNoviArtikal()">+ Novi artikal</button></div>
+    <p class="hint" style="margin:0 0 12px">Stanje se automatski umanjuje kad narudžba pređe u „Isporučena".</p>
+    <table class="tbl">
+      <thead><tr><th>Artikal</th><th class="num">Na stanju</th><th class="num">Minimum</th><th class="num">Cijena</th><th>Status</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+// ---- Kupci (VT-10) --------------------------------------------------------
+function kupacStats(kid){
+  const nar=NARUDZBE.filter(n=>n.kupac===kid);
+  return {broj:nar.length, promet:nar.reduce((s,n)=>s+total(n),0), nar};
+}
+function renderKupci(){
+  const rows=Object.keys(KUPCI).map(k=>{
+    const s=kupacStats(k);
+    return `<tr onclick="openKupac('${k}')">
+      <td><b>${KUPCI[k].naziv}</b></td><td class="muted">${KUPCI[k].grad}</td>
+      <td class="num">${s.broj}</td><td class="num">${eur(s.promet)}</td></tr>`;
+  }).join("");
+  document.getElementById("view").innerHTML=`
+    <div class="viewhead"><h3>Kupci</h3><button class="newbtn" onclick="openNoviKupac()">+ Novi kupac</button></div>
+    <table class="tbl">
+      <thead><tr><th>Kupac</th><th>Grad</th><th class="num">Narudžbi</th><th class="num">Ukupan promet</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+function openKupac(kid){
+  const k=KUPCI[kid], s=kupacStats(kid);
+  const rows=s.nar.map(n=>`<tr onclick="openNarudzba('${n.id}')">
+      <td><b>${n.id}</b></td><td class="muted">${n.datum}</td>
+      <td class="num">${eur(total(n))}</td><td><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></td></tr>`).join("");
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>${k.naziv}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${k.grad}</div></div>
+      <div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="kv"><span class="k">Grad</span><span>${k.grad}</span></div>
+      <div class="kv"><span class="k">Telefon</span><span>${k.tel}</span></div>
+      <div class="kv"><span class="k">Narudžbi</span><span>${s.broj}</span></div>
+      <div class="kv"><span class="k">Ukupan promet</span><span><b>${eur(s.promet)}</b></span></div>
+      <div class="sec-title">Narudžbe</div>
+      <table class="lines">
+        <thead><tr><th>ID</th><th>Datum</th><th class="num">Iznos</th><th>Status</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  document.getElementById("overlay").classList.add("open");
+}
+
+function bar(label,v,max,onclick){
+  const cls = onclick?'bar clk-bar':'bar';
+  const oc = onclick?` onclick="${onclick}"`:'';
+  return `<div class="${cls}"${oc}><span class="blab">${label}</span><span class="track"><span class="fill" style="width:${Math.max(4,v/max*100)}%"></span></span><span class="val">${eur(v)}</span></div>`;
+}
+function openArtikal(aKey){
+  const art=ARTIKLI[aKey];
+  const inv=NARUDZBE.filter(n=>n.stavke.some(([a])=>a===aKey))
+    .map(n=>{const q=n.stavke.filter(([a])=>a===aKey).reduce((s,[,q])=>s+q,0);return {n,q,v:q*art.cijena};})
+    .sort((x,y)=>y.v-x.v);
+  const rows=inv.map(x=>`<tr onclick="openNarudzba('${x.n.id}')">
+      <td><b>${x.n.id}</b></td><td>${kn(x.n.kupac)}</td><td class="num">${x.q}</td><td class="num">${eur(x.v)}</td>
+      <td><span class="pill ${STATUS[x.n.status][1]}">${STATUS[x.n.status][0]}</span></td></tr>`).join("");
+  const kom=inv.reduce((s,x)=>s+x.q,0), vr=inv.reduce((s,x)=>s+x.v,0);
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>${art.n}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">Na stanju: ${art.stanje} · cijena ${eur(art.cijena)}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="kv"><span class="k">Prodano (prikazano)</span><span>${kom} kom · ${eur(vr)}</span></div>
+      <div class="sec-title">Narudžbe sa ovim artiklom</div>
+      <table class="lines"><thead><tr><th>Narudžba</th><th>Kupac</th><th class="num">Kom</th><th class="num">Vrijednost</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  document.getElementById("overlay").classList.add("open");
+}
+function renderIzvjestaji(){
+  const svi=NARUDZBE;
+  const promet=svi.reduce((s,n)=>s+total(n),0);
+  const broj=svi.length;
+  const prosjek=broj?promet/broj:0;
+  const brKupaca=new Set(svi.map(n=>n.kupac)).size;
+
+  const perKupac=Object.keys(KUPCI).map(k=>({k,naziv:KUPCI[k].naziv,v:kupacStats(k).promet})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v);
+  const maxK=Math.max(...perKupac.map(x=>x.v),1);
+  const kupacBars=perKupac.map(x=>bar(x.naziv,x.v,maxK,`openKupac('${x.k}')`)).join("");
+
+  const artRev={};
+  svi.forEach(n=>n.stavke.forEach(([a,q])=>{artRev[a]=(artRev[a]||0)+ARTIKLI[a].cijena*q;}));
+  const topArt=Object.entries(artRev).map(([a,v])=>({a,naziv:ARTIKLI[a].n,v})).sort((x,y)=>y.v-x.v).slice(0,6);
+  const maxA=Math.max(...topArt.map(x=>x.v),1);
+  const artBars=topArt.map(x=>bar(x.naziv,x.v,maxA,`openArtikal('${x.a}')`)).join("");
+
+  const perDan={};
+  svi.forEach(n=>{perDan[n.datum]=(perDan[n.datum]||0)+total(n);});
+  const key=s=>s.split(".").reverse().join("");
+  const dani=Object.keys(perDan).sort((a,b)=>key(a)<key(b)?-1:1);
+  const maxD=Math.max(...dani.map(d=>perDan[d]),1);
+  const cols=dani.map(d=>`<div class="colbar"><div class="cnt">${Math.round(perDan[d])}</div><div class="barv" style="height:${Math.max(3,perDan[d]/maxD*130)}px"></div><div class="clab">${d.slice(0,5)}</div></div>`).join("");
+
+  const nabaviti=Object.values(ARTIKLI).filter(a=>a.stanje<a.min).sort((x,y)=>(x.stanje-x.min)-(y.stanje-y.min));
+  const nabRows=nabaviti.map(a=>`<div class="bar"><span class="blab">${a.n}</span><span class="track"></span><span class="val ${a.stanje<=0?'stock-bad':'stock-warn'}">${a.stanje} / ${a.min}</span></div>`).join("")||'<span class="hint">Sve iznad minimuma. 👍</span>';
+
+  document.getElementById("view").innerHTML=`
+    <div class="kpis">
+      <div class="kpi"><div class="big">${eur(promet)}</div><div class="lab">Ukupan promet (prikazano)</div></div>
+      <div class="kpi clk" onclick="openSveNarudzbe()"><div class="big">${broj}</div><div class="lab">Narudžbi</div></div>
+      <div class="kpi"><div class="big">${eur(prosjek)}</div><div class="lab">Prosječna narudžba</div></div>
+      <div class="kpi clk" onclick="openKupciLista()"><div class="big">${brKupaca}</div><div class="lab">Aktivnih kupaca</div></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Promet po kupcu</h3>${kupacBars}</div>
+      <div class="panel"><h3>Top artikli po prometu</h3>${artBars}</div>
+    </div>
+    <div class="panel"><h3>Promet po danu</h3><div class="cols">${cols}</div></div>
+    <div class="panel"><h3>Za nabavku (ispod minimuma)</h3>${nabRows}</div>`;
+}
+
+// ---- Nova narudžba --------------------------------------------------------
+function todayStr(){const d=new Date();return String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear();}
+let nova={kupac:"", stavke:[["A1",1]]};
+function openNovaNarudzba(){ nova={kupac:Object.keys(KUPCI)[0], stavke:[["A1",1]]}; renderNova(); document.getElementById("overlay").classList.add("open"); }
+function renderNova(){
+  const kupOpts=Object.keys(KUPCI).map(k=>`<option value="${k}"${nova.kupac===k?" selected":""}>${KUPCI[k].naziv}</option>`).join("");
+  const artOpts=sel=>Object.keys(ARTIKLI).map(a=>`<option value="${a}"${sel===a?" selected":""}>${ARTIKLI[a].n}</option>`).join("");
+  const rows=nova.stavke.map((s,idx)=>`
+    <tr>
+      <td><select onchange="nova.stavke[${idx}][0]=this.value;renderNova()"><option value="">— artikal —</option>${artOpts(s[0])}</select></td>
+      <td class="num"><input type="number" min="1" value="${s[1]}" style="width:72px" oninput="nova.stavke[${idx}][1]=Math.max(1,parseInt(this.value)||1);renderNova()"></td>
+      <td class="num">${s[0]?eur(ARTIKLI[s[0]].cijena*s[1]):"—"}</td>
+      <td><span class="link" onclick="nova.stavke.splice(${idx},1);if(!nova.stavke.length)nova.stavke=[['',1]];renderNova()">ukloni</span></td>
+    </tr>`).join("");
+  const tot=nova.stavke.reduce((s,[a,q])=>s+(a?ARTIKLI[a].cijena*q:0),0);
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>Nova narudžba</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${todayStr()}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="frow"><label>Kupac</label><select onchange="nova.kupac=this.value">${kupOpts}</select></div>
+      <div class="sec-title">Stavke</div>
+      <table class="lines">
+        <thead><tr><th>Artikal</th><th class="num">Količina</th><th class="num">Ukupno</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td colspan="2" class="num"><b>Ukupno</b></td><td class="num"><b>${eur(tot)}</b></td><td></td></tr></tfoot>
+      </table>
+      <button class="secondary" style="margin-top:10px" onclick="nova.stavke.push(['',1]);renderNova()">+ Dodaj stavku</button>
+    </div>
+    <div class="actions"><button class="primary" onclick="createNarudzba()">Kreiraj narudžbu</button><span class="hint">Nova narudžba dobija status „Nova".</span></div>`;
+}
+function createNarudzba(){
+  const stavke=nova.stavke.filter(([a,q])=>a&&q>0);
+  if(!nova.kupac||!stavke.length){alert("Izaberite kupca i bar jednu stavku.");return;}
+  const maxN=Math.max(...NARUDZBE.map(n=>+n.id.split("-")[1]));
+  const id="N-"+(maxN+1);
+  NARUDZBE.unshift({id,kupac:nova.kupac,datum:todayStr(),status:"nova",stavke});
+  setView("narudzbe");
+  openNarudzba(id);
+}
+
+// ---- Novi kupac / novi artikal --------------------------------------------
+function openNoviKupac(){
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>Novi kupac</h2></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="frow"><label>Naziv *</label><input id="k_naziv" placeholder="npr. Market Sunce"></div>
+      <div class="frow"><label>Grad</label><input id="k_grad" placeholder="npr. Banja Luka"></div>
+      <div class="frow"><label>Telefon</label><input id="k_tel" placeholder="+387 ..."></div>
+    </div>
+    <div class="actions"><button class="primary" onclick="createKupac()">Sačuvaj kupca</button></div>`;
+  document.getElementById("overlay").classList.add("open");
+  setTimeout(()=>document.getElementById("k_naziv").focus(),40);
+}
+function createKupac(){
+  const naziv=(document.getElementById("k_naziv").value||"").trim();
+  if(!naziv){document.getElementById("k_naziv").focus();return;}
+  const grad=(document.getElementById("k_grad").value||"").trim()||"—";
+  const tel=(document.getElementById("k_tel").value||"").trim()||"—";
+  const nums=Object.keys(KUPCI).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
+  const id="K"+(Math.max(0,...nums)+1);
+  KUPCI[id]={naziv,grad,tel};
+  setView("kupci");
+  openKupac(id);
+}
+function openNoviArtikal(){
+  document.getElementById("modal").innerHTML=`
+    <div class="mhead"><div><h2>Novi artikal</h2></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="frow"><label>Naziv *</label><input id="a_naziv" placeholder="npr. Riža 1kg (10/1)"></div>
+      <div class="frow"><label>Cijena (KM) *</label><input id="a_cijena" type="number" min="0" step="0.01" placeholder="0.00"></div>
+      <div class="frow"><label>Na stanju</label><input id="a_stanje" type="number" min="0" value="0"></div>
+      <div class="frow"><label>Minimum</label><input id="a_min" type="number" min="0" value="10"></div>
+    </div>
+    <div class="actions"><button class="primary" onclick="createArtikal()">Sačuvaj artikal</button></div>`;
+  document.getElementById("overlay").classList.add("open");
+  setTimeout(()=>document.getElementById("a_naziv").focus(),40);
+}
+function createArtikal(){
+  const naziv=(document.getElementById("a_naziv").value||"").trim();
+  const cijena=parseFloat(document.getElementById("a_cijena").value);
+  if(!naziv||isNaN(cijena)||cijena<0){alert("Unesite naziv i cijenu.");return;}
+  const stanje=Math.max(0,parseInt(document.getElementById("a_stanje").value)||0);
+  const min=Math.max(0,parseInt(document.getElementById("a_min").value)||0);
+  const nums=Object.keys(ARTIKLI).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
+  const id="A"+(Math.max(0,...nums)+1);
+  ARTIKLI[id]={n:naziv,cijena,stanje,min};
+  closeModal();
+  setView("zalihe");
+}
+
+setView("narudzbe");
+</script>
+</body>
+</html>
