@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Veletrade — veleprodaja prehrane (demo)</title>
+<title>Veletrade · veleprodaja prehrane (demo)</title>
 <style>
   :root{
     --brand:#14532d; --brand2:#166534; --accent:#ca8a04; --action:#15803d;
@@ -17,6 +17,8 @@
   .brand .name{font-weight:800;font-size:16px;line-height:1}
   .brand .tag{font-size:11.5px;color:#fde68a;letter-spacing:.3px;margin-top:3px}
   header .spacer{flex:1}
+  header select{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:5px 8px;font-size:12px;font-weight:700;cursor:pointer}
+  header select option{color:#14231a}
   .user{display:flex;align-items:center;gap:8px;font-size:13px}
   .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:#b1442f}
   .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
@@ -92,7 +94,7 @@
   .bar .blab{width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .bar .track{flex:1;background:var(--track);border-radius:6px;height:16px;overflow:hidden}
   .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
-  .bar .val{width:96px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .bar .val{width:110px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
   .bar.clk-bar{cursor:pointer;border-radius:6px;padding:2px 4px;margin:6px -4px}
   .bar.clk-bar:hover{background:var(--track)}
   .bar.clk-bar:hover .blab{color:var(--brand)}
@@ -115,10 +117,17 @@
   <div class="monogram">VT</div>
   <div class="brand">
     <div class="name">Veletrade</div>
-    <div class="tag">Veleprodaja prehrane</div>
+    <div class="tag" id="brandTag">Veleprodaja prehrane</div>
   </div>
   <div class="spacer"></div>
-  <div class="user"><span class="avatar">SK</span><span>Saša Kovačević — komercijala</span></div>
+  <select id="langSel" onchange="setLang(this.value)" title="Jezik / Language">
+    <option value="bs">BS</option>
+    <option value="en">EN</option>
+    <option value="de">DE</option>
+    <option value="hr">HR</option>
+    <option value="sr">SR</option>
+  </select>
+  <div class="user"><span class="avatar" id="userAv">SK</span><span id="userName">Saša Kovačević, komercijala</span></div>
 </header>
 
 <div class="toolbar">
@@ -126,52 +135,218 @@
   <div class="tab" data-view="zalihe" onclick="setView('zalihe')">Zalihe</div>
   <div class="tab" data-view="kupci" onclick="setView('kupci')">Kupci</div>
   <div class="tab" data-view="izvjestaji" onclick="setView('izvjestaji')">Izvještaji</div>
-  <button class="newbtn" onclick="openNovaNarudzba()">+ Nova narudžba</button>
-  <span class="demo-flag">DEMO — izmišljeni podaci</span>
+  <button class="newbtn" id="newOrderBtn" onclick="openNovaNarudzba()">+ Nova narudžba</button>
+  <span class="demo-flag" id="demoFlag">DEMO · izmišljeni podaci</span>
 </div>
 
 <div id="view" class="wrap"></div>
-<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+<footer id="footer">Demo prototip · podaci su izmišljeni · © Datamaks</footer>
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal"></div>
 </div>
 
 <script>
-// ---- Demo podaci ----------------------------------------------------------
-const ARTIKLI = {
-  A1:{n:"Brašno T-500 25kg", cijena:22.50, stanje:120, min:20},
-  A2:{n:"Ulje suncokret 1L (12/1)", cijena:31.90, stanje:140, min:40},
-  A3:{n:"Šećer kristal 1kg (10/1)", cijena:14.20, stanje:18, min:30},
-  A4:{n:"Mlijeko 2.8% 1L (12/1)", cijena:18.60, stanje:90, min:50},
-  A5:{n:"Kafa mljevena 200g", cijena:3.80, stanje:210, min:80},
-  A6:{n:"Tjestenina 500g (20/1)", cijena:9.40, stanje:60, min:25},
-  A7:{n:"Paradajz pelat 400g (24/1)", cijena:16.80, stanje:8, min:20},
-  A8:{n:"Riža dugozrna 1kg (10/1)", cijena:15.50, stanje:75, min:30},
-  A9:{n:"So kuhinjska 1kg (20/1)", cijena:6.90, stanje:160, min:40},
-  A10:{n:"Jaja M (30/1)", cijena:7.20, stanje:45, min:20},
-  A11:{n:"Margarin 250g (24/1)", cijena:12.30, stanje:34, min:20},
-  A12:{n:"Keks petit beure 200g", cijena:8.10, stanje:95, min:40},
-  A13:{n:"Sok narandža 1L (12/1)", cijena:21.40, stanje:52, min:30},
-  A14:{n:"Voda negazirana 1.5L (6/1)", cijena:5.60, stanje:300, min:100},
-  A15:{n:"Deterdžent za suđe 900ml", cijena:10.80, stanje:40, min:20},
-  A16:{n:"Toalet papir (10/1)", cijena:13.90, stanje:12, min:15},
-  A17:{n:"Kečap 500g (12/1)", cijena:14.70, stanje:68, min:25},
-  A18:{n:"Majoneza 620g (10/1)", cijena:17.30, stanje:41, min:20},
+// ---- i18n rječnik (VT-22) -------------------------------------------------
+// Valuta po jeziku (bazna cijena je u KM; rate konvertuje u lokalnu valutu)
+const CURR = {
+  KM:{rate:1, dec:2, suf:" KM"},
+  EUR:{rate:0.5113, dec:2, suf:" €"},
+  RSD:{rate:60, dec:0, suf:" RSD"},
 };
-const KUPCI = {
-  K1:{naziv:"Market Kod Mije", grad:"Banja Luka", tel:"+387 65 111 222"},
-  K2:{naziv:"Restoran Dunav", grad:"Novi Sad", tel:"+381 61 333 444"},
-  K3:{naziv:"STR Zvijezda", grad:"Bijeljina", tel:"+387 66 555 666"},
-  K4:{naziv:"Pekara Klas", grad:"Doboj", tel:"+387 65 777 888"},
-  K5:{naziv:"Ugostiteljstvo San", grad:"Tuzla", tel:"+387 61 999 000"},
-  K6:{naziv:"Market Bingo Express", grad:"Prijedor", tel:"+387 65 121 314"},
-  K7:{naziv:"Hotel Bosna", grad:"Sarajevo", tel:"+387 61 222 333"},
-  K8:{naziv:"Restoran Stari Grad", grad:"Mostar", tel:"+387 63 444 555"},
-  K9:{naziv:"Market Voćko", grad:"Gradiška", tel:"+387 65 666 777"},
-  K10:{naziv:"Kafić Central", grad:"Trebinje", tel:"+387 65 888 999"},
-  K11:{naziv:"Trgovina Merkur", grad:"Zenica", tel:"+387 62 101 202"},
-  K12:{naziv:"Picerija Napoli", grad:"Brčko", tel:"+387 49 303 404"},
+const STR = {
+  bs:{
+    title:"Veletrade · veleprodaja prehrane (demo)", tag:"Veleprodaja prehrane",
+    userName:"Saša Kovačević, komercijala", userInit:"SK", curr:"KM",
+    demo:"DEMO · izmišljeni podaci", newOrder:"+ Nova narudžba",
+    footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+    tab_narudzbe:"Narudžbe", tab_zalihe:"Zalihe", tab_kupci:"Kupci", tab_izvjestaji:"Izvještaji",
+    kpiAktivne:"Aktivne narudžbe", kpiZaIsporuku:"Za isporuku", kpiPromet:"Promet (prikazano)", kpiNisko:"Artikala ispod minimuma",
+    search:"🔍 Pretraga (ID ili kupac)…", allStatuses:"Svi statusi",
+    thNarudzba:"Narudžba", thKupac:"Kupac", thSadrzaj:"Sadržaj", thIznos:"Iznos", thStatus:"Status", thDatum:"Datum",
+    itemsShort:"art.", pcs:"kom", emptyFilter:"Nema narudžbi za zadati filter.",
+    st_nova:"Nova", st_priprema:"U pripremi", st_isporucena:"Isporučena", st_naplacena:"Naplaćena", st_kasni:"Kasni",
+    lblKupac:"Kupac", lblStatus:"Status", lblDatum:"Datum", secStavke:"Stavke",
+    thArtikal:"Artikal", thKolicina:"Količina", thCijena:"Cijena", thUkupno:"Ukupno", ukupno:"Ukupno",
+    markAs:"Označi: ", doneHint:"Narudžba je naplaćena (završeno).", back:"← Vrati",
+    reduceHint:"Isporuka će umanjiti zalihe za stavke narudžbe.", insuffInline:"Nedovoljno na stanju: ",
+    alTitle:"Nedovoljno na stanju za isporuku:", alReq:"traži", alStock:"na stanju", alFooter:"Dopunite zalihe pa pokušajte ponovo.",
+    listSve:"Sve narudžbe", listAktivniKupci:"Aktivni kupci", listIspodMin:"Artikli ispod minimuma",
+    clickDetails:"klik za detalje", clickCard:"klik za karticu", clickStock:"klik vodi na Zalihe",
+    orderOne:"narudžba", orderMany:"narudžbi", itemOne:"artikal", itemMany:"artikala", customersWord:"kupaca",
+    noOrders:"Nema narudžbi.", thID:"ID", thGrad:"Grad", thNarudzbi:"Narudžbi", thPromet:"Promet",
+    thNaStanju:"Na stanju", thMin:"Min", pill_nema:"nema", pill_nisko:"nisko", pill_ok:"ok", allAboveMin:"Sve iznad minimuma. 👍",
+    zaliheTitle:"Zalihe", newArtikal:"+ Novi artikal", zaliheHint:"Stanje se automatski umanjuje kad narudžba pređe u „Isporučena“.", thMinimum:"Minimum",
+    kupciTitle:"Kupci", newKupac:"+ Novi kupac", thUkupanPromet:"Ukupan promet", lblGrad:"Grad", lblTelefon:"Telefon", secNarudzbe:"Narudžbe",
+    rKpiPromet:"Ukupan promet (prikazano)", rKpiNarudzbi:"Narudžbi", rKpiProsjek:"Prosječna narudžba", rKpiKupci:"Aktivnih kupaca",
+    panPrometKupac:"Promet po kupcu", panTopArt:"Top artikli po prometu", panPrometDan:"Promet po danu", panNabavka:"Za nabavku (ispod minimuma)",
+    aOnStock:"Na stanju: ", aPrice:"cijena ", aSold:"Prodano (prikazano)", aOrdersWith:"Narudžbe sa ovim artiklom", thVrijednost:"Vrijednost", thKom:"Kom",
+    novaTitle:"Nova narudžba", chooseArt:"izaberi artikal", remove:"ukloni", addItem:"+ Dodaj stavku", createOrder:"Kreiraj narudžbu",
+    novaHint:"Nova narudžba dobija status „Nova“.", alertNova:"Izaberite kupca i bar jednu stavku.",
+    nkTitle:"Novi kupac", nkNaziv:"Naziv *", nkNazivPh:"npr. Market Sunce", lblGradF:"Grad", nkGradPh:"npr. Banja Luka", nkTelPh:"+387 …", saveKupac:"Sačuvaj kupca",
+    naTitle:"Novi artikal", naNaziv:"Naziv *", naNazivPh:"npr. Riža 1kg (10/1)", naCijena:"Cijena (%c) *", naStanje:"Na stanju", naMin:"Minimum", saveArtikal:"Sačuvaj artikal", alertArtikal:"Unesite naziv i cijenu.",
+  },
+  hr:{
+    title:"Veletrade · veleprodaja hrane (demo)", tag:"Veleprodaja hrane",
+    userName:"Saša Kovačević, prodaja", userInit:"SK", curr:"EUR",
+    demo:"DEMO · izmišljeni podaci", newOrder:"+ Nova narudžba",
+    footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+    tab_narudzbe:"Narudžbe", tab_zalihe:"Zalihe", tab_kupci:"Kupci", tab_izvjestaji:"Izvještaji",
+    kpiAktivne:"Aktivne narudžbe", kpiZaIsporuku:"Za isporuku", kpiPromet:"Promet (prikazano)", kpiNisko:"Artikala ispod minimuma",
+    search:"🔍 Pretraga (ID ili kupac)…", allStatuses:"Svi statusi",
+    thNarudzba:"Narudžba", thKupac:"Kupac", thSadrzaj:"Sadržaj", thIznos:"Iznos", thStatus:"Status", thDatum:"Datum",
+    itemsShort:"art.", pcs:"kom", emptyFilter:"Nema narudžbi za zadani filter.",
+    st_nova:"Nova", st_priprema:"U pripremi", st_isporucena:"Isporučena", st_naplacena:"Naplaćena", st_kasni:"Kasni",
+    lblKupac:"Kupac", lblStatus:"Status", lblDatum:"Datum", secStavke:"Stavke",
+    thArtikal:"Artikal", thKolicina:"Količina", thCijena:"Cijena", thUkupno:"Ukupno", ukupno:"Ukupno",
+    markAs:"Označi: ", doneHint:"Narudžba je naplaćena (završeno).", back:"← Vrati",
+    reduceHint:"Isporuka će umanjiti zalihe za stavke narudžbe.", insuffInline:"Nedovoljno na zalihi: ",
+    alTitle:"Nedovoljno na zalihi za isporuku:", alReq:"traži", alStock:"na zalihi", alFooter:"Dopunite zalihe pa pokušajte ponovo.",
+    listSve:"Sve narudžbe", listAktivniKupci:"Aktivni kupci", listIspodMin:"Artikli ispod minimuma",
+    clickDetails:"klik za detalje", clickCard:"klik za karticu", clickStock:"klik vodi na Zalihe",
+    orderOne:"narudžba", orderMany:"narudžbi", itemOne:"artikal", itemMany:"artikala", customersWord:"kupaca",
+    noOrders:"Nema narudžbi.", thID:"ID", thGrad:"Grad", thNarudzbi:"Narudžbi", thPromet:"Promet",
+    thNaStanju:"Na zalihi", thMin:"Min", pill_nema:"nema", pill_nisko:"nisko", pill_ok:"ok", allAboveMin:"Sve iznad minimuma. 👍",
+    zaliheTitle:"Zalihe", newArtikal:"+ Novi artikal", zaliheHint:"Zaliha se automatski umanjuje kad narudžba prijeđe u „Isporučena“.", thMinimum:"Minimum",
+    kupciTitle:"Kupci", newKupac:"+ Novi kupac", thUkupanPromet:"Ukupan promet", lblGrad:"Grad", lblTelefon:"Telefon", secNarudzbe:"Narudžbe",
+    rKpiPromet:"Ukupan promet (prikazano)", rKpiNarudzbi:"Narudžbi", rKpiProsjek:"Prosječna narudžba", rKpiKupci:"Aktivnih kupaca",
+    panPrometKupac:"Promet po kupcu", panTopArt:"Top artikli po prometu", panPrometDan:"Promet po danu", panNabavka:"Za nabavu (ispod minimuma)",
+    aOnStock:"Na zalihi: ", aPrice:"cijena ", aSold:"Prodano (prikazano)", aOrdersWith:"Narudžbe s ovim artiklom", thVrijednost:"Vrijednost", thKom:"Kom",
+    novaTitle:"Nova narudžba", chooseArt:"izaberi artikal", remove:"ukloni", addItem:"+ Dodaj stavku", createOrder:"Kreiraj narudžbu",
+    novaHint:"Nova narudžba dobiva status „Nova“.", alertNova:"Odaberite kupca i barem jednu stavku.",
+    nkTitle:"Novi kupac", nkNaziv:"Naziv *", nkNazivPh:"npr. Market Sunce", lblGradF:"Grad", nkGradPh:"npr. Zagreb", nkTelPh:"+385 …", saveKupac:"Spremi kupca",
+    naTitle:"Novi artikal", naNaziv:"Naziv *", naNazivPh:"npr. Riža 1kg (10/1)", naCijena:"Cijena (%c) *", naStanje:"Na zalihi", naMin:"Minimum", saveArtikal:"Spremi artikal", alertArtikal:"Unesite naziv i cijenu.",
+  },
+  sr:{
+    title:"Veletrade · veleprodaja hrane (demo)", tag:"Veleprodaja hrane",
+    userName:"Saša Kovačević, komercijala", userInit:"SK", curr:"RSD",
+    demo:"DEMO · izmišljeni podaci", newOrder:"+ Nova narudžba",
+    footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+    tab_narudzbe:"Narudžbe", tab_zalihe:"Zalihe", tab_kupci:"Kupci", tab_izvjestaji:"Izveštaji",
+    kpiAktivne:"Aktivne narudžbe", kpiZaIsporuku:"Za isporuku", kpiPromet:"Promet (prikazano)", kpiNisko:"Artikala ispod minimuma",
+    search:"🔍 Pretraga (ID ili kupac)…", allStatuses:"Svi statusi",
+    thNarudzba:"Narudžba", thKupac:"Kupac", thSadrzaj:"Sadržaj", thIznos:"Iznos", thStatus:"Status", thDatum:"Datum",
+    itemsShort:"art.", pcs:"kom", emptyFilter:"Nema narudžbi za zadati filter.",
+    st_nova:"Nova", st_priprema:"U pripremi", st_isporucena:"Isporučena", st_naplacena:"Naplaćena", st_kasni:"Kasni",
+    lblKupac:"Kupac", lblStatus:"Status", lblDatum:"Datum", secStavke:"Stavke",
+    thArtikal:"Artikal", thKolicina:"Količina", thCijena:"Cena", thUkupno:"Ukupno", ukupno:"Ukupno",
+    markAs:"Označi: ", doneHint:"Narudžba je naplaćena (završeno).", back:"← Vrati",
+    reduceHint:"Isporuka će umanjiti zalihe za stavke narudžbe.", insuffInline:"Nedovoljno na stanju: ",
+    alTitle:"Nedovoljno na stanju za isporuku:", alReq:"traži", alStock:"na stanju", alFooter:"Dopunite zalihe pa pokušajte ponovo.",
+    listSve:"Sve narudžbe", listAktivniKupci:"Aktivni kupci", listIspodMin:"Artikli ispod minimuma",
+    clickDetails:"klik za detalje", clickCard:"klik za karticu", clickStock:"klik vodi na Zalihe",
+    orderOne:"narudžba", orderMany:"narudžbi", itemOne:"artikal", itemMany:"artikala", customersWord:"kupaca",
+    noOrders:"Nema narudžbi.", thID:"ID", thGrad:"Grad", thNarudzbi:"Narudžbi", thPromet:"Promet",
+    thNaStanju:"Na stanju", thMin:"Min", pill_nema:"nema", pill_nisko:"nisko", pill_ok:"ok", allAboveMin:"Sve iznad minimuma. 👍",
+    zaliheTitle:"Zalihe", newArtikal:"+ Novi artikal", zaliheHint:"Stanje se automatski umanjuje kad narudžba pređe u „Isporučena“.", thMinimum:"Minimum",
+    kupciTitle:"Kupci", newKupac:"+ Novi kupac", thUkupanPromet:"Ukupan promet", lblGrad:"Grad", lblTelefon:"Telefon", secNarudzbe:"Narudžbe",
+    rKpiPromet:"Ukupan promet (prikazano)", rKpiNarudzbi:"Narudžbi", rKpiProsjek:"Prosečna narudžba", rKpiKupci:"Aktivnih kupaca",
+    panPrometKupac:"Promet po kupcu", panTopArt:"Top artikli po prometu", panPrometDan:"Promet po danu", panNabavka:"Za nabavku (ispod minimuma)",
+    aOnStock:"Na stanju: ", aPrice:"cena ", aSold:"Prodano (prikazano)", aOrdersWith:"Narudžbe sa ovim artiklom", thVrijednost:"Vrednost", thKom:"Kom",
+    novaTitle:"Nova narudžba", chooseArt:"izaberi artikal", remove:"ukloni", addItem:"+ Dodaj stavku", createOrder:"Kreiraj narudžbu",
+    novaHint:"Nova narudžba dobija status „Nova“.", alertNova:"Izaberite kupca i bar jednu stavku.",
+    nkTitle:"Novi kupac", nkNaziv:"Naziv *", nkNazivPh:"npr. Market Sunce", lblGradF:"Grad", nkGradPh:"npr. Beograd", nkTelPh:"+381 …", saveKupac:"Sačuvaj kupca",
+    naTitle:"Novi artikal", naNaziv:"Naziv *", naNazivPh:"npr. Pirinač 1kg (10/1)", naCijena:"Cena (%c) *", naStanje:"Na stanju", naMin:"Minimum", saveArtikal:"Sačuvaj artikal", alertArtikal:"Unesite naziv i cenu.",
+  },
+  en:{
+    title:"Veletrade · food wholesale (demo)", tag:"Food wholesale",
+    userName:"Sarah Klein, sales", userInit:"SK", curr:"EUR",
+    demo:"DEMO · sample data", newOrder:"+ New order",
+    footer:"Demo prototype · data is fictional · © Datamaks",
+    tab_narudzbe:"Orders", tab_zalihe:"Inventory", tab_kupci:"Customers", tab_izvjestaji:"Reports",
+    kpiAktivne:"Active orders", kpiZaIsporuku:"To deliver", kpiPromet:"Revenue (shown)", kpiNisko:"Items below minimum",
+    search:"🔍 Search (ID or customer)…", allStatuses:"All statuses",
+    thNarudzba:"Order", thKupac:"Customer", thSadrzaj:"Contents", thIznos:"Amount", thStatus:"Status", thDatum:"Date",
+    itemsShort:"items", pcs:"pcs", emptyFilter:"No orders for this filter.",
+    st_nova:"New", st_priprema:"In preparation", st_isporucena:"Delivered", st_naplacena:"Paid", st_kasni:"Late",
+    lblKupac:"Customer", lblStatus:"Status", lblDatum:"Date", secStavke:"Items",
+    thArtikal:"Item", thKolicina:"Quantity", thCijena:"Price", thUkupno:"Total", ukupno:"Total",
+    markAs:"Mark as: ", doneHint:"Order is paid (completed).", back:"← Back",
+    reduceHint:"Delivery will reduce stock for the order items.", insuffInline:"Insufficient stock: ",
+    alTitle:"Insufficient stock for delivery:", alReq:"needs", alStock:"in stock", alFooter:"Restock and try again.",
+    listSve:"All orders", listAktivniKupci:"Active customers", listIspodMin:"Items below minimum",
+    clickDetails:"click for details", clickCard:"click for profile", clickStock:"click opens Inventory",
+    orderOne:"order", orderMany:"orders", itemOne:"item", itemMany:"items", customersWord:"customers",
+    noOrders:"No orders.", thID:"ID", thGrad:"City", thNarudzbi:"Orders", thPromet:"Revenue",
+    thNaStanju:"In stock", thMin:"Min", pill_nema:"none", pill_nisko:"low", pill_ok:"ok", allAboveMin:"All above minimum. 👍",
+    zaliheTitle:"Inventory", newArtikal:"+ New item", zaliheHint:"Stock is reduced automatically when an order moves to „Delivered“.", thMinimum:"Minimum",
+    kupciTitle:"Customers", newKupac:"+ New customer", thUkupanPromet:"Total revenue", lblGrad:"City", lblTelefon:"Phone", secNarudzbe:"Orders",
+    rKpiPromet:"Total revenue (shown)", rKpiNarudzbi:"Orders", rKpiProsjek:"Average order", rKpiKupci:"Active customers",
+    panPrometKupac:"Revenue by customer", panTopArt:"Top items by revenue", panPrometDan:"Revenue by day", panNabavka:"To reorder (below minimum)",
+    aOnStock:"In stock: ", aPrice:"price ", aSold:"Sold (shown)", aOrdersWith:"Orders with this item", thVrijednost:"Value", thKom:"Qty",
+    novaTitle:"New order", chooseArt:"choose item", remove:"remove", addItem:"+ Add item", createOrder:"Create order",
+    novaHint:"New order gets status „New“.", alertNova:"Select a customer and at least one item.",
+    nkTitle:"New customer", nkNaziv:"Name *", nkNazivPh:"e.g. Market Sunce", lblGradF:"City", nkGradPh:"e.g. Vienna", nkTelPh:"+43 …", saveKupac:"Save customer",
+    naTitle:"New item", naNaziv:"Name *", naNazivPh:"e.g. Rice 1kg (10x)", naCijena:"Price (%c) *", naStanje:"In stock", naMin:"Minimum", saveArtikal:"Save item", alertArtikal:"Enter a name and price.",
+  },
+  de:{
+    title:"Veletrade · Lebensmittelgroßhandel (demo)", tag:"Lebensmittelgroßhandel",
+    userName:"Stefan Klein, Vertrieb", userInit:"SK", curr:"EUR",
+    demo:"DEMO · Beispieldaten", newOrder:"+ Neue Bestellung",
+    footer:"Demo Prototyp · Daten sind erfunden · © Datamaks",
+    tab_narudzbe:"Bestellungen", tab_zalihe:"Lager", tab_kupci:"Kunden", tab_izvjestaji:"Berichte",
+    kpiAktivne:"Aktive Bestellungen", kpiZaIsporuku:"Zu liefern", kpiPromet:"Umsatz (angezeigt)", kpiNisko:"Artikel unter Minimum",
+    search:"🔍 Suche (ID oder Kunde)…", allStatuses:"Alle Status",
+    thNarudzba:"Bestellung", thKupac:"Kunde", thSadrzaj:"Inhalt", thIznos:"Betrag", thStatus:"Status", thDatum:"Datum",
+    itemsShort:"Art.", pcs:"Stk", emptyFilter:"Keine Bestellungen für diesen Filter.",
+    st_nova:"Neu", st_priprema:"In Vorbereitung", st_isporucena:"Geliefert", st_naplacena:"Bezahlt", st_kasni:"Verspätet",
+    lblKupac:"Kunde", lblStatus:"Status", lblDatum:"Datum", secStavke:"Positionen",
+    thArtikal:"Artikel", thKolicina:"Menge", thCijena:"Preis", thUkupno:"Gesamt", ukupno:"Gesamt",
+    markAs:"Markieren: ", doneHint:"Bestellung ist bezahlt (abgeschlossen).", back:"← Zurück",
+    reduceHint:"Die Lieferung reduziert den Lagerbestand der Positionen.", insuffInline:"Nicht genügend Bestand: ",
+    alTitle:"Nicht genügend Bestand für die Lieferung:", alReq:"benötigt", alStock:"auf Lager", alFooter:"Bestand auffüllen und erneut versuchen.",
+    listSve:"Alle Bestellungen", listAktivniKupci:"Aktive Kunden", listIspodMin:"Artikel unter Minimum",
+    clickDetails:"Klick für Details", clickCard:"Klick für Profil", clickStock:"Klick öffnet Lager",
+    orderOne:"Bestellung", orderMany:"Bestellungen", itemOne:"Artikel", itemMany:"Artikel", customersWord:"Kunden",
+    noOrders:"Keine Bestellungen.", thID:"ID", thGrad:"Stadt", thNarudzbi:"Bestellungen", thPromet:"Umsatz",
+    thNaStanju:"Bestand", thMin:"Min", pill_nema:"keiner", pill_nisko:"niedrig", pill_ok:"ok", allAboveMin:"Alles über Minimum. 👍",
+    zaliheTitle:"Lager", newArtikal:"+ Neuer Artikel", zaliheHint:"Der Bestand wird automatisch reduziert, wenn eine Bestellung auf „Geliefert“ wechselt.", thMinimum:"Minimum",
+    kupciTitle:"Kunden", newKupac:"+ Neuer Kunde", thUkupanPromet:"Gesamtumsatz", lblGrad:"Stadt", lblTelefon:"Telefon", secNarudzbe:"Bestellungen",
+    rKpiPromet:"Gesamtumsatz (angezeigt)", rKpiNarudzbi:"Bestellungen", rKpiProsjek:"Durchschnittliche Bestellung", rKpiKupci:"Aktive Kunden",
+    panPrometKupac:"Umsatz nach Kunde", panTopArt:"Top Artikel nach Umsatz", panPrometDan:"Umsatz nach Tag", panNabavka:"Nachbestellen (unter Minimum)",
+    aOnStock:"Bestand: ", aPrice:"Preis ", aSold:"Verkauft (angezeigt)", aOrdersWith:"Bestellungen mit diesem Artikel", thVrijednost:"Wert", thKom:"Stk",
+    novaTitle:"Neue Bestellung", chooseArt:"Artikel wählen", remove:"entfernen", addItem:"+ Position hinzufügen", createOrder:"Bestellung anlegen",
+    novaHint:"Neue Bestellung erhält Status „Neu“.", alertNova:"Kunde und mindestens eine Position wählen.",
+    nkTitle:"Neuer Kunde", nkNaziv:"Name *", nkNazivPh:"z. B. Markt Sonne", lblGradF:"Stadt", nkGradPh:"z. B. Wien", nkTelPh:"+43 …", saveKupac:"Kunde speichern",
+    naTitle:"Neuer Artikel", naNaziv:"Name *", naNazivPh:"z. B. Reis 1kg (10x)", naCijena:"Preis (%c) *", naStanje:"Bestand", naMin:"Minimum", saveArtikal:"Artikel speichern", alertArtikal:"Name und Preis eingeben.",
+  },
+};
+
+// ---- Podaci: brojevi zajednički, nazivi/kupci po jeziku -------------------
+const ARTIKLI = {
+  A1:{cijena:22.50, stanje:120, min:20}, A2:{cijena:31.90, stanje:140, min:40},
+  A3:{cijena:14.20, stanje:18, min:30},  A4:{cijena:18.60, stanje:90, min:50},
+  A5:{cijena:3.80, stanje:210, min:80},  A6:{cijena:9.40, stanje:60, min:25},
+  A7:{cijena:16.80, stanje:8, min:20},   A8:{cijena:15.50, stanje:75, min:30},
+  A9:{cijena:6.90, stanje:160, min:40},  A10:{cijena:7.20, stanje:45, min:20},
+  A11:{cijena:12.30, stanje:34, min:20}, A12:{cijena:8.10, stanje:95, min:40},
+  A13:{cijena:21.40, stanje:52, min:30}, A14:{cijena:5.60, stanje:300, min:100},
+  A15:{cijena:10.80, stanje:40, min:20}, A16:{cijena:13.90, stanje:12, min:15},
+  A17:{cijena:14.70, stanje:68, min:25}, A18:{cijena:17.30, stanje:41, min:20},
+};
+const ANAMES = {
+  bs:{A1:"Brašno T-500 25kg",A2:"Ulje suncokret 1L (12/1)",A3:"Šećer kristal 1kg (10/1)",A4:"Mlijeko 2.8% 1L (12/1)",A5:"Kafa mljevena 200g",A6:"Tjestenina 500g (20/1)",A7:"Paradajz pelat 400g (24/1)",A8:"Riža dugozrna 1kg (10/1)",A9:"So kuhinjska 1kg (20/1)",A10:"Jaja M (30/1)",A11:"Margarin 250g (24/1)",A12:"Keks petit beure 200g",A13:"Sok narandža 1L (12/1)",A14:"Voda negazirana 1.5L (6/1)",A15:"Deterdžent za suđe 900ml",A16:"Toalet papir (10/1)",A17:"Kečap 500g (12/1)",A18:"Majoneza 620g (10/1)"},
+  hr:{A1:"Brašno glatko T-550 25kg",A2:"Ulje suncokretovo 1L (12/1)",A3:"Šećer kristal 1kg (10/1)",A4:"Mlijeko 2,8% 1L (12/1)",A5:"Kava mljevena 200g",A6:"Tjestenina 500g (20/1)",A7:"Rajčica pelat 400g (24/1)",A8:"Riža dugozrnata 1kg (10/1)",A9:"Sol kuhinjska 1kg (20/1)",A10:"Jaja M (30/1)",A11:"Margarin 250g (24/1)",A12:"Keks petit beurre 200g",A13:"Sok naranča 1L (12/1)",A14:"Voda negazirana 1,5L (6/1)",A15:"Deterdžent za suđe 900ml",A16:"Toaletni papir (10/1)",A17:"Kečap 500g (12/1)",A18:"Majoneza 620g (10/1)"},
+  sr:{A1:"Brašno T-500 25kg",A2:"Ulje suncokret 1L (12/1)",A3:"Šećer kristal 1kg (10/1)",A4:"Mleko 2.8% 1L (12/1)",A5:"Kafa mlevena 200g",A6:"Testenina 500g (20/1)",A7:"Paradajz pelat 400g (24/1)",A8:"Pirinač dugozrni 1kg (10/1)",A9:"So kuhinjska 1kg (20/1)",A10:"Jaja M (30/1)",A11:"Margarin 250g (24/1)",A12:"Keks petit beure 200g",A13:"Sok od pomorandže 1L (12/1)",A14:"Voda negazirana 1.5L (6/1)",A15:"Deterdžent za sudove 900ml",A16:"Toalet papir (10/1)",A17:"Kečap 500g (12/1)",A18:"Majonez 620g (10/1)"},
+  en:{A1:"Flour type 500 25kg",A2:"Sunflower oil 1L (12x)",A3:"White sugar 1kg (10x)",A4:"Milk 2.8% 1L (12x)",A5:"Ground coffee 200g",A6:"Pasta 500g (20x)",A7:"Peeled tomatoes 400g (24x)",A8:"Long grain rice 1kg (10x)",A9:"Table salt 1kg (20x)",A10:"Eggs M (30x)",A11:"Margarine 250g (24x)",A12:"Petit beurre biscuits 200g",A13:"Orange juice 1L (12x)",A14:"Still water 1.5L (6x)",A15:"Dishwashing liquid 900ml",A16:"Toilet paper (10x)",A17:"Ketchup 500g (12x)",A18:"Mayonnaise 620g (10x)"},
+  de:{A1:"Weizenmehl Type 480 25kg",A2:"Sonnenblumenöl 1L (12x)",A3:"Kristallzucker 1kg (10x)",A4:"Milch 2,8% 1L (12x)",A5:"Kaffee gemahlen 200g",A6:"Nudeln 500g (20x)",A7:"Tomaten geschält 400g (24x)",A8:"Langkornreis 1kg (10x)",A9:"Speisesalz 1kg (20x)",A10:"Eier M (30x)",A11:"Margarine 250g (24x)",A12:"Butterkekse 200g",A13:"Orangensaft 1L (12x)",A14:"Wasser still 1,5L (6x)",A15:"Spülmittel 900ml",A16:"Toilettenpapier (10x)",A17:"Ketchup 500g (12x)",A18:"Mayonnaise 620g (10x)"},
+};
+const KDATA = {
+  bs:{
+    K1:{naziv:"Market Kod Mije",grad:"Banja Luka",tel:"+387 65 111 222"},K2:{naziv:"Restoran Dunav",grad:"Novi Sad",tel:"+381 61 333 444"},K3:{naziv:"STR Zvijezda",grad:"Bijeljina",tel:"+387 66 555 666"},K4:{naziv:"Pekara Klas",grad:"Doboj",tel:"+387 65 777 888"},K5:{naziv:"Ugostiteljstvo San",grad:"Tuzla",tel:"+387 61 999 000"},K6:{naziv:"Market Bingo Express",grad:"Prijedor",tel:"+387 65 121 314"},K7:{naziv:"Hotel Bosna",grad:"Sarajevo",tel:"+387 61 222 333"},K8:{naziv:"Restoran Stari Grad",grad:"Mostar",tel:"+387 63 444 555"},K9:{naziv:"Market Voćko",grad:"Gradiška",tel:"+387 65 666 777"},K10:{naziv:"Kafić Central",grad:"Trebinje",tel:"+387 65 888 999"},K11:{naziv:"Trgovina Merkur",grad:"Zenica",tel:"+387 62 101 202"},K12:{naziv:"Picerija Napoli",grad:"Brčko",tel:"+387 49 303 404"},
+  },
+  hr:{
+    K1:{naziv:"Konzum Market",grad:"Zagreb",tel:"+385 1 555 201"},K2:{naziv:"Restoran Dubravkin",grad:"Zagreb",tel:"+385 1 555 202"},K3:{naziv:"Trgovina Zvijezda",grad:"Osijek",tel:"+385 31 555 303"},K4:{naziv:"Pekara Klara",grad:"Split",tel:"+385 21 555 404"},K5:{naziv:"Ugostiteljstvo Jadran",grad:"Rijeka",tel:"+385 51 555 505"},K6:{naziv:"Market Plodine",grad:"Varaždin",tel:"+385 42 555 606"},K7:{naziv:"Hotel Esplanade",grad:"Zagreb",tel:"+385 1 555 707"},K8:{naziv:"Restoran Stari Grad",grad:"Dubrovnik",tel:"+385 20 555 808"},K9:{naziv:"Market Voćko",grad:"Zadar",tel:"+385 23 555 909"},K10:{naziv:"Kafić Central",grad:"Pula",tel:"+385 52 555 010"},K11:{naziv:"Trgovina Merkur",grad:"Slavonski Brod",tel:"+385 35 555 111"},K12:{naziv:"Picerija Napoli",grad:"Šibenik",tel:"+385 22 555 212"},
+  },
+  sr:{
+    K1:{naziv:"Market Kod Mije",grad:"Beograd",tel:"+381 11 555 201"},K2:{naziv:"Restoran Dunav",grad:"Novi Sad",tel:"+381 21 555 202"},K3:{naziv:"STR Zvezda",grad:"Subotica",tel:"+381 24 555 303"},K4:{naziv:"Pekara Klas",grad:"Niš",tel:"+381 18 555 404"},K5:{naziv:"Ugostiteljstvo San",grad:"Kragujevac",tel:"+381 34 555 505"},K6:{naziv:"Market Univerexport",grad:"Zrenjanin",tel:"+381 23 555 606"},K7:{naziv:"Hotel Moskva",grad:"Beograd",tel:"+381 11 555 707"},K8:{naziv:"Restoran Stari Grad",grad:"Čačak",tel:"+381 32 555 808"},K9:{naziv:"Market Voćko",grad:"Pančevo",tel:"+381 13 555 909"},K10:{naziv:"Kafić Central",grad:"Kraljevo",tel:"+381 36 555 010"},K11:{naziv:"Trgovina Merkur",grad:"Kruševac",tel:"+381 37 555 111"},K12:{naziv:"Picerija Napoli",grad:"Novi Sad",tel:"+381 21 555 212"},
+  },
+  en:{
+    K1:{naziv:"Nahversorger Huber",grad:"Vienna",tel:"+43 1 555 1201"},K2:{naziv:"Gasthaus Donauwirt",grad:"Linz",tel:"+43 732 555 202"},K3:{naziv:"Feinkost Stern",grad:"Graz",tel:"+43 316 555 303"},K4:{naziv:"Bäckerei Gruber",grad:"Salzburg",tel:"+43 662 555 404"},K5:{naziv:"Gastro Alpenblick",grad:"Innsbruck",tel:"+43 512 555 505"},K6:{naziv:"Markt Sonnberg",grad:"Klagenfurt",tel:"+43 463 555 606"},K7:{naziv:"Hotel Sacher Filiale",grad:"Vienna",tel:"+43 1 555 707"},K8:{naziv:"Restaurant Altstadt",grad:"Salzburg",tel:"+43 662 555 808"},K9:{naziv:"Obstmarkt Wachau",grad:"Krems",tel:"+43 2732 555 909"},K10:{naziv:"Café Central",grad:"Vienna",tel:"+43 1 555 1010"},K11:{naziv:"Handel Merkur",grad:"Wels",tel:"+43 7242 555 111"},K12:{naziv:"Pizzeria Napoli",grad:"Villach",tel:"+43 4242 555 212"},
+  },
+  de:{
+    K1:{naziv:"Nahversorger Huber",grad:"Wien",tel:"+43 1 555 1201"},K2:{naziv:"Gasthaus Donauwirt",grad:"Linz",tel:"+43 732 555 202"},K3:{naziv:"Feinkost Stern",grad:"Graz",tel:"+43 316 555 303"},K4:{naziv:"Bäckerei Gruber",grad:"Salzburg",tel:"+43 662 555 404"},K5:{naziv:"Gastro Alpenblick",grad:"Innsbruck",tel:"+43 512 555 505"},K6:{naziv:"Markt Sonnberg",grad:"Klagenfurt",tel:"+43 463 555 606"},K7:{naziv:"Hotel Sacher Filiale",grad:"Wien",tel:"+43 1 555 707"},K8:{naziv:"Restaurant Altstadt",grad:"Salzburg",tel:"+43 662 555 808"},K9:{naziv:"Obstmarkt Wachau",grad:"Krems",tel:"+43 2732 555 909"},K10:{naziv:"Café Central",grad:"Wien",tel:"+43 1 555 1010"},K11:{naziv:"Handel Merkur",grad:"Wels",tel:"+43 7242 555 111"},K12:{naziv:"Pizzeria Napoli",grad:"Villach",tel:"+43 4242 555 212"},
+  },
 };
 let NARUDZBE = [
   {id:"N-2062", kupac:"K7", datum:"03.08.2026", status:"nova", stavke:[["A5",15],["A12",8],["A13",6]]},
@@ -197,15 +372,43 @@ let NARUDZBE = [
   {id:"N-2042", kupac:"K5", datum:"26.07.2026", status:"naplacena", skinuto:true, stavke:[["A4",10],["A9",12]]},
   {id:"N-2041", kupac:"K12", datum:"26.07.2026", status:"naplacena", skinuto:true, stavke:[["A6",8],["A15",5]]},
 ];
-const STATUS={nova:["Nova","p-nova"],priprema:["U pripremi","p-priprema"],isporucena:["Isporučena","p-isporucena"],naplacena:["Naplaćena","p-naplacena"],kasni:["Kasni","p-kasni"]};
+const STCLS={nova:"p-nova",priprema:"p-priprema",isporucena:"p-isporucena",naplacena:"p-naplacena",kasni:"p-kasni"};
 const FLOW=["nova","priprema","isporucena","naplacena"];
 
-const eur = v => v.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2})+" KM";
+// ---- Jezik ----------------------------------------------------------------
+let LANG=(new URLSearchParams(location.search).get("lang")||localStorage.getItem("vt_lang")||"bs").toLowerCase();
+if(!STR[LANG]) LANG="bs";
+const el = id => document.getElementById(id);
+const t = k => STR[LANG][k];
+function setLang(l){ if(!STR[l])return; LANG=l; localStorage.setItem("vt_lang",l); closeModal(); applyStatic(); rerender(); }
+function applyStatic(){
+  document.documentElement.lang=LANG;
+  document.title=t("title");
+  el("brandTag").textContent=t("tag");
+  el("userAv").textContent=t("userInit");
+  el("userName").textContent=t("userName");
+  el("demoFlag").textContent=t("demo");
+  el("newOrderBtn").textContent=t("newOrder");
+  el("footer").textContent=t("footer");
+  el("langSel").value=LANG;
+  document.querySelectorAll(".tab").forEach(tb=>tb.textContent=t("tab_"+tb.dataset.view));
+}
+
+// ---- Valuta / podaci helperi ----------------------------------------------
+function money(v){
+  const c=CURR[t("curr")];
+  const loc=LANG==="en"?"en-US":"de-DE";
+  return (v*c.rate).toLocaleString(loc,{minimumFractionDigits:c.dec,maximumFractionDigits:c.dec})+c.suf;
+}
+const AN = a => (ANAMES[LANG] && ANAMES[LANG][a]) || ANAMES.bs[a] || a;
+const KC = k => (KDATA[LANG] && KDATA[LANG][k]) || KDATA.bs[k];
+const kn = id => KC(id).naziv;
+const stName = k => t("st_"+k);
+const stPill = k => `<span class="pill ${STCLS[k]}">${stName(k)}</span>`;
 const total = n => n.stavke.reduce((s,[a,q])=>s+ARTIKLI[a].cijena*q,0);
-const kn = id => KUPCI[id].naziv;
 const flowIdx = st => FLOW.indexOf(st==="kasni"?"priprema":st);
 
-// ---- Tok statusa + zalihe (VT-11) -----------------------------------------
+// ---- Tok statusa + zalihe (VT-11 / VT-20) ---------------------------------
 function stockDelta(n, sign){ n.stavke.forEach(([a,q])=>{ ARTIKLI[a].stanje += sign*q; }); }
 function moveStatus(id, dir){
   const n=NARUDZBE.find(x=>x.id===id);
@@ -215,7 +418,7 @@ function moveStatus(id, dir){
   if(to==="isporucena" && !n.skinuto){
     const manjak=n.stavke.filter(([a,q])=>ARTIKLI[a].stanje<q);
     if(manjak.length){
-      alert("Nedovoljno na stanju za isporuku:\n\n• "+manjak.map(([a,q])=>`${ARTIKLI[a].n} — traži ${q}, na stanju ${ARTIKLI[a].stanje}`).join("\n• ")+"\n\nDopunite zalihe pa pokušajte ponovo.");
+      alert(t("alTitle")+"\n\n• "+manjak.map(([a,q])=>`${AN(a)} — ${t("alReq")} ${q}, ${t("alStock")} ${ARTIKLI[a].stanje}`).join("\n• ")+"\n\n"+t("alFooter"));
       return;
     }
     stockDelta(n,-1); n.skinuto=true;
@@ -246,7 +449,7 @@ function renderNarudzbe(){
   const zaIsporuku = NARUDZBE.filter(n=>["nova","priprema","kasni"].includes(n.status)).length;
   const prometM = NARUDZBE.reduce((s,n)=>s+total(n),0);
   const nisko = Object.values(ARTIKLI).filter(a=>a.stanje<a.min).length;
-  const statusOpts = Object.keys(STATUS).map(k=>`<option value="${k}"${flt.status===k?" selected":""}>${STATUS[k][0]}</option>`).join("");
+  const statusOpts = Object.keys(STCLS).map(k=>`<option value="${k}"${flt.status===k?" selected":""}>${stName(k)}</option>`).join("");
   const list = NARUDZBE.filter(n=>{
     if(flt.status && n.status!==flt.status) return false;
     const q=flt.q.trim().toLowerCase();
@@ -257,24 +460,24 @@ function renderNarudzbe(){
     <tr onclick="openNarudzba('${n.id}')">
       <td><b>${n.id}</b></td>
       <td>${kn(n.kupac)}</td>
-      <td class="muted">${n.stavke.length} art. · ${n.stavke.reduce((s,[,q])=>s+q,0)} kom</td>
-      <td class="num">${eur(total(n))}</td>
-      <td><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></td>
+      <td class="muted">${n.stavke.length} ${t("itemsShort")} · ${n.stavke.reduce((s,[,q])=>s+q,0)} ${t("pcs")}</td>
+      <td class="num">${money(total(n))}</td>
+      <td>${stPill(n.status)}</td>
       <td class="muted">${n.datum}</td>
-    </tr>`).join("") || `<tr><td colspan="6" class="muted" style="padding:24px;text-align:center">Nema narudžbi za zadati filter.</td></tr>`;
-  document.getElementById("view").innerHTML=`
+    </tr>`).join("") || `<tr><td colspan="6" class="muted" style="padding:24px;text-align:center">${t("emptyFilter")}</td></tr>`;
+  el("view").innerHTML=`
     <div class="kpis">
-      <div class="kpi clk" onclick="openAktivne()"><div class="big">${aktivne}</div><div class="lab">Aktivne narudžbe</div></div>
-      <div class="kpi clk" onclick="openZaIsporuku()"><div class="big">${zaIsporuku}</div><div class="lab">Za isporuku</div></div>
-      <div class="kpi"><div class="big">${eur(prometM)}</div><div class="lab">Promet (prikazano)</div></div>
-      <div class="kpi warn clk" onclick="openNiskoStanje()"><div class="big">${nisko}</div><div class="lab">Artikala ispod minimuma</div></div>
+      <div class="kpi clk" onclick="openAktivne()"><div class="big">${aktivne}</div><div class="lab">${t("kpiAktivne")}</div></div>
+      <div class="kpi clk" onclick="openZaIsporuku()"><div class="big">${zaIsporuku}</div><div class="lab">${t("kpiZaIsporuku")}</div></div>
+      <div class="kpi"><div class="big">${money(prometM)}</div><div class="lab">${t("kpiPromet")}</div></div>
+      <div class="kpi warn clk" onclick="openNiskoStanje()"><div class="big">${nisko}</div><div class="lab">${t("kpiNisko")}</div></div>
     </div>
     <div class="filterbar">
-      <input id="f_q" placeholder="🔍 Pretraga (ID ili kupac)…" value="${flt.q.replace(/"/g,'&quot;')}" oninput="flt.q=this.value;renderNarudzbe()">
-      <select onchange="flt.status=this.value;renderNarudzbe()"><option value="">Svi statusi</option>${statusOpts}</select>
+      <input id="f_q" placeholder="${t("search")}" value="${flt.q.replace(/"/g,'&quot;')}" oninput="flt.q=this.value;renderNarudzbe()">
+      <select onchange="flt.status=this.value;renderNarudzbe()"><option value="">${t("allStatuses")}</option>${statusOpts}</select>
     </div>
     <table class="tbl">
-      <thead><tr><th>Narudžba</th><th>Kupac</th><th>Sadržaj</th><th class="num">Iznos</th><th>Status</th><th>Datum</th></tr></thead>
+      <thead><tr><th>${t("thNarudzba")}</th><th>${t("thKupac")}</th><th>${t("thSadrzaj")}</th><th class="num">${t("thIznos")}</th><th>${t("thStatus")}</th><th>${t("thDatum")}</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
@@ -283,95 +486,94 @@ function openNarudzba(id){
   const n=NARUDZBE.find(x=>x.id===id);
   const lines=n.stavke.map(([a,q])=>{
     const art=ARTIKLI[a];
-    return `<tr><td>${art.n}</td><td class="num">${q}</td><td class="num">${eur(art.cijena)}</td><td class="num">${eur(art.cijena*q)}</td></tr>`;
+    return `<tr><td>${AN(a)}</td><td class="num">${q}</td><td class="num">${money(art.cijena)}</td><td class="num">${money(art.cijena*q)}</td></tr>`;
   }).join("");
   const i=flowIdx(n.status);
   const canFwd = i<FLOW.length-1;
-  const canBack = i>0 && n.status!=="naplacena" || (i>0);
-  const nextLabel = canFwd?STATUS[FLOW[i+1]][0]:"";
+  const nextLabel = canFwd?stName(FLOW[i+1]):"";
   const willReduce = canFwd && FLOW[i+1]==="isporucena" && !n.skinuto;
   const manjak = willReduce ? n.stavke.filter(([a,q])=>ARTIKLI[a].stanje<q) : [];
   const actions = `
     <div class="actions">
-      ${canFwd?`<button class="primary" onclick="moveStatus('${n.id}',1)">Označi: ${nextLabel}</button>`:`<span class="hint">Narudžba je naplaćena (završeno).</span>`}
-      ${i>0?`<button class="secondary" onclick="moveStatus('${n.id}',-1)">← Vrati</button>`:``}
+      ${canFwd?`<button class="primary" onclick="moveStatus('${n.id}',1)">${t("markAs")}${nextLabel}</button>`:`<span class="hint">${t("doneHint")}</span>`}
+      ${i>0?`<button class="secondary" onclick="moveStatus('${n.id}',-1)">${t("back")}</button>`:``}
       ${willReduce ? (manjak.length
-        ? `<span class="hint warn">Nedovoljno na stanju: ${manjak.map(([a,q])=>`${ARTIKLI[a].n} (${ARTIKLI[a].stanje}/${q})`).join(", ")}</span>`
-        : `<span class="hint warn">Isporuka će umanjiti zalihe za stavke narudžbe.</span>`) : ``}
+        ? `<span class="hint warn">${t("insuffInline")}${manjak.map(([a,q])=>`${AN(a)} (${ARTIKLI[a].stanje}/${q})`).join(", ")}</span>`
+        : `<span class="hint warn">${t("reduceHint")}</span>`) : ``}
     </div>`;
-  document.getElementById("modal").innerHTML=`
+  el("modal").innerHTML=`
     <div class="mhead">
       <div><h2>${n.id}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${kn(n.kupac)} · ${n.datum}</div></div>
       <div class="x" onclick="closeModal()">×</div>
     </div>
     <div class="mbody">
-      <div class="kv"><span class="k">Kupac</span><span><span class="link" onclick="openKupac('${n.kupac}')">${kn(n.kupac)}</span> · ${KUPCI[n.kupac].grad}</span></div>
-      <div class="kv"><span class="k">Status</span><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></div>
-      <div class="kv"><span class="k">Datum</span><span>${n.datum}</span></div>
-      <div class="sec-title">Stavke</div>
+      <div class="kv"><span class="k">${t("lblKupac")}</span><span><span class="link" onclick="openKupac('${n.kupac}')">${kn(n.kupac)}</span> · ${KC(n.kupac).grad}</span></div>
+      <div class="kv"><span class="k">${t("lblStatus")}</span><span>${stPill(n.status)}</span></div>
+      <div class="kv"><span class="k">${t("lblDatum")}</span><span>${n.datum}</span></div>
+      <div class="sec-title">${t("secStavke")}</div>
       <table class="lines">
-        <thead><tr><th>Artikal</th><th class="num">Količina</th><th class="num">Cijena</th><th class="num">Ukupno</th></tr></thead>
+        <thead><tr><th>${t("thArtikal")}</th><th class="num">${t("thKolicina")}</th><th class="num">${t("thCijena")}</th><th class="num">${t("thUkupno")}</th></tr></thead>
         <tbody>${lines}</tbody>
-        <tfoot><tr><td colspan="3" class="num"><b>Ukupno</b></td><td class="num"><b>${eur(total(n))}</b></td></tr></tfoot>
+        <tfoot><tr><td colspan="3" class="num"><b>${t("ukupno")}</b></td><td class="num"><b>${money(total(n))}</b></td></tr></tfoot>
       </table>
     </div>
     ${actions}`;
-  document.getElementById("overlay").classList.add("open");
+  el("overlay").classList.add("open");
 }
-function closeModal(){document.getElementById("overlay").classList.remove("open");}
+function closeModal(){el("overlay").classList.remove("open");}
 
 // ---- Klikabilne KPI liste -------------------------------------------------
 function openNarudzbaLista(naslov, arr){
   const rows = arr.length ? arr.map(n=>`<tr onclick="openNarudzba('${n.id}')">
-      <td><b>${n.id}</b></td><td>${kn(n.kupac)}</td><td class="num">${eur(total(n))}</td>
-      <td><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></td><td class="muted">${n.datum}</td></tr>`).join("")
-    : `<tr><td colspan="5" class="muted" style="padding:16px;text-align:center">Nema narudžbi.</td></tr>`;
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>${naslov}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${arr.length===1?'narudžba':'narudžbi'} · klik za detalje</div></div><div class="x" onclick="closeModal()">×</div></div>
+      <td><b>${n.id}</b></td><td>${kn(n.kupac)}</td><td class="num">${money(total(n))}</td>
+      <td>${stPill(n.status)}</td><td class="muted">${n.datum}</td></tr>`).join("")
+    : `<tr><td colspan="5" class="muted" style="padding:16px;text-align:center">${t("noOrders")}</td></tr>`;
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${naslov}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${arr.length===1?t("orderOne"):t("orderMany")} · ${t("clickDetails")}</div></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody"><table class="lines">
-      <thead><tr><th>ID</th><th>Kupac</th><th class="num">Iznos</th><th>Status</th><th>Datum</th></tr></thead>
+      <thead><tr><th>${t("thID")}</th><th>${t("thKupac")}</th><th class="num">${t("thIznos")}</th><th>${t("thStatus")}</th><th>${t("thDatum")}</th></tr></thead>
       <tbody>${rows}</tbody></table></div>`;
-  document.getElementById("overlay").classList.add("open");
+  el("overlay").classList.add("open");
 }
-function openAktivne(){ openNarudzbaLista("Aktivne narudžbe", NARUDZBE.filter(n=>n.status!=="naplacena")); }
-function openSveNarudzbe(){ openNarudzbaLista("Sve narudžbe", NARUDZBE); }
+function openAktivne(){ openNarudzbaLista(t("kpiAktivne"), NARUDZBE.filter(n=>n.status!=="naplacena")); }
+function openSveNarudzbe(){ openNarudzbaLista(t("listSve"), NARUDZBE); }
 function openKupciLista(){
-  const ks=Object.keys(KUPCI).map(k=>({k,s:kupacStats(k)})).filter(x=>x.s.broj>0).sort((a,b)=>b.s.promet-a.s.promet);
+  const ks=Object.keys(KDATA[LANG]||KDATA.bs).map(k=>({k,s:kupacStats(k)})).filter(x=>x.s.broj>0).sort((a,b)=>b.s.promet-a.s.promet);
   const rows=ks.map(({k,s})=>`<tr onclick="openKupac('${k}')">
-      <td><b>${KUPCI[k].naziv}</b></td><td class="muted">${KUPCI[k].grad}</td><td class="num">${s.broj}</td><td class="num">${eur(s.promet)}</td></tr>`).join("");
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>Aktivni kupci</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${ks.length} kupaca · klik za karticu</div></div><div class="x" onclick="closeModal()">×</div></div>
+      <td><b>${kn(k)}</b></td><td class="muted">${KC(k).grad}</td><td class="num">${s.broj}</td><td class="num">${money(s.promet)}</td></tr>`).join("");
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${t("listAktivniKupci")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${ks.length} ${t("customersWord")} · ${t("clickCard")}</div></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody"><table class="lines">
-      <thead><tr><th>Kupac</th><th>Grad</th><th class="num">Narudžbi</th><th class="num">Promet</th></tr></thead>
+      <thead><tr><th>${t("thKupac")}</th><th>${t("thGrad")}</th><th class="num">${t("thNarudzbi")}</th><th class="num">${t("thPromet")}</th></tr></thead>
       <tbody>${rows}</tbody></table></div>`;
-  document.getElementById("overlay").classList.add("open");
+  el("overlay").classList.add("open");
 }
-function openZaIsporuku(){ openNarudzbaLista("Za isporuku", NARUDZBE.filter(n=>["nova","priprema","kasni"].includes(n.status))); }
+function openZaIsporuku(){ openNarudzbaLista(t("kpiZaIsporuku"), NARUDZBE.filter(n=>["nova","priprema","kasni"].includes(n.status))); }
 function openNiskoStanje(){
-  const arr=Object.values(ARTIKLI).filter(a=>a.stanje<a.min).sort((x,y)=>(x.stanje-x.min)-(y.stanje-y.min));
-  const rows = arr.length ? arr.map(a=>`<tr onclick="closeModal();setView('zalihe')">
-      <td><b>${a.n}</b></td><td class="num ${a.stanje<=0?'stock-bad':'stock-warn'}">${a.stanje}</td><td class="num muted">${a.min}</td>
-      <td>${a.stanje<=0?'<span class="pill p-kasni">nema</span>':'<span class="pill p-priprema">nisko</span>'}</td></tr>`).join("")
-    : `<tr><td colspan="4" class="muted" style="padding:16px;text-align:center">Sve iznad minimuma. 👍</td></tr>`;
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>Artikli ispod minimuma</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${arr.length===1?'artikal':'artikala'} · klik vodi na Zalihe</div></div><div class="x" onclick="closeModal()">×</div></div>
+  const arr=Object.entries(ARTIKLI).filter(([,a])=>a.stanje<a.min).sort((x,y)=>(x[1].stanje-x[1].min)-(y[1].stanje-y[1].min));
+  const rows = arr.length ? arr.map(([k,a])=>`<tr onclick="closeModal();setView('zalihe')">
+      <td><b>${AN(k)}</b></td><td class="num ${a.stanje<=0?'stock-bad':'stock-warn'}">${a.stanje}</td><td class="num muted">${a.min}</td>
+      <td>${a.stanje<=0?'<span class="pill p-kasni">'+t("pill_nema")+'</span>':'<span class="pill p-priprema">'+t("pill_nisko")+'</span>'}</td></tr>`).join("")
+    : `<tr><td colspan="4" class="muted" style="padding:16px;text-align:center">${t("allAboveMin")}</td></tr>`;
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${t("listIspodMin")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${arr.length===1?t("itemOne"):t("itemMany")} · ${t("clickStock")}</div></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody"><table class="lines">
-      <thead><tr><th>Artikal</th><th class="num">Na stanju</th><th class="num">Min</th><th>Status</th></tr></thead>
+      <thead><tr><th>${t("thArtikal")}</th><th class="num">${t("thNaStanju")}</th><th class="num">${t("thMin")}</th><th>${t("thStatus")}</th></tr></thead>
       <tbody>${rows}</tbody></table></div>`;
-  document.getElementById("overlay").classList.add("open");
+  el("overlay").classList.add("open");
 }
 
 function renderZalihe(){
   const rows=Object.entries(ARTIKLI).map(([k,a])=>{
     const cls = a.stanje<=0?"stock-bad":(a.stanje<a.min?"stock-warn":"");
-    const oznaka = a.stanje<=0?'<span class="pill p-kasni">nema</span>':(a.stanje<a.min?'<span class="pill p-priprema">nisko</span>':'<span class="pill p-isporucena">ok</span>');
-    return `<tr><td><b>${a.n}</b></td><td class="num ${cls}">${a.stanje}</td><td class="num muted">${a.min}</td><td class="num">${eur(a.cijena)}</td><td>${oznaka}</td></tr>`;
+    const oznaka = a.stanje<=0?'<span class="pill p-kasni">'+t("pill_nema")+'</span>':(a.stanje<a.min?'<span class="pill p-priprema">'+t("pill_nisko")+'</span>':'<span class="pill p-isporucena">'+t("pill_ok")+'</span>');
+    return `<tr><td><b>${AN(k)}</b></td><td class="num ${cls}">${a.stanje}</td><td class="num muted">${a.min}</td><td class="num">${money(a.cijena)}</td><td>${oznaka}</td></tr>`;
   }).join("");
-  document.getElementById("view").innerHTML=`
-    <div class="viewhead"><h3>Zalihe</h3><button class="newbtn" onclick="openNoviArtikal()">+ Novi artikal</button></div>
-    <p class="hint" style="margin:0 0 12px">Stanje se automatski umanjuje kad narudžba pređe u „Isporučena".</p>
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("zaliheTitle")}</h3><button class="newbtn" onclick="openNoviArtikal()">${t("newArtikal")}</button></div>
+    <p class="hint" style="margin:0 0 12px">${t("zaliheHint")}</p>
     <table class="tbl">
-      <thead><tr><th>Artikal</th><th class="num">Na stanju</th><th class="num">Minimum</th><th class="num">Cijena</th><th>Status</th></tr></thead>
+      <thead><tr><th>${t("thArtikal")}</th><th class="num">${t("thNaStanju")}</th><th class="num">${t("thMinimum")}</th><th class="num">${t("thCijena")}</th><th>${t("thStatus")}</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
@@ -382,45 +584,45 @@ function kupacStats(kid){
   return {broj:nar.length, promet:nar.reduce((s,n)=>s+total(n),0), nar};
 }
 function renderKupci(){
-  const rows=Object.keys(KUPCI).map(k=>{
+  const rows=Object.keys(KDATA[LANG]||KDATA.bs).map(k=>{
     const s=kupacStats(k);
     return `<tr onclick="openKupac('${k}')">
-      <td><b>${KUPCI[k].naziv}</b></td><td class="muted">${KUPCI[k].grad}</td>
-      <td class="num">${s.broj}</td><td class="num">${eur(s.promet)}</td></tr>`;
+      <td><b>${kn(k)}</b></td><td class="muted">${KC(k).grad}</td>
+      <td class="num">${s.broj}</td><td class="num">${money(s.promet)}</td></tr>`;
   }).join("");
-  document.getElementById("view").innerHTML=`
-    <div class="viewhead"><h3>Kupci</h3><button class="newbtn" onclick="openNoviKupac()">+ Novi kupac</button></div>
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("kupciTitle")}</h3><button class="newbtn" onclick="openNoviKupac()">${t("newKupac")}</button></div>
     <table class="tbl">
-      <thead><tr><th>Kupac</th><th>Grad</th><th class="num">Narudžbi</th><th class="num">Ukupan promet</th></tr></thead>
+      <thead><tr><th>${t("thKupac")}</th><th>${t("thGrad")}</th><th class="num">${t("thNarudzbi")}</th><th class="num">${t("thUkupanPromet")}</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
 function openKupac(kid){
-  const k=KUPCI[kid], s=kupacStats(kid);
+  const k=KC(kid), s=kupacStats(kid);
   const rows=s.nar.map(n=>`<tr onclick="openNarudzba('${n.id}')">
       <td><b>${n.id}</b></td><td class="muted">${n.datum}</td>
-      <td class="num">${eur(total(n))}</td><td><span class="pill ${STATUS[n.status][1]}">${STATUS[n.status][0]}</span></td></tr>`).join("");
-  document.getElementById("modal").innerHTML=`
+      <td class="num">${money(total(n))}</td><td>${stPill(n.status)}</td></tr>`).join("");
+  el("modal").innerHTML=`
     <div class="mhead"><div><h2>${k.naziv}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${k.grad}</div></div>
       <div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody">
-      <div class="kv"><span class="k">Grad</span><span>${k.grad}</span></div>
-      <div class="kv"><span class="k">Telefon</span><span>${k.tel}</span></div>
-      <div class="kv"><span class="k">Narudžbi</span><span>${s.broj}</span></div>
-      <div class="kv"><span class="k">Ukupan promet</span><span><b>${eur(s.promet)}</b></span></div>
-      <div class="sec-title">Narudžbe</div>
+      <div class="kv"><span class="k">${t("lblGrad")}</span><span>${k.grad}</span></div>
+      <div class="kv"><span class="k">${t("lblTelefon")}</span><span>${k.tel}</span></div>
+      <div class="kv"><span class="k">${t("thNarudzbi")}</span><span>${s.broj}</span></div>
+      <div class="kv"><span class="k">${t("thUkupanPromet")}</span><span><b>${money(s.promet)}</b></span></div>
+      <div class="sec-title">${t("secNarudzbe")}</div>
       <table class="lines">
-        <thead><tr><th>ID</th><th>Datum</th><th class="num">Iznos</th><th>Status</th></tr></thead>
+        <thead><tr><th>${t("thID")}</th><th>${t("thDatum")}</th><th class="num">${t("thIznos")}</th><th>${t("thStatus")}</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
-  document.getElementById("overlay").classList.add("open");
+  el("overlay").classList.add("open");
 }
 
 function bar(label,v,max,onclick){
   const cls = onclick?'bar clk-bar':'bar';
   const oc = onclick?` onclick="${onclick}"`:'';
-  return `<div class="${cls}"${oc}><span class="blab">${label}</span><span class="track"><span class="fill" style="width:${Math.max(4,v/max*100)}%"></span></span><span class="val">${eur(v)}</span></div>`;
+  return `<div class="${cls}"${oc}><span class="blab">${label}</span><span class="track"><span class="fill" style="width:${Math.max(4,v/max*100)}%"></span></span><span class="val">${money(v)}</span></div>`;
 }
 function openArtikal(aKey){
   const art=ARTIKLI[aKey];
@@ -428,17 +630,17 @@ function openArtikal(aKey){
     .map(n=>{const q=n.stavke.filter(([a])=>a===aKey).reduce((s,[,q])=>s+q,0);return {n,q,v:q*art.cijena};})
     .sort((x,y)=>y.v-x.v);
   const rows=inv.map(x=>`<tr onclick="openNarudzba('${x.n.id}')">
-      <td><b>${x.n.id}</b></td><td>${kn(x.n.kupac)}</td><td class="num">${x.q}</td><td class="num">${eur(x.v)}</td>
-      <td><span class="pill ${STATUS[x.n.status][1]}">${STATUS[x.n.status][0]}</span></td></tr>`).join("");
+      <td><b>${x.n.id}</b></td><td>${kn(x.n.kupac)}</td><td class="num">${x.q}</td><td class="num">${money(x.v)}</td>
+      <td>${stPill(x.n.status)}</td></tr>`).join("");
   const kom=inv.reduce((s,x)=>s+x.q,0), vr=inv.reduce((s,x)=>s+x.v,0);
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>${art.n}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">Na stanju: ${art.stanje} · cijena ${eur(art.cijena)}</div></div><div class="x" onclick="closeModal()">×</div></div>
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${AN(aKey)}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${t("aOnStock")}${art.stanje} · ${t("aPrice")}${money(art.cijena)}</div></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody">
-      <div class="kv"><span class="k">Prodano (prikazano)</span><span>${kom} kom · ${eur(vr)}</span></div>
-      <div class="sec-title">Narudžbe sa ovim artiklom</div>
-      <table class="lines"><thead><tr><th>Narudžba</th><th>Kupac</th><th class="num">Kom</th><th class="num">Vrijednost</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="kv"><span class="k">${t("aSold")}</span><span>${kom} ${t("pcs")} · ${money(vr)}</span></div>
+      <div class="sec-title">${t("aOrdersWith")}</div>
+      <table class="lines"><thead><tr><th>${t("thNarudzba")}</th><th>${t("thKupac")}</th><th class="num">${t("thKom")}</th><th class="num">${t("thVrijednost")}</th><th>${t("thStatus")}</th></tr></thead><tbody>${rows}</tbody></table>
     </div>`;
-  document.getElementById("overlay").classList.add("open");
+  el("overlay").classList.add("open");
 }
 function renderIzvjestaji(){
   const svi=NARUDZBE;
@@ -447,13 +649,13 @@ function renderIzvjestaji(){
   const prosjek=broj?promet/broj:0;
   const brKupaca=new Set(svi.map(n=>n.kupac)).size;
 
-  const perKupac=Object.keys(KUPCI).map(k=>({k,naziv:KUPCI[k].naziv,v:kupacStats(k).promet})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v);
+  const perKupac=Object.keys(KDATA[LANG]||KDATA.bs).map(k=>({k,naziv:kn(k),v:kupacStats(k).promet})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v);
   const maxK=Math.max(...perKupac.map(x=>x.v),1);
   const kupacBars=perKupac.map(x=>bar(x.naziv,x.v,maxK,`openKupac('${x.k}')`)).join("");
 
   const artRev={};
   svi.forEach(n=>n.stavke.forEach(([a,q])=>{artRev[a]=(artRev[a]||0)+ARTIKLI[a].cijena*q;}));
-  const topArt=Object.entries(artRev).map(([a,v])=>({a,naziv:ARTIKLI[a].n,v})).sort((x,y)=>y.v-x.v).slice(0,6);
+  const topArt=Object.entries(artRev).map(([a,v])=>({a,naziv:AN(a),v})).sort((x,y)=>y.v-x.v).slice(0,6);
   const maxA=Math.max(...topArt.map(x=>x.v),1);
   const artBars=topArt.map(x=>bar(x.naziv,x.v,maxA,`openArtikal('${x.a}')`)).join("");
 
@@ -462,58 +664,58 @@ function renderIzvjestaji(){
   const key=s=>s.split(".").reverse().join("");
   const dani=Object.keys(perDan).sort((a,b)=>key(a)<key(b)?-1:1);
   const maxD=Math.max(...dani.map(d=>perDan[d]),1);
-  const cols=dani.map(d=>`<div class="colbar"><div class="cnt">${Math.round(perDan[d])}</div><div class="barv" style="height:${Math.max(3,perDan[d]/maxD*130)}px"></div><div class="clab">${d.slice(0,5)}</div></div>`).join("");
+  const cols=dani.map(d=>`<div class="colbar"><div class="cnt">${Math.round(perDan[d]*CURR[t("curr")].rate)}</div><div class="barv" style="height:${Math.max(3,perDan[d]/maxD*130)}px"></div><div class="clab">${d.slice(0,5)}</div></div>`).join("");
 
-  const nabaviti=Object.values(ARTIKLI).filter(a=>a.stanje<a.min).sort((x,y)=>(x.stanje-x.min)-(y.stanje-y.min));
-  const nabRows=nabaviti.map(a=>`<div class="bar"><span class="blab">${a.n}</span><span class="track"></span><span class="val ${a.stanje<=0?'stock-bad':'stock-warn'}">${a.stanje} / ${a.min}</span></div>`).join("")||'<span class="hint">Sve iznad minimuma. 👍</span>';
+  const nabaviti=Object.entries(ARTIKLI).filter(([,a])=>a.stanje<a.min).sort((x,y)=>(x[1].stanje-x[1].min)-(y[1].stanje-y[1].min));
+  const nabRows=nabaviti.map(([k,a])=>`<div class="bar"><span class="blab">${AN(k)}</span><span class="track"></span><span class="val ${a.stanje<=0?'stock-bad':'stock-warn'}">${a.stanje} / ${a.min}</span></div>`).join("")||`<span class="hint">${t("allAboveMin")}</span>`;
 
-  document.getElementById("view").innerHTML=`
+  el("view").innerHTML=`
     <div class="kpis">
-      <div class="kpi"><div class="big">${eur(promet)}</div><div class="lab">Ukupan promet (prikazano)</div></div>
-      <div class="kpi clk" onclick="openSveNarudzbe()"><div class="big">${broj}</div><div class="lab">Narudžbi</div></div>
-      <div class="kpi"><div class="big">${eur(prosjek)}</div><div class="lab">Prosječna narudžba</div></div>
-      <div class="kpi clk" onclick="openKupciLista()"><div class="big">${brKupaca}</div><div class="lab">Aktivnih kupaca</div></div>
+      <div class="kpi"><div class="big">${money(promet)}</div><div class="lab">${t("rKpiPromet")}</div></div>
+      <div class="kpi clk" onclick="openSveNarudzbe()"><div class="big">${broj}</div><div class="lab">${t("rKpiNarudzbi")}</div></div>
+      <div class="kpi"><div class="big">${money(prosjek)}</div><div class="lab">${t("rKpiProsjek")}</div></div>
+      <div class="kpi clk" onclick="openKupciLista()"><div class="big">${brKupaca}</div><div class="lab">${t("rKpiKupci")}</div></div>
     </div>
     <div class="grid2">
-      <div class="panel"><h3>Promet po kupcu</h3>${kupacBars}</div>
-      <div class="panel"><h3>Top artikli po prometu</h3>${artBars}</div>
+      <div class="panel"><h3>${t("panPrometKupac")}</h3>${kupacBars}</div>
+      <div class="panel"><h3>${t("panTopArt")}</h3>${artBars}</div>
     </div>
-    <div class="panel"><h3>Promet po danu</h3><div class="cols">${cols}</div></div>
-    <div class="panel"><h3>Za nabavku (ispod minimuma)</h3>${nabRows}</div>`;
+    <div class="panel"><h3>${t("panPrometDan")}</h3><div class="cols">${cols}</div></div>
+    <div class="panel"><h3>${t("panNabavka")}</h3>${nabRows}</div>`;
 }
 
 // ---- Nova narudžba --------------------------------------------------------
 function todayStr(){const d=new Date();return String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear();}
 let nova={kupac:"", stavke:[["A1",1]]};
-function openNovaNarudzba(){ nova={kupac:Object.keys(KUPCI)[0], stavke:[["A1",1]]}; renderNova(); document.getElementById("overlay").classList.add("open"); }
+function openNovaNarudzba(){ nova={kupac:Object.keys(KDATA[LANG]||KDATA.bs)[0], stavke:[["A1",1]]}; renderNova(); el("overlay").classList.add("open"); }
 function renderNova(){
-  const kupOpts=Object.keys(KUPCI).map(k=>`<option value="${k}"${nova.kupac===k?" selected":""}>${KUPCI[k].naziv}</option>`).join("");
-  const artOpts=sel=>Object.keys(ARTIKLI).map(a=>`<option value="${a}"${sel===a?" selected":""}>${ARTIKLI[a].n}</option>`).join("");
+  const kupOpts=Object.keys(KDATA[LANG]||KDATA.bs).map(k=>`<option value="${k}"${nova.kupac===k?" selected":""}>${kn(k)}</option>`).join("");
+  const artOpts=sel=>Object.keys(ARTIKLI).map(a=>`<option value="${a}"${sel===a?" selected":""}>${AN(a)}</option>`).join("");
   const rows=nova.stavke.map((s,idx)=>`
     <tr>
-      <td><select onchange="nova.stavke[${idx}][0]=this.value;renderNova()"><option value="">— artikal —</option>${artOpts(s[0])}</select></td>
+      <td><select onchange="nova.stavke[${idx}][0]=this.value;renderNova()"><option value="">${t("chooseArt")}</option>${artOpts(s[0])}</select></td>
       <td class="num"><input type="number" min="1" value="${s[1]}" style="width:72px" oninput="nova.stavke[${idx}][1]=Math.max(1,parseInt(this.value)||1);renderNova()"></td>
-      <td class="num">${s[0]?eur(ARTIKLI[s[0]].cijena*s[1]):"—"}</td>
-      <td><span class="link" onclick="nova.stavke.splice(${idx},1);if(!nova.stavke.length)nova.stavke=[['',1]];renderNova()">ukloni</span></td>
+      <td class="num">${s[0]?money(ARTIKLI[s[0]].cijena*s[1]):"—"}</td>
+      <td><span class="link" onclick="nova.stavke.splice(${idx},1);if(!nova.stavke.length)nova.stavke=[['',1]];renderNova()">${t("remove")}</span></td>
     </tr>`).join("");
   const tot=nova.stavke.reduce((s,[a,q])=>s+(a?ARTIKLI[a].cijena*q:0),0);
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>Nova narudžba</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${todayStr()}</div></div><div class="x" onclick="closeModal()">×</div></div>
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${t("novaTitle")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${todayStr()}</div></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody">
-      <div class="frow"><label>Kupac</label><select onchange="nova.kupac=this.value">${kupOpts}</select></div>
-      <div class="sec-title">Stavke</div>
+      <div class="frow"><label>${t("lblKupac")}</label><select onchange="nova.kupac=this.value">${kupOpts}</select></div>
+      <div class="sec-title">${t("secStavke")}</div>
       <table class="lines">
-        <thead><tr><th>Artikal</th><th class="num">Količina</th><th class="num">Ukupno</th><th></th></tr></thead>
+        <thead><tr><th>${t("thArtikal")}</th><th class="num">${t("thKolicina")}</th><th class="num">${t("thUkupno")}</th><th></th></tr></thead>
         <tbody>${rows}</tbody>
-        <tfoot><tr><td colspan="2" class="num"><b>Ukupno</b></td><td class="num"><b>${eur(tot)}</b></td><td></td></tr></tfoot>
+        <tfoot><tr><td colspan="2" class="num"><b>${t("ukupno")}</b></td><td class="num"><b>${money(tot)}</b></td><td></td></tr></tfoot>
       </table>
-      <button class="secondary" style="margin-top:10px" onclick="nova.stavke.push(['',1]);renderNova()">+ Dodaj stavku</button>
+      <button class="secondary" style="margin-top:10px" onclick="nova.stavke.push(['',1]);renderNova()">${t("addItem")}</button>
     </div>
-    <div class="actions"><button class="primary" onclick="createNarudzba()">Kreiraj narudžbu</button><span class="hint">Nova narudžba dobija status „Nova".</span></div>`;
+    <div class="actions"><button class="primary" onclick="createNarudzba()">${t("createOrder")}</button><span class="hint">${t("novaHint")}</span></div>`;
 }
 function createNarudzba(){
   const stavke=nova.stavke.filter(([a,q])=>a&&q>0);
-  if(!nova.kupac||!stavke.length){alert("Izaberite kupca i bar jednu stavku.");return;}
+  if(!nova.kupac||!stavke.length){alert(t("alertNova"));return;}
   const maxN=Math.max(...NARUDZBE.map(n=>+n.id.split("-")[1]));
   const id="N-"+(maxN+1);
   NARUDZBE.unshift({id,kupac:nova.kupac,datum:todayStr(),status:"nova",stavke});
@@ -521,56 +723,60 @@ function createNarudzba(){
   openNarudzba(id);
 }
 
-// ---- Novi kupac / novi artikal --------------------------------------------
+// ---- Novi kupac / novi artikal (VT-18 / VT-19) ----------------------------
 function openNoviKupac(){
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>Novi kupac</h2></div><div class="x" onclick="closeModal()">×</div></div>
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${t("nkTitle")}</h2></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody">
-      <div class="frow"><label>Naziv *</label><input id="k_naziv" placeholder="npr. Market Sunce"></div>
-      <div class="frow"><label>Grad</label><input id="k_grad" placeholder="npr. Banja Luka"></div>
-      <div class="frow"><label>Telefon</label><input id="k_tel" placeholder="+387 ..."></div>
+      <div class="frow"><label>${t("nkNaziv")}</label><input id="k_naziv" placeholder="${t("nkNazivPh")}"></div>
+      <div class="frow"><label>${t("lblGradF")}</label><input id="k_grad" placeholder="${t("nkGradPh")}"></div>
+      <div class="frow"><label>${t("lblTelefon")}</label><input id="k_tel" placeholder="${t("nkTelPh")}"></div>
     </div>
-    <div class="actions"><button class="primary" onclick="createKupac()">Sačuvaj kupca</button></div>`;
-  document.getElementById("overlay").classList.add("open");
-  setTimeout(()=>document.getElementById("k_naziv").focus(),40);
+    <div class="actions"><button class="primary" onclick="createKupac()">${t("saveKupac")}</button></div>`;
+  el("overlay").classList.add("open");
+  setTimeout(()=>el("k_naziv").focus(),40);
 }
 function createKupac(){
-  const naziv=(document.getElementById("k_naziv").value||"").trim();
-  if(!naziv){document.getElementById("k_naziv").focus();return;}
-  const grad=(document.getElementById("k_grad").value||"").trim()||"—";
-  const tel=(document.getElementById("k_tel").value||"").trim()||"—";
-  const nums=Object.keys(KUPCI).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
+  const naziv=(el("k_naziv").value||"").trim();
+  if(!naziv){el("k_naziv").focus();return;}
+  const grad=(el("k_grad").value||"").trim()||"—";
+  const tel=(el("k_tel").value||"").trim()||"—";
+  const nums=Object.keys(KDATA.bs).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
   const id="K"+(Math.max(0,...nums)+1);
-  KUPCI[id]={naziv,grad,tel};
+  Object.keys(KDATA).forEach(l=>{KDATA[l][id]={naziv,grad,tel};});
   setView("kupci");
   openKupac(id);
 }
 function openNoviArtikal(){
-  document.getElementById("modal").innerHTML=`
-    <div class="mhead"><div><h2>Novi artikal</h2></div><div class="x" onclick="closeModal()">×</div></div>
+  const curLabel=t("naCijena").replace("%c", CURR[t("curr")].suf.trim());
+  el("modal").innerHTML=`
+    <div class="mhead"><div><h2>${t("naTitle")}</h2></div><div class="x" onclick="closeModal()">×</div></div>
     <div class="mbody">
-      <div class="frow"><label>Naziv *</label><input id="a_naziv" placeholder="npr. Riža 1kg (10/1)"></div>
-      <div class="frow"><label>Cijena (KM) *</label><input id="a_cijena" type="number" min="0" step="0.01" placeholder="0.00"></div>
-      <div class="frow"><label>Na stanju</label><input id="a_stanje" type="number" min="0" value="0"></div>
-      <div class="frow"><label>Minimum</label><input id="a_min" type="number" min="0" value="10"></div>
+      <div class="frow"><label>${t("naNaziv")}</label><input id="a_naziv" placeholder="${t("naNazivPh")}"></div>
+      <div class="frow"><label>${curLabel}</label><input id="a_cijena" type="number" min="0" step="0.01" placeholder="0.00"></div>
+      <div class="frow"><label>${t("naStanje")}</label><input id="a_stanje" type="number" min="0" value="0"></div>
+      <div class="frow"><label>${t("naMin")}</label><input id="a_min" type="number" min="0" value="10"></div>
     </div>
-    <div class="actions"><button class="primary" onclick="createArtikal()">Sačuvaj artikal</button></div>`;
-  document.getElementById("overlay").classList.add("open");
-  setTimeout(()=>document.getElementById("a_naziv").focus(),40);
+    <div class="actions"><button class="primary" onclick="createArtikal()">${t("saveArtikal")}</button></div>`;
+  el("overlay").classList.add("open");
+  setTimeout(()=>el("a_naziv").focus(),40);
 }
 function createArtikal(){
-  const naziv=(document.getElementById("a_naziv").value||"").trim();
-  const cijena=parseFloat(document.getElementById("a_cijena").value);
-  if(!naziv||isNaN(cijena)||cijena<0){alert("Unesite naziv i cijenu.");return;}
-  const stanje=Math.max(0,parseInt(document.getElementById("a_stanje").value)||0);
-  const min=Math.max(0,parseInt(document.getElementById("a_min").value)||0);
+  const naziv=(el("a_naziv").value||"").trim();
+  const cijenaLoc=parseFloat(el("a_cijena").value);
+  if(!naziv||isNaN(cijenaLoc)||cijenaLoc<0){alert(t("alertArtikal"));return;}
+  const cijena=cijenaLoc/CURR[t("curr")].rate; // natrag u baznu valutu (KM)
+  const stanje=Math.max(0,parseInt(el("a_stanje").value)||0);
+  const min=Math.max(0,parseInt(el("a_min").value)||0);
   const nums=Object.keys(ARTIKLI).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
   const id="A"+(Math.max(0,...nums)+1);
-  ARTIKLI[id]={n:naziv,cijena,stanje,min};
+  ARTIKLI[id]={cijena,stanje,min};
+  Object.keys(ANAMES).forEach(l=>{ANAMES[l][id]=naziv;});
   closeModal();
   setView("zalihe");
 }
 
+applyStatic();
 setView("narudzbe");
 </script>
 </body>
