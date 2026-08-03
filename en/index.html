@@ -56,7 +56,7 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="../assets/css/style.min.css?v=4">
+  <link rel="stylesheet" href="../assets/css/style.min.css?v=5">
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
@@ -204,21 +204,31 @@
 
   <!-- Services Section -->
   <!-- Prototypes (showcase) -->
-  <section class="services" id="prototipi">
+  <section class="services proto-section" id="prototipi">
     <div class="container">
       <div class="section-header">
         <h2>We don't talk about solutions. We show them.</h2>
         <p>Click through real prototypes. Same flow and logic as production, on sample data.</p>
       </div>
-      <div class="problems-grid">
-        <a class="problem-card" href="/mockups/veletrade/?lang=en" style="text-decoration:none;color:inherit">
-          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg></div>
-          <h3>Veletrade</h3>
-          <p>A wholesale food distribution system. Orders through stages, stock with low-stock alerts, customer card and reports. All connected and clickable.</p>
-          <p class="problem-solution"><strong>Open prototype</strong></p>
+      <div class="proto-grid">
+        <a class="proto-card" href="/mockups/veletrade/?lang=en">
+          <div class="proto-preview" aria-hidden="true">
+            <div class="proto-chrome"><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-url">datamaks.net/mockups/veletrade</span></div>
+            <div class="proto-appbar"><span class="proto-mono">VT</span><span class="proto-brandtxt"><b>Veletrade</b><small>Food wholesale</small></span></div>
+            <div class="proto-tabs"><span class="on">Orders</span><span>Inventory</span><span>Customers</span><span>Reports</span></div>
+            <div class="proto-kpis"><span></span><span></span><span></span><span></span></div>
+            <div class="proto-rows"><i></i><i></i><i></i></div>
+          </div>
+          <div class="proto-body">
+            <span class="proto-badge">Prototype · sample data</span>
+            <h3>Veletrade</h3>
+            <p>A wholesale food distribution system. Orders through stages, stock with low-stock alerts, customer card and reports. All connected and clickable.</p>
+            <ul class="proto-feats"><li>Staged orders</li><li>Stock alerts</li><li>Customer card</li><li>Reports</li></ul>
+            <span class="proto-cta">Open prototype &rarr;</span>
+          </div>
         </a>
       </div>
-      <div style="text-align:center;margin-top:26px">
+      <div class="proto-more">
         <a class="btn btn-primary btn-large" href="/mockups/">See all prototypes</a>
       </div>
     </div>
