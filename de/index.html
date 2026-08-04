@@ -54,7 +54,7 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="../assets/css/style.min.css?v=5">
+  <link rel="stylesheet" href="../assets/css/style.min.css?v=6">
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
@@ -229,6 +229,33 @@
       </div>
       <div class="proto-more">
         <a class="btn btn-primary btn-large" href="/mockups/">Alle Prototypen ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prvo mockup, pa odluka (DWEB-21) -->
+  <section class="mockup-offer" id="mockup">
+    <div class="container">
+      <div class="mo-grid">
+        <div class="mo-intro">
+          <h2>Erst ein Mockup, dann die Entscheidung</h2>
+          <p class="lead">Der erste Schritt ist immer ein klickbares Mockup Ihres Prozesses. Sie sehen, wie die Lösung mit Ihren eigenen Beispielen funktioniert, bevor wir etwas bauen.</p>
+          <ol class="mo-steps">
+            <li><span class="mo-num">1</span><div><b>Kurzes Gespräch</b><p>Sie beschreiben, wo Zeit verloren geht und wie Sie aktuell arbeiten.</p></div></li>
+            <li><span class="mo-num">2</span><div><b>Wir bauen ein Mockup</b><p>Ein klickbarer Prototyp Ihres Prozesses, mit Ihren eigenen Beispielen.</p></div></li>
+            <li><span class="mo-num">3</span><div><b>Sie sehen, wie es funktioniert</b><p>Sie testen Ablauf und Logik, dann entscheiden wir gemeinsam über die Umsetzung.</p></div></li>
+          </ol>
+        </div>
+        <form class="mo-form js-mockup" id="mockup-form" action="https://formspree.io/f/mdagjdlk" method="POST" data-error="Fehler beim Senden. Bitte versuchen Sie es erneut.">
+          <input type="hidden" name="_subject" value="Mockup Anfrage von datamaks.net (DE)">
+          <input type="hidden" name="tip" value="Mockup za slučaj">
+          <h3>Beschreiben Sie Ihren Fall</h3>
+          <div class="form-group"><label for="mo-djelatnost">Was machen Sie? *</label><input type="text" id="mo-djelatnost" name="djelatnost" required placeholder="z. B. Großhandel, Praxis, Agentur"></div>
+          <div class="form-group"><label for="mo-proces">Wo verlieren Sie am meisten Zeit?</label><textarea id="mo-proces" name="proces" placeholder="Kurz, wie Sie aktuell arbeiten und was Sie ausbremst"></textarea></div>
+          <div class="form-group"><label for="mo-name">Name *</label><input type="text" id="mo-name" name="name" required placeholder="Vor und Nachname"></div>
+          <div class="form-group"><label for="mo-email">E-Mail *</label><input type="email" id="mo-email" name="email" required placeholder="sie@email.com"></div>
+          <button type="submit" class="btn btn-primary btn-large" style="width:100%" data-sending="Senden...">Mockup anfragen</button>
+        </form>
       </div>
     </div>
   </section>
@@ -616,6 +643,27 @@
           alert('Fehler beim Senden. Bitte versuchen Sie es erneut.');
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Mockup brief forma (DWEB-21) — isti Formspree tok kao kontakt
+    var mockupForm = document.getElementById('mockup-form');
+    if (mockupForm) {
+      mockupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const b = mockupForm.querySelector('button[type="submit"]');
+        const orig = b.textContent;
+        b.textContent = b.dataset.sending || orig;
+        b.disabled = true;
+        try {
+          const r = await fetch(mockupForm.action, { method: 'POST', body: new FormData(mockupForm), headers: { 'Accept': 'application/json' } });
+          if (r.ok) { window.location.href = '/thank-you.html'; }
+          else { throw new Error('failed'); }
+        } catch (err) {
+          alert(mockupForm.dataset.error || 'Greška pri slanju.');
+          b.textContent = orig;
+          b.disabled = false;
         }
       });
     }

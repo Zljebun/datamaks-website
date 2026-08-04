@@ -37,7 +37,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media=''all''">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="../assets/css/style.min.css?v=5">
+  <link rel="stylesheet" href="../assets/css/style.min.css?v=6">
 
   <script type="application/ld+json">
   {
@@ -191,6 +191,33 @@
       </div>
       <div class="proto-more">
         <a class="btn btn-primary btn-large" href="/mockups/">Pogledaj sve prototipove</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prvo mockup, pa odluka (DWEB-21) -->
+  <section class="mockup-offer" id="mockup">
+    <div class="container">
+      <div class="mo-grid">
+        <div class="mo-intro">
+          <h2>Prvo mockup, pa odluka</h2>
+          <p class="lead">Prvi korak je uvek klikabilan mockup vašeg procesa. Vidite kako rešenje radi na vašim primerima pre nego išta gradimo.</p>
+          <ol class="mo-steps">
+            <li><span class="mo-num">1</span><div><b>Kratak razgovor</b><p>Opišete gde gubite vreme i kako sada radite.</p></div></li>
+            <li><span class="mo-num">2</span><div><b>Napravimo mockup</b><p>Klikabilan prototip vašeg procesa, na vašim primerima.</p></div></li>
+            <li><span class="mo-num">3</span><div><b>Vidite kako radi</b><p>Probate tok i logiku, pa zajedno odlučujemo o izradi.</p></div></li>
+          </ol>
+        </div>
+        <form class="mo-form js-mockup" id="mockup-form" action="https://formspree.io/f/mdagjdlk" method="POST" data-error="Greška pri slanju. Molimo pokušajte ponovo.">
+          <input type="hidden" name="_subject" value="Zahtev za mockup sa datamaks.net (SR)">
+          <input type="hidden" name="tip" value="Mockup za slučaj">
+          <h3>Opišite svoj slučaj</h3>
+          <div class="form-group"><label for="mo-djelatnost">Čime se bavite? *</label><input type="text" id="mo-djelatnost" name="djelatnost" required placeholder="npr. veleprodaja, ordinacija, agencija"></div>
+          <div class="form-group"><label for="mo-proces">Gde gubite najviše vremena?</label><textarea id="mo-proces" name="proces" placeholder="Ukratko kako sada radite i šta vas usporava"></textarea></div>
+          <div class="form-group"><label for="mo-name">Ime *</label><input type="text" id="mo-name" name="name" required placeholder="Ime i prezime"></div>
+          <div class="form-group"><label for="mo-email">Email *</label><input type="email" id="mo-email" name="email" required placeholder="vas@email.com"></div>
+          <button type="submit" class="btn btn-primary btn-large" style="width:100%" data-sending="Slanje...">Zatražite mockup</button>
+        </form>
       </div>
     </div>
   </section>
@@ -549,6 +576,27 @@
           alert('Greška pri slanju. Molimo pokušajte ponovo.');
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Mockup brief forma (DWEB-21) — isti Formspree tok kao kontakt
+    var mockupForm = document.getElementById('mockup-form');
+    if (mockupForm) {
+      mockupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const b = mockupForm.querySelector('button[type="submit"]');
+        const orig = b.textContent;
+        b.textContent = b.dataset.sending || orig;
+        b.disabled = true;
+        try {
+          const r = await fetch(mockupForm.action, { method: 'POST', body: new FormData(mockupForm), headers: { 'Accept': 'application/json' } });
+          if (r.ok) { window.location.href = '/thank-you.html'; }
+          else { throw new Error('failed'); }
+        } catch (err) {
+          alert(mockupForm.dataset.error || 'Greška pri slanju.');
+          b.textContent = orig;
+          b.disabled = false;
         }
       });
     }
