@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lignum · namještaj po mjeri, praćenje proizvodnje (demo)</title>
+<style>
+  :root{
+    --brand:#9a3412; --brand2:#c2410c; --accent:#0f766e; --action:#c2410c;
+    --bg:#f7f4f1; --card:#fff; --line:#e7ded6; --muted:#6b5d52; --text:#241a12;
+    --ok:#15803d; --warn:#b45309; --late:#b91c1c; --track:#f0e9e3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:38px;height:38px;border-radius:9px;border:2px solid #fdba74;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#fed7aa;letter-spacing:.3px;margin-top:3px}
+  header .spacer{flex:1}
+  header select{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:5px 8px;font-size:12px;font-weight:700;cursor:pointer}
+  header select option{color:#241a12}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:#0f766e}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 12px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:#ea580c}
+  .demo-flag{margin-left:10px;background:#ffedd5;color:#9a3412;border:1px solid #fed7aa;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 13px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.08)}
+  .wrap{padding:16px 20px}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow select,.frow input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow select:focus,.frow input:focus{outline:none;border-color:var(--brand2)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .viewhead{display:flex;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+  .viewhead h3{margin:0;font-size:15px;color:var(--brand)}
+  .viewhead .sub{font-size:13px;color:var(--muted)}
+  .filterbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .filterbar input,.filterbar select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--text)}
+  .filterbar input{flex:0 1 250px}
+
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+  .col{flex:0 0 234px;background:#fbf8f5;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .col.done{background:#f0fdf9;border-color:#99f6e4}
+  .col-h{padding:10px 12px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .col.done .col-h{color:var(--accent)}
+  .wip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:12px;color:var(--muted);font-weight:600}
+  .col-body{padding:10px;display:flex;flex-direction:column;gap:9px;min-height:70px}
+  .card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:9px 11px;cursor:pointer;box-shadow:0 1px 2px rgba(60,40,20,.08);transition:.1s}
+  .card:hover{box-shadow:0 4px 12px rgba(60,40,20,.16);transform:translateY(-1px)}
+  .card.pr-visok{border-left-color:#dc2626}
+  .card.pr-srednji{border-left-color:#d97706}
+  .card.pr-nizak{border-left-color:#64748b}
+  .card.blok{background:#fff7f7}
+  .card .cid{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .card .cp{font-weight:700;font-size:13.5px;margin:2px 0 1px}
+  .card .ck{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .cd{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+  .card .adv{border:0;background:var(--brand);color:#fff;border-radius:6px;min-width:26px;height:24px;cursor:pointer;font-size:13px;font-weight:700}
+  .card .adv:hover{filter:brightness(1.1)}
+  .pbar{height:4px;background:var(--track);border-radius:3px;margin-top:8px;overflow:hidden}
+  .pbar span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .due{font-size:11.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+  .due.late{color:var(--late)}
+  .due.urg{color:var(--warn)}
+  .behind{color:#b45309;font-weight:600}
+  .blokbadge{color:#b91c1c;font-weight:600}
+
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 14px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:11px 14px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}
+  .tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+  .p-visok{background:#fee2e2;color:#b91c1c}
+  .p-srednji{background:#ffedd5;color:#9a3412}
+  .p-nizak{background:#e2e8f0;color:#334155}
+  .p-faza{background:#e0e7ff;color:#3730a3}
+  .p-done{background:#ccfbf1;color:#0f766e}
+  .p-ok{background:#dcfce7;color:#166534}
+  .muted{color:var(--muted)}
+  .link{color:var(--brand2);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  .miniprog{display:flex;align-items:center;gap:8px}
+  .miniprog .mp{width:74px;height:6px;background:var(--track);border-radius:4px;overflow:hidden}
+  .miniprog .mp span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .big{font-size:23px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:13px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--late)}
+  .kpi.clk{cursor:pointer;transition:.12s}
+  .kpi.clk:hover{border-color:var(--brand2);box-shadow:0 3px 12px rgba(120,60,20,.12);transform:translateY(-1px)}
+  @media(max-width:820px){.row2{grid-template-columns:1fr}}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:14px}
+  .bar .blab{width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand));min-width:2px}
+  .bar.clk-bar{cursor:pointer;border-radius:6px;padding:2px 4px;margin:5px -4px}
+  .bar.clk-bar:hover{background:var(--track)}
+  .bar .val{width:100px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  .overlay{position:fixed;inset:0;background:rgba(40,20,8,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:14px;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(40,20,8,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.85}
+  .mbody{padding:18px 20px;overflow-x:auto}
+  .blokbanner{background:#fee2e2;border:1px solid #fecaca;color:#991b1b;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:10px;font-weight:600}
+  .kv{display:flex;font-size:14.5px;padding:4px 0}
+  .kv .k{width:120px;color:var(--muted)}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 8px}
+  .stepper{display:flex;flex-wrap:wrap;gap:6px}
+  .step{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+  .step .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#fff}
+  .step.done .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+  .step.cur .dot{border-color:var(--brand);color:var(--brand)}
+  .step.cur{color:var(--brand);font-weight:700}
+  .step .arr{color:var(--line)}
+  .prilozi{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .pchip{display:flex;align-items:center;gap:8px;background:#fbf8f5;border:1px solid var(--line);border-radius:8px;padding:5px 10px 5px 6px;font-size:12.5px}
+  .pchip img{cursor:pointer;display:block}
+  .pchip-ic{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:6px;font-size:16px}
+  .lines{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+  .lines th,.lines td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .actions{padding:14px 20px;background:#fbf8f5;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #e0cdbe;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  button.secondary:hover{background:#f7efe8}
+  .hint{font-size:12.5px;color:var(--muted)}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">LG</div>
+  <div class="brand">
+    <div class="name">Lignum</div>
+    <div class="tag" id="brandTag">Namještaj po mjeri</div>
+  </div>
+  <div class="spacer"></div>
+  <select id="langSel" onchange="setLang(this.value)" title="Jezik / Language">
+    <option value="bs">BS</option><option value="en">EN</option><option value="de">DE</option><option value="hr">HR</option><option value="sr">SR</option>
+  </select>
+  <div class="user"><span class="avatar" id="userAv">MJ</span><span id="userName">Marko Jurić, proizvodnja</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="tabla" onclick="setView('tabla')">Tabla</div>
+  <div class="tab" data-view="nalozi" onclick="setView('nalozi')">Nalozi</div>
+  <div class="tab" data-view="materijal" onclick="setView('materijal')">Materijal</div>
+  <div class="tab" data-view="faze" onclick="setView('faze')">Faze</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" id="newBtn" onclick="openNoviNalog()">+ Novi nalog</button>
+  <span class="demo-flag" id="demoFlag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div id="view" class="wrap"></div>
+<footer id="footer">Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Valuta ---------------------------------------------------------------
+const CURR={KM:{rate:1,dec:0,suf:" KM"},EUR:{rate:0.5113,dec:0,suf:" €"},RSD:{rate:60,dec:0,suf:" RSD"}};
+
+// ---- i18n rječnik ---------------------------------------------------------
+const STR={};
+STR.bs={
+  title:"Lignum · namještaj po mjeri, praćenje proizvodnje (demo)", tag:"Namještaj po mjeri",
+  userName:"Marko Jurić, proizvodnja", userInit:"MJ", curr:"KM",
+  demo:"DEMO · izmišljeni podaci", footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+  tab_tabla:"Tabla", tab_nalozi:"Nalozi", tab_materijal:"Materijal", tab_faze:"Faze", tab_pregled:"Pregled", newNalog:"+ Novi nalog",
+  fSearch:"🔍 Pretraga (ID, proizvod, naručilac)…", fSviNaruc:"Svi naručioci", fSviPrio:"Svi prioriteti",
+  fSvi:"Svi nalozi", fKasni:"Samo u kašnjenju", fBlok:"Samo blokirani", fIzaPlana:"Iza plana faze", fPonisti:"Poništi",
+  tablaTitle:"Tabla proizvodnje", tablaSub:"Svaki nalog je poseban proizvod po mjeri. „›“ pomiče u sljedeću fazu, klik na karticu otvara detalje.",
+  rijecNaloga:"naloga", odUkupno:"od ukupno",
+  rKasni:"kasni", rZa:"za", rDanas:"rok danas", rGotovo:"gotovo", dK:"d", cBehind:"⏱ faza iza plana",
+  lFaza:"Faza", lPrioritet:"Prioritet", lRok:"Rok", lNarucilac:"Naručilac", lDimenzije:"Dimenzije", lOpisMat:"Opis materijala", lVrijednost:"Vrijednost",
+  secTok:"Tok proizvodnje", secRokFaze:"Rok po fazi", thFaza:"Faza", thPlanRok:"Planirani rok", thStatus:"Status",
+  stZavrseno:"✓ završeno", stUToku:"u toku", stIzaPlana:"iza plana", stCilj:"cilj isporuke", stGotovo:"gotovo",
+  secBom:"Materijal (utrošak)", thMaterijal:"Materijal", thKolicina:"Količina", thZaliha:"Zaliha", mNisko:"nisko", mOk:"ok", mNema:"nema",
+  secIsporuka:"Isporuka i montaža", lDatum:"Datum", lAdresa:"Adresa", lTim:"Montažni tim",
+  dispIsporuceno:"isporučeno", dispZakazano:"zakazano", isporNema:"Nije zakazana isporuka.",
+  secPrilozi:"Prilozi (nacrti / fotografije)", prilNema:"Nema priloga.", dodajPrilog:"+ Dodaj prilog",
+  actZakazi:"Zakaži isporuku", actVrati:"← Vrati", actOznaci:"Označi isporučeno", actIzmijeni:"Izmijeni", actIsporucenoDone:"Nalog završen.",
+  actDeblokiraj:"Deblokiraj", hintBlok:"Prije nastavka riješi blokadu.", actSljedeca:"Sljedeća faza: ", actBlokiraj:"Blokiraj", blokPrefix:"Blokiran: ",
+  blokTitle:"Blokiraj nalog", blokLabel:"Razlog blokade", blokModalHint:"Blokiran nalog se ne može pomjeriti u sljedeću fazu dok se blokada ne ukloni.", actOdustani:"Odustani",
+  isporTitle:"Zakaži isporuku i montažu", isAdresa:"Adresa isporuke", isAdrPh:"ulica i grad", actSacuvaj:"Sačuvaj",
+  naloziTitle:"Radni nalozi", naloziSub:"Sortirano po roku", thNalog:"Nalog", thProizvod:"Proizvod", thNarucilac:"Naručilac", thRok:"Rok", thPrioritet:"Prioritet", thVrijednost:"Vrijednost", emptyFilter:"Nema naloga za zadati filter.",
+  matTitle:"Materijal i zalihe", matSubA:"materijala ispod minimuma · „Potrebno“ je zbir po aktivnim nalozima.",
+  thJed:"Jed.", thNaStanju:"Na stanju", thMin:"Min", thPotrebno:"Potrebno", matHint:"Crveno „Potrebno“ znači da aktivni nalozi traže više nego što je trenutno na stanju.",
+  fazeTitle:"Opterećenje faza", fazeSub:"Aktivni nalozi po radnom centru (broj · vrijednost). 🔴 označava usko grlo.",
+  panelUFazi:"Nalozi u fazi (klik za listu)", fazeHint:"„Spremno“ nije prikazano jer su ti nalozi završeni. Usko grlo je faza sa najviše naloga u toku.",
+  izaPlanaN:"iza plana faze", blokN:"blokirano", lista:"lista", klikDetalje:"klik za detalje", nemaNaloga:"Nema naloga.",
+  titleIzaPlana:"Iza plana faze", titleBlok:"Blokirani nalozi", titleKasni:"Nalozi u kašnjenju", titleZaIsp:"Za isporuku", zaIspNije:"nije zakazano",
+  kpiIzradi:"Naloga u izradi", kpiVrijednost:"Vrijednost u izradi", kpiBlok:"Blokirani", kpiKasni:"U kašnjenju", kpiZaIsp:"Za isporuku", kpiNaVrijeme:"Završeno na vrijeme",
+  panelPoFazi:"Nalozi po fazi", panelVrPoFazi:"Vrijednost u izradi po fazi", pregledHint:"„Završeno na vrijeme“ je udio spremnih naloga isporučenih do roka. Klik na KPI otvara listu.",
+  nnTitle:"Novi radni nalog", nnSub:"Proizvod po mjeri", nnNaziv:"Naziv proizvoda *", nnNazivPh:"npr. Kuhinja po mjeri", nnNaruc:"Naručilac / projekat",
+  nnDim:"Dimenzije", nnDimPh:"npr. 3.6 m, L-oblik", nnMat:"Materijal", nnMatPh:"npr. hrast masiv, lak mat", nnVr:"Vrijednost (%c)", nnRok:"Rok isporuke",
+  actOtvori:"Otvori nalog", nnHint:"Novi nalog kreće od faze „Nacrt i mjere“.",
+};
+STR.hr=Object.assign({},STR.bs,{ curr:"EUR" });
+STR.sr=Object.assign({},STR.bs,{
+  curr:"RSD", lVrijednost:"Vrednost", thVrijednost:"Vrednost",
+  tablaSub:"Svaki nalog je poseban proizvod po meri. „›“ pomiče u sledeću fazu, klik na karticu otvara detalje.",
+  actIzmijeni:"Izmeni", hintBlok:"Pre nastavka reši blokadu.", actSljedeca:"Sledeća faza: ",
+  blokModalHint:"Blokiran nalog se ne može pomeriti u sledeću fazu dok se blokada ne ukloni.",
+  kpiVrijednost:"Vrednost u izradi", kpiNaVrijeme:"Završeno na vreme", panelVrPoFazi:"Vrednost u izradi po fazi",
+  pregledHint:"„Završeno na vreme“ je udeo spremnih naloga isporučenih do roka. Klik na KPI otvara listu.",
+  nnSub:"Proizvod po meri", nnNazivPh:"npr. Kuhinja po meri", nnVr:"Vrednost (%c)", nnHint:"Novi nalog kreće od faze „Nacrt i mere“.",
+});
+STR.en={
+  title:"Lignum · custom furniture, production tracking (demo)", tag:"Custom furniture",
+  userName:"Marko Jurić, production", userInit:"MJ", curr:"EUR",
+  demo:"DEMO · sample data", footer:"Demo prototype · data is fictional · © Datamaks",
+  tab_tabla:"Board", tab_nalozi:"Orders", tab_materijal:"Materials", tab_faze:"Stages", tab_pregled:"Overview", newNalog:"+ New order",
+  fSearch:"🔍 Search (ID, product, client)…", fSviNaruc:"All clients", fSviPrio:"All priorities",
+  fSvi:"All orders", fKasni:"Late only", fBlok:"Blocked only", fIzaPlana:"Behind stage plan", fPonisti:"Clear",
+  tablaTitle:"Production board", tablaSub:"Each order is a unique custom product. „›“ moves to the next stage, click a card for details.",
+  rijecNaloga:"orders", odUkupno:"of",
+  rKasni:"late", rZa:"in", rDanas:"due today", rGotovo:"done", dK:"d", cBehind:"⏱ stage behind plan",
+  lFaza:"Stage", lPrioritet:"Priority", lRok:"Due", lNarucilac:"Client", lDimenzije:"Dimensions", lOpisMat:"Material", lVrijednost:"Value",
+  secTok:"Production flow", secRokFaze:"Due date per stage", thFaza:"Stage", thPlanRok:"Planned due", thStatus:"Status",
+  stZavrseno:"✓ done", stUToku:"in progress", stIzaPlana:"behind plan", stCilj:"delivery target", stGotovo:"done",
+  secBom:"Materials (usage)", thMaterijal:"Material", thKolicina:"Quantity", thZaliha:"Stock", mNisko:"low", mOk:"ok", mNema:"none",
+  secIsporuka:"Delivery & installation", lDatum:"Date", lAdresa:"Address", lTim:"Install team",
+  dispIsporuceno:"delivered", dispZakazano:"scheduled", isporNema:"No delivery scheduled.",
+  secPrilozi:"Attachments (drawings / photos)", prilNema:"No attachments.", dodajPrilog:"+ Add attachment",
+  actZakazi:"Schedule delivery", actVrati:"← Back", actOznaci:"Mark delivered", actIzmijeni:"Edit", actIsporucenoDone:"Order completed.",
+  actDeblokiraj:"Unblock", hintBlok:"Resolve the block before continuing.", actSljedeca:"Next stage: ", actBlokiraj:"Block", blokPrefix:"Blocked: ",
+  blokTitle:"Block order", blokLabel:"Block reason", blokModalHint:"A blocked order cannot move to the next stage until the block is removed.", actOdustani:"Cancel",
+  isporTitle:"Schedule delivery & installation", isAdresa:"Delivery address", isAdrPh:"street and city", actSacuvaj:"Save",
+  naloziTitle:"Production orders", naloziSub:"Sorted by due date", thNalog:"Order", thProizvod:"Product", thNarucilac:"Client", thRok:"Due", thPrioritet:"Priority", thVrijednost:"Value", emptyFilter:"No orders for this filter.",
+  matTitle:"Materials & stock", matSubA:"materials below minimum · „Needed“ is the sum across active orders.",
+  thJed:"Unit", thNaStanju:"In stock", thMin:"Min", thPotrebno:"Needed", matHint:"Red „Needed“ means active orders require more than is currently in stock.",
+  fazeTitle:"Stage load", fazeSub:"Active orders per work center (count · value). 🔴 marks the bottleneck.",
+  panelUFazi:"Orders in stage (click for list)", fazeHint:"„Ready“ is not shown as those orders are done. The bottleneck is the stage with the most orders in progress.",
+  izaPlanaN:"behind stage plan", blokN:"blocked", lista:"list", klikDetalje:"click for details", nemaNaloga:"No orders.",
+  titleIzaPlana:"Behind stage plan", titleBlok:"Blocked orders", titleKasni:"Late orders", titleZaIsp:"For delivery", zaIspNije:"not scheduled",
+  kpiIzradi:"Orders in progress", kpiVrijednost:"Value in progress", kpiBlok:"Blocked", kpiKasni:"Late", kpiZaIsp:"For delivery", kpiNaVrijeme:"Completed on time",
+  panelPoFazi:"Orders by stage", panelVrPoFazi:"Value in progress by stage", pregledHint:"„Completed on time“ is the share of ready orders delivered by the due date. Click a KPI for the list.",
+  nnTitle:"New production order", nnSub:"Custom product", nnNaziv:"Product name *", nnNazivPh:"e.g. Custom kitchen", nnNaruc:"Client / project",
+  nnDim:"Dimensions", nnDimPh:"e.g. 3.6 m, L-shaped", nnMat:"Material", nnMatPh:"e.g. solid oak, matte lacquer", nnVr:"Value (%c)", nnRok:"Delivery due",
+  actOtvori:"Open order", nnHint:"New order starts at the „Design & measure“ stage.",
+};
+STR.de={
+  title:"Lignum · Möbel nach Maß, Produktionsverfolgung (demo)", tag:"Möbel nach Maß",
+  userName:"Marko Jurić, Produktion", userInit:"MJ", curr:"EUR",
+  demo:"DEMO · Beispieldaten", footer:"Demo Prototyp · Daten sind erfunden · © Datamaks",
+  tab_tabla:"Board", tab_nalozi:"Aufträge", tab_materijal:"Material", tab_faze:"Phasen", tab_pregled:"Übersicht", newNalog:"+ Neuer Auftrag",
+  fSearch:"🔍 Suche (ID, Produkt, Kunde)…", fSviNaruc:"Alle Kunden", fSviPrio:"Alle Prioritäten",
+  fSvi:"Alle Aufträge", fKasni:"Nur verspätet", fBlok:"Nur blockiert", fIzaPlana:"Hinter Phasenplan", fPonisti:"Zurücksetzen",
+  tablaTitle:"Produktionsboard", tablaSub:"Jeder Auftrag ist ein individuelles Produkt. „›“ verschiebt in die nächste Phase, Klick auf eine Karte für Details.",
+  rijecNaloga:"Aufträge", odUkupno:"von",
+  rKasni:"verspätet", rZa:"in", rDanas:"heute fällig", rGotovo:"fertig", dK:"T", cBehind:"⏱ Phase hinter Plan",
+  lFaza:"Phase", lPrioritet:"Priorität", lRok:"Termin", lNarucilac:"Kunde", lDimenzije:"Maße", lOpisMat:"Material", lVrijednost:"Wert",
+  secTok:"Produktionsablauf", secRokFaze:"Termin je Phase", thFaza:"Phase", thPlanRok:"Geplanter Termin", thStatus:"Status",
+  stZavrseno:"✓ fertig", stUToku:"in Arbeit", stIzaPlana:"hinter Plan", stCilj:"Lieferziel", stGotovo:"fertig",
+  secBom:"Material (Verbrauch)", thMaterijal:"Material", thKolicina:"Menge", thZaliha:"Bestand", mNisko:"niedrig", mOk:"ok", mNema:"keiner",
+  secIsporuka:"Lieferung & Montage", lDatum:"Datum", lAdresa:"Adresse", lTim:"Montageteam",
+  dispIsporuceno:"geliefert", dispZakazano:"geplant", isporNema:"Keine Lieferung geplant.",
+  secPrilozi:"Anhänge (Zeichnungen / Fotos)", prilNema:"Keine Anhänge.", dodajPrilog:"+ Anhang hinzufügen",
+  actZakazi:"Lieferung planen", actVrati:"← Zurück", actOznaci:"Als geliefert markieren", actIzmijeni:"Bearbeiten", actIsporucenoDone:"Auftrag abgeschlossen.",
+  actDeblokiraj:"Entsperren", hintBlok:"Blockade vor dem Fortfahren lösen.", actSljedeca:"Nächste Phase: ", actBlokiraj:"Blockieren", blokPrefix:"Blockiert: ",
+  blokTitle:"Auftrag blockieren", blokLabel:"Grund der Blockade", blokModalHint:"Ein blockierter Auftrag kann erst in die nächste Phase, wenn die Blockade entfernt ist.", actOdustani:"Abbrechen",
+  isporTitle:"Lieferung & Montage planen", isAdresa:"Lieferadresse", isAdrPh:"Straße und Stadt", actSacuvaj:"Speichern",
+  naloziTitle:"Produktionsaufträge", naloziSub:"Nach Termin sortiert", thNalog:"Auftrag", thProizvod:"Produkt", thNarucilac:"Kunde", thRok:"Termin", thPrioritet:"Priorität", thVrijednost:"Wert", emptyFilter:"Keine Aufträge für diesen Filter.",
+  matTitle:"Material & Bestand", matSubA:"Materialien unter Minimum · „Bedarf“ ist die Summe über aktive Aufträge.",
+  thJed:"Einh.", thNaStanju:"Bestand", thMin:"Min", thPotrebno:"Bedarf", matHint:"Rot „Bedarf“ bedeutet, dass aktive Aufträge mehr benötigen als aktuell auf Lager ist.",
+  fazeTitle:"Phasenauslastung", fazeSub:"Aktive Aufträge je Arbeitszentrum (Anzahl · Wert). 🔴 markiert den Engpass.",
+  panelUFazi:"Aufträge in Phase (Klick für Liste)", fazeHint:"„Fertig“ wird nicht gezeigt, da diese Aufträge abgeschlossen sind. Der Engpass ist die Phase mit den meisten laufenden Aufträgen.",
+  izaPlanaN:"hinter Phasenplan", blokN:"blockiert", lista:"Liste", klikDetalje:"Klick für Details", nemaNaloga:"Keine Aufträge.",
+  titleIzaPlana:"Hinter Phasenplan", titleBlok:"Blockierte Aufträge", titleKasni:"Verspätete Aufträge", titleZaIsp:"Zur Lieferung", zaIspNije:"nicht geplant",
+  kpiIzradi:"Aufträge in Arbeit", kpiVrijednost:"Wert in Arbeit", kpiBlok:"Blockiert", kpiKasni:"Verspätet", kpiZaIsp:"Zur Lieferung", kpiNaVrijeme:"Pünktlich fertig",
+  panelPoFazi:"Aufträge nach Phase", panelVrPoFazi:"Wert in Arbeit nach Phase", pregledHint:"„Pünktlich fertig“ ist der Anteil fertiger Aufträge, die bis zum Termin geliefert wurden. Klick auf KPI öffnet die Liste.",
+  nnTitle:"Neuer Produktionsauftrag", nnSub:"Produkt nach Maß", nnNaziv:"Produktname *", nnNazivPh:"z. B. Küche nach Maß", nnNaruc:"Kunde / Projekt",
+  nnDim:"Maße", nnDimPh:"z. B. 3.6 m, L-Form", nnMat:"Material", nnMatPh:"z. B. Eiche massiv, Mattlack", nnVr:"Wert (%c)", nnRok:"Liefertermin",
+  actOtvori:"Auftrag öffnen", nnHint:"Neuer Auftrag beginnt in der Phase „Entwurf & Maß“.",
+};
+
+// ---- Lokalizovani nabrojivi -----------------------------------------------
+const FAZE_L={
+  bs:["Nacrt i mjere","Rezanje","CNC obrada","Kantiranje","Montaža","Lakiranje","Spremno"],
+  sr:["Nacrt i mere","Rezanje","CNC obrada","Kantiranje","Montaža","Lakiranje","Spremno"],
+  en:["Design & measure","Cutting","CNC machining","Edge banding","Assembly","Finishing","Ready"],
+  de:["Entwurf & Maß","Zuschnitt","CNC Bearbeitung","Kantenanleimen","Montage","Lackierung","Fertig"],
+};
+FAZE_L.hr=FAZE_L.bs;
+const LAST=6;
+const PRIO_L={
+  bs:{visok:"Visok",srednji:"Srednji",nizak:"Nizak"},
+  en:{visok:"High",srednji:"Medium",nizak:"Low"},
+  de:{visok:"Hoch",srednji:"Mittel",nizak:"Niedrig"},
+};
+PRIO_L.hr=PRIO_L.bs; PRIO_L.sr=PRIO_L.bs;
+const RAZLOZI_L={
+  bs:["Čeka materijal","Čeka odobrenje nacrta","Reklamacija","Drugo"],
+  en:["Waiting for material","Waiting for drawing approval","Complaint","Other"],
+  de:["Wartet auf Material","Wartet auf Freigabe","Reklamation","Sonstiges"],
+};
+RAZLOZI_L.hr=RAZLOZI_L.bs; RAZLOZI_L.sr=RAZLOZI_L.bs;
+const MONTAZERI_L={
+  bs:["Tim A (Kovač, Perić)","Tim B (Marić, Suljić)","Vanjski montažer"],
+  sr:["Tim A (Kovač, Perić)","Tim B (Marić, Suljić)","Spoljni montažer"],
+  en:["Team A (Kovač, Perić)","Team B (Marić, Suljić)","External fitter"],
+  de:["Team A (Kovač, Perić)","Team B (Marić, Suljić)","Externer Monteur"],
+};
+MONTAZERI_L.hr=MONTAZERI_L.bs;
+
+// ---- Podaci: brojevi zajednički, nazivi po jeziku -------------------------
+const MATERIJALI={ M1:{zaliha:120,min:40}, M2:{zaliha:30,min:50}, M3:{zaliha:800,min:300}, M4:{zaliha:60,min:100}, M5:{zaliha:45,min:40}, M6:{zaliha:8,min:15}, M7:{zaliha:90,min:30}, M8:{zaliha:210,min:80} };
+const MNAMES={
+  bs:{M1:{n:"Iverica hrast 18mm",jed:"m²"},M2:{n:"MDF 18mm",jed:"m²"},M3:{n:"Kant traka hrast 22mm",jed:"m"},M4:{n:"Šarke Blum",jed:"kom"},M5:{n:"Vodilice pune ext.",jed:"par"},M6:{n:"Kaljeno staklo 6mm",jed:"m²"},M7:{n:"Lak mat 2K",jed:"l"},M8:{n:"Ručke inox 128mm",jed:"kom"}},
+  en:{M1:{n:"Oak chipboard 18mm",jed:"m²"},M2:{n:"MDF 18mm",jed:"m²"},M3:{n:"Oak edge band 22mm",jed:"m"},M4:{n:"Blum hinges",jed:"pcs"},M5:{n:"Full-ext. runners",jed:"pair"},M6:{n:"Tempered glass 6mm",jed:"m²"},M7:{n:"Matte lacquer 2K",jed:"l"},M8:{n:"Inox handles 128mm",jed:"pcs"}},
+  de:{M1:{n:"Spanplatte Eiche 18mm",jed:"m²"},M2:{n:"MDF 18mm",jed:"m²"},M3:{n:"Kantenband Eiche 22mm",jed:"m"},M4:{n:"Blum Scharniere",jed:"Stk"},M5:{n:"Vollauszüge",jed:"Paar"},M6:{n:"ESG Glas 6mm",jed:"m²"},M7:{n:"Mattlack 2K",jed:"l"},M8:{n:"Edelstahlgriffe 128mm",jed:"Stk"}},
+};
+MNAMES.hr=MNAMES.bs; MNAMES.sr=MNAMES.bs;
+const KDATA={
+  bs:{K1:"Hotel Panorama",K2:"Enterijeri Kovačević",K3:"Arh. biro Forma",K4:"Restoran Dunav",K5:"Privatno — Marić",K6:"Privatno — Begić",K7:"Salon ljepote Aura",K8:"Kancelarije Delta"},
+  hr:{K1:"Hotel Panorama",K2:"Interijeri Kovačević",K3:"Arh. biro Forma",K4:"Restoran Dunav",K5:"Privatno — Marić",K6:"Privatno — Begić",K7:"Salon ljepote Aura",K8:"Uredi Delta"},
+  sr:{K1:"Hotel Panorama",K2:"Enterijeri Kovačević",K3:"Arh. biro Forma",K4:"Restoran Dunav",K5:"Privatno — Marić",K6:"Privatno — Begić",K7:"Salon lepote Aura",K8:"Kancelarije Delta"},
+  en:{K1:"Hotel Alpenblick",K2:"Berger Interiors",K3:"Forma Architects",K4:"Restaurant Donau",K5:"Private — Gruber",K6:"Private — Huber",K7:"Aura Beauty Salon",K8:"Delta Offices"},
+  de:{K1:"Hotel Alpenblick",K2:"Wohnstudio Berger",K3:"Architekturbüro Forma",K4:"Restaurant Donau",K5:"Privat — Gruber",K6:"Privat — Huber",K7:"Kosmetiksalon Aura",K8:"Büro Delta"},
+};
+const ODATA={};
+ODATA.bs={
+  "RN-1042":{naziv:"Kuhinja po mjeri",dim:"3.6 m, L-oblik",mat:"hrast masiv, lak mat"},
+  "RN-1041":{naziv:"Ugradni plakar",dim:"4.0 × 2.6 m, klizna vrata",mat:"MDF lak bijeli"},
+  "RN-1040":{naziv:"Recepcijski pult",dim:"luk 3.2 m",mat:"Corian + orah furnir"},
+  "RN-1039":{naziv:"Konferencijski sto (12)",dim:"480 × 140 cm",mat:"orah furnir"},
+  "RN-1038":{naziv:"Zidna biblioteka",dim:"5.0 × 3.0 m",mat:"MDF lak antracit"},
+  "RN-1037":{naziv:"Šank za kafić",dim:"4.2 m",mat:"hrast + crni metal"},
+  "RN-1036":{naziv:"Garderoba (walk-in)",dim:"3.0 × 2.4 m",mat:"iverica dekor hrast"},
+  "RN-1035":{naziv:"TV komoda po mjeri",dim:"260 × 45 cm",mat:"hrast masiv, ulje"},
+  "RN-1034":{naziv:"Kuhinjski otok",dim:"180 × 90 cm",mat:"kvarc ploča + lak"},
+  "RN-1033":{naziv:"Vitrina za restoran",dim:"3.5 m, staklo",mat:"orah + kaljeno staklo"},
+  "RN-1032":{naziv:"Trpezarijski sto (produžni)",dim:"220–320 cm",mat:"hrast masiv"},
+  "RN-1031":{naziv:"Radni sto po mjeri",dim:"200 × 90 cm",mat:"orah + čelik"},
+  "RN-1030":{naziv:"Krevet sa uzglavljem",dim:"180 × 200, tapacirano",mat:"hrast + tkanina"},
+  "RN-1029":{naziv:"Pult za trgovinu",dim:"6.0 m, modularni",mat:"HPL + LED"},
+  "RN-1028":{naziv:"Ugradni ormar (spavaća)",dim:"3.4 × 2.5 m",mat:"MDF lak siva"},
+  "RN-1027":{naziv:"Klupa za hodnik",dim:"160 cm, sa sjedištem",mat:"hrast + tapacir"},
+  "RN-1026":{naziv:"Kuhinja po mjeri",dim:"4.2 m + otok",mat:"lak bijeli visoki sjaj"},
+  "RN-1025":{naziv:"Recepcijski pult",dim:"2.8 m",mat:"orah furnir + Corian"},
+};
+ODATA.hr=ODATA.bs;
+ODATA.sr={
+  "RN-1042":{naziv:"Kuhinja po meri",dim:"3.6 m, L-oblik",mat:"hrast masiv, lak mat"},
+  "RN-1041":{naziv:"Ugradni plakar",dim:"4.0 × 2.6 m, klizna vrata",mat:"MDF lak beli"},
+  "RN-1040":{naziv:"Recepcijski pult",dim:"luk 3.2 m",mat:"Corian + orah furnir"},
+  "RN-1039":{naziv:"Konferencijski sto (12)",dim:"480 × 140 cm",mat:"orah furnir"},
+  "RN-1038":{naziv:"Zidna biblioteka",dim:"5.0 × 3.0 m",mat:"MDF lak antracit"},
+  "RN-1037":{naziv:"Šank za kafić",dim:"4.2 m",mat:"hrast + crni metal"},
+  "RN-1036":{naziv:"Garderoba (walk-in)",dim:"3.0 × 2.4 m",mat:"iverica dekor hrast"},
+  "RN-1035":{naziv:"TV komoda po meri",dim:"260 × 45 cm",mat:"hrast masiv, ulje"},
+  "RN-1034":{naziv:"Kuhinjsko ostrvo",dim:"180 × 90 cm",mat:"kvarc ploča + lak"},
+  "RN-1033":{naziv:"Vitrina za restoran",dim:"3.5 m, staklo",mat:"orah + kaljeno staklo"},
+  "RN-1032":{naziv:"Trpezarijski sto (produžni)",dim:"220–320 cm",mat:"hrast masiv"},
+  "RN-1031":{naziv:"Radni sto po meri",dim:"200 × 90 cm",mat:"orah + čelik"},
+  "RN-1030":{naziv:"Krevet sa uzglavljem",dim:"180 × 200, tapacirano",mat:"hrast + tkanina"},
+  "RN-1029":{naziv:"Pult za trgovinu",dim:"6.0 m, modularni",mat:"HPL + LED"},
+  "RN-1028":{naziv:"Ugradni ormar (spavaća)",dim:"3.4 × 2.5 m",mat:"MDF lak sivi"},
+  "RN-1027":{naziv:"Klupa za hodnik",dim:"160 cm, sa sedištem",mat:"hrast + tapacir"},
+  "RN-1026":{naziv:"Kuhinja po meri",dim:"4.2 m + ostrvo",mat:"lak beli visoki sjaj"},
+  "RN-1025":{naziv:"Recepcijski pult",dim:"2.8 m",mat:"orah furnir + Corian"},
+};
+ODATA.en={
+  "RN-1042":{naziv:"Custom kitchen",dim:"3.6 m, L-shaped",mat:"solid oak, matte lacquer"},
+  "RN-1041":{naziv:"Built-in wardrobe",dim:"4.0 × 2.6 m, sliding doors",mat:"white lacquered MDF"},
+  "RN-1040":{naziv:"Reception desk",dim:"curved 3.2 m",mat:"Corian + oak veneer"},
+  "RN-1039":{naziv:"Conference table (12)",dim:"480 × 140 cm",mat:"oak veneer"},
+  "RN-1038":{naziv:"Wall library",dim:"5.0 × 3.0 m",mat:"anthracite lacquered MDF"},
+  "RN-1037":{naziv:"Cafe bar counter",dim:"4.2 m",mat:"oak + black metal"},
+  "RN-1036":{naziv:"Walk-in wardrobe",dim:"3.0 × 2.4 m",mat:"oak-decor chipboard"},
+  "RN-1035":{naziv:"Custom TV unit",dim:"260 × 45 cm",mat:"solid oak, oiled"},
+  "RN-1034":{naziv:"Kitchen island",dim:"180 × 90 cm",mat:"quartz top + lacquer"},
+  "RN-1033":{naziv:"Restaurant display cabinet",dim:"3.5 m, glass",mat:"oak + tempered glass"},
+  "RN-1032":{naziv:"Dining table (extendable)",dim:"220–320 cm",mat:"solid oak"},
+  "RN-1031":{naziv:"Custom desk",dim:"200 × 90 cm",mat:"oak + steel"},
+  "RN-1030":{naziv:"Bed with headboard",dim:"180 × 200, upholstered",mat:"oak + fabric"},
+  "RN-1029":{naziv:"Retail counter",dim:"6.0 m, modular",mat:"HPL + LED"},
+  "RN-1028":{naziv:"Built-in bedroom wardrobe",dim:"3.4 × 2.5 m",mat:"grey lacquered MDF"},
+  "RN-1027":{naziv:"Hallway bench",dim:"160 cm, with seat",mat:"oak + upholstery"},
+  "RN-1026":{naziv:"Custom kitchen",dim:"4.2 m + island",mat:"white high-gloss lacquer"},
+  "RN-1025":{naziv:"Reception desk",dim:"2.8 m",mat:"oak veneer + Corian"},
+};
+ODATA.de={
+  "RN-1042":{naziv:"Küche nach Maß",dim:"3.6 m, L-Form",mat:"Eiche massiv, Mattlack"},
+  "RN-1041":{naziv:"Einbauschrank",dim:"4.0 × 2.6 m, Schiebetüren",mat:"MDF weiß lackiert"},
+  "RN-1040":{naziv:"Empfangstresen",dim:"Bogen 3.2 m",mat:"Corian + Eiche Furnier"},
+  "RN-1039":{naziv:"Konferenztisch (12)",dim:"480 × 140 cm",mat:"Eiche Furnier"},
+  "RN-1038":{naziv:"Wandbibliothek",dim:"5.0 × 3.0 m",mat:"MDF Anthrazit lackiert"},
+  "RN-1037":{naziv:"Cafe Theke",dim:"4.2 m",mat:"Eiche + schwarzes Metall"},
+  "RN-1036":{naziv:"Ankleide (begehbar)",dim:"3.0 × 2.4 m",mat:"Spanplatte Eiche Dekor"},
+  "RN-1035":{naziv:"TV Möbel nach Maß",dim:"260 × 45 cm",mat:"Eiche massiv, geölt"},
+  "RN-1034":{naziv:"Kücheninsel",dim:"180 × 90 cm",mat:"Quarzplatte + Lack"},
+  "RN-1033":{naziv:"Vitrine für Restaurant",dim:"3.5 m, Glas",mat:"Eiche + ESG Glas"},
+  "RN-1032":{naziv:"Esstisch (ausziehbar)",dim:"220–320 cm",mat:"Eiche massiv"},
+  "RN-1031":{naziv:"Schreibtisch nach Maß",dim:"200 × 90 cm",mat:"Eiche + Stahl"},
+  "RN-1030":{naziv:"Bett mit Kopfteil",dim:"180 × 200, gepolstert",mat:"Eiche + Stoff"},
+  "RN-1029":{naziv:"Ladentheke",dim:"6.0 m, modular",mat:"HPL + LED"},
+  "RN-1028":{naziv:"Einbauschrank (Schlafzimmer)",dim:"3.4 × 2.5 m",mat:"MDF grau lackiert"},
+  "RN-1027":{naziv:"Flurbank",dim:"160 cm, mit Sitz",mat:"Eiche + Polster"},
+  "RN-1026":{naziv:"Küche nach Maß",dim:"4.2 m + Insel",mat:"Weiß Hochglanz Lack"},
+  "RN-1025":{naziv:"Empfangstresen",dim:"2.8 m",mat:"Eiche Furnier + Corian"},
+};
+const ADRESE={bs:"Cara Lazara 14, Banja Luka",hr:"Ilica 14, Zagreb",sr:"Kralja Milana 14, Beograd",en:"Hauptstraße 14, Vienna",de:"Hauptstraße 14, Wien"};
+
+// nalog: k, vr (KM), faza, rok (dana od danas), pr, start; blok=indeks RAZLOZI ili null; bom; prilozi; isporuka
+let NALOZI=[
+  {id:"RN-1042", k:"K5", vr:8500, faza:5, rok:2, pr:"visok", start:12},
+  {id:"RN-1041", k:"K6", vr:3200, faza:3, rok:4, pr:"srednji", start:6},
+  {id:"RN-1040", k:"K1", vr:6400, faza:1, rok:-1, pr:"visok", start:5},
+  {id:"RN-1039", k:"K8", vr:5200, faza:2, rok:3, pr:"srednji", start:4},
+  {id:"RN-1038", k:"K2", vr:4100, faza:0, rok:6, pr:"nizak", start:1},
+  {id:"RN-1037", k:"K7", vr:3800, faza:4, rok:1, pr:"visok", start:7},
+  {id:"RN-1036", k:"K5", vr:2900, faza:2, rok:-2, pr:"srednji", start:5},
+  {id:"RN-1035", k:"K6", vr:1400, faza:0, rok:8, pr:"nizak", start:1},
+  {id:"RN-1034", k:"K5", vr:4600, faza:6, rok:-1, pr:"srednji", start:14},
+  {id:"RN-1033", k:"K4", vr:3300, faza:6, rok:1, pr:"visok", start:11},
+  {id:"RN-1032", k:"K1", vr:2600, faza:3, rok:0, pr:"visok", start:4},
+  {id:"RN-1031", k:"K8", vr:1900, faza:1, rok:5, pr:"nizak", start:2},
+  {id:"RN-1030", k:"K6", vr:2200, faza:5, rok:3, pr:"srednji", start:8},
+  {id:"RN-1029", k:"K3", vr:5400, faza:2, rok:2, pr:"srednji", start:3},
+  {id:"RN-1028", k:"K2", vr:3100, faza:4, rok:-3, pr:"visok", start:9},
+  {id:"RN-1027", k:"K7", vr:900, faza:6, rok:4, pr:"nizak", start:10},
+  {id:"RN-1026", k:"K3", vr:9200, faza:0, rok:7, pr:"srednji", start:0},
+  {id:"RN-1025", k:"K4", vr:4300, faza:3, rok:-1, pr:"visok", start:6},
+];
+const SEED_PRILOZI={ "RN-1042":[{n:"Nacrt kuhinje.pdf",t:"nacrt"},{n:"Skica fronti.jpg",t:"foto"}], "RN-1040":[{n:"Nacrt pulta.pdf",t:"nacrt"}], "RN-1039":[{n:"Crtež stola.pdf",t:"nacrt"}], "RN-1032":[{n:"Uzorak hrasta.jpg",t:"foto"}], "RN-1028":[{n:"Nacrt ormara.pdf",t:"nacrt"}] };
+const SEED_BOM={ "RN-1042":[{m:"M1",kol:14},{m:"M3",kol:60},{m:"M4",kol:24},{m:"M5",kol:10},{m:"M8",kol:12},{m:"M7",kol:6}], "RN-1041":[{m:"M2",kol:20},{m:"M3",kol:40},{m:"M5",kol:6}], "RN-1040":[{m:"M1",kol:8},{m:"M6",kol:4}], "RN-1039":[{m:"M1",kol:10}], "RN-1037":[{m:"M1",kol:12},{m:"M8",kol:4}], "RN-1036":[{m:"M2",kol:16},{m:"M4",kol:18}], "RN-1029":[{m:"M2",kol:24}], "RN-1028":[{m:"M2",kol:22},{m:"M4",kol:16},{m:"M6",kol:2}] };
+const SEED_BLOK={ "RN-1036":0, "RN-1029":1 };
+
+// ---- Jezik + init ---------------------------------------------------------
+let LANG=(new URLSearchParams(location.search).get("lang")||localStorage.getItem("ln_lang")||"bs").toLowerCase();
+if(!STR[LANG]) LANG="bs";
+const el=id=>document.getElementById(id);
+const t=k=>STR[LANG][k];
+const m2=n=>String(n).padStart(2,"0");
+function computeRokFaze(n){ const begin=-n.start, win=Math.max(n.rok-begin,1); n.rokFaze=[]; for(let i=0;i<LAST;i++) n.rokFaze[i]=Math.round(begin+(i+1)/LAST*win); }
+NALOZI.forEach(n=>{ n.prilozi=SEED_PRILOZI[n.id]||[]; n.bom=SEED_BOM[n.id]||[]; n.blok=(n.id in SEED_BLOK)?SEED_BLOK[n.id]:null; n.isporuka=null; computeRokFaze(n); });
+(function(){ const n=NALOZI.find(x=>x.id==="RN-1027"); if(n) n.isporuka={datum:3, adresaKey:true, tim:0, status:"zakazano"}; })();
+
+// ---- Lokalizovani pristupnici ---------------------------------------------
+const FZ=()=>FAZE_L[LANG]||FAZE_L.bs;
+const prioName=pr=>(PRIO_L[LANG]||PRIO_L.bs)[pr];
+const razName=i=>(RAZLOZI_L[LANG]||RAZLOZI_L.bs)[i];
+const timName=i=>(MONTAZERI_L[LANG]||MONTAZERI_L.bs)[i];
+const kn=k=>(KDATA[LANG]||KDATA.bs)[k];
+const od=id=>(ODATA[LANG]||ODATA.bs)[id]||{naziv:id,dim:"",mat:""};
+const mName=m=>(MNAMES[LANG]||MNAMES.bs)[m].n;
+const mJed=m=>(MNAMES[LANG]||MNAMES.bs)[m].jed;
+const money=v=>{ const c=CURR[t("curr")]; const loc=LANG==="en"?"en-US":"de-DE"; return Math.round(v*c.rate).toLocaleString(loc)+c.suf; };
+const isBlok=n=>n.blok!=null;
+const isporAdr=n=>n.isporuka.adresaKey?(ADRESE[LANG]||ADRESE.bs):n.isporuka.adresa;
+
+function dateFromOff(off){ const d=new Date(); d.setDate(d.getDate()+off); return d; }
+function fmtDate(off){ const d=dateFromOff(off); return d.getDate()+"."+m2(d.getMonth()+1)+"."; }
+function ymdOff(off){ const d=dateFromOff(off); return d.getFullYear()+"-"+m2(d.getMonth()+1)+"-"+m2(d.getDate()); }
+const isDone=n=>n.faza>=LAST;
+const isLate=n=>!isDone(n)&&n.rok<0;
+const fazaBehind=n=> !isDone(n) && !isBlok(n) && n.rokFaze[n.faza] < 0;
+const needsDelivery=n=> isDone(n) && (!n.isporuka || n.isporuka.status!=="isporuceno");
+const progress=n=>Math.round(n.faza/LAST*100);
+function rokInfo(n){
+  if(isDone(n)) return {txt:t("rGotovo")+" "+fmtDate(n.rok), cls:""};
+  if(n.rok<0)  return {txt:t("rKasni")+" "+(-n.rok)+" "+t("dK"), cls:"late"};
+  if(n.rok===0)return {txt:t("rDanas"), cls:"urg"};
+  return {txt:t("rZa")+" "+n.rok+" "+t("dK"), cls:""};
+}
+const fazaPill=n=> isDone(n)?`<span class="pill p-done">${FZ()[LAST]}</span>`:`<span class="pill p-faza">${FZ()[n.faza]}</span>`;
+const prioPill=pr=>`<span class="pill p-${pr}">${prioName(pr)}</span>`;
+
+// ---- Jezik ----------------------------------------------------------------
+function setLang(l){ if(!STR[l])return; LANG=l; localStorage.setItem("ln_lang",l); closeModal(); applyStatic(); rerender(); }
+function applyStatic(){
+  document.documentElement.lang=LANG;
+  document.title=t("title");
+  el("brandTag").textContent=t("tag");
+  el("userAv").textContent=t("userInit");
+  el("userName").textContent=t("userName");
+  el("demoFlag").textContent=t("demo");
+  el("newBtn").textContent=t("newNalog");
+  el("footer").textContent=t("footer");
+  el("langSel").value=LANG;
+  const tabs={tabla:"tab_tabla",nalozi:"tab_nalozi",materijal:"tab_materijal",faze:"tab_faze",pregled:"tab_pregled"};
+  document.querySelectorAll(".tab").forEach(tb=>tb.textContent=t(tabs[tb.dataset.view]));
+}
+
+// ---- Filteri --------------------------------------------------------------
+let flt={q:"",kupac:"",prio:"",flag:""};
+function filterNalozi(arr){
+  return arr.filter(n=>{
+    if(flt.kupac && n.k!==flt.kupac) return false;
+    if(flt.prio && n.pr!==flt.prio) return false;
+    if(flt.flag==="kasni" && !isLate(n)) return false;
+    if(flt.flag==="blok" && !isBlok(n)) return false;
+    if(flt.flag==="izaplana" && !fazaBehind(n)) return false;
+    const q=flt.q.trim().toLowerCase();
+    if(q && !(n.id.toLowerCase().includes(q)||od(n.id).naziv.toLowerCase().includes(q)||kn(n.k).toLowerCase().includes(q))) return false;
+    return true;
+  });
+}
+function clearFlt(){ flt={q:"",kupac:"",prio:"",flag:""}; rerender(); }
+function filterBar(){
+  const kOpts=`<option value="">${t("fSviNaruc")}</option>`+Object.keys(KDATA.bs).map(k=>`<option value="${k}"${flt.kupac===k?' selected':''}>${kn(k)}</option>`).join("");
+  const pOpts=`<option value="">${t("fSviPrio")}</option>`+["visok","srednji","nizak"].map(p=>`<option value="${p}"${flt.prio===p?' selected':''}>${prioName(p)}</option>`).join("");
+  const fPairs=[["","fSvi"],["kasni","fKasni"],["blok","fBlok"],["izaplana","fIzaPlana"]];
+  const fOpts=fPairs.map(([v,l])=>`<option value="${v}"${flt.flag===v?' selected':''}>${t(l)}</option>`).join("");
+  const active=flt.q||flt.kupac||flt.prio||flt.flag;
+  return `<div class="filterbar">
+    <input id="fq" placeholder="${t("fSearch")}" value="${flt.q.replace(/"/g,'&quot;')}" oninput="flt.q=this.value;refreshList()">
+    <select onchange="flt.kupac=this.value;refreshList()">${kOpts}</select>
+    <select onchange="flt.prio=this.value;refreshList()">${pOpts}</select>
+    <select onchange="flt.flag=this.value;refreshList()">${fOpts}</select>
+    ${active?`<button class="secondary" onclick="clearFlt()">${t("fPonisti")}</button>`:''}
+  </div>`;
+}
+function refreshList(){ if(currentView==="tabla") fillTabla(); else if(currentView==="nalozi") fillNalozi(); }
+
+// ---- View switching -------------------------------------------------------
+let currentView="tabla";
+function setView(v){
+  currentView=v;
+  document.querySelectorAll(".tab").forEach(tb=>tb.classList.toggle("active",tb.dataset.view===v));
+  rerender();
+}
+function rerender(){
+  if(currentView==="tabla") renderTabla();
+  else if(currentView==="nalozi") renderNalozi();
+  else if(currentView==="materijal") renderMaterijal();
+  else if(currentView==="faze") renderFaze();
+  else renderPregled();
+}
+function closeModal(){el("overlay").classList.remove("open");}
+function openModalHTML(html){ el("modal").innerHTML=html; el("overlay").classList.add("open"); }
+
+// ---- Tabla ----------------------------------------------------------------
+function renderTabla(){
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("tablaTitle")}</h3><span class="sub">${t("tablaSub")}</span></div>
+    ${filterBar()}
+    <div id="dyn"></div>`;
+  fillTabla();
+}
+function fillTabla(){
+  const vis=filterNalozi(NALOZI);
+  const cols=FZ().map((f,idx)=>{
+    const items=vis.filter(n=>n.faza===idx);
+    const cards=items.map(n=>{
+      const ri=rokInfo(n);
+      const canAdv=n.faza<LAST;
+      const adv = isBlok(n)?'<span class="pill p-visok">⛔</span>':(canAdv?`<button class="adv" onclick="event.stopPropagation();advance('${n.id}',1)">›</button>`:'<span class="pill p-done">✓</span>');
+      return `<div class="card pr-${n.pr}${isBlok(n)?' blok':''}" onclick="openNalog('${n.id}')">
+        <div class="cid">${n.id} · ${money(n.vr)}</div>
+        <div class="cp">${od(n.id).naziv}</div>
+        <div class="ck">${kn(n.k)}</div>
+        <div class="cd">${od(n.id).dim}</div>
+        ${isBlok(n)?`<div class="cd blokbadge">⛔ ${razName(n.blok)}</div>`:''}
+        ${fazaBehind(n)?`<div class="cd behind">${t("cBehind")}</div>`:''}
+        ${isDone(n)&&n.isporuka?`<div class="cd">🚚 ${n.isporuka.status==='isporuceno'?t("dispIsporuceno"):t("dispZakazano")} ${fmtDate(n.isporuka.datum)}</div>`:''}
+        <div class="crow"><span class="due ${ri.cls}">${ri.txt}</span>${adv}</div>
+        <div class="pbar"><span style="width:${progress(n)}%"></span></div>
+      </div>`;
+    }).join("")||'<div class="hint" style="padding:6px 2px">—</div>';
+    return `<div class="col${idx===LAST?' done':''}"><div class="col-h"><span>${f}</span><span class="wip">${items.length}</span></div><div class="col-body">${cards}</div></div>`;
+  }).join("");
+  el("dyn").innerHTML=`<div class="board">${cols}</div>`;
+}
+function advance(id, dir){
+  const n=NALOZI.find(x=>x.id===id);
+  if(dir>0 && isBlok(n)){ alert(t("blokPrefix")+razName(n.blok)); return; }
+  const ni=n.faza+dir;
+  if(ni<0||ni>LAST) return;
+  n.faza=ni; rerender();
+}
+
+// ---- Detalj naloga --------------------------------------------------------
+function openNalog(id){
+  const n=NALOZI.find(x=>x.id===id);
+  const o=od(id), ri=rokInfo(n);
+  const rokColor = ri.cls==='late'?'var(--late)':ri.cls==='urg'?'var(--warn)':'inherit';
+  const steps=FZ().map((f,i)=>{
+    const cls=i<n.faza?"done":(i===n.faza?"cur":"");
+    const mark=i<n.faza?"✓":(i+1);
+    return `<span class="step ${cls}"><span class="dot">${mark}</span>${f}</span>${i<LAST?'<span class="arr">›</span>':''}`;
+  }).join("");
+  const rokFazeHtml = FZ().map((f,i)=>{
+      if(i===LAST) return `<tr><td>${f}</td><td class="num">${fmtDate(n.rok)}</td><td>${isDone(n)?'<span class="pill p-done">'+t("stGotovo")+'</span>':'<span class="muted">'+t("stCilj")+'</span>'}</td></tr>`;
+      let st;
+      if(i<n.faza) st='<span class="muted">'+t("stZavrseno")+'</span>';
+      else if(i===n.faza) st = n.rokFaze[i]<0 ? '<span class="behind">'+t("stIzaPlana")+'</span>' : '<span class="muted">'+t("stUToku")+'</span>';
+      else st='<span class="muted">—</span>';
+      return `<tr><td>${f}</td><td class="num">${fmtDate(n.rokFaze[i])}</td><td>${st}</td></tr>`;
+    }).join("");
+  const bomHtml = (n.bom&&n.bom.length)?`<div class="sec-title">${t("secBom")}</div>
+    <table class="lines"><thead><tr><th>${t("thMaterijal")}</th><th class="num">${t("thKolicina")}</th><th>${t("thZaliha")}</th></tr></thead><tbody>${n.bom.map(b=>{const m=MATERIJALI[b.m];const low=m.zaliha<m.min;return `<tr><td>${mName(b.m)}</td><td class="num">${b.kol} ${mJed(b.m)}</td><td>${low?'<span class="pill p-srednji">'+t("mNisko")+'</span>':'<span class="muted">'+t("mOk")+'</span>'}</td></tr>`;}).join("")}</tbody></table>`:'';
+  const prilogHtml = n.prilozi.length ? n.prilozi.map(p=>{
+      const ic=p.t==="foto"?"🖼":p.t==="nacrt"?"📐":"📄";
+      const thumb=p.url?`<img src="${p.url}" style="width:34px;height:34px;object-fit:cover;border-radius:6px;border:1px solid var(--line)" onclick="window.open('${p.url}')">`:`<span class="pchip-ic">${ic}</span>`;
+      return `<div class="pchip">${thumb}<span>${p.n}</span></div>`;
+    }).join("") : '<span class="hint">'+t("prilNema")+'</span>';
+  const isporukaHtml = isDone(n)?`<div class="sec-title">${t("secIsporuka")}</div>${n.isporuka?
+      `<div class="kv"><span class="k">${t("lDatum")}</span><span>${fmtDate(n.isporuka.datum)}</span></div>
+       <div class="kv"><span class="k">${t("lAdresa")}</span><span>${isporAdr(n)}</span></div>
+       <div class="kv"><span class="k">${t("lTim")}</span><span>${timName(n.isporuka.tim)}</span></div>
+       <div class="kv"><span class="k">${t("thStatus")}</span><span>${n.isporuka.status==='isporuceno'?'<span class="pill p-done">'+t("dispIsporuceno")+'</span>':'<span class="pill p-faza">'+t("dispZakazano")+'</span>'}</span></div>`
+     :'<span class="hint">'+t("isporNema")+'</span>'}`:'';
+  let actions='';
+  if(isDone(n)){
+    if(!n.isporuka) actions=`<button class="primary" onclick="openIsporuka('${n.id}')">${t("actZakazi")}</button><button class="secondary" onclick="advance('${n.id}',-1);openNalog('${n.id}')">${t("actVrati")}</button>`;
+    else if(n.isporuka.status==="zakazano") actions=`<button class="primary" onclick="markIsporuceno('${n.id}')">${t("actOznaci")}</button><button class="secondary" onclick="openIsporuka('${n.id}')">${t("actIzmijeni")}</button>`;
+    else actions=`<span class="hint">${t("dispIsporuceno")} ${fmtDate(n.isporuka.datum)}. ${t("actIsporucenoDone")}</span>`;
+  } else if(isBlok(n)){
+    actions=`<button class="primary" onclick="deblokiraj('${n.id}')">${t("actDeblokiraj")}</button><span class="hint">${t("blokPrefix")}${razName(n.blok)}. ${t("hintBlok")}</span>`;
+  } else {
+    actions=`<button class="primary" onclick="advance('${n.id}',1);openNalog('${n.id}')">${t("actSljedeca")}${FZ()[n.faza+1]}</button>`;
+    if(n.faza>0) actions+=`<button class="secondary" onclick="advance('${n.id}',-1);openNalog('${n.id}')">${t("actVrati")}</button>`;
+    actions+=`<button class="secondary" onclick="openBlok('${n.id}')">${t("actBlokiraj")}</button>`;
+  }
+  openModalHTML(`
+    <div class="mhead"><div><h2>${o.naziv}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${n.id} · ${kn(n.k)}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      ${isBlok(n)?`<div class="blokbanner">⛔ ${t("blokPrefix")}${razName(n.blok)}</div>`:''}
+      <div class="kv"><span class="k">${t("lFaza")}</span><span>${fazaPill(n)} <span class="muted">(${progress(n)}%)</span></span></div>
+      <div class="kv"><span class="k">${t("lPrioritet")}</span><span>${prioPill(n.pr)}</span></div>
+      <div class="kv"><span class="k">${t("lRok")}</span><span><b style="color:${rokColor}">${ri.txt}</b> · ${fmtDate(n.rok)}</span></div>
+      <div class="kv"><span class="k">${t("lNarucilac")}</span><span>${kn(n.k)}</span></div>
+      <div class="kv"><span class="k">${t("lDimenzije")}</span><span>${o.dim}</span></div>
+      <div class="kv"><span class="k">${t("lOpisMat")}</span><span>${o.mat}</span></div>
+      <div class="kv"><span class="k">${t("lVrijednost")}</span><span><b>${money(n.vr)}</b></span></div>
+      <div class="sec-title">${t("secTok")}</div>
+      <div class="stepper">${steps}</div>
+      <div class="sec-title">${t("secRokFaze")}</div>
+      <table class="lines"><thead><tr><th>${t("thFaza")}</th><th class="num">${t("thPlanRok")}</th><th>${t("thStatus")}</th></tr></thead><tbody>${rokFazeHtml}</tbody></table>
+      ${bomHtml}
+      ${isporukaHtml}
+      <div class="sec-title">${t("secPrilozi")}</div>
+      <div class="prilozi">${prilogHtml}</div>
+      <button class="secondary" onclick="addPrilog('${n.id}')">${t("dodajPrilog")}</button>
+    </div>
+    <div class="actions">${actions}</div>`);
+}
+function addPrilog(id){
+  const inp=document.createElement("input"); inp.type="file"; inp.accept="image/*,.pdf,.doc,.docx";
+  inp.onchange=()=>{ const f=inp.files&&inp.files[0]; if(!f) return;
+    const n=NALOZI.find(x=>x.id===id);
+    const isImg=f.type.indexOf("image/")===0;
+    const t2=isImg?"foto":(/\.pdf$/i.test(f.name)?"nacrt":"dokument");
+    n.prilozi.push({n:f.name, t:t2, url:isImg?URL.createObjectURL(f):null});
+    openNalog(id);
+  };
+  inp.click();
+}
+
+// ---- Blokada / isporuka ---------------------------------------------------
+function openBlok(id){
+  const opts=(RAZLOZI_L[LANG]||RAZLOZI_L.bs).map((r,i)=>`<option value="${i}">${r}</option>`).join("");
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("blokTitle")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${id}</div></div><div class="x" onclick="openNalog('${id}')">×</div></div>
+    <div class="mbody"><div class="frow"><label>${t("blokLabel")}</label><select id="blokraz">${opts}</select></div><p class="hint">${t("blokModalHint")}</p></div>
+    <div class="actions"><button class="primary" onclick="doBlok('${id}')">${t("actBlokiraj")}</button><button class="secondary" onclick="openNalog('${id}')">${t("actOdustani")}</button></div>`);
+}
+function doBlok(id){ const n=NALOZI.find(x=>x.id===id); n.blok=parseInt(el("blokraz").value)||0; openNalog(id); }
+function deblokiraj(id){ const n=NALOZI.find(x=>x.id===id); n.blok=null; openNalog(id); }
+function openIsporuka(id){
+  const n=NALOZI.find(x=>x.id===id); const cur=n.isporuka||{};
+  const tOpts=(MONTAZERI_L[LANG]||MONTAZERI_L.bs).map((tm,i)=>`<option value="${i}"${cur.tim===i?' selected':''}>${tm}</option>`).join("");
+  const dateDef=ymdOff(cur.datum!==undefined?cur.datum:(n.rok>=0?n.rok:3));
+  const adrVal=cur.adresaKey?(ADRESE[LANG]||ADRESE.bs):(cur.adresa||"");
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("isporTitle")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${n.id} · ${od(id).naziv}</div></div><div class="x" onclick="openNalog('${id}')">×</div></div>
+    <div class="mbody">
+      <div class="row2">
+        <div class="frow"><label>${t("lDatum")}</label><input id="is_datum" type="date" value="${dateDef}"></div>
+        <div class="frow"><label>${t("lTim")}</label><select id="is_tim">${tOpts}</select></div>
+      </div>
+      <div class="frow"><label>${t("isAdresa")}</label><input id="is_adr" value="${adrVal.replace(/"/g,'&quot;')}" placeholder="${t("isAdrPh")}"></div>
+    </div>
+    <div class="actions"><button class="primary" onclick="doIsporuka('${id}')">${t("actSacuvaj")}</button><button class="secondary" onclick="openNalog('${id}')">${t("actOdustani")}</button></div>`);
+}
+function doIsporuka(id){
+  const n=NALOZI.find(x=>x.id===id);
+  const off=Math.round((new Date(el("is_datum").value)-new Date(dateFromOff(0).setHours(0,0,0,0)))/86400000);
+  const prev=(n.isporuka&&n.isporuka.status==="isporuceno")?"isporuceno":"zakazano";
+  n.isporuka={datum:isNaN(off)?(n.rok>=0?n.rok:3):off, adresa:(el("is_adr").value||"").trim()||"—", tim:parseInt(el("is_tim").value)||0, status:prev};
+  openNalog(id);
+}
+function markIsporuceno(id){ const n=NALOZI.find(x=>x.id===id); if(n.isporuka) n.isporuka.status="isporuceno"; rerender(); openNalog(id); }
+
+// ---- Nalozi ---------------------------------------------------------------
+function renderNalozi(){
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("naloziTitle")}</h3><span class="sub">${t("naloziSub")}</span></div>
+    ${filterBar()}
+    <div id="dyn"></div>`;
+  fillNalozi();
+}
+function fillNalozi(){
+  const list=filterNalozi(NALOZI).slice().sort((a,b)=>a.rok-b.rok);
+  const rows=list.map(n=>{
+    const ri=rokInfo(n);
+    const badge=isBlok(n)?' <span class="blokbadge">⛔</span>':(fazaBehind(n)?' <span class="behind">⏱</span>':'');
+    return `<tr onclick="openNalog('${n.id}')">
+      <td><b>${n.id}</b></td>
+      <td>${od(n.id).naziv}${badge}<div class="cd muted">${od(n.id).dim}</div></td>
+      <td class="muted">${kn(n.k)}</td>
+      <td><div class="miniprog">${fazaPill(n)}<span class="mp"><span style="width:${progress(n)}%"></span></span></div></td>
+      <td><span class="due ${ri.cls}">${ri.txt}</span></td>
+      <td>${prioPill(n.pr)}</td>
+      <td class="num">${money(n.vr)}</td></tr>`;
+  }).join("")||`<tr><td colspan="7" class="muted" style="padding:20px;text-align:center">${t("emptyFilter")}</td></tr>`;
+  el("dyn").innerHTML=`<table class="tbl">
+      <thead><tr><th>${t("thNalog")}</th><th>${t("thProizvod")}</th><th>${t("thNarucilac")}</th><th>${t("thFaza")}</th><th>${t("thRok")}</th><th>${t("thPrioritet")}</th><th class="num">${t("thVrijednost")}</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    <p class="hint" style="margin-top:10px">${list.length} ${t("rijecNaloga")} (${t("odUkupno")} ${NALOZI.length}).</p>`;
+}
+
+// ---- Materijal ------------------------------------------------------------
+function renderMaterijal(){
+  const aktivni=NALOZI.filter(n=>!isDone(n));
+  const demand={};
+  aktivni.forEach(n=>(n.bom||[]).forEach(b=>{demand[b.m]=(demand[b.m]||0)+b.kol;}));
+  const ispod=Object.values(MATERIJALI).filter(m=>m.zaliha<m.min).length;
+  const rows=Object.entries(MATERIJALI).map(([id,m])=>{
+    const pot=demand[id]||0;
+    const status = m.zaliha<=0?'<span class="pill p-visok">'+t("mNema")+'</span>':(m.zaliha<m.min?'<span class="pill p-srednji">'+t("mNisko")+'</span>':'<span class="pill p-ok">'+t("mOk")+'</span>');
+    return `<tr>
+      <td><b>${mName(id)}</b></td><td class="muted">${mJed(id)}</td>
+      <td class="num${m.zaliha<m.min?' behind':''}">${m.zaliha}</td>
+      <td class="num muted">${m.min}</td>
+      <td class="num ${pot>m.zaliha?'behind':'muted'}">${pot||'—'}</td>
+      <td>${status}</td></tr>`;
+  }).join("");
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("matTitle")}</h3><span class="sub">${ispod} ${t("matSubA")}</span></div>
+    <table class="tbl">
+      <thead><tr><th>${t("thMaterijal")}</th><th>${t("thJed")}</th><th class="num">${t("thNaStanju")}</th><th class="num">${t("thMin")}</th><th class="num">${t("thPotrebno")}</th><th>${t("thStatus")}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="hint">${t("matHint")}</p>`;
+}
+
+// ---- Faze -----------------------------------------------------------------
+function renderFaze(){
+  const aktivni=NALOZI.filter(n=>!isDone(n));
+  const perF=FZ().slice(0,LAST).map((f,i)=>({f,i,items:aktivni.filter(n=>n.faza===i)}));
+  const maxC=Math.max(...perF.map(x=>x.items.length),1);
+  const usko=perF.slice().sort((a,b)=>b.items.length-a.items.length)[0];
+  const rows=perF.map(x=>{
+    const vr=x.items.reduce((s,n)=>s+n.vr,0);
+    const bottleneck = x.items.length===usko.items.length && x.items.length>0;
+    return `<div class="bar clk-bar" onclick="openFaza(${x.i})"><span class="blab">${x.f}${bottleneck?' 🔴':''}</span><span class="track"><span class="fill" style="width:${Math.max(3,x.items.length/maxC*100)}%"></span></span><span class="val">${x.items.length} · ${money(vr)}</span></div>`;
+  }).join("");
+  const behind=aktivni.filter(fazaBehind), blok=aktivni.filter(isBlok);
+  const behindPanel = (behind.length||blok.length)?`<div class="panel" style="padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    ${behind.length?`<span><span class="behind">⏱ ${behind.length} ${t("izaPlanaN")}</span> <span class="link" onclick="openIzaPlana()">${t("lista")}</span></span>`:''}
+    ${blok.length?`<span><span class="blokbadge">⛔ ${blok.length} ${t("blokN")}</span> <span class="link" onclick="openBlokLista()">${t("lista")}</span></span>`:''}
+  </div>`:'';
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("fazeTitle")}</h3><span class="sub">${t("fazeSub")}</span></div>
+    ${behindPanel}
+    <div class="panel"><h3>${t("panelUFazi")}</h3>${rows}</div>
+    <p class="hint">${t("fazeHint")}</p>`;
+}
+function listaModal(naslov, arr, extra){
+  const rows=arr.length?arr.map(n=>{const ri=rokInfo(n);return `<tr onclick="openNalog('${n.id}')">
+      <td><b>${n.id}</b></td><td>${od(n.id).naziv}</td><td class="muted">${kn(n.k)}</td>
+      <td>${isDone(n)?FZ()[LAST]:FZ()[n.faza]}</td><td>${extra?extra(n):`<span class="due ${ri.cls}">${ri.txt}</span>`}</td><td class="num">${money(n.vr)}</td></tr>`;}).join("")
+    : `<tr><td colspan="6" class="muted" style="padding:16px;text-align:center">${t("nemaNaloga")}</td></tr>`;
+  openModalHTML(`
+    <div class="mhead"><div><h2>${naslov}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${t("rijecNaloga")} · ${t("klikDetalje")}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody"><table class="lines">
+      <thead><tr><th>${t("thNalog")}</th><th>${t("thProizvod")}</th><th>${t("thNarucilac")}</th><th>${t("thFaza")}</th><th>${t("thRok")}</th><th class="num">${t("thVrijednost")}</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`);
+}
+function openFaza(i){ listaModal(FZ()[i], NALOZI.filter(n=>n.faza===i).sort((a,b)=>a.rok-b.rok)); }
+function openIzaPlana(){ listaModal(t("titleIzaPlana"), NALOZI.filter(fazaBehind).sort((a,b)=>a.rokFaze[a.faza]-b.rokFaze[b.faza]), n=>`<span class="behind">${fmtDate(n.rokFaze[n.faza])}</span>`); }
+function openBlokLista(){ listaModal(t("titleBlok"), NALOZI.filter(isBlok), n=>`<span class="blokbadge">⛔ ${razName(n.blok)}</span>`); }
+function openKasni(){ listaModal(t("titleKasni"), NALOZI.filter(isLate).sort((a,b)=>a.rok-b.rok), n=>`<span class="due late">${t("rKasni")} ${-n.rok} ${t("dK")}</span>`); }
+function openZaIsporuku(){ listaModal(t("titleZaIsp"), NALOZI.filter(needsDelivery), n=>n.isporuka?`🚚 ${fmtDate(n.isporuka.datum)}`:`<span class="muted">${t("zaIspNije")}</span>`); }
+
+// ---- Pregled --------------------------------------------------------------
+function barCount(label,v,max,onclick){ const cls=onclick?'bar clk-bar':'bar', oc=onclick?` onclick="${onclick}"`:''; return `<div class="${cls}"${oc}><span class="blab">${label}</span><span class="track"><span class="fill" style="width:${Math.max(3,v/max*100)}%"></span></span><span class="val">${v}</span></div>`; }
+function barMoney(label,v,max,onclick){ const cls=onclick?'bar clk-bar':'bar', oc=onclick?` onclick="${onclick}"`:''; return `<div class="${cls}"${oc}><span class="blab">${label}</span><span class="track"><span class="fill" style="width:${Math.max(3,v/max*100)}%"></span></span><span class="val">${money(v)}</span></div>`; }
+function renderPregled(){
+  const aktivni=NALOZI.filter(n=>!isDone(n));
+  const wip=aktivni.length, vrIzradi=aktivni.reduce((s,n)=>s+n.vr,0);
+  const blok=aktivni.filter(isBlok).length, kasni=NALOZI.filter(isLate).length, zaIsporuku=NALOZI.filter(needsDelivery).length;
+  const doneN=NALOZI.filter(isDone);
+  const naVrijeme=doneN.length?Math.round(doneN.filter(n=>n.rok>=0).length/doneN.length*100):0;
+  const perF=FZ().slice(0,LAST).map((f,i)=>({f,i,c:aktivni.filter(n=>n.faza===i).length}));
+  const maxF=Math.max(...perF.map(x=>x.c),1);
+  const fBars=perF.map(x=>barCount(x.f,x.c,maxF,`openFaza(${x.i})`)).join("");
+  const perFv=FZ().slice(0,LAST).map((f,i)=>({f,i,v:aktivni.filter(n=>n.faza===i).reduce((s,n)=>s+n.vr,0)}));
+  const maxFv=Math.max(...perFv.map(x=>x.v),1);
+  const vBars=perFv.map(x=>barMoney(x.f,x.v,maxFv,`openFaza(${x.i})`)).join("");
+  el("view").innerHTML=`
+    <div class="kpis">
+      <div class="kpi clk" onclick="setView('tabla')"><div class="big">${wip}</div><div class="lab">${t("kpiIzradi")}</div></div>
+      <div class="kpi"><div class="big">${money(vrIzradi)}</div><div class="lab">${t("kpiVrijednost")}</div></div>
+      <div class="kpi warn clk" onclick="openBlokLista()"><div class="big">${blok}</div><div class="lab">${t("kpiBlok")}</div></div>
+      <div class="kpi warn clk" onclick="openKasni()"><div class="big">${kasni}</div><div class="lab">${t("kpiKasni")}</div></div>
+      <div class="kpi clk" onclick="openZaIsporuku()"><div class="big">${zaIsporuku}</div><div class="lab">${t("kpiZaIsp")}</div></div>
+      <div class="kpi"><div class="big">${naVrijeme}%</div><div class="lab">${t("kpiNaVrijeme")}</div></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>${t("panelPoFazi")}</h3>${fBars}</div>
+      <div class="panel"><h3>${t("panelVrPoFazi")}</h3>${vBars}</div>
+    </div>
+    <p class="hint">${t("pregledHint")}</p>`;
+}
+
+// ---- Novi nalog -----------------------------------------------------------
+let nn={k:"K1",pr:"srednji",rok:7};
+function openNoviNalog(){
+  nn={k:"K1",pr:"srednji",rok:7};
+  const kOpts=Object.keys(KDATA.bs).map(k=>`<option value="${k}">${kn(k)}</option>`).join("");
+  const prOpts=["visok","srednji","nizak"].map(pr=>`<option value="${pr}"${pr==="srednji"?" selected":""}>${prioName(pr)}</option>`).join("");
+  const curLabel=t("nnVr").replace("%c", CURR[t("curr")].suf.trim());
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("nnTitle")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${t("nnSub")}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="frow"><label>${t("nnNaziv")}</label><input id="nn_naziv" placeholder="${t("nnNazivPh")}"></div>
+      <div class="row2">
+        <div class="frow"><label>${t("nnNaruc")}</label><select onchange="nn.k=this.value">${kOpts}</select></div>
+        <div class="frow"><label>${t("lPrioritet")}</label><select onchange="nn.pr=this.value">${prOpts}</select></div>
+      </div>
+      <div class="row2">
+        <div class="frow"><label>${t("nnDim")}</label><input id="nn_dim" placeholder="${t("nnDimPh")}"></div>
+        <div class="frow"><label>${t("nnMat")}</label><input id="nn_mat" placeholder="${t("nnMatPh")}"></div>
+      </div>
+      <div class="row2">
+        <div class="frow"><label>${curLabel}</label><input id="nn_vr" type="number" min="0" step="50" placeholder="0"></div>
+        <div class="frow"><label>${t("nnRok")}</label><input type="date" value="${ymdOff(7)}" onchange="nn.rok=Math.round((new Date(this.value)-new Date(dateFromOff(0).setHours(0,0,0,0)))/86400000)"></div>
+      </div>
+    </div>
+    <div class="actions"><button class="primary" onclick="createNalog()">${t("actOtvori")}</button><span class="hint">${t("nnHint")}</span></div>`);
+  setTimeout(()=>el("nn_naziv").focus(),40);
+}
+function createNalog(){
+  const naziv=(el("nn_naziv").value||"").trim();
+  if(!naziv){ el("nn_naziv").focus(); return; }
+  const dim=(el("nn_dim").value||"").trim()||"—";
+  const mat=(el("nn_mat").value||"").trim()||"—";
+  const vrLoc=Math.max(0,parseInt(el("nn_vr").value)||0);
+  const vr=Math.round(vrLoc/CURR[t("curr")].rate);   // natrag u baznu valutu (KM)
+  const nums=NALOZI.map(n=>+n.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="RN-"+(Math.max(0,...nums)+1);
+  Object.keys(ODATA).forEach(l=>{ ODATA[l][id]={naziv,dim,mat}; });
+  const nrec={id, k:nn.k, vr, faza:0, rok:nn.rok, pr:nn.pr, start:0, prilozi:[], bom:[], blok:null, isporuka:null};
+  computeRokFaze(nrec);
+  NALOZI.unshift(nrec);
+  setView("tabla");
+  openNalog(id);
+}
+
+applyStatic();
+setView("tabla");
+</script>
+</body>
+</html>
