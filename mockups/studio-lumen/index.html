@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Lumen · zakazivanje termina (demo)</title>
+<style>
+  :root{
+    --brand:#6d28d9; --brand2:#7c3aed; --accent:#e11d48; --action:#7c3aed;
+    --bg:#f6f5fb; --card:#fff; --line:#e6e3f0; --muted:#6b6480; --text:#1c162b;
+    --ok:#15803d; --warn:#b45309; --late:#b91c1c; --track:#efecf8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:38px;height:38px;border-radius:10px;border:2px solid #f9a8d4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#f5d0fe;letter-spacing:.3px;margin-top:3px}
+  header .spacer{flex:1}
+  header select{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:5px 8px;font-size:12px;font-weight:700;cursor:pointer}
+  header select option{color:#1c162b}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:#be185d}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 14px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--accent)}
+  .demo-flag{margin-left:10px;background:#fce7f3;color:#9d174d;border:1px solid #fbcfe8;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 13px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.08)}
+  .wrap{padding:16px 20px}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow select,.frow input,.lines select,.lines input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow select:focus,.frow input:focus{outline:none;border-color:var(--brand2)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  /* Datumska navigacija */
+  .daybar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .navbtn{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:9px;cursor:pointer;font-size:16px;color:var(--brand);font-weight:700}
+  .navbtn:hover{background:var(--track)}
+  .today-pill{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:13px;color:var(--muted)}
+  .today-pill:hover{background:var(--track)}
+  .daylabel{font-size:17px;font-weight:800;color:var(--brand);text-transform:capitalize}
+  .daysum{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:13px}
+  .chip b{color:var(--brand)}
+
+  /* Kalendar dnevni prikaz */
+  .calwrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:auto}
+  .calhead{display:flex;position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid var(--line)}
+  .gutter-h{width:56px;flex:0 0 56px;border-right:1px solid var(--line)}
+  .staff-h{flex:1 1 0;min-width:150px;padding:10px 12px;text-align:center;border-right:1px solid var(--line);font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px}
+  .staff-h:last-child{border-right:0}
+  .sdot{width:10px;height:10px;border-radius:50%;flex:0 0 10px}
+  .calbody{display:flex;position:relative}
+  .gutter{width:56px;flex:0 0 56px;border-right:1px solid var(--line)}
+  .grow{height:56px;border-bottom:1px dashed var(--line);font-size:11px;color:var(--muted);padding:2px 6px 0 0;text-align:right}
+  .staffcol{flex:1 1 0;min-width:150px;border-right:1px solid var(--line);position:relative;cursor:copy}
+  .staffcol:last-child{border-right:0}
+  .staffcol .slot{height:56px;border-bottom:1px dashed var(--line)}
+  .appt{position:absolute;left:4px;right:4px;border-radius:8px;padding:5px 7px;overflow:hidden;cursor:pointer;border-left:4px solid var(--brand);background:#f5f3ff;box-shadow:0 1px 3px rgba(30,20,60,.12);font-size:12px;line-height:1.25;transition:transform .08s}
+  .appt:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,20,60,.2);z-index:4}
+  .appt .at{font-weight:700}
+  .appt .an{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appt .au{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appt.st-otkazan{opacity:.5}
+  .appt.st-otkazan .an{text-decoration:line-through}
+  .appt.st-zavrsen{background:#f1f5f9}
+  .appt.st-nedosao{background:#fff7ed}
+  .nowline{position:absolute;left:56px;right:0;height:2px;background:var(--accent);z-index:3}
+  .nowline::before{content:'';position:absolute;left:-5px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+
+  /* Segmentni prekidač + sedmični prikaz */
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+  .seg button{border:0;background:#fff;padding:7px 13px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit}
+  .seg button.on{background:var(--brand);color:#fff}
+  .wkfilter{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+  .wkfilter select{padding:6px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;background:#fff}
+  .staff-h.is-today{color:var(--accent)}
+  .staffcol.is-today{background:#fdf2f8}
+  .appt.compact{font-size:11px;padding:3px 5px;line-height:1.2}
+
+  /* Tabele (klijenti/usluge) */
+  .viewhead{display:flex;align-items:center;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:15px;color:var(--brand)}
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 14px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:11px 14px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}
+  .tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+  .p-zakazan{background:#e0f2fe;color:#075985}
+  .p-potvrdjen{background:#dcfce7;color:#166534}
+  .p-zavrsen{background:#e5e7eb;color:#374151}
+  .p-otkazan{background:#fee2e2;color:#b91c1c}
+  .p-nedosao{background:#fef3c7;color:#92400e}
+  .muted{color:var(--muted)}
+  .link{color:var(--brand2);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+
+  /* KPI kartice */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .big{font-size:26px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:13.5px;color:var(--muted);margin-top:4px}
+  .kpi.clk{cursor:pointer;transition:.12s}
+  .kpi.clk:hover{border-color:var(--brand2);box-shadow:0 3px 12px rgba(60,30,120,.12);transform:translateY(-1px)}
+  @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}}
+
+  /* Paneli / bars */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .bar{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:14px}
+  .bar .blab{width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:7px}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:16px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .bar .val{width:110px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(20,10,40,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:14px;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(20,10,40,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.85}
+  .mbody{padding:18px 20px;overflow-x:auto}
+  .kv{display:flex;font-size:14.5px;padding:4px 0}
+  .kv .k{width:120px;color:var(--muted)}
+  .lines{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  .lines th,.lines td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 6px}
+  .actions{padding:14px 20px;background:#faf9fe;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #d6cdec;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  button.secondary:hover{background:#f3eefc}
+  button.danger{background:#fff;color:#b91c1c;border:1px solid #fca5a5;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  button.danger:hover{background:#fef2f2}
+  button.primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .warnbox{margin-top:12px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:10px;padding:10px 12px;font-size:13px}
+  .warnbox.soft{background:#fffbeb;border-color:#fde68a;color:#92400e}
+  .warnbox ul{margin:6px 0 4px;padding-left:18px}
+  .warnbox li{margin:2px 0}
+  .hint{font-size:12.5px;color:var(--muted)}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">SL</div>
+  <div class="brand">
+    <div class="name">Studio Lumen</div>
+    <div class="tag" id="brandTag">Frizerski i kozmetički salon</div>
+  </div>
+  <div class="spacer"></div>
+  <select id="langSel" onchange="setLang(this.value)" title="Jezik / Language">
+    <option value="bs">BS</option>
+    <option value="en">EN</option>
+    <option value="de">DE</option>
+    <option value="hr">HR</option>
+    <option value="sr">SR</option>
+  </select>
+  <div class="user"><span class="avatar" id="userAv">AM</span><span id="userName">Ana Marić, recepcija</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="termini" onclick="setView('termini')">Termini</div>
+  <div class="tab" data-view="klijenti" onclick="setView('klijenti')">Klijenti</div>
+  <div class="tab" data-view="usluge" onclick="setView('usluge')">Usluge</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" id="newBtn" onclick="openNoviTermin()">+ Novi termin</button>
+  <span class="demo-flag" id="demoFlag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div id="view" class="wrap"></div>
+<footer id="footer">Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Valuta (bazna cijena u KM; rate konvertuje u lokalnu) ----------------
+const CURR={KM:{rate:1,dec:2,suf:" KM"},EUR:{rate:0.5113,dec:2,suf:" €"},RSD:{rate:60,dec:0,suf:" RSD"}};
+
+// ---- i18n rječnik ---------------------------------------------------------
+const STR = {
+  bs:{
+    title:"Studio Lumen · zakazivanje termina (demo)", tag:"Frizerski i kozmetički salon",
+    userName:"Ana Marić, recepcija", userInit:"AM", curr:"KM",
+    demo:"DEMO · izmišljeni podaci", footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+    tab_termini:"Termini", tab_klijenti:"Klijenti", tab_usluge:"Usluge", tab_pregled:"Pregled", newTermin:"+ Novi termin",
+    segDan:"Dan", segSedmica:"Sedmica", danas:"Danas", radnik:"radnik", sviRadnici:"Svi radnici",
+    rijecTermina:"termina", rijecPromet:"promet", rijecZauzece:"zauzeće",
+    hintDay:"Klik na prazan prostor u koloni otvara novi termin za tog radnika i vrijeme. Klik na termin otvara detalje.",
+    hintWeek:"Klik na dan otvara novi termin. Filter „radnik“ prikazuje samo njegove termine. Današnji dan je istaknut.",
+    st_zakazan:"Zakazan", st_potvrdjen:"Potvrđen", st_zavrsen:"Završen", st_otkazan:"Otkazan", st_nedosao:"Nije došao",
+    mStatus:"Status", mKlijent:"Klijent", mRadnik:"Radnik", mPodsjetnik:"Podsjetnik", podsjPoslan:"✅ poslan", podsjNije:"nije poslan",
+    secUsluge:"Usluge", thUsluga:"Usluga", thTrajanje:"Trajanje", thCijena:"Cijena", ukupno:"Ukupno",
+    actPotvrdi:"Potvrdi", actZavrsi:"Završi", actPosalji:"Pošalji podsjetnik", actNijeDosao:"Nije došao", actOtkazi:"Otkaži", terminJe:"Termin je ",
+    novaTitle:"Novi termin", fKlijent:"Klijent", fRadnik:"Radnik", fDatum:"Datum", fPocetak:"Početak",
+    ukloni:"ukloni", dodajUslugu:"+ Dodaj uslugu", doVremena:"do", zakaziTermin:"Zakaži termin",
+    novaHint:"Novi termin dobija status „Zakazan“.", alertUsluga:"Dodajte bar jednu uslugu.",
+    alertZauzet:"Radnik je zauzet u tom terminu. Promijenite vrijeme ili radnika.",
+    warnZauzet1:" je već zauzet/a u ovom terminu:", warnZauzet2:"Promijenite vrijeme, radnika ili trajanje.",
+    warnVanRV:"Termin je izvan radnog vremena (09:00–19:00).", preklapaHint:"Termin se preklapa sa postojećim.",
+    klijentiTitle:"Klijenti", noviKlijent:"+ Novi klijent", thKlijent:"Klijent", thTelefon:"Telefon", thPosjeta:"Posjeta", thPotroseno:"Potrošeno", thSljedeci:"Sljedeći termin", nema:"nema", u:"u",
+    kUkupno:"Ukupno potrošeno", nemaZakazanih:"nema zakazanih", istorija:"Istorija termina",
+    thDatum:"Datum", thVrijeme:"Vrijeme", thUsluge:"Usluge", thIznos:"Iznos", thStatus:"Status", nemaTermina:"Nema termina.",
+    nkTitle:"Novi klijent", nkIme:"Ime i prezime *", nkImePh:"npr. Ana Kovačević", nkTel:"Telefon", nkTelPh:"+387 …", sacuvajKlijenta:"Sačuvaj klijenta",
+    cjenovnik:"Cjenovnik usluga", novaUsluga:"+ Nova usluga",
+    nuTitle:"Nova usluga", nuNaziv:"Naziv *", nuNazivPh:"npr. Tretman kose", nuTrajanje:"Trajanje (min) *", nuCijena:"Cijena (%c) *", sacuvajUslugu:"Sačuvaj uslugu", alertUslugaUnos:"Unesite naziv, trajanje i cijenu.",
+    pTermDanas:"Termina danas", pPrometDanas:"Očekivani promet danas", pZauzece:"Zauzeće danas", pNijeDoslo:"Nije došlo (7 dana)",
+    panPromet:"Promet po radniku (7 dana)", panTop:"Top usluge (7 dana)", nemaZavrsenih:"Nema završenih termina.",
+    pregledHint:"Promet računa završene termine. „Zauzeće“ je udio zakazanog vremena u radnom danu svih radnika.",
+    nsTitle:"Nije došlo (7 dana)", klikDetalje:"klik za detalje", nemaPropustenih:"Nema propuštenih termina. 👍",
+  },
+  hr:{
+    title:"Studio Lumen · zakazivanje termina (demo)", tag:"Frizerski i kozmetički salon",
+    userName:"Ana Marić, recepcija", userInit:"AM", curr:"EUR",
+    demo:"DEMO · izmišljeni podaci", footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+    tab_termini:"Termini", tab_klijenti:"Klijenti", tab_usluge:"Usluge", tab_pregled:"Pregled", newTermin:"+ Novi termin",
+    segDan:"Dan", segSedmica:"Tjedan", danas:"Danas", radnik:"djelatnik", sviRadnici:"Svi djelatnici",
+    rijecTermina:"termina", rijecPromet:"promet", rijecZauzece:"popunjenost",
+    hintDay:"Klik na prazan prostor u stupcu otvara novi termin za tog djelatnika i vrijeme. Klik na termin otvara detalje.",
+    hintWeek:"Klik na dan otvara novi termin. Filter „djelatnik“ prikazuje samo njegove termine. Današnji dan je istaknut.",
+    st_zakazan:"Zakazan", st_potvrdjen:"Potvrđen", st_zavrsen:"Završen", st_otkazan:"Otkazan", st_nedosao:"Nije došao",
+    mStatus:"Status", mKlijent:"Klijent", mRadnik:"Djelatnik", mPodsjetnik:"Podsjetnik", podsjPoslan:"✅ poslan", podsjNije:"nije poslan",
+    secUsluge:"Usluge", thUsluga:"Usluga", thTrajanje:"Trajanje", thCijena:"Cijena", ukupno:"Ukupno",
+    actPotvrdi:"Potvrdi", actZavrsi:"Završi", actPosalji:"Pošalji podsjetnik", actNijeDosao:"Nije došao", actOtkazi:"Otkaži", terminJe:"Termin je ",
+    novaTitle:"Novi termin", fKlijent:"Klijent", fRadnik:"Djelatnik", fDatum:"Datum", fPocetak:"Početak",
+    ukloni:"ukloni", dodajUslugu:"+ Dodaj uslugu", doVremena:"do", zakaziTermin:"Zakaži termin",
+    novaHint:"Novi termin dobiva status „Zakazan“.", alertUsluga:"Dodajte barem jednu uslugu.",
+    alertZauzet:"Djelatnik je zauzet u tom terminu. Promijenite vrijeme ili djelatnika.",
+    warnZauzet1:" je već zauzet/a u ovom terminu:", warnZauzet2:"Promijenite vrijeme, djelatnika ili trajanje.",
+    warnVanRV:"Termin je izvan radnog vremena (09:00–19:00).", preklapaHint:"Termin se preklapa s postojećim.",
+    klijentiTitle:"Klijenti", noviKlijent:"+ Novi klijent", thKlijent:"Klijent", thTelefon:"Telefon", thPosjeta:"Posjeta", thPotroseno:"Potrošeno", thSljedeci:"Sljedeći termin", nema:"nema", u:"u",
+    kUkupno:"Ukupno potrošeno", nemaZakazanih:"nema zakazanih", istorija:"Povijest termina",
+    thDatum:"Datum", thVrijeme:"Vrijeme", thUsluge:"Usluge", thIznos:"Iznos", thStatus:"Status", nemaTermina:"Nema termina.",
+    nkTitle:"Novi klijent", nkIme:"Ime i prezime *", nkImePh:"npr. Ana Horvat", nkTel:"Telefon", nkTelPh:"+385 …", sacuvajKlijenta:"Spremi klijenta",
+    cjenovnik:"Cjenik usluga", novaUsluga:"+ Nova usluga",
+    nuTitle:"Nova usluga", nuNaziv:"Naziv *", nuNazivPh:"npr. Tretman kose", nuTrajanje:"Trajanje (min) *", nuCijena:"Cijena (%c) *", sacuvajUslugu:"Spremi uslugu", alertUslugaUnos:"Unesite naziv, trajanje i cijenu.",
+    pTermDanas:"Termina danas", pPrometDanas:"Očekivani promet danas", pZauzece:"Popunjenost danas", pNijeDoslo:"Nije došlo (7 dana)",
+    panPromet:"Promet po djelatniku (7 dana)", panTop:"Top usluge (7 dana)", nemaZavrsenih:"Nema završenih termina.",
+    pregledHint:"Promet računa završene termine. „Popunjenost“ je udio zakazanog vremena u radnom danu svih djelatnika.",
+    nsTitle:"Nije došlo (7 dana)", klikDetalje:"klik za detalje", nemaPropustenih:"Nema propuštenih termina. 👍",
+  },
+  sr:{
+    title:"Studio Lumen · zakazivanje termina (demo)", tag:"Frizerski i kozmetički salon",
+    userName:"Ana Marić, recepcija", userInit:"AM", curr:"RSD",
+    demo:"DEMO · izmišljeni podaci", footer:"Demo prototip · podaci su izmišljeni · © Datamaks",
+    tab_termini:"Termini", tab_klijenti:"Klijenti", tab_usluge:"Usluge", tab_pregled:"Pregled", newTermin:"+ Novi termin",
+    segDan:"Dan", segSedmica:"Nedelja", danas:"Danas", radnik:"radnik", sviRadnici:"Svi radnici",
+    rijecTermina:"termina", rijecPromet:"promet", rijecZauzece:"zauzeće",
+    hintDay:"Klik na prazan prostor u koloni otvara novi termin za tog radnika i vreme. Klik na termin otvara detalje.",
+    hintWeek:"Klik na dan otvara novi termin. Filter „radnik“ prikazuje samo njegove termine. Današnji dan je istaknut.",
+    st_zakazan:"Zakazan", st_potvrdjen:"Potvrđen", st_zavrsen:"Završen", st_otkazan:"Otkazan", st_nedosao:"Nije došao",
+    mStatus:"Status", mKlijent:"Klijent", mRadnik:"Radnik", mPodsjetnik:"Podsetnik", podsjPoslan:"✅ poslan", podsjNije:"nije poslan",
+    secUsluge:"Usluge", thUsluga:"Usluga", thTrajanje:"Trajanje", thCijena:"Cena", ukupno:"Ukupno",
+    actPotvrdi:"Potvrdi", actZavrsi:"Završi", actPosalji:"Pošalji podsetnik", actNijeDosao:"Nije došao", actOtkazi:"Otkaži", terminJe:"Termin je ",
+    novaTitle:"Novi termin", fKlijent:"Klijent", fRadnik:"Radnik", fDatum:"Datum", fPocetak:"Početak",
+    ukloni:"ukloni", dodajUslugu:"+ Dodaj uslugu", doVremena:"do", zakaziTermin:"Zakaži termin",
+    novaHint:"Novi termin dobija status „Zakazan“.", alertUsluga:"Dodajte bar jednu uslugu.",
+    alertZauzet:"Radnik je zauzet u tom terminu. Promenite vreme ili radnika.",
+    warnZauzet1:" je već zauzet/a u ovom terminu:", warnZauzet2:"Promenite vreme, radnika ili trajanje.",
+    warnVanRV:"Termin je izvan radnog vremena (09:00–19:00).", preklapaHint:"Termin se preklapa sa postojećim.",
+    klijentiTitle:"Klijenti", noviKlijent:"+ Novi klijent", thKlijent:"Klijent", thTelefon:"Telefon", thPosjeta:"Poseta", thPotroseno:"Potrošeno", thSljedeci:"Sledeći termin", nema:"nema", u:"u",
+    kUkupno:"Ukupno potrošeno", nemaZakazanih:"nema zakazanih", istorija:"Istorija termina",
+    thDatum:"Datum", thVrijeme:"Vreme", thUsluge:"Usluge", thIznos:"Iznos", thStatus:"Status", nemaTermina:"Nema termina.",
+    nkTitle:"Novi klijent", nkIme:"Ime i prezime *", nkImePh:"npr. Ana Jović", nkTel:"Telefon", nkTelPh:"+381 …", sacuvajKlijenta:"Sačuvaj klijenta",
+    cjenovnik:"Cenovnik usluga", novaUsluga:"+ Nova usluga",
+    nuTitle:"Nova usluga", nuNaziv:"Naziv *", nuNazivPh:"npr. Tretman kose", nuTrajanje:"Trajanje (min) *", nuCijena:"Cena (%c) *", sacuvajUslugu:"Sačuvaj uslugu", alertUslugaUnos:"Unesite naziv, trajanje i cenu.",
+    pTermDanas:"Termina danas", pPrometDanas:"Očekivani promet danas", pZauzece:"Zauzeće danas", pNijeDoslo:"Nije došlo (7 dana)",
+    panPromet:"Promet po radniku (7 dana)", panTop:"Top usluge (7 dana)", nemaZavrsenih:"Nema završenih termina.",
+    pregledHint:"Promet računa završene termine. „Zauzeće“ je udeo zakazanog vremena u radnom danu svih radnika.",
+    nsTitle:"Nije došlo (7 dana)", klikDetalje:"klik za detalje", nemaPropustenih:"Nema propuštenih termina. 👍",
+  },
+  en:{
+    title:"Studio Lumen · appointment booking (demo)", tag:"Hair and beauty salon",
+    userName:"Anna Klein, reception", userInit:"AK", curr:"EUR",
+    demo:"DEMO · sample data", footer:"Demo prototype · data is fictional · © Datamaks",
+    tab_termini:"Calendar", tab_klijenti:"Clients", tab_usluge:"Services", tab_pregled:"Overview", newTermin:"+ New appointment",
+    segDan:"Day", segSedmica:"Week", danas:"Today", radnik:"stylist", sviRadnici:"All staff",
+    rijecTermina:"appts", rijecPromet:"revenue", rijecZauzece:"occupancy",
+    hintDay:"Click an empty slot in a column to open a new appointment for that stylist and time. Click an appointment for details.",
+    hintWeek:"Click a day to open a new appointment. The „stylist“ filter shows only their appointments. Today is highlighted.",
+    st_zakazan:"Booked", st_potvrdjen:"Confirmed", st_zavrsen:"Done", st_otkazan:"Cancelled", st_nedosao:"No-show",
+    mStatus:"Status", mKlijent:"Client", mRadnik:"Stylist", mPodsjetnik:"Reminder", podsjPoslan:"✅ sent", podsjNije:"not sent",
+    secUsluge:"Services", thUsluga:"Service", thTrajanje:"Duration", thCijena:"Price", ukupno:"Total",
+    actPotvrdi:"Confirm", actZavrsi:"Complete", actPosalji:"Send reminder", actNijeDosao:"No-show", actOtkazi:"Cancel", terminJe:"Appointment is ",
+    novaTitle:"New appointment", fKlijent:"Client", fRadnik:"Stylist", fDatum:"Date", fPocetak:"Start",
+    ukloni:"remove", dodajUslugu:"+ Add service", doVremena:"until", zakaziTermin:"Book appointment",
+    novaHint:"New appointment gets status „Booked“.", alertUsluga:"Add at least one service.",
+    alertZauzet:"The stylist is busy at that time. Change the time or stylist.",
+    warnZauzet1:" is already busy at this time:", warnZauzet2:"Change the time, stylist or duration.",
+    warnVanRV:"Appointment is outside working hours (09:00–19:00).", preklapaHint:"Appointment overlaps an existing one.",
+    klijentiTitle:"Clients", noviKlijent:"+ New client", thKlijent:"Client", thTelefon:"Phone", thPosjeta:"Visits", thPotroseno:"Spent", thSljedeci:"Next appointment", nema:"none", u:"at",
+    kUkupno:"Total spent", nemaZakazanih:"none booked", istorija:"Appointment history",
+    thDatum:"Date", thVrijeme:"Time", thUsluge:"Services", thIznos:"Amount", thStatus:"Status", nemaTermina:"No appointments.",
+    nkTitle:"New client", nkIme:"Full name *", nkImePh:"e.g. Anna Gruber", nkTel:"Phone", nkTelPh:"+43 …", sacuvajKlijenta:"Save client",
+    cjenovnik:"Service price list", novaUsluga:"+ New service",
+    nuTitle:"New service", nuNaziv:"Name *", nuNazivPh:"e.g. Hair treatment", nuTrajanje:"Duration (min) *", nuCijena:"Price (%c) *", sacuvajUslugu:"Save service", alertUslugaUnos:"Enter name, duration and price.",
+    pTermDanas:"Appointments today", pPrometDanas:"Expected revenue today", pZauzece:"Occupancy today", pNijeDoslo:"No-shows (7 days)",
+    panPromet:"Revenue by stylist (7 days)", panTop:"Top services (7 days)", nemaZavrsenih:"No completed appointments.",
+    pregledHint:"Revenue counts completed appointments. „Occupancy“ is the share of booked time in the working day across all staff.",
+    nsTitle:"No-shows (7 days)", klikDetalje:"click for details", nemaPropustenih:"No missed appointments. 👍",
+  },
+  de:{
+    title:"Studio Lumen · Terminbuchung (demo)", tag:"Friseur und Kosmetiksalon",
+    userName:"Anna Klein, Rezeption", userInit:"AK", curr:"EUR",
+    demo:"DEMO · Beispieldaten", footer:"Demo Prototyp · Daten sind erfunden · © Datamaks",
+    tab_termini:"Kalender", tab_klijenti:"Kunden", tab_usluge:"Leistungen", tab_pregled:"Übersicht", newTermin:"+ Neuer Termin",
+    segDan:"Tag", segSedmica:"Woche", danas:"Heute", radnik:"Mitarbeiter", sviRadnici:"Alle",
+    rijecTermina:"Termine", rijecPromet:"Umsatz", rijecZauzece:"Auslastung",
+    hintDay:"Klicken Sie auf einen freien Bereich in einer Spalte, um einen neuen Termin für diesen Mitarbeiter und diese Zeit zu öffnen. Klicken Sie auf einen Termin für Details.",
+    hintWeek:"Klicken Sie auf einen Tag, um einen neuen Termin zu öffnen. Der Filter „Mitarbeiter“ zeigt nur dessen Termine. Heute ist hervorgehoben.",
+    st_zakazan:"Gebucht", st_potvrdjen:"Bestätigt", st_zavrsen:"Erledigt", st_otkazan:"Storniert", st_nedosao:"Nicht erschienen",
+    mStatus:"Status", mKlijent:"Kunde", mRadnik:"Mitarbeiter", mPodsjetnik:"Erinnerung", podsjPoslan:"✅ gesendet", podsjNije:"nicht gesendet",
+    secUsluge:"Leistungen", thUsluga:"Leistung", thTrajanje:"Dauer", thCijena:"Preis", ukupno:"Gesamt",
+    actPotvrdi:"Bestätigen", actZavrsi:"Abschließen", actPosalji:"Erinnerung senden", actNijeDosao:"Nicht erschienen", actOtkazi:"Stornieren", terminJe:"Termin ist ",
+    novaTitle:"Neuer Termin", fKlijent:"Kunde", fRadnik:"Mitarbeiter", fDatum:"Datum", fPocetak:"Beginn",
+    ukloni:"entfernen", dodajUslugu:"+ Leistung hinzufügen", doVremena:"bis", zakaziTermin:"Termin buchen",
+    novaHint:"Neuer Termin erhält Status „Gebucht“.", alertUsluga:"Mindestens eine Leistung hinzufügen.",
+    alertZauzet:"Der Mitarbeiter ist zu dieser Zeit belegt. Ändern Sie Zeit oder Mitarbeiter.",
+    warnZauzet1:" ist zu dieser Zeit bereits belegt:", warnZauzet2:"Ändern Sie Zeit, Mitarbeiter oder Dauer.",
+    warnVanRV:"Termin liegt außerhalb der Öffnungszeiten (09:00–19:00).", preklapaHint:"Termin überschneidet sich mit einem bestehenden.",
+    klijentiTitle:"Kunden", noviKlijent:"+ Neuer Kunde", thKlijent:"Kunde", thTelefon:"Telefon", thPosjeta:"Besuche", thPotroseno:"Ausgegeben", thSljedeci:"Nächster Termin", nema:"keiner", u:"um",
+    kUkupno:"Gesamt ausgegeben", nemaZakazanih:"keine gebucht", istorija:"Terminverlauf",
+    thDatum:"Datum", thVrijeme:"Zeit", thUsluge:"Leistungen", thIznos:"Betrag", thStatus:"Status", nemaTermina:"Keine Termine.",
+    nkTitle:"Neuer Kunde", nkIme:"Vor und Nachname *", nkImePh:"z. B. Anna Gruber", nkTel:"Telefon", nkTelPh:"+43 …", sacuvajKlijenta:"Kunde speichern",
+    cjenovnik:"Leistungspreise", novaUsluga:"+ Neue Leistung",
+    nuTitle:"Neue Leistung", nuNaziv:"Name *", nuNazivPh:"z. B. Haarkur", nuTrajanje:"Dauer (Min) *", nuCijena:"Preis (%c) *", sacuvajUslugu:"Leistung speichern", alertUslugaUnos:"Name, Dauer und Preis eingeben.",
+    pTermDanas:"Termine heute", pPrometDanas:"Erwarteter Umsatz heute", pZauzece:"Auslastung heute", pNijeDoslo:"Nicht erschienen (7 Tage)",
+    panPromet:"Umsatz nach Mitarbeiter (7 Tage)", panTop:"Top Leistungen (7 Tage)", nemaZavrsenih:"Keine abgeschlossenen Termine.",
+    pregledHint:"Umsatz zählt abgeschlossene Termine. „Auslastung“ ist der Anteil gebuchter Zeit am Arbeitstag aller Mitarbeiter.",
+    nsTitle:"Nicht erschienen (7 Tage)", klikDetalje:"Klick für Details", nemaPropustenih:"Keine verpassten Termine. 👍",
+  },
+};
+const DATES = {
+  bs:{dani:["nedjelja","ponedjeljak","utorak","srijeda","četvrtak","petak","subota"], daniS:["ned","pon","uto","sri","čet","pet","sub"], mj:["jan","feb","mar","apr","maj","jun","jul","avg","sep","okt","nov","dec"]},
+  hr:{dani:["nedjelja","ponedjeljak","utorak","srijeda","četvrtak","petak","subota"], daniS:["ned","pon","uto","sri","čet","pet","sub"], mj:["sij","velj","ožu","tra","svi","lip","srp","kol","ruj","lis","stu","pro"]},
+  sr:{dani:["nedelja","ponedeljak","utorak","sreda","četvrtak","petak","subota"], daniS:["ned","pon","uto","sre","čet","pet","sub"], mj:["jan","feb","mar","apr","maj","jun","jul","avg","sep","okt","nov","dec"]},
+  en:{dani:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], daniS:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], mj:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]},
+  de:{dani:["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"], daniS:["So","Mo","Di","Mi","Do","Fr","Sa"], mj:["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"]},
+};
+
+// ---- Podaci: brojevi zajednički, nazivi/imena po jeziku -------------------
+const OSOBLJE={S1:{boja:"#7c3aed"}, S2:{boja:"#2563eb"}, S3:{boja:"#db2777"}, S4:{boja:"#0891b2"}};
+const ONAMES = {
+  bs:{S1:{ime:"Ivana",uloga:"frizer"},S2:{ime:"Marko",uloga:"frizer"},S3:{ime:"Lejla",uloga:"kolorist"},S4:{ime:"Nina",uloga:"kozmetičar"}},
+  hr:{S1:{ime:"Ivana",uloga:"frizer"},S2:{ime:"Marko",uloga:"frizer"},S3:{ime:"Lejla",uloga:"kolorist"},S4:{ime:"Nina",uloga:"kozmetičar"}},
+  sr:{S1:{ime:"Ivana",uloga:"frizer"},S2:{ime:"Marko",uloga:"frizer"},S3:{ime:"Lejla",uloga:"kolorista"},S4:{ime:"Nina",uloga:"kozmetičar"}},
+  en:{S1:{ime:"Emma",uloga:"stylist"},S2:{ime:"Mark",uloga:"stylist"},S3:{ime:"Layla",uloga:"colorist"},S4:{ime:"Nina",uloga:"beautician"}},
+  de:{S1:{ime:"Eva",uloga:"Friseurin"},S2:{ime:"Markus",uloga:"Friseur"},S3:{ime:"Lena",uloga:"Coloristin"},S4:{ime:"Nina",uloga:"Kosmetikerin"}},
+};
+const USLUGE = {
+  U1:{tr:45,c:25}, U2:{tr:30,c:15}, U3:{tr:90,c:60}, U4:{tr:120,c:90}, U5:{tr:30,c:18},
+  U6:{tr:20,c:10}, U7:{tr:45,c:25}, U8:{tr:60,c:35}, U9:{tr:15,c:10}, U10:{tr:60,c:45},
+};
+const UNAMES = {
+  bs:{U1:"Šišanje žensko",U2:"Šišanje muško",U3:"Farbanje",U4:"Pramenovi",U5:"Fen frizura",U6:"Pranje i njega",U7:"Manikir",U8:"Gel lak",U9:"Oblikovanje obrva",U10:"Šminkanje"},
+  hr:{U1:"Žensko šišanje",U2:"Muško šišanje",U3:"Bojanje",U4:"Pramenovi",U5:"Fen frizura",U6:"Pranje i njega",U7:"Manikura",U8:"Trajni lak",U9:"Oblikovanje obrva",U10:"Šminkanje"},
+  sr:{U1:"Žensko šišanje",U2:"Muško šišanje",U3:"Farbanje",U4:"Pramenovi",U5:"Fen frizura",U6:"Pranje i nega",U7:"Manikir",U8:"Gel lak",U9:"Oblikovanje obrva",U10:"Šminkanje"},
+  en:{U1:"Women's haircut",U2:"Men's haircut",U3:"Hair coloring",U4:"Highlights",U5:"Blow-dry",U6:"Wash and care",U7:"Manicure",U8:"Gel polish",U9:"Eyebrow shaping",U10:"Makeup"},
+  de:{U1:"Damenhaarschnitt",U2:"Herrenhaarschnitt",U3:"Färben",U4:"Strähnen",U5:"Föhnfrisur",U6:"Waschen und Pflege",U7:"Maniküre",U8:"Gellack",U9:"Augenbrauen formen",U10:"Makeup"},
+};
+const KDATA = {
+  bs:{K1:{ime:"Amela Hodžić",tel:"+387 61 201 111"},K2:{ime:"Sanja Kovač",tel:"+387 65 202 222"},K3:{ime:"Emir Begić",tel:"+387 62 203 333"},K4:{ime:"Ivana Perić",tel:"+387 63 204 444"},K5:{ime:"Tarik Suljić",tel:"+387 61 205 555"},K6:{ime:"Marija Jurić",tel:"+387 66 206 666"},K7:{ime:"Lejla Demir",tel:"+387 62 207 777"},K8:{ime:"Nikolina Babić",tel:"+387 65 208 888"},K9:{ime:"Dženana Alić",tel:"+387 61 209 999"},K10:{ime:"Petra Marković",tel:"+387 63 210 000"},K11:{ime:"Vedran Kos",tel:"+387 66 211 222"},K12:{ime:"Selma Osmanović",tel:"+387 62 212 333"}},
+  hr:{K1:{ime:"Ana Horvat",tel:"+385 91 201 111"},K2:{ime:"Ivana Kovačević",tel:"+385 91 202 222"},K3:{ime:"Marko Babić",tel:"+385 95 203 333"},K4:{ime:"Petra Novak",tel:"+385 98 204 444"},K5:{ime:"Ivan Marić",tel:"+385 91 205 555"},K6:{ime:"Marija Jurić",tel:"+385 95 206 666"},K7:{ime:"Lucija Perić",tel:"+385 98 207 777"},K8:{ime:"Nikolina Knežević",tel:"+385 91 208 888"},K9:{ime:"Dora Vuković",tel:"+385 95 209 999"},K10:{ime:"Petra Marković",tel:"+385 98 210 000"},K11:{ime:"Luka Kos",tel:"+385 91 211 222"},K12:{ime:"Sara Matić",tel:"+385 95 212 333"}},
+  sr:{K1:{ime:"Jelena Jovanović",tel:"+381 61 201 111"},K2:{ime:"Ana Petrović",tel:"+381 64 202 222"},K3:{ime:"Marko Nikolić",tel:"+381 62 203 333"},K4:{ime:"Ivana Đorđević",tel:"+381 63 204 444"},K5:{ime:"Nikola Ilić",tel:"+381 61 205 555"},K6:{ime:"Marija Pavlović",tel:"+381 64 206 666"},K7:{ime:"Milica Stanković",tel:"+381 62 207 777"},K8:{ime:"Nina Popović",tel:"+381 63 208 888"},K9:{ime:"Teodora Lukić",tel:"+381 61 209 999"},K10:{ime:"Sofija Marković",tel:"+381 64 210 000"},K11:{ime:"Stefan Kostić",tel:"+381 62 211 222"},K12:{ime:"Sara Ristić",tel:"+381 63 212 333"}},
+  en:{K1:{ime:"Anna Gruber",tel:"+43 660 201 111"},K2:{ime:"Julia Huber",tel:"+43 664 202 222"},K3:{ime:"Michael Bauer",tel:"+43 676 203 333"},K4:{ime:"Sophie Wagner",tel:"+43 699 204 444"},K5:{ime:"Thomas Steiner",tel:"+43 660 205 555"},K6:{ime:"Maria Hofer",tel:"+43 664 206 666"},K7:{ime:"Laura Mayer",tel:"+43 676 207 777"},K8:{ime:"Nina Fischer",tel:"+43 699 208 888"},K9:{ime:"Emma Moser",tel:"+43 660 209 999"},K10:{ime:"Sarah Berger",tel:"+43 664 210 000"},K11:{ime:"Lukas Weber",tel:"+43 676 211 222"},K12:{ime:"Lena Wolf",tel:"+43 699 212 333"}},
+  de:{K1:{ime:"Anna Gruber",tel:"+43 660 201 111"},K2:{ime:"Julia Huber",tel:"+43 664 202 222"},K3:{ime:"Michael Bauer",tel:"+43 676 203 333"},K4:{ime:"Sophie Wagner",tel:"+43 699 204 444"},K5:{ime:"Thomas Steiner",tel:"+43 660 205 555"},K6:{ime:"Maria Hofer",tel:"+43 664 206 666"},K7:{ime:"Laura Mayer",tel:"+43 676 207 777"},K8:{ime:"Nina Fischer",tel:"+43 699 208 888"},K9:{ime:"Emma Moser",tel:"+43 660 209 999"},K10:{ime:"Sarah Berger",tel:"+43 664 210 000"},K11:{ime:"Lukas Weber",tel:"+43 676 211 222"},K12:{ime:"Lena Wolf",tel:"+43 699 212 333"}},
+};
+// termini: off = razmak dana od danas; poc "HH:MM"; u = niz ID-eva usluga
+let TERMINI = [
+  {id:"T-1", k:"K1", s:"S1", off:0, poc:"09:00", u:["U1","U5"], st:"zavrsen", pod:true},
+  {id:"T-2", k:"K3", s:"S2", off:0, poc:"09:30", u:["U2"], st:"zavrsen", pod:true},
+  {id:"T-3", k:"K7", s:"S3", off:0, poc:"09:00", u:["U3"], st:"zavrsen", pod:true},
+  {id:"T-4", k:"K2", s:"S1", off:0, poc:"10:30", u:["U1","U6"], st:"potvrdjen", pod:true},
+  {id:"T-5", k:"K5", s:"S2", off:0, poc:"11:00", u:["U2"], st:"potvrdjen", pod:true},
+  {id:"T-6", k:"K9", s:"S4", off:0, poc:"10:00", u:["U7","U8"], st:"potvrdjen", pod:true},
+  {id:"T-7", k:"K6", s:"S3", off:0, poc:"11:00", u:["U4"], st:"zakazan", pod:false},
+  {id:"T-8", k:"K4", s:"S1", off:0, poc:"12:30", u:["U1"], st:"zakazan", pod:false},
+  {id:"T-9", k:"K11", s:"S2", off:0, poc:"13:00", u:["U2","U6"], st:"zakazan", pod:false},
+  {id:"T-10", k:"K8", s:"S4", off:0, poc:"12:00", u:["U10"], st:"potvrdjen", pod:true},
+  {id:"T-11", k:"K10", s:"S3", off:0, poc:"14:00", u:["U3","U5"], st:"zakazan", pod:false},
+  {id:"T-12", k:"K12", s:"S1", off:0, poc:"15:00", u:["U1","U3"], st:"zakazan", pod:false},
+  {id:"T-13", k:"K3", s:"S2", off:0, poc:"16:00", u:["U2"], st:"zakazan", pod:false},
+  {id:"T-14", k:"K9", s:"S4", off:0, poc:"15:30", u:["U9","U7"], st:"zakazan", pod:false},
+  {id:"T-15", k:"K5", s:"S1", off:0, poc:"11:30", u:["U2"], st:"nedosao", pod:true},
+  {id:"T-20", k:"K2", s:"S1", off:-1, poc:"09:30", u:["U1","U5"], st:"zavrsen", pod:true},
+  {id:"T-21", k:"K6", s:"S3", off:-1, poc:"10:00", u:["U4"], st:"zavrsen", pod:true},
+  {id:"T-22", k:"K8", s:"S4", off:-1, poc:"11:00", u:["U7","U8"], st:"zavrsen", pod:true},
+  {id:"T-23", k:"K11", s:"S2", off:-1, poc:"12:00", u:["U2"], st:"zavrsen", pod:true},
+  {id:"T-24", k:"K1", s:"S1", off:-1, poc:"13:30", u:["U3"], st:"zavrsen", pod:true},
+  {id:"T-25", k:"K7", s:"S3", off:-1, poc:"15:00", u:["U3","U5"], st:"nedosao", pod:true},
+  {id:"T-26", k:"K10", s:"S4", off:-1, poc:"16:00", u:["U10"], st:"zavrsen", pod:true},
+  {id:"T-30", k:"K4", s:"S1", off:-2, poc:"10:00", u:["U1"], st:"zavrsen", pod:true},
+  {id:"T-31", k:"K3", s:"S2", off:-2, poc:"11:00", u:["U2","U6"], st:"zavrsen", pod:true},
+  {id:"T-32", k:"K9", s:"S4", off:-2, poc:"12:30", u:["U8"], st:"zavrsen", pod:true},
+  {id:"T-33", k:"K12", s:"S3", off:-2, poc:"14:00", u:["U4"], st:"zavrsen", pod:true},
+  {id:"T-40", k:"K2", s:"S1", off:1, poc:"09:00", u:["U1","U5"], st:"potvrdjen", pod:true},
+  {id:"T-41", k:"K5", s:"S2", off:1, poc:"10:00", u:["U2"], st:"zakazan", pod:false},
+  {id:"T-42", k:"K8", s:"S4", off:1, poc:"11:00", u:["U7","U8"], st:"zakazan", pod:false},
+  {id:"T-43", k:"K6", s:"S3", off:1, poc:"12:00", u:["U3"], st:"zakazan", pod:false},
+];
+const STCLS={zakazan:"p-zakazan",potvrdjen:"p-potvrdjen",zavrsen:"p-zavrsen",otkazan:"p-otkazan",nedosao:"p-nedosao"};
+
+// ---- Kalendar konstante + jezik -------------------------------------------
+const OPEN=540, CLOSE=1140, PXH=56;          // 09:00–19:00, 56px po satu
+let LANG=(new URLSearchParams(location.search).get("lang")||localStorage.getItem("sl_lang")||"bs").toLowerCase();
+if(!STR[LANG]) LANG="bs";
+const el = id => document.getElementById(id);
+const t = k => STR[LANG][k];
+const m2 = n => String(n).padStart(2,"0");
+const minFrom = s => { const [h,m]=s.split(":").map(Number); return h*60+m; };
+const fmtMin = m => m2(Math.floor(m/60))+":"+m2(m%60);
+function money(v){ const c=CURR[t("curr")]; const loc=LANG==="en"?"en-US":"de-DE"; return (v*c.rate).toLocaleString(loc,{minimumFractionDigits:c.dec,maximumFractionDigits:c.dec})+c.suf; }
+
+const UN = u => (UNAMES[LANG]&&UNAMES[LANG][u]) || UNAMES.bs[u] || u;
+const ON = s => (ONAMES[LANG]&&ONAMES[LANG][s]) || ONAMES.bs[s];
+const KC = k => (KDATA[LANG]&&KDATA[LANG][k]) || KDATA.bs[k];
+const oime = s => ON(s).ime;
+const kime = k => KC(k).ime;
+const stName = k => t("st_"+k);
+const stPill = k => `<span class="pill ${STCLS[k]}">${stName(k)}</span>`;
+
+function dateFromOff(off){ const d=new Date(); d.setDate(d.getDate()+off); d.setHours(0,0,0,0); return d; }
+function ymd(d){ return d.getFullYear()+"-"+m2(d.getMonth()+1)+"-"+m2(d.getDate()); }
+function offToYmd(off){ return ymd(dateFromOff(off)); }
+function longDate(d){ const D=DATES[LANG]||DATES.bs; return D.dani[d.getDay()]+", "+d.getDate()+". "+D.mj[d.getMonth()]; }
+function shortDate(d){ const D=DATES[LANG]||DATES.bs; return D.daniS[d.getDay()]+" "+d.getDate()+"."+m2(d.getMonth()+1); }
+
+const trajanje = t2 => t2.u.reduce((s,u)=>s+USLUGE[u].tr,0);
+const cijena = t2 => t2.u.reduce((s,u)=>s+USLUGE[u].c,0);
+const uslugeNazivi = t2 => t2.u.map(u=>UN(u)).join(", ");
+
+// ---- Jezik ----------------------------------------------------------------
+function setLang(l){ if(!STR[l])return; LANG=l; localStorage.setItem("sl_lang",l); closeModal(); applyStatic(); rerender(); }
+function applyStatic(){
+  document.documentElement.lang=LANG;
+  document.title=t("title");
+  el("brandTag").textContent=t("tag");
+  el("userAv").textContent=t("userInit");
+  el("userName").textContent=t("userName");
+  el("demoFlag").textContent=t("demo");
+  el("newBtn").textContent=t("newTermin");
+  el("footer").textContent=t("footer");
+  el("langSel").value=LANG;
+  document.querySelectorAll(".tab").forEach(tb=>tb.textContent=t("tab_"+tb.dataset.view));
+}
+
+// ---- Stanje ---------------------------------------------------------------
+let currentView="termini";
+let selOff=0;
+let calMode="dan";
+let weekStaff="all";
+
+function setView(v){
+  currentView=v;
+  document.querySelectorAll(".tab").forEach(tb=>tb.classList.toggle("active",tb.dataset.view===v));
+  rerender();
+}
+function rerender(){
+  if(currentView==="termini") renderTermini();
+  else if(currentView==="klijenti") renderKlijenti();
+  else if(currentView==="usluge") renderUsluge();
+  else renderPregled();
+}
+function closeModal(){el("overlay").classList.remove("open");}
+function openModalHTML(html){ el("modal").innerHTML=html; el("overlay").classList.add("open"); }
+
+// ---- Termini: kalendar (dan / sedmica) ------------------------------------
+function dayTermini(off){ return TERMINI.filter(t2=>t2.off===off); }
+function goCal(delta){ selOff += (calMode==="sedmica"?7:1)*delta; renderTermini(); }
+function goToday(){ selOff=0; renderTermini(); }
+function setMode(m){ calMode=m; renderTermini(); }
+function setWeekStaff(v){ weekStaff=v; renderTermini(); }
+function weekOffsets(baseOff){
+  const base=dateFromOff(baseOff);
+  const dow=(base.getDay()+6)%7;
+  const monOff=baseOff-dow;
+  return [0,1,2,3,4,5,6].map(i=>monOff+i);
+}
+function gutterHTML(){ let g=""; for(let mm=OPEN; mm<CLOSE; mm+=60) g+=`<div class="grow">${fmtMin(mm)}</div>`; return g; }
+function slotsHTML(){ let s=""; for(let mm=OPEN; mm<CLOSE; mm+=60) s+=`<div class="slot"></div>`; return s; }
+function layoutAppts(list){
+  const arr=list.map(t2=>({t:t2,start:minFrom(t2.poc),end:minFrom(t2.poc)+trajanje(t2)}))
+                .sort((a,b)=>a.start-b.start||a.end-b.end);
+  const laneEnd=[];
+  arr.forEach(a=>{
+    let placed=false;
+    for(let i=0;i<laneEnd.length;i++){ if(laneEnd[i]<=a.start){ a.lane=i; laneEnd[i]=a.end; placed=true; break; } }
+    if(!placed){ a.lane=laneEnd.length; laneEnd.push(a.end); }
+  });
+  let i=0;
+  while(i<arr.length){
+    let j=i, clusterEnd=arr[i].end, maxLane=arr[i].lane;
+    while(j+1<arr.length && arr[j+1].start<clusterEnd){ j++; clusterEnd=Math.max(clusterEnd,arr[j].end); maxLane=Math.max(maxLane,arr[j].lane); }
+    const cols=maxLane+1;
+    for(let k=i;k<=j;k++) arr[k].cols=cols;
+    i=j+1;
+  }
+  return arr.map(a=>({t:a.t, top:(a.start-OPEN)/60*PXH, height:Math.max(24,(a.end-a.start)/60*PXH), lane:a.lane, cols:a.cols}));
+}
+function apptBlock(lay, compact){
+  const t2=lay.t, col=OSOBLJE[t2.s].boja;
+  const leftPct=lay.lane/lay.cols*100, widPct=100/lay.cols;
+  const style=`top:${lay.top}px;height:${lay.height-3}px;left:calc(${leftPct}% + 3px);width:calc(${widPct}% - 6px);right:auto;border-left-color:${col}`;
+  const body = compact
+    ? `<div class="at">${t2.poc}</div><div class="an">${kime(t2.k)}</div>`
+    : `<div class="at">${t2.poc} · ${money(cijena(t2))}</div><div class="an">${kime(t2.k)}</div><div class="au">${uslugeNazivi(t2)}</div>`;
+  return `<div class="appt${compact?' compact':''} st-${t2.st}" style="${style}" onclick="event.stopPropagation();openTermin('${t2.id}')">${body}</div>`;
+}
+
+function renderTermini(){
+  const seg=`<div class="seg"><button class="${calMode==='dan'?'on':''}" onclick="setMode('dan')">${t("segDan")}</button><button class="${calMode==='sedmica'?'on':''}" onclick="setMode('sedmica')">${t("segSedmica")}</button></div>`;
+  if(calMode==="sedmica") renderWeek(seg); else renderDay(seg);
+}
+function renderDay(seg){
+  const staffIds=Object.keys(OSOBLJE);
+  const list=dayTermini(selOff);
+  const aktivni=list.filter(t2=>t2.st!=="otkazan");
+  const promet=aktivni.filter(t2=>t2.st!=="nedosao").reduce((s,t2)=>s+cijena(t2),0);
+  const kapacitet=staffIds.length*(CLOSE-OPEN);
+  const zauzece=Math.round(aktivni.filter(t2=>t2.st!=="nedosao").reduce((s,t2)=>s+trajanje(t2),0)/kapacitet*100);
+  const d=dateFromOff(selOff);
+  const cols=staffIds.map(sid=>{
+    const blocks=layoutAppts(list.filter(t2=>t2.s===sid)).map(l=>apptBlock(l,false)).join("");
+    return `<div class="staffcol" onclick="colClick(event,'${sid}')">${slotsHTML()}${blocks}</div>`;
+  }).join("");
+  const nowLine = selOff===0 ? nowLineHTML() : "";
+  el("view").innerHTML=`
+    <div class="daybar">
+      ${seg}
+      <button class="navbtn" onclick="goCal(-1)">‹</button>
+      <button class="today-pill" onclick="goToday()">${t("danas")}</button>
+      <button class="navbtn" onclick="goCal(1)">›</button>
+      <span class="daylabel">${longDate(d)}</span>
+      <span class="daysum">
+        <span class="chip"><b>${aktivni.length}</b> ${t("rijecTermina")}</span>
+        <span class="chip">${t("rijecPromet")} <b>${money(promet)}</b></span>
+        <span class="chip">${t("rijecZauzece")} <b>${zauzece}%</b></span>
+      </span>
+    </div>
+    <div class="calwrap">
+      <div class="calhead">
+        <div class="gutter-h"></div>
+        ${staffIds.map(sid=>`<div class="staff-h"><span class="sdot" style="background:${OSOBLJE[sid].boja}"></span>${oime(sid)}<span class="muted" style="font-weight:500">· ${ON(sid).uloga}</span></div>`).join("")}
+      </div>
+      <div class="calbody">
+        <div class="gutter">${gutterHTML()}</div>
+        ${cols}
+        ${nowLine}
+      </div>
+    </div>
+    <p class="hint" style="margin-top:10px">${t("hintDay")}</p>`;
+}
+function renderWeek(seg){
+  const offs=weekOffsets(selOff);
+  const staffIds=Object.keys(OSOBLJE);
+  const inWeek = off => { let l=dayTermini(off); if(weekStaff!=="all") l=l.filter(t2=>t2.s===weekStaff); return l; };
+  const weekList=offs.reduce((a,o)=>a.concat(inWeek(o)),[]);
+  const aktivni=weekList.filter(t2=>t2.st!=="otkazan");
+  const promet=aktivni.filter(t2=>t2.st!=="nedosao").reduce((s,t2)=>s+cijena(t2),0);
+  const d0=dateFromOff(offs[0]), d6=dateFromOff(offs[6]);
+  const rng=`${d0.getDate()}.${m2(d0.getMonth()+1)}. – ${d6.getDate()}.${m2(d6.getMonth()+1)}.`;
+  const heads=offs.map(off=>{ const d=dateFromOff(off); const tc=off===0?' is-today':''; return `<div class="staff-h${tc}">${shortDate(d)}</div>`; }).join("");
+  const cols=offs.map(off=>{
+    const blocks=layoutAppts(inWeek(off)).map(l=>apptBlock(l,true)).join("");
+    const tc=off===0?' is-today':'';
+    return `<div class="staffcol${tc}" onclick="colClickWeek(event,${off})">${slotsHTML()}${blocks}</div>`;
+  }).join("");
+  const staffOpts=`<option value="all"${weekStaff==='all'?' selected':''}>${t("sviRadnici")}</option>`+staffIds.map(s=>`<option value="${s}"${weekStaff===s?' selected':''}>${oime(s)}</option>`).join("");
+  el("view").innerHTML=`
+    <div class="daybar">
+      ${seg}
+      <button class="navbtn" onclick="goCal(-1)">‹</button>
+      <button class="today-pill" onclick="goToday()">${t("danas")}</button>
+      <button class="navbtn" onclick="goCal(1)">›</button>
+      <span class="daylabel">${rng}</span>
+      <span class="wkfilter">${t("radnik")} <select onchange="setWeekStaff(this.value)">${staffOpts}</select></span>
+      <span class="daysum">
+        <span class="chip"><b>${aktivni.length}</b> ${t("rijecTermina")}</span>
+        <span class="chip">${t("rijecPromet")} <b>${money(promet)}</b></span>
+      </span>
+    </div>
+    <div class="calwrap">
+      <div class="calhead">
+        <div class="gutter-h"></div>
+        ${heads}
+      </div>
+      <div class="calbody">
+        <div class="gutter">${gutterHTML()}</div>
+        ${cols}
+      </div>
+    </div>
+    <p class="hint" style="margin-top:10px">${t("hintWeek")}</p>`;
+}
+function nowLineHTML(){
+  const now=new Date(); const mm=now.getHours()*60+now.getMinutes();
+  if(mm<OPEN||mm>CLOSE) return "";
+  const top=(mm-OPEN)/60*PXH;
+  return `<div class="nowline" style="top:${top}px"></div>`;
+}
+function clickMin(ev){
+  const rect=ev.currentTarget.getBoundingClientRect();
+  let mm=OPEN+Math.floor((ev.clientY-rect.top)/PXH*60);
+  mm=Math.round(mm/15)*15;
+  return Math.max(OPEN,Math.min(CLOSE-15,mm));
+}
+function colClick(ev, sid){ openNoviTermin(sid, fmtMin(clickMin(ev))); }
+function colClickWeek(ev, off){
+  const sid=weekStaff!=="all"?weekStaff:Object.keys(OSOBLJE)[0];
+  openNoviTermin(sid, fmtMin(clickMin(ev)), off);
+}
+
+function openTermin(id){
+  const t2=TERMINI.find(x=>x.id===id);
+  const start=minFrom(t2.poc), end=start+trajanje(t2);
+  const rows=t2.u.map(u=>`<tr><td>${UN(u)}</td><td class="num muted">${USLUGE[u].tr} min</td><td class="num">${money(USLUGE[u].c)}</td></tr>`).join("");
+  const canConfirm=t2.st==="zakazan";
+  const canFinish=t2.st==="potvrdjen"||t2.st==="zakazan";
+  const active=t2.st!=="otkazan"&&t2.st!=="zavrsen";
+  openModalHTML(`
+    <div class="mhead">
+      <div><h2>${kime(t2.k)}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${t2.poc}–${fmtMin(end)} · ${oime(t2.s)}</div></div>
+      <div class="x" onclick="closeModal()">×</div>
+    </div>
+    <div class="mbody">
+      <div class="kv"><span class="k">${t("mStatus")}</span><span>${stPill(t2.st)}</span></div>
+      <div class="kv"><span class="k">${t("mKlijent")}</span><span><span class="link" onclick="openKlijent('${t2.k}')">${kime(t2.k)}</span> · ${KC(t2.k).tel}</span></div>
+      <div class="kv"><span class="k">${t("mRadnik")}</span><span>${oime(t2.s)} (${ON(t2.s).uloga})</span></div>
+      <div class="kv"><span class="k">${t("mPodsjetnik")}</span><span>${t2.pod?t("podsjPoslan"):'<span class="muted">'+t("podsjNije")+'</span>'}</span></div>
+      <div class="sec-title">${t("secUsluge")}</div>
+      <table class="lines">
+        <thead><tr><th>${t("thUsluga")}</th><th class="num">${t("thTrajanje")}</th><th class="num">${t("thCijena")}</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td><b>${t("ukupno")}</b></td><td class="num"><b>${trajanje(t2)} min</b></td><td class="num"><b>${money(cijena(t2))}</b></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="actions">
+      ${canConfirm?`<button class="primary" onclick="setStatus('${t2.id}','potvrdjen')">${t("actPotvrdi")}</button>`:''}
+      ${canFinish?`<button class="primary" onclick="setStatus('${t2.id}','zavrsen')">${t("actZavrsi")}</button>`:''}
+      ${!t2.pod&&active?`<button class="secondary" onclick="posaljiPodsjetnik('${t2.id}')">${t("actPosalji")}</button>`:''}
+      ${active?`<button class="secondary" onclick="setStatus('${t2.id}','nedosao')">${t("actNijeDosao")}</button>`:''}
+      ${active?`<button class="danger" onclick="setStatus('${t2.id}','otkazan')">${t("actOtkazi")}</button>`:''}
+      ${!active?`<span class="hint">${t("terminJe")}${stName(t2.st).toLowerCase()}.</span>`:''}
+    </div>`);
+}
+function setStatus(id, st){ const t2=TERMINI.find(x=>x.id===id); t2.st=st; if(st==="potvrdjen")t2.pod=true; rerender(); openTermin(id); }
+function posaljiPodsjetnik(id){ const t2=TERMINI.find(x=>x.id===id); t2.pod=true; rerender(); openTermin(id); }
+
+// ---- Novi termin ----------------------------------------------------------
+let nt={k:"",s:"",off:0,poc:"09:00",u:[]};
+function terminConflicts(off, sid, start, end, exceptId){
+  return TERMINI.filter(t2=> t2.s===sid && t2.off===off && t2.st!=="otkazan" && t2.id!==exceptId
+    && start < minFrom(t2.poc)+trajanje(t2) && minFrom(t2.poc) < end);
+}
+function openNoviTermin(prefS, prefPoc, prefOff){
+  nt={k:Object.keys(KDATA[LANG]||KDATA.bs)[0], s:prefS||Object.keys(OSOBLJE)[0], off:(prefOff!==undefined?prefOff:selOff), poc:prefPoc||"09:00", u:["U1"]};
+  renderNoviTermin();
+  el("overlay").classList.add("open");
+}
+function renderNoviTermin(){
+  const kOpts=Object.keys(KDATA[LANG]||KDATA.bs).map(k=>`<option value="${k}"${nt.k===k?" selected":""}>${kime(k)}</option>`).join("");
+  const sOpts=Object.keys(OSOBLJE).map(s=>`<option value="${s}"${nt.s===s?" selected":""}>${oime(s)} (${ON(s).uloga})</option>`).join("");
+  const uRows=nt.u.map((u,i)=>`<tr>
+      <td><select onchange="nt.u[${i}]=this.value;renderNoviTermin()">${Object.keys(USLUGE).map(x=>`<option value="${x}"${u===x?" selected":""}>${UN(x)}</option>`).join("")}</select></td>
+      <td class="num muted">${USLUGE[u].tr} min</td>
+      <td class="num">${money(USLUGE[u].c)}</td>
+      <td><span class="link" onclick="nt.u.splice(${i},1);if(!nt.u.length)nt.u=['U1'];renderNoviTermin()">${t("ukloni")}</span></td>
+    </tr>`).join("");
+  const dur=nt.u.reduce((s,u)=>s+USLUGE[u].tr,0), cij=nt.u.reduce((s,u)=>s+USLUGE[u].c,0);
+  const start=minFrom(nt.poc), end=start+dur, kraj=fmtMin(end);
+  const konflikti=terminConflicts(nt.off, nt.s, start, end);
+  const vanRV = start<OPEN || end>CLOSE;
+  let warn="";
+  if(konflikti.length){
+    warn=`<div class="warnbox"><b>⚠️ ${oime(nt.s)}${t("warnZauzet1")}</b><ul>`
+      + konflikti.map(t2=>`<li>${t2.poc}–${fmtMin(minFrom(t2.poc)+trajanje(t2))} · ${kime(t2.k)} (${uslugeNazivi(t2)})</li>`).join("")
+      + `</ul>${t("warnZauzet2")}</div>`;
+  } else if(vanRV){
+    warn=`<div class="warnbox soft">${t("warnVanRV")}</div>`;
+  }
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("novaTitle")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${longDate(dateFromOff(nt.off))}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="row2">
+        <div class="frow"><label>${t("fKlijent")}</label><select onchange="nt.k=this.value">${kOpts}</select></div>
+        <div class="frow"><label>${t("fRadnik")}</label><select onchange="nt.s=this.value;renderNoviTermin()">${sOpts}</select></div>
+      </div>
+      <div class="row2">
+        <div class="frow"><label>${t("fDatum")}</label><input type="date" value="${offToYmd(nt.off)}" onchange="nt.off=Math.round((new Date(this.value)-dateFromOff(0))/86400000);renderNoviTermin()"></div>
+        <div class="frow"><label>${t("fPocetak")}</label><input type="time" value="${nt.poc}" step="900" onchange="nt.poc=this.value;renderNoviTermin()"></div>
+      </div>
+      <div class="sec-title">${t("secUsluge")}</div>
+      <table class="lines">
+        <thead><tr><th>${t("thUsluga")}</th><th class="num">${t("thTrajanje")}</th><th class="num">${t("thCijena")}</th><th></th></tr></thead>
+        <tbody>${uRows}</tbody>
+        <tfoot><tr><td><b>${t("ukupno")}</b></td><td class="num"><b>${dur} min</b> <span class="muted">(${t("doVremena")} ${kraj})</span></td><td class="num"><b>${money(cij)}</b></td><td></td></tr></tfoot>
+      </table>
+      <button class="secondary" style="margin-top:10px" onclick="nt.u.push('U1');renderNoviTermin()">${t("dodajUslugu")}</button>
+      ${warn}
+    </div>
+    <div class="actions"><button class="primary" onclick="createTermin()"${konflikti.length?' disabled':''}>${t("zakaziTermin")}</button><span class="hint">${konflikti.length?t("preklapaHint"):t("novaHint")}</span></div>`);
+}
+function createTermin(){
+  if(!nt.u.length){ alert(t("alertUsluga")); return; }
+  const start=minFrom(nt.poc), end=start+nt.u.reduce((s,u)=>s+USLUGE[u].tr,0);
+  if(terminConflicts(nt.off, nt.s, start, end).length){ alert(t("alertZauzet")); return; }
+  const nums=TERMINI.map(t2=>+t2.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="T-"+(Math.max(0,...nums)+1);
+  TERMINI.push({id, k:nt.k, s:nt.s, off:nt.off, poc:nt.poc, u:nt.u.slice(), st:"zakazan", pod:false});
+  selOff=nt.off;
+  setView("termini");
+  openTermin(id);
+}
+
+// ---- Klijenti -------------------------------------------------------------
+function klijentStats(kid){
+  const svi=TERMINI.filter(t2=>t2.k===kid);
+  const zavrseni=svi.filter(t2=>t2.st==="zavrsen");
+  const potroseno=zavrseni.reduce((s,t2)=>s+cijena(t2),0);
+  const buduci=svi.filter(t2=>t2.off>=0 && (t2.st==="zakazan"||t2.st==="potvrdjen")).sort((a,b)=>a.off-b.off||minFrom(a.poc)-minFrom(b.poc));
+  return {svi, zavrseni, potroseno, sljedeci:buduci[0]};
+}
+function renderKlijenti(){
+  const rows=Object.keys(KDATA[LANG]||KDATA.bs).map(k=>{
+    const s=klijentStats(k);
+    const sl=s.sljedeci? `${longDate(dateFromOff(s.sljedeci.off))} ${t("u")} ${s.sljedeci.poc}` : '<span class="muted">'+t("nema")+'</span>';
+    return `<tr onclick="openKlijent('${k}')">
+      <td><b>${kime(k)}</b></td><td class="muted">${KC(k).tel}</td>
+      <td class="num">${s.zavrseni.length}</td><td class="num">${money(s.potroseno)}</td><td>${sl}</td></tr>`;
+  }).join("");
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("klijentiTitle")}</h3><button class="newbtn" onclick="openNoviKlijent()">${t("noviKlijent")}</button></div>
+    <table class="tbl">
+      <thead><tr><th>${t("thKlijent")}</th><th>${t("thTelefon")}</th><th class="num">${t("thPosjeta")}</th><th class="num">${t("thPotroseno")}</th><th>${t("thSljedeci")}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+function openKlijent(kid){
+  const k=KC(kid), s=klijentStats(kid);
+  const hist=s.svi.slice().sort((a,b)=>b.off-a.off||minFrom(b.poc)-minFrom(a.poc)).map(t2=>`
+    <tr onclick="openTermin('${t2.id}')">
+      <td>${longDate(dateFromOff(t2.off))}</td><td class="muted">${t2.poc}</td>
+      <td>${uslugeNazivi(t2)}</td><td class="num">${money(cijena(t2))}</td>
+      <td>${stPill(t2.st)}</td></tr>`).join("");
+  openModalHTML(`
+    <div class="mhead"><div><h2>${k.ime}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${k.tel}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="kv"><span class="k">${t("thPosjeta")}</span><span>${s.zavrseni.length}</span></div>
+      <div class="kv"><span class="k">${t("kUkupno")}</span><span><b>${money(s.potroseno)}</b></span></div>
+      <div class="kv"><span class="k">${t("thSljedeci")}</span><span>${s.sljedeci? longDate(dateFromOff(s.sljedeci.off))+" "+t("u")+" "+s.sljedeci.poc : '<span class="muted">'+t("nemaZakazanih")+'</span>'}</span></div>
+      <div class="sec-title">${t("istorija")}</div>
+      <table class="lines">
+        <thead><tr><th>${t("thDatum")}</th><th>${t("thVrijeme")}</th><th>${t("thUsluge")}</th><th class="num">${t("thIznos")}</th><th>${t("thStatus")}</th></tr></thead>
+        <tbody>${hist||'<tr><td colspan="5" class="muted">'+t("nemaTermina")+'</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="actions"><button class="primary" onclick="closeModal();openNoviTermin('${s.svi[0]?s.svi[0].s:''}')">${t("newTermin")}</button></div>`);
+}
+function openNoviKlijent(){
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("nkTitle")}</h2></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="frow"><label>${t("nkIme")}</label><input id="nk_ime" placeholder="${t("nkImePh")}"></div>
+      <div class="frow"><label>${t("nkTel")}</label><input id="nk_tel" placeholder="${t("nkTelPh")}"></div>
+    </div>
+    <div class="actions"><button class="primary" onclick="createKlijent()">${t("sacuvajKlijenta")}</button></div>`);
+  setTimeout(()=>el("nk_ime").focus(),40);
+}
+function createKlijent(){
+  const ime=(el("nk_ime").value||"").trim();
+  if(!ime){el("nk_ime").focus();return;}
+  const tel=(el("nk_tel").value||"").trim()||"—";
+  const nums=Object.keys(KDATA.bs).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
+  const id="K"+(Math.max(0,...nums)+1);
+  Object.keys(KDATA).forEach(l=>{ KDATA[l][id]={ime,tel}; });
+  setView("klijenti");
+  openKlijent(id);
+}
+
+// ---- Usluge ---------------------------------------------------------------
+function renderUsluge(){
+  const rows=Object.entries(USLUGE).map(([k,u])=>`<tr>
+      <td><b>${UN(k)}</b></td><td class="num">${u.tr} min</td><td class="num">${money(u.c)}</td></tr>`).join("");
+  el("view").innerHTML=`
+    <div class="viewhead"><h3>${t("cjenovnik")}</h3><button class="newbtn" onclick="openNovaUsluga()">${t("novaUsluga")}</button></div>
+    <table class="tbl">
+      <thead><tr><th>${t("thUsluga")}</th><th class="num">${t("thTrajanje")}</th><th class="num">${t("thCijena")}</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+function openNovaUsluga(){
+  const curLabel=t("nuCijena").replace("%c", CURR[t("curr")].suf.trim());
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("nuTitle")}</h2></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody">
+      <div class="frow"><label>${t("nuNaziv")}</label><input id="nu_n" placeholder="${t("nuNazivPh")}"></div>
+      <div class="row2">
+        <div class="frow"><label>${t("nuTrajanje")}</label><input id="nu_tr" type="number" min="5" step="5" value="30"></div>
+        <div class="frow"><label>${curLabel}</label><input id="nu_c" type="number" min="0" step="0.5" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="actions"><button class="primary" onclick="createUsluga()">${t("sacuvajUslugu")}</button></div>`);
+  setTimeout(()=>el("nu_n").focus(),40);
+}
+function createUsluga(){
+  const n=(el("nu_n").value||"").trim();
+  const tr=parseInt(el("nu_tr").value), cLoc=parseFloat(el("nu_c").value);
+  if(!n||isNaN(tr)||tr<=0||isNaN(cLoc)||cLoc<0){alert(t("alertUslugaUnos"));return;}
+  const c=cLoc/CURR[t("curr")].rate;      // natrag u baznu valutu (KM)
+  const nums=Object.keys(USLUGE).map(k=>+k.slice(1)).filter(x=>!isNaN(x));
+  const id="U"+(Math.max(0,...nums)+1);
+  USLUGE[id]={tr,c};
+  Object.keys(UNAMES).forEach(l=>{ UNAMES[l][id]=n; });
+  closeModal();
+  setView("usluge");
+}
+
+// ---- Pregled / izvještaji -------------------------------------------------
+function weekTermini(){ return TERMINI.filter(t2=>t2.off<=0 && t2.off>=-6); }
+function bar(label,v,max,dot){
+  const d = dot?`<span class="sdot" style="background:${dot}"></span>`:"";
+  return `<div class="bar"><span class="blab">${d}${label}</span><span class="track"><span class="fill" style="width:${Math.max(4,v/max*100)}%"></span></span><span class="val">${money(v)}</span></div>`;
+}
+function renderPregled(){
+  const dan=dayTermini(0);
+  const danAkt=dan.filter(t2=>t2.st!=="otkazan");
+  const prometDan=danAkt.filter(t2=>t2.st!=="nedosao").reduce((s,t2)=>s+cijena(t2),0);
+  const kapac=Object.keys(OSOBLJE).length*(CLOSE-OPEN);
+  const zauzece=Math.round(danAkt.filter(t2=>t2.st!=="nedosao").reduce((s,t2)=>s+trajanje(t2),0)/kapac*100);
+  const wk=weekTermini();
+  const noShow=wk.filter(t2=>t2.st==="nedosao").length;
+
+  const perS=Object.keys(OSOBLJE).map(sid=>({sid, ime:oime(sid), boja:OSOBLJE[sid].boja,
+    v:wk.filter(t2=>t2.s===sid&&t2.st==="zavrsen").reduce((s,t2)=>s+cijena(t2),0)})).sort((a,b)=>b.v-a.v);
+  const maxS=Math.max(...perS.map(x=>x.v),1);
+  const sBars=perS.map(x=>bar(x.ime,x.v,maxS,x.boja)).join("");
+
+  const uRev={};
+  wk.filter(t2=>t2.st==="zavrsen").forEach(t2=>t2.u.forEach(u=>{uRev[u]=(uRev[u]||0)+USLUGE[u].c;}));
+  const topU=Object.entries(uRev).map(([u,v])=>({n:UN(u),v})).sort((a,b)=>b.v-a.v).slice(0,6);
+  const maxU=Math.max(...topU.map(x=>x.v),1);
+  const uBars=topU.map(x=>bar(x.n,x.v,maxU)).join("")||'<span class="hint">'+t("nemaZavrsenih")+'</span>';
+
+  el("view").innerHTML=`
+    <div class="kpis">
+      <div class="kpi clk" onclick="setView('termini')"><div class="big">${danAkt.length}</div><div class="lab">${t("pTermDanas")}</div></div>
+      <div class="kpi"><div class="big">${money(prometDan)}</div><div class="lab">${t("pPrometDanas")}</div></div>
+      <div class="kpi"><div class="big">${zauzece}%</div><div class="lab">${t("pZauzece")}</div></div>
+      <div class="kpi clk" onclick="openNoShow()"><div class="big">${noShow}</div><div class="lab">${t("pNijeDoslo")}</div></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>${t("panPromet")}</h3>${sBars}</div>
+      <div class="panel"><h3>${t("panTop")}</h3>${uBars}</div>
+    </div>
+    <p class="hint">${t("pregledHint")}</p>`;
+}
+function openNoShow(){
+  const arr=weekTermini().filter(t2=>t2.st==="nedosao").sort((a,b)=>b.off-a.off);
+  const rows=arr.length?arr.map(t2=>`<tr onclick="openTermin('${t2.id}')">
+      <td>${longDate(dateFromOff(t2.off))}</td><td class="muted">${t2.poc}</td><td>${kime(t2.k)}</td>
+      <td>${oime(t2.s)}</td><td class="num">${money(cijena(t2))}</td></tr>`).join("")
+    : '<tr><td colspan="5" class="muted" style="padding:16px;text-align:center">'+t("nemaPropustenih")+'</td></tr>';
+  openModalHTML(`
+    <div class="mhead"><div><h2>${t("nsTitle")}</h2><div style="font-size:13px;opacity:.9;margin-top:4px">${arr.length} ${t("rijecTermina")} · ${t("klikDetalje")}</div></div><div class="x" onclick="closeModal()">×</div></div>
+    <div class="mbody"><table class="lines">
+      <thead><tr><th>${t("thDatum")}</th><th>${t("thVrijeme")}</th><th>${t("thKlijent")}</th><th>${t("mRadnik")}</th><th class="num">${t("thIznos")}</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`);
+}
+
+applyStatic();
+setView("termini");
+</script>
+</body>
+</html>
