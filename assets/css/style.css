@@ -1291,3 +1291,5 @@ p {
 .mo-form .form-group{margin-bottom:1.1rem}
 .mo-form textarea{min-height:90px}
 @media (max-width:1024px){.mo-grid{grid-template-columns:1fr;gap:2.5rem}}
+
+.lang-toggle .current-flag{font-size:1.15rem;line-height:1}
