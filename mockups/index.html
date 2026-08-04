@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Datamaks — Prototipi</title>
+<title>Datamaks · Prototipi</title>
 <meta name="description" content="Klikabilni prototipi rješenja koja Datamaks gradi. Izmišljeni podaci, stvarna logika i tok ekrana kao u produkciji.">
 <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <style>
@@ -42,62 +42,162 @@
 <body>
 
 <div class="top"><div class="wrap">
-  <a class="logo" href="https://datamaks.net">datamaks</a>
-  <nav><a href="https://datamaks.net">Sajt</a><a href="https://datamaks.net/#kontakt">Kontakt</a></nav>
+  <a class="logo" data-link="home" href="https://datamaks.net/">datamaks</a>
+  <nav><a data-link="home" data-i18n="navSajt" href="https://datamaks.net/">Sajt</a><a data-link="contact" data-i18n="navKontakt" href="https://datamaks.net/#kontakt">Kontakt</a></nav>
 </div></div>
 
 <section><div class="wrap">
-  <div class="eyebrow">Portfolio</div>
-  <h1>Prototipi koje možete kliknuti</h1>
-  <p class="lead">Umjesto slajdova — radni prikazi rješenja koja gradimo. Svaki prototip koristi izmišljene podatke, ali tok ekrana i logika su isti kao u produkciji.</p>
+  <div class="eyebrow" data-i18n="eyebrow">Portfolio</div>
+  <h1 data-i18n="h1">Prototipi koje možete kliknuti</h1>
+  <p class="lead" data-i18n="lead">Umjesto slajdova, radni prikazi rješenja koja gradimo. Svaki prototip koristi izmišljene podatke, ali tok ekrana i logika su isti kao u produkciji.</p>
 
   <div class="grid">
     <a class="card" href="veletrade/?v=1">
-      <span class="tag">Veleprodaja · Distribucija</span>
-      <h2>Veletrade — sistem za veleprodaju</h2>
-      <p>Narudžbe kroz faze, zalihe sa alarmom niskog stanja, kartica kupca i izvještaji. Kreiranje narudžbe umanjuje zalihe, sve povezano i klikabilno.</p>
-      <div class="mono">Narudžbe · Zalihe · Kupci · Izvještaji</div>
-      <span class="go">Otvori prototip →</span>
+      <span class="tag" data-i18n="vtTag">Veleprodaja · Distribucija</span>
+      <h2 data-i18n="vtH2">Veletrade · sistem za veleprodaju</h2>
+      <p data-i18n="vtP">Narudžbe kroz faze, zalihe sa alarmom niskog stanja, kartica kupca i izvještaji. Isporuka umanjuje zalihe, sve povezano i klikabilno.</p>
+      <div class="mono" data-i18n="vtMono">Narudžbe · Zalihe · Kupci · Izvještaji</div>
+      <span class="go" data-i18n="go">Otvori prototip →</span>
     </a>
     <a class="card" href="studio-lumen/?v=1">
-      <span class="tag">Salon · Zakazivanje</span>
-      <h2>Studio Lumen · zakazivanje termina</h2>
-      <p>Dnevni i sedmični kalendar po radniku, statusi termina, provjera preklapanja, kartoni klijenata, cjenovnik usluga i izvještaji.</p>
-      <div class="mono">Termini · Klijenti · Usluge · Pregled</div>
-      <span class="go">Otvori prototip →</span>
+      <span class="tag" data-i18n="slTag">Salon · Zakazivanje</span>
+      <h2 data-i18n="slH2">Studio Lumen · zakazivanje termina</h2>
+      <p data-i18n="slP">Dnevni i sedmični kalendar po radniku, statusi termina, provjera preklapanja, kartoni klijenata, cjenovnik usluga i izvještaji.</p>
+      <div class="mono" data-i18n="slMono">Termini · Klijenti · Usluge · Pregled</div>
+      <span class="go" data-i18n="go">Otvori prototip →</span>
     </a>
     <a class="card" href="lignum/?v=1">
-      <span class="tag">Proizvodnja · Namještaj po mjeri</span>
-      <h2>Lignum · praćenje proizvodnje</h2>
-      <p>Kanban tabla radnih naloga kroz faze (nacrt, rezanje, CNC, montaža, lakiranje), blokade, materijali sa alarmom zaliha, rok po fazi, isporuka i montaža, izvještaji.</p>
-      <div class="mono">Tabla · Nalozi · Materijal · Faze · Pregled</div>
-      <span class="go">Otvori prototip →</span>
+      <span class="tag" data-i18n="lgTag">Proizvodnja · Namještaj po mjeri</span>
+      <h2 data-i18n="lgH2">Lignum · praćenje proizvodnje</h2>
+      <p data-i18n="lgP">Kanban tabla radnih naloga kroz faze (nacrt, rezanje, CNC, montaža, lakiranje), blokade, materijali sa alarmom zaliha, rok po fazi, isporuka i montaža, izvještaji.</p>
+      <div class="mono" data-i18n="lgMono">Tabla · Nalozi · Materijal · Faze · Pregled</div>
+      <span class="go" data-i18n="go">Otvori prototip →</span>
     </a>
   </div>
 
-  <p class="note">Napomena: svi prototipi koriste izmišljene podatke.</p>
+  <p class="note" data-i18n="note">Napomena: svi prototipi koriste izmišljene podatke.</p>
 </div></section>
 
 <section class="cta"><div class="wrap">
-  <h2>Zanima vas nešto slično?</h2>
-  <p class="lead">Pošaljite kratak opis problema — javljamo se sa procjenom obima i rokom.</p>
-  <a class="btn" href="https://datamaks.net/#kontakt">Zakaži razgovor</a>
+  <h2 data-i18n="ctaH2">Zanima vas nešto slično?</h2>
+  <p class="lead" data-i18n="ctaLead">Pošaljite kratak opis problema, javljamo se sa procjenom obima i rokom.</p>
+  <a class="btn" data-link="contact" data-i18n="ctaBtn" href="https://datamaks.net/#kontakt">Zakaži razgovor</a>
 </div></section>
 
 <footer><div class="wrap">
   <span>© 2026 Datamaks d.o.o.</span><span class="sp"></span>
-  <a href="https://datamaks.net">datamaks.net</a>
+  <a data-link="home" href="https://datamaks.net/">datamaks.net</a>
 </div></footer>
 
 <script>
 (function(){
-  var l=new URLSearchParams(location.search).get('lang');
-  if(!l||['bs','en','de','hr','sr'].indexOf(l)<0) return;
-  document.documentElement.lang=l;
+  var LANGS=['bs','en','de','hr','sr'];
+  var q=new URLSearchParams(location.search).get('lang');
+  var L=(q&&LANGS.indexOf(q)>=0)?q:'bs';
+
+  var T={
+    bs:{ title:"Datamaks · Prototipi",
+      desc:"Klikabilni prototipi rješenja koja Datamaks gradi. Izmišljeni podaci, stvarna logika i tok ekrana kao u produkciji.",
+      navSajt:"Sajt", navKontakt:"Kontakt", eyebrow:"Portfolio",
+      h1:"Prototipi koje možete kliknuti",
+      lead:"Umjesto slajdova, radni prikazi rješenja koja gradimo. Svaki prototip koristi izmišljene podatke, ali tok ekrana i logika su isti kao u produkciji.",
+      vtTag:"Veleprodaja · Distribucija", vtH2:"Veletrade · sistem za veleprodaju",
+      vtP:"Narudžbe kroz faze, zalihe sa alarmom niskog stanja, kartica kupca i izvještaji. Isporuka umanjuje zalihe, sve povezano i klikabilno.",
+      vtMono:"Narudžbe · Zalihe · Kupci · Izvještaji",
+      slTag:"Salon · Zakazivanje", slH2:"Studio Lumen · zakazivanje termina",
+      slP:"Dnevni i sedmični kalendar po radniku, statusi termina, provjera preklapanja, kartoni klijenata, cjenovnik usluga i izvještaji.",
+      slMono:"Termini · Klijenti · Usluge · Pregled",
+      lgTag:"Proizvodnja · Namještaj po mjeri", lgH2:"Lignum · praćenje proizvodnje",
+      lgP:"Kanban tabla radnih naloga kroz faze (nacrt, rezanje, CNC, montaža, lakiranje), blokade, materijali sa alarmom zaliha, rok po fazi, isporuka i montaža, izvještaji.",
+      lgMono:"Tabla · Nalozi · Materijal · Faze · Pregled",
+      go:"Otvori prototip →", note:"Napomena: svi prototipi koriste izmišljene podatke.",
+      ctaH2:"Zanima vas nešto slično?", ctaLead:"Pošaljite kratak opis problema, javljamo se sa procjenom obima i rokom.", ctaBtn:"Zakaži razgovor" },
+    en:{ title:"Datamaks · Prototypes",
+      desc:"Clickable prototypes of solutions Datamaks builds. Sample data, real logic and screen flow like in production.",
+      navSajt:"Website", navKontakt:"Contact", eyebrow:"Portfolio",
+      h1:"Prototypes you can click through",
+      lead:"Instead of slides, working views of the solutions we build. Every prototype uses sample data, but the screen flow and logic are the same as in production.",
+      vtTag:"Wholesale · Distribution", vtH2:"Veletrade · wholesale system",
+      vtP:"Orders through stages, stock with low-stock alerts, customer card and reports. Delivering an order reduces stock, all connected and clickable.",
+      vtMono:"Orders · Inventory · Customers · Reports",
+      slTag:"Salon · Booking", slH2:"Studio Lumen · appointment booking",
+      slP:"Daily and weekly calendar per stylist, appointment statuses, overlap check, client cards, service price list and reports.",
+      slMono:"Calendar · Clients · Services · Overview",
+      lgTag:"Production · Custom furniture", lgH2:"Lignum · production tracking",
+      lgP:"Kanban board of work orders through stages (design, cutting, CNC, assembly, finishing), blocks, materials with stock alerts, per-stage due dates, delivery and installation, reports.",
+      lgMono:"Board · Orders · Materials · Stages · Overview",
+      go:"Open prototype →", note:"Note: all prototypes use sample data.",
+      ctaH2:"Interested in something similar?", ctaLead:"Send a short description of your problem, we reply with a scope estimate and timeline.", ctaBtn:"Book a call" },
+    de:{ title:"Datamaks · Prototypen",
+      desc:"Klickbare Prototypen der Lösungen, die Datamaks baut. Beispieldaten, echte Logik und Bildschirmablauf wie in der Produktion.",
+      navSajt:"Website", navKontakt:"Kontakt", eyebrow:"Portfolio",
+      h1:"Prototypen zum Durchklicken",
+      lead:"Statt Folien, funktionierende Ansichten der Lösungen, die wir bauen. Jeder Prototyp nutzt Beispieldaten, aber Bildschirmablauf und Logik sind wie in der Produktion.",
+      vtTag:"Großhandel · Distribution", vtH2:"Veletrade · Großhandelssystem",
+      vtP:"Bestellungen durch Phasen, Lager mit Warnung bei niedrigem Bestand, Kundenkarte und Berichte. Die Lieferung reduziert den Bestand, alles verbunden und klickbar.",
+      vtMono:"Bestellungen · Lager · Kunden · Berichte",
+      slTag:"Salon · Terminbuchung", slH2:"Studio Lumen · Terminbuchung",
+      slP:"Tages und Wochenkalender pro Mitarbeiter, Terminstatus, Überschneidungsprüfung, Kundenkarten, Leistungspreise und Berichte.",
+      slMono:"Kalender · Kunden · Leistungen · Übersicht",
+      lgTag:"Produktion · Möbel nach Maß", lgH2:"Lignum · Produktionsverfolgung",
+      lgP:"Kanban Board der Arbeitsaufträge durch Phasen (Entwurf, Zuschnitt, CNC, Montage, Lackierung), Blockaden, Material mit Bestandswarnung, Termine je Phase, Lieferung und Montage, Berichte.",
+      lgMono:"Board · Aufträge · Material · Phasen · Übersicht",
+      go:"Prototyp öffnen →", note:"Hinweis: alle Prototypen nutzen Beispieldaten.",
+      ctaH2:"Interesse an etwas Ähnlichem?", ctaLead:"Senden Sie eine kurze Beschreibung Ihres Problems, wir melden uns mit Umfangsschätzung und Termin.", ctaBtn:"Gespräch vereinbaren" },
+    hr:{ title:"Datamaks · Prototipovi",
+      desc:"Klikabilni prototipovi rješenja koja Datamaks gradi. Izmišljeni podaci, stvarna logika i tok ekrana kao u produkciji.",
+      navSajt:"Stranica", navKontakt:"Kontakt", eyebrow:"Portfolio",
+      h1:"Prototipovi koje možete kliknuti",
+      lead:"Umjesto slajdova, radni prikazi rješenja koja gradimo. Svaki prototip koristi izmišljene podatke, ali tok ekrana i logika su isti kao u produkciji.",
+      vtTag:"Veleprodaja · Distribucija", vtH2:"Veletrade · sustav za veleprodaju",
+      vtP:"Narudžbe kroz faze, zalihe s alarmom niskog stanja, kartica kupca i izvještaji. Isporuka umanjuje zalihe, sve povezano i klikabilno.",
+      vtMono:"Narudžbe · Zalihe · Kupci · Izvještaji",
+      slTag:"Salon · Zakazivanje", slH2:"Studio Lumen · zakazivanje termina",
+      slP:"Dnevni i tjedni kalendar po djelatniku, statusi termina, provjera preklapanja, kartoni klijenata, cjenik usluga i izvještaji.",
+      slMono:"Termini · Klijenti · Usluge · Pregled",
+      lgTag:"Proizvodnja · Namještaj po mjeri", lgH2:"Lignum · praćenje proizvodnje",
+      lgP:"Kanban ploča radnih naloga kroz faze (nacrt, rezanje, CNC, montaža, lakiranje), blokade, materijali s alarmom zaliha, rok po fazi, isporuka i montaža, izvještaji.",
+      lgMono:"Tabla · Nalozi · Materijal · Faze · Pregled",
+      go:"Otvori prototip →", note:"Napomena: svi prototipovi koriste izmišljene podatke.",
+      ctaH2:"Zanima vas nešto slično?", ctaLead:"Pošaljite kratak opis problema, javljamo se s procjenom opsega i rokom.", ctaBtn:"Zakaži razgovor" },
+    sr:{ title:"Datamaks · Prototipovi",
+      desc:"Klikabilni prototipovi rešenja koja Datamaks gradi. Izmišljeni podaci, stvarna logika i tok ekrana kao u produkciji.",
+      navSajt:"Sajt", navKontakt:"Kontakt", eyebrow:"Portfolio",
+      h1:"Prototipovi koje možete kliknuti",
+      lead:"Umesto slajdova, radni prikazi rešenja koja gradimo. Svaki prototip koristi izmišljene podatke, ali tok ekrana i logika su isti kao u produkciji.",
+      vtTag:"Veleprodaja · Distribucija", vtH2:"Veletrade · sistem za veleprodaju",
+      vtP:"Narudžbe kroz faze, zalihe sa alarmom niskog stanja, kartica kupca i izveštaji. Isporuka umanjuje zalihe, sve povezano i klikabilno.",
+      vtMono:"Narudžbe · Zalihe · Kupci · Izveštaji",
+      slTag:"Salon · Zakazivanje", slH2:"Studio Lumen · zakazivanje termina",
+      slP:"Dnevni i nedeljni kalendar po radniku, statusi termina, provera preklapanja, kartoni klijenata, cenovnik usluga i izveštaji.",
+      slMono:"Termini · Klijenti · Usluge · Pregled",
+      lgTag:"Proizvodnja · Nameštaj po meri", lgH2:"Lignum · praćenje proizvodnje",
+      lgP:"Kanban tabla radnih naloga kroz faze (nacrt, rezanje, CNC, montaža, lakiranje), blokade, materijali sa alarmom zaliha, rok po fazi, isporuka i montaža, izveštaji.",
+      lgMono:"Tabla · Nalozi · Materijal · Faze · Pregled",
+      go:"Otvori prototip →", note:"Napomena: svi prototipovi koriste izmišljene podatke.",
+      ctaH2:"Zanima vas nešto slično?", ctaLead:"Pošaljite kratak opis problema, javljamo se sa procenom obima i rokom.", ctaBtn:"Zakaži razgovor" },
+  };
+  var d=T[L];
+
+  document.documentElement.lang=L;
+  document.title=d.title;
+  var md=document.querySelector('meta[name="description"]'); if(md) md.setAttribute('content', d.desc);
+
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];
+  });
+
+  // lokalizovani linkovi ka naslovnoj / kontaktu
+  var base = L==='bs' ? 'https://datamaks.net/' : 'https://datamaks.net/'+L+'/';
+  document.querySelectorAll('[data-link]').forEach(function(a){
+    a.setAttribute('href', a.getAttribute('data-link')==='contact' ? base+'#kontakt' : base);
+  });
+
+  // prosljeđivanje jezika karticama prototipa
   document.querySelectorAll('a.card[href]').forEach(function(a){
     var h=a.getAttribute('href');
     if(/^(veletrade|studio-lumen|lignum)\//.test(h)){
-      a.setAttribute('href', h + (h.indexOf('?')>=0?'&':'?') + 'lang=' + l);
+      a.setAttribute('href', h + (h.indexOf('?')>=0?'&':'?') + 'lang=' + L);
     }
   });
 })();
