@@ -89,5 +89,18 @@
   <a href="https://datamaks.net">datamaks.net</a>
 </div></footer>
 
+<script>
+(function(){
+  var l=new URLSearchParams(location.search).get('lang');
+  if(!l||['bs','en','de','hr','sr'].indexOf(l)<0) return;
+  document.documentElement.lang=l;
+  document.querySelectorAll('a.card[href]').forEach(function(a){
+    var h=a.getAttribute('href');
+    if(/^(veletrade|studio-lumen|lignum)\//.test(h)){
+      a.setAttribute('href', h + (h.indexOf('?')>=0?'&':'?') + 'lang=' + l);
+    }
+  });
+})();
+</script>
 </body>
 </html>
