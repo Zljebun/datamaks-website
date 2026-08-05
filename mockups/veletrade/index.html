@@ -110,6 +110,9 @@
     .lines th,.lines td{padding:7px 8px;font-size:13px}
     .kv .k{width:110px}
   }
+  .cta-back{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:6px;background:#166534;color:#fff;font-weight:700;font-size:13px;font-family:inherit;padding:11px 16px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.28);text-decoration:none;transition:transform .15s,box-shadow .15s;max-width:82vw}
+  .cta-back:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.34)}
+  @media(max-width:560px){.cta-back{right:12px;bottom:12px;font-size:12px;padding:10px 13px}}
 </style>
 </head>
 <body>
@@ -142,6 +145,8 @@
 
 <div id="view" class="wrap"></div>
 <footer id="footer">Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<a id="ctaBack" class="cta-back" target="_top" rel="noopener" href="#">Napravi ovakav za svoju firmu  &rarr;</a>
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal"></div>
@@ -382,6 +387,7 @@ if(!STR[LANG]) LANG="bs";
 const el = id => document.getElementById(id);
 const t = k => STR[LANG][k];
 function setLang(l){ if(!STR[l])return; LANG=l; localStorage.setItem("vt_lang",l); closeModal(); applyStatic(); rerender(); }
+const CTA_BACK={bs:"Napravi ovakav za svoju firmu",hr:"Napravi ovakav za svoju firmu",sr:"Napravi ovakav za svoju firmu",en:"Build one for your business",de:"So etwas für Ihre Firma"};
 function applyStatic(){
   document.documentElement.lang=LANG;
   document.title=t("title");
@@ -392,6 +398,10 @@ function applyStatic(){
   el("newOrderBtn").textContent=t("newOrder");
   el("footer").textContent=t("footer");
   el("langSel").value=LANG;
+  var _cb=el("ctaBack");
+  if(_cb){ var _b=(LANG==="bs")?"https://datamaks.net/":"https://datamaks.net/"+LANG+"/";
+    _cb.href=_b+"?utm_source=mockup&utm_medium=cta&utm_campaign=veletrade#mockup";
+    _cb.textContent=(CTA_BACK[LANG]||CTA_BACK.bs)+"  →"; }
   document.querySelectorAll(".tab").forEach(tb=>tb.textContent=t("tab_"+tb.dataset.view));
 }
 
