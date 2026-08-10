@@ -438,6 +438,14 @@ p {
   color: var(--primary);
 }
 
+.hero-tagline {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
 .hero .lead {
   margin-bottom: 2rem;
 }

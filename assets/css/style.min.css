@@ -59,3 +59,5 @@
 @media (max-width:1024px){.mo-grid{grid-template-columns:1fr;gap:2.5rem}}
 
 .lang-toggle .current-flag{font-size:1.15rem;line-height:1}
+
+.hero-tagline{font-size:1.35rem;font-weight:600;color:#334155;line-height:1.4;margin-bottom:1rem}
