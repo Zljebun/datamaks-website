@@ -497,7 +497,8 @@
           </div>
         </div>
 
-        <form class="contact-form" id="contact-form" action="https://formspree.io/f/mdagjdlk" method="POST">
+        <form class="contact-form" id="contact-form" action="https://tjufkzervoxvyteomaww.supabase.co/functions/v1/contact" method="POST">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
           <input type="hidden" name="_subject" value="New message from datamaks.net (EN)">
           <div class="form-group">
             <label for="name">Your Name *</label>
@@ -660,11 +661,19 @@
         submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
 
+        const payload = {
+          ime: (form.querySelector('[name=name]')||{}).value||'',
+          email: (form.querySelector('[name=email]')||{}).value||'',
+          firma: (form.querySelector('[name=company]')||{}).value||'',
+          tip: (form.querySelector('[name=topic]')||{}).value||'',
+          poruka: (form.querySelector('[name=message]')||{}).value||'',
+          _gotcha: (form.querySelector('[name=_gotcha]')||{}).value||''
+        };
         try {
-          const response = await fetch(form.action, {
+          const response = await fetch("https://tjufkzervoxvyteomaww.supabase.co/functions/v1/contact", {
             method: 'POST',
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
           });
           if (response.ok) {
             window.location.href = '/en/thank-you.html';
