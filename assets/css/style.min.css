@@ -79,3 +79,8 @@
 .process-steps.anim-ready::before{transform:scaleX(0);transform-origin:left}
 .process-steps.anim-in::before{transform:scaleX(1);transform-origin:left;transition:transform .9s ease .35s}
 @media (prefers-reduced-motion:reduce){.process-steps.anim-ready .service-card{opacity:1;animation:none}.process-steps.anim-ready::before,.process-steps.anim-in::before{transform:scaleX(1)}}
+
+/* a11y contrast fix */
+.problems .problem-solution strong{color:#60a5fa}
+.process-rok{color:#475569}
+.optional{color:#475569}
