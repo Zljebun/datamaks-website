@@ -82,5 +82,5 @@
 
 /* a11y contrast fix */
 .problems .problem-solution strong{color:#60a5fa}
-.process-rok{color:#475569}
-.optional{color:#475569}
+.section-header p.process-rok{color:#475569}
+.form-group label .optional{color:#475569}
