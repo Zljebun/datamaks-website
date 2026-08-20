@@ -63,3 +63,8 @@
 .hero-tagline{font-size:1.35rem;font-weight:600;color:#334155;line-height:1.4;margin-bottom:1rem}
 
 .service-icon svg{width:36px;height:36px}.service-icon{box-shadow:0 10px 22px rgba(30,64,175,.22)}
+
+.process-steps{position:relative}
+.process-steps>.service-card{position:relative;z-index:1}
+.process-steps::before{content:"";position:absolute;top:124px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,rgba(30,64,175,.7),rgba(59,130,246,.7));border-radius:2px;z-index:0}
+@media (max-width:1024px){.process-steps::before{display:none}}
