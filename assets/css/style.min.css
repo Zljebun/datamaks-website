@@ -61,3 +61,5 @@
 .lang-toggle .current-flag{font-size:1.15rem;line-height:1}
 
 .hero-tagline{font-size:1.35rem;font-weight:600;color:#334155;line-height:1.4;margin-bottom:1rem}
+
+.service-icon svg{width:36px;height:36px}.service-icon{box-shadow:0 10px 22px rgba(30,64,175,.22)}
