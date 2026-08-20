@@ -68,3 +68,14 @@
 .process-steps>.service-card{position:relative;z-index:1}
 .process-steps::before{content:"";position:absolute;top:124px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,rgba(30,64,175,.7),rgba(59,130,246,.7));border-radius:2px;z-index:0}
 @media (max-width:1024px){.process-steps::before{display:none}}
+
+@keyframes stepIn{from{opacity:0;translate:0 22px}to{opacity:1;translate:0 0}}
+.process-steps.anim-ready .service-card{opacity:0}
+.process-steps.anim-in .service-card{animation:stepIn .6s ease forwards}
+.process-steps.anim-in .service-card:nth-child(1){animation-delay:.1s}
+.process-steps.anim-in .service-card:nth-child(2){animation-delay:.25s}
+.process-steps.anim-in .service-card:nth-child(3){animation-delay:.4s}
+.process-steps.anim-in .service-card:nth-child(4){animation-delay:.55s}
+.process-steps.anim-ready::before{transform:scaleX(0);transform-origin:left}
+.process-steps.anim-in::before{transform:scaleX(1);transform-origin:left;transition:transform .9s ease .35s}
+@media (prefers-reduced-motion:reduce){.process-steps.anim-ready .service-card{opacity:1;animation:none}.process-steps.anim-ready::before,.process-steps.anim-in::before{transform:scaleX(1)}}
