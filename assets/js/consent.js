@@ -50,6 +50,7 @@
     document.head.appendChild(s);
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
+    window.gtag = gtag;
     gtag('js', new Date());
     gtag('config', GA_ID, { anonymize_ip: true });
     // Kontakt forma preusmjerava na /thank-you.html — svaka posjeta te strane je
@@ -125,7 +126,26 @@
     requestAnimationFrame(function () { bar.classList.add('is-visible'); });
   }
 
+  // Mjerenje klika na prototipe (funnel korak 2). Delegirani listener; šalje
+  // GA4 event samo ako je GA učitan (uz pristanak) — inače tiho ne radi ništa.
+  function attachProtoTracking() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="/mockups/"]');
+      if (!a || typeof window.gtag !== 'function') return;
+      var href = a.getAttribute('href') || '';
+      // izvuci naziv prototipa iz putanje /mockups/<naziv>/...
+      var m = href.match(/\/mockups\/([^\/?#]+)/);
+      var item = m ? m[1] : 'svi';
+      window.gtag('event', 'select_content', {
+        content_type: 'prototip',
+        item_id: item,
+        link_url: href
+      });
+    }, true);
+  }
+
   function init() {
+    attachProtoTracking();
     var choice = readChoice();
     if (choice === 'granted') { loadGA(); return; }
     if (choice === 'denied') { return; }
