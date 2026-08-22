@@ -417,19 +417,6 @@ p {
   max-width: 600px;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  color: var(--white);
-  font-size: 0.875rem;
-  font-weight: 600;
-  border-radius: var(--radius-full);
-  margin-bottom: 1.5rem;
-}
-
 .hero h1 {
   margin-bottom: 1.5rem;
 }
