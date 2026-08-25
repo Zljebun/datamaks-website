@@ -262,6 +262,7 @@
         <h2>Kako radimo</h2>
         <p>Od prvog razgovora do live rješenja, i ostajemo uz vas nakon toga.</p>
         <p class="process-rok">Tipično 3 do 5 tjedana do prvog upotrebljivog rješenja (MVP), pa nastavljamo fazno.</p>
+        <p class="process-hint">Kliknite na svaki korak za detaljnu priču i primjere.</p>
       </div>
       <div class="services-grid process-steps">
         <div class="service-card">
@@ -506,6 +507,40 @@
     .problem-solution strong{color:#1e40af}
     .process-rok{margin-top:10px;display:inline-block;background:#eff6ff;color:#1e40af;font-weight:600;padding:8px 14px;border-radius:999px;font-size:.95rem}
     body[data-theme="dark"] .process-rok{background:#1e293b;color:#93c5fd}
+    /* Kako radimo - klikabilni koraci + modal (DWEB-30) */
+    .process-hint{margin-top:8px;color:#64748b;font-size:.92rem}
+    body[data-theme="dark"] .process-hint{color:#94a3b8}
+    .step-clickable{cursor:pointer;position:relative;transition:transform .18s ease,box-shadow .18s ease}
+    .step-clickable:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(30,64,175,.16)}
+    .step-clickable:focus-visible{outline:3px solid rgba(30,64,175,.35);outline-offset:3px}
+    .step-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;color:#1e40af;font-weight:600;font-size:.9rem;transition:gap .18s ease}
+    .step-clickable:hover .step-more{gap:11px}
+    body[data-theme="dark"] .step-more{color:#93c5fd}
+    .step-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px}
+    .step-modal[hidden]{display:none}
+    .step-modal__backdrop{position:absolute;inset:0;background:rgba(2,6,23,.62);backdrop-filter:blur(4px)}
+    .step-modal__card{position:relative;background:#fff;width:100%;max-width:640px;max-height:90vh;overflow:auto;border-radius:22px;box-shadow:0 30px 80px rgba(2,6,23,.45);animation:smUp .28s cubic-bezier(.2,.7,.3,1)}
+    @keyframes smUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    .step-modal__x{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.92);color:#0f172a;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 10px rgba(2,6,23,.18)}
+    .step-modal__x:hover{background:#fff}
+    .sm-head{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:30px 34px 26px;display:flex;align-items:center;gap:18px}
+    .sm-badge{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px}
+    .sm-head h3{margin:0;font-size:1.5rem;line-height:1.2;color:#fff}
+    .sm-tag{margin:4px 0 0;opacity:.9;font-size:.95rem}
+    .sm-illu{display:flex;justify-content:center;padding:24px 34px 4px}
+    .sm-illu svg{width:100%;max-width:330px;height:auto}
+    .sm-body{padding:10px 34px 32px}
+    .sm-body p{margin:0 0 14px;color:#334155;font-size:1rem;line-height:1.65}
+    .sm-list{list-style:none;margin:18px 0 24px;padding:0}
+    .sm-list li{position:relative;padding:9px 0 9px 32px;color:#0f172a;font-size:.98rem;border-bottom:1px solid #f1f5f9}
+    .sm-list li:before{content:"";position:absolute;left:2px;top:11px;width:18px;height:18px;border-radius:50%;background:#dbeafe}
+    .sm-list li:after{content:"";position:absolute;left:8px;top:14px;width:4px;height:9px;border-right:2px solid #1e40af;border-bottom:2px solid #1e40af;transform:rotate(45deg)}
+    body[data-theme="dark"] .step-modal__card{background:#0f172a}
+    body[data-theme="dark"] .step-modal__x{background:rgba(15,23,42,.9);color:#e2e8f0}
+    body[data-theme="dark"] .sm-body p{color:#cbd5e1}
+    body[data-theme="dark"] .sm-list li{color:#e2e8f0;border-bottom-color:#1e293b}
+    body[data-theme="dark"] .sm-list li:before{background:#1e293b}
+    @media(max-width:560px){.sm-head{padding:24px 22px}.sm-illu,.sm-body{padding-left:22px;padding-right:22px}.sm-head h3{font-size:1.3rem}}
     body[data-theme="dark"] .problem-solution{color:#cbd5e1}
   </style>
 
@@ -520,6 +555,15 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       <span class="chat-text">WhatsApp</span>
     </a>
+  </div>
+
+  <!-- Kako radimo - modal koraka (DWEB-30) -->
+  <div class="step-modal" id="stepModal" role="dialog" aria-modal="true" aria-labelledby="smTitle" hidden>
+    <div class="step-modal__backdrop" data-close></div>
+    <div class="step-modal__card">
+      <button class="step-modal__x" type="button" data-close aria-label="X">&times;</button>
+      <div id="stepModalContent"></div>
+    </div>
   </div>
 
   <footer class="footer">
@@ -660,6 +704,42 @@
         btn.setAttribute('aria-expanded', !isOpen);
       });
     });
+
+    // Kako radimo - modal koraka (DWEB-30)
+    (function(){
+      var STEPS = {"1": {"title": "Analiza procesa", "tag": "Razumijemo kako zaista radite", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><rect x=\"66\" y=\"22\" width=\"150\" height=\"156\" rx=\"12\" fill=\"#eff6ff\" stroke=\"#bfdbfe\" stroke-width=\"2\"/><rect x=\"86\" y=\"46\" width=\"110\" height=\"10\" rx=\"5\" fill=\"#bfdbfe\"/><rect x=\"86\" y=\"68\" width=\"90\" height=\"8\" rx=\"4\" fill=\"#dbeafe\"/><rect x=\"86\" y=\"88\" width=\"110\" height=\"8\" rx=\"4\" fill=\"#dbeafe\"/><rect x=\"86\" y=\"108\" width=\"70\" height=\"8\" rx=\"4\" fill=\"#dbeafe\"/><circle cx=\"206\" cy=\"126\" r=\"42\" fill=\"rgba(37,99,235,.12)\"/><circle cx=\"206\" cy=\"126\" r=\"31\" fill=\"#fff\" stroke=\"#2563eb\" stroke-width=\"6\"/><circle cx=\"206\" cy=\"126\" r=\"11\" fill=\"#93c5fd\"/><line x1=\"230\" y1=\"150\" x2=\"260\" y2=\"180\" stroke=\"#1e40af\" stroke-width=\"11\" stroke-linecap=\"round\"/></svg>", "body": ["Sjednemo s vama i prođemo korak po korak kako vam danas teče posao. Od trenutka kad stigne narudžba, preko materijala i proizvodnje, do isporuke i naplate.", "Cilj nije nametnuti vam tuđi način rada, nego točno vidjeti gdje se gubi vrijeme, gdje nastaju pogreške i gdje papir i tablice usporavaju tim."], "list": ["Mapa vašeg procesa, korak po korak", "Popis uskih grla i gdje se gubi vrijeme", "Jasni prioriteti: što prvo digitalizirati", "Realna procjena opsega i troška"]}, "2": {"title": "Dizajn rješenja", "tag": "Sustav po vašoj logici, ne obratno", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><rect x=\"58\" y=\"28\" width=\"224\" height=\"152\" rx=\"14\" fill=\"#eff6ff\" stroke=\"#bfdbfe\" stroke-width=\"2\"/><path d=\"M58 42a14 14 0 0 1 14-14h196a14 14 0 0 1 14 14v11H58z\" fill=\"#2563eb\"/><circle cx=\"74\" cy=\"40\" r=\"3.6\" fill=\"#fff\"/><circle cx=\"86\" cy=\"40\" r=\"3.6\" fill=\"#fff\"/><circle cx=\"98\" cy=\"40\" r=\"3.6\" fill=\"#fff\"/><rect x=\"74\" y=\"66\" width=\"84\" height=\"52\" rx=\"9\" fill=\"#dbeafe\"/><rect x=\"168\" y=\"66\" width=\"100\" height=\"22\" rx=\"7\" fill=\"#bfdbfe\"/><rect x=\"168\" y=\"96\" width=\"100\" height=\"22\" rx=\"7\" fill=\"#dbeafe\"/><rect x=\"74\" y=\"128\" width=\"194\" height=\"14\" rx=\"7\" fill=\"#dbeafe\"/><rect x=\"74\" y=\"150\" width=\"120\" height=\"14\" rx=\"7\" fill=\"#93c5fd\"/></svg>", "body": ["Na temelju analize projektiramo rješenje koje prati vašu logiku rada. Ekrane, podatke i tok, tako da tim odmah zna gdje što ide.", "Prije nego se napiše i jedna linija koda, dobivate klikabilan prototip. Vidite kako sustav izgleda i radi, pa mijenjamo dok ne bude kako treba."], "list": ["Klikabilan prototip prije razvoja", "Ekrani i tok prilagođeni vašem timu", "Dogovorene funkcije, bez suvišnog", "Vi potvrđujete izgled prije gradnje"]}, "3": {"title": "Implementacija", "tag": "Fazno, da rezultate vidite brzo", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><line x1=\"58\" y1=\"172\" x2=\"286\" y2=\"172\" stroke=\"#bfdbfe\" stroke-width=\"3\"/><rect x=\"74\" y=\"122\" width=\"36\" height=\"50\" rx=\"7\" fill=\"#93c5fd\"/><rect x=\"128\" y=\"98\" width=\"36\" height=\"74\" rx=\"7\" fill=\"#60a5fa\"/><rect x=\"182\" y=\"72\" width=\"36\" height=\"100\" rx=\"7\" fill=\"#2563eb\"/><rect x=\"236\" y=\"46\" width=\"36\" height=\"126\" rx=\"7\" fill=\"#1e40af\"/><circle cx=\"254\" cy=\"34\" r=\"17\" fill=\"#22c55e\"/><path d=\"M246 34l6 6 10-11\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>", "body": ["Gradimo i postavljamo sustav u fazama. Svaka faza je upotrebljiva, pa počnete koristiti prvi dio dok mi razvijamo ostalo.", "Tako brzo vidite vrijednost i dajete povratne informacije usput, a nema rizika velikog prekida ni čekanja mjesecima na sve odjednom."], "list": ["Prvi upotrebljiv rezultat tipično za 3 do 5 tjedana", "Isporuka u fazama, bez velikog prekida", "Vaše povratne informacije ugrađujemo usput", "Prijenos podataka iz postojećih tablica"]}, "4": {"title": "Podrška", "tag": "Ostajemo uz vas i nakon lansiranja", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><path d=\"M168 24l58 20v42c0 40-27 62-58 74-31-12-58-34-58-74V44z\" fill=\"#eff6ff\" stroke=\"#2563eb\" stroke-width=\"3\"/><path d=\"M146 96l15 15 28-32\" fill=\"none\" stroke=\"#1e40af\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M246 150v-40\" stroke=\"#22c55e\" stroke-width=\"7\" stroke-linecap=\"round\"/><path d=\"M235 122l11-14 11 14\" fill=\"none\" stroke=\"#22c55e\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>", "body": ["Kad sustav zaživi, ne nestajemo. Obučimo vaš tim da ga koristi samostalno i sigurno, na vašem jeziku i primjerima.", "Kako posao raste i mijenja se, sustav raste s vama. Tu smo za tehničku podršku, dorade i nove funkcije kad zatrebaju."], "list": ["Obuka tima na vašim primjerima", "Tehnička podrška kad zatreba", "Dorade i nove funkcije kako rastete", "Dugoročno partnerstvo, ne jednokratni projekt"]}};
+      var MORE = "Detaljnije", CTA = "Zakažite razgovor", SCROLL = "kontakt";
+      var ARROW = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+      var modal = document.getElementById('stepModal');
+      var content = document.getElementById('stepModalContent');
+      if(!modal || !content) return;
+      var lastFocus = null;
+      function render(n){
+        var s = STEPS[n]; if(!s) return;
+        var paras = s.body.map(function(p){return '<p>'+p+'</p>';}).join('');
+        var lis = s.list.map(function(x){return '<li>'+x+'</li>';}).join('');
+        content.innerHTML =
+          '<div class="sm-head"><div class="sm-badge">'+n+'</div><div><h3 id="smTitle">'+s.title+'</h3><p class="sm-tag">'+s.tag+'</p></div></div>'+
+          '<div class="sm-illu">'+s.illu+'</div>'+
+          '<div class="sm-body">'+paras+'<ul class="sm-list">'+lis+'</ul>'+
+          '<a href="#'+SCROLL+'" class="btn btn-primary sm-cta" data-close data-scroll="'+SCROLL+'">'+CTA+'</a></div>';
+      }
+      function openStep(n){ lastFocus=document.activeElement; render(n); modal.hidden=false; document.body.style.overflow='hidden'; var x=modal.querySelector('.step-modal__x'); if(x) x.focus(); }
+      function closeStep(scrollTo){ modal.hidden=true; document.body.style.overflow=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); if(scrollTo){var t=document.getElementById(scrollTo); if(t) t.scrollIntoView({behavior:'smooth',block:'start'});} }
+      var cards = document.querySelectorAll('.process-steps .service-card');
+      cards.forEach(function(card,i){
+        var n=String(i+1);
+        card.classList.add('step-clickable');
+        card.setAttribute('role','button'); card.setAttribute('tabindex','0');
+        card.setAttribute('data-step',n); card.setAttribute('aria-haspopup','dialog');
+        if(!card.querySelector('.step-more')){ var sp=document.createElement('span'); sp.className='step-more'; sp.innerHTML=MORE+' '+ARROW; card.appendChild(sp); }
+        card.addEventListener('click', function(){ openStep(card.getAttribute('data-step')); });
+        card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openStep(card.getAttribute('data-step')); } });
+      });
+      modal.addEventListener('click', function(e){ var c=e.target.closest('[data-close]'); if(c){ e.preventDefault(); closeStep(c.getAttribute('data-scroll')); } });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.hidden) closeStep(); });
+    })();
+
 
     // Mobile menu toggle
     const mobileToggle = document.querySelector('.mobile-toggle');

@@ -299,6 +299,7 @@
         <h2>How We Work</h2>
         <p>From the first conversation to a live solution, and we stay with you afterwards.</p>
         <p class="process-rok">Typically 3 to 5 weeks to a first usable solution (MVP), then we continue in phases.</p>
+        <p class="process-hint">Click each step for the full story and examples.</p>
       </div>
 
       <div class="services-grid process-steps">
@@ -562,6 +563,40 @@
     .problem-solution strong{color:#1e40af}
     .process-rok{margin-top:10px;display:inline-block;background:#eff6ff;color:#1e40af;font-weight:600;padding:8px 14px;border-radius:999px;font-size:.95rem}
     body[data-theme="dark"] .process-rok{background:#1e293b;color:#93c5fd}
+    /* Kako radimo - klikabilni koraci + modal (DWEB-30) */
+    .process-hint{margin-top:8px;color:#64748b;font-size:.92rem}
+    body[data-theme="dark"] .process-hint{color:#94a3b8}
+    .step-clickable{cursor:pointer;position:relative;transition:transform .18s ease,box-shadow .18s ease}
+    .step-clickable:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(30,64,175,.16)}
+    .step-clickable:focus-visible{outline:3px solid rgba(30,64,175,.35);outline-offset:3px}
+    .step-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;color:#1e40af;font-weight:600;font-size:.9rem;transition:gap .18s ease}
+    .step-clickable:hover .step-more{gap:11px}
+    body[data-theme="dark"] .step-more{color:#93c5fd}
+    .step-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px}
+    .step-modal[hidden]{display:none}
+    .step-modal__backdrop{position:absolute;inset:0;background:rgba(2,6,23,.62);backdrop-filter:blur(4px)}
+    .step-modal__card{position:relative;background:#fff;width:100%;max-width:640px;max-height:90vh;overflow:auto;border-radius:22px;box-shadow:0 30px 80px rgba(2,6,23,.45);animation:smUp .28s cubic-bezier(.2,.7,.3,1)}
+    @keyframes smUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    .step-modal__x{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.92);color:#0f172a;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 10px rgba(2,6,23,.18)}
+    .step-modal__x:hover{background:#fff}
+    .sm-head{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:30px 34px 26px;display:flex;align-items:center;gap:18px}
+    .sm-badge{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px}
+    .sm-head h3{margin:0;font-size:1.5rem;line-height:1.2;color:#fff}
+    .sm-tag{margin:4px 0 0;opacity:.9;font-size:.95rem}
+    .sm-illu{display:flex;justify-content:center;padding:24px 34px 4px}
+    .sm-illu svg{width:100%;max-width:330px;height:auto}
+    .sm-body{padding:10px 34px 32px}
+    .sm-body p{margin:0 0 14px;color:#334155;font-size:1rem;line-height:1.65}
+    .sm-list{list-style:none;margin:18px 0 24px;padding:0}
+    .sm-list li{position:relative;padding:9px 0 9px 32px;color:#0f172a;font-size:.98rem;border-bottom:1px solid #f1f5f9}
+    .sm-list li:before{content:"";position:absolute;left:2px;top:11px;width:18px;height:18px;border-radius:50%;background:#dbeafe}
+    .sm-list li:after{content:"";position:absolute;left:8px;top:14px;width:4px;height:9px;border-right:2px solid #1e40af;border-bottom:2px solid #1e40af;transform:rotate(45deg)}
+    body[data-theme="dark"] .step-modal__card{background:#0f172a}
+    body[data-theme="dark"] .step-modal__x{background:rgba(15,23,42,.9);color:#e2e8f0}
+    body[data-theme="dark"] .sm-body p{color:#cbd5e1}
+    body[data-theme="dark"] .sm-list li{color:#e2e8f0;border-bottom-color:#1e293b}
+    body[data-theme="dark"] .sm-list li:before{background:#1e293b}
+    @media(max-width:560px){.sm-head{padding:24px 22px}.sm-illu,.sm-body{padding-left:22px;padding-right:22px}.sm-head h3{font-size:1.3rem}}
     body[data-theme="dark"] .problem-solution{color:#cbd5e1}
   </style>
 
@@ -579,6 +614,15 @@
   </div>
 
   <!-- Footer -->
+  <!-- Kako radimo - modal koraka (DWEB-30) -->
+  <div class="step-modal" id="stepModal" role="dialog" aria-modal="true" aria-labelledby="smTitle" hidden>
+    <div class="step-modal__backdrop" data-close></div>
+    <div class="step-modal__card">
+      <button class="step-modal__x" type="button" data-close aria-label="X">&times;</button>
+      <div id="stepModalContent"></div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
@@ -727,6 +771,42 @@
         btn.setAttribute('aria-expanded', !isOpen);
       });
     });
+
+    // Kako radimo - modal koraka (DWEB-30)
+    (function(){
+      var STEPS = {"1": {"title": "Process Analysis", "tag": "We understand how you really work", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><rect x=\"66\" y=\"22\" width=\"150\" height=\"156\" rx=\"12\" fill=\"#eff6ff\" stroke=\"#bfdbfe\" stroke-width=\"2\"/><rect x=\"86\" y=\"46\" width=\"110\" height=\"10\" rx=\"5\" fill=\"#bfdbfe\"/><rect x=\"86\" y=\"68\" width=\"90\" height=\"8\" rx=\"4\" fill=\"#dbeafe\"/><rect x=\"86\" y=\"88\" width=\"110\" height=\"8\" rx=\"4\" fill=\"#dbeafe\"/><rect x=\"86\" y=\"108\" width=\"70\" height=\"8\" rx=\"4\" fill=\"#dbeafe\"/><circle cx=\"206\" cy=\"126\" r=\"42\" fill=\"rgba(37,99,235,.12)\"/><circle cx=\"206\" cy=\"126\" r=\"31\" fill=\"#fff\" stroke=\"#2563eb\" stroke-width=\"6\"/><circle cx=\"206\" cy=\"126\" r=\"11\" fill=\"#93c5fd\"/><line x1=\"230\" y1=\"150\" x2=\"260\" y2=\"180\" stroke=\"#1e40af\" stroke-width=\"11\" stroke-linecap=\"round\"/></svg>", "body": ["We sit down with you and walk through your workflow step by step. From the moment an order arrives, through materials and production, to delivery and invoicing.", "The goal is not to impose someone else's way of working, but to see exactly where time is lost, where mistakes happen and where paper and spreadsheets slow the team down."], "list": ["A map of your process, step by step", "A list of bottlenecks and where time is lost", "Clear priorities: what to digitalize first", "A realistic estimate of scope and cost"]}, "2": {"title": "Solution Design", "tag": "A system built around your logic, not the other way round", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><rect x=\"58\" y=\"28\" width=\"224\" height=\"152\" rx=\"14\" fill=\"#eff6ff\" stroke=\"#bfdbfe\" stroke-width=\"2\"/><path d=\"M58 42a14 14 0 0 1 14-14h196a14 14 0 0 1 14 14v11H58z\" fill=\"#2563eb\"/><circle cx=\"74\" cy=\"40\" r=\"3.6\" fill=\"#fff\"/><circle cx=\"86\" cy=\"40\" r=\"3.6\" fill=\"#fff\"/><circle cx=\"98\" cy=\"40\" r=\"3.6\" fill=\"#fff\"/><rect x=\"74\" y=\"66\" width=\"84\" height=\"52\" rx=\"9\" fill=\"#dbeafe\"/><rect x=\"168\" y=\"66\" width=\"100\" height=\"22\" rx=\"7\" fill=\"#bfdbfe\"/><rect x=\"168\" y=\"96\" width=\"100\" height=\"22\" rx=\"7\" fill=\"#dbeafe\"/><rect x=\"74\" y=\"128\" width=\"194\" height=\"14\" rx=\"7\" fill=\"#dbeafe\"/><rect x=\"74\" y=\"150\" width=\"120\" height=\"14\" rx=\"7\" fill=\"#93c5fd\"/></svg>", "body": ["Based on the analysis we design a solution that follows your way of working. The screens, data and flow, so the team immediately knows where everything goes.", "Before a single line of code is written, you get a clickable prototype. You see how the system looks and works, and we adjust it until it fits."], "list": ["A clickable prototype before development", "Screens and flow tailored to your team", "Agreed features, nothing unnecessary", "You approve the look before we build"]}, "3": {"title": "Implementation", "tag": "In phases, so you see results fast", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><line x1=\"58\" y1=\"172\" x2=\"286\" y2=\"172\" stroke=\"#bfdbfe\" stroke-width=\"3\"/><rect x=\"74\" y=\"122\" width=\"36\" height=\"50\" rx=\"7\" fill=\"#93c5fd\"/><rect x=\"128\" y=\"98\" width=\"36\" height=\"74\" rx=\"7\" fill=\"#60a5fa\"/><rect x=\"182\" y=\"72\" width=\"36\" height=\"100\" rx=\"7\" fill=\"#2563eb\"/><rect x=\"236\" y=\"46\" width=\"36\" height=\"126\" rx=\"7\" fill=\"#1e40af\"/><circle cx=\"254\" cy=\"34\" r=\"17\" fill=\"#22c55e\"/><path d=\"M246 34l6 6 10-11\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>", "body": ["We build and roll out the system in phases. Each phase is usable, so you start using the first part while we develop the rest.", "That way you see value quickly and give feedback along the way, with no risk of a big disruption or waiting months for everything at once."], "list": ["A first usable result typically in 3 to 5 weeks", "Delivery in phases, with no major disruption", "We build in your feedback along the way", "Migration of data from your existing spreadsheets"]}, "4": {"title": "Support", "tag": "We stay with you after launch", "illu": "<svg viewBox=\"0 0 340 200\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-hidden=\"true\"><path d=\"M168 24l58 20v42c0 40-27 62-58 74-31-12-58-34-58-74V44z\" fill=\"#eff6ff\" stroke=\"#2563eb\" stroke-width=\"3\"/><path d=\"M146 96l15 15 28-32\" fill=\"none\" stroke=\"#1e40af\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M246 150v-40\" stroke=\"#22c55e\" stroke-width=\"7\" stroke-linecap=\"round\"/><path d=\"M235 122l11-14 11 14\" fill=\"none\" stroke=\"#22c55e\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>", "body": ["When the system goes live, we do not disappear. We train your team to use it independently and confidently, in your language and with your examples.", "As your business grows and changes, the system grows with you. We are here for technical support, adjustments and new features when you need them."], "list": ["Team training on your own examples", "Technical support when you need it", "Adjustments and new features as you grow", "A long-term partnership, not a one-off project"]}};
+      var MORE = "More details", CTA = "Book a call", SCROLL = "contact";
+      var ARROW = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+      var modal = document.getElementById('stepModal');
+      var content = document.getElementById('stepModalContent');
+      if(!modal || !content) return;
+      var lastFocus = null;
+      function render(n){
+        var s = STEPS[n]; if(!s) return;
+        var paras = s.body.map(function(p){return '<p>'+p+'</p>';}).join('');
+        var lis = s.list.map(function(x){return '<li>'+x+'</li>';}).join('');
+        content.innerHTML =
+          '<div class="sm-head"><div class="sm-badge">'+n+'</div><div><h3 id="smTitle">'+s.title+'</h3><p class="sm-tag">'+s.tag+'</p></div></div>'+
+          '<div class="sm-illu">'+s.illu+'</div>'+
+          '<div class="sm-body">'+paras+'<ul class="sm-list">'+lis+'</ul>'+
+          '<a href="#'+SCROLL+'" class="btn btn-primary sm-cta" data-close data-scroll="'+SCROLL+'">'+CTA+'</a></div>';
+      }
+      function openStep(n){ lastFocus=document.activeElement; render(n); modal.hidden=false; document.body.style.overflow='hidden'; var x=modal.querySelector('.step-modal__x'); if(x) x.focus(); }
+      function closeStep(scrollTo){ modal.hidden=true; document.body.style.overflow=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); if(scrollTo){var t=document.getElementById(scrollTo); if(t) t.scrollIntoView({behavior:'smooth',block:'start'});} }
+      var cards = document.querySelectorAll('.process-steps .service-card');
+      cards.forEach(function(card,i){
+        var n=String(i+1);
+        card.classList.add('step-clickable');
+        card.setAttribute('role','button'); card.setAttribute('tabindex','0');
+        card.setAttribute('data-step',n); card.setAttribute('aria-haspopup','dialog');
+        if(!card.querySelector('.step-more')){ var sp=document.createElement('span'); sp.className='step-more'; sp.innerHTML=MORE+' '+ARROW; card.appendChild(sp); }
+        card.addEventListener('click', function(){ openStep(card.getAttribute('data-step')); });
+        card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openStep(card.getAttribute('data-step')); } });
+      });
+      modal.addEventListener('click', function(e){ var c=e.target.closest('[data-close]'); if(c){ e.preventDefault(); closeStep(c.getAttribute('data-scroll')); } });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.hidden) closeStep(); });
+    })();
+
 
     // Mobile menu toggle
     const mobileToggle = document.querySelector('.mobile-toggle');
