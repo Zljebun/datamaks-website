@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Napravite prototip za svoju proizvodnju namještaja · Datamaks</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--b1:#1e3a8a;--b2:#1e40af;--b3:#2563eb;--acc:#93c5fd;--ink:#0f172a;--mut:#64748b;--line:#e2e8f0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:#f1f5f9}
+  .hero{background:linear-gradient(135deg,var(--b1),var(--b3));color:#fff;padding:48px 20px 90px;text-align:center}
+  .hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;line-height:1.2;max-width:720px;margin:0 auto 12px}
+  .hero p{opacity:.9;max-width:620px;margin:0 auto;font-size:16px}
+  .wrap{max-width:760px;margin:-60px auto 60px;padding:0 16px}
+  .card{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(2,6,23,.10);padding:26px}
+  .step{font-size:13px;font-weight:700;color:var(--b2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+  h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;margin-bottom:18px}
+  label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}
+  input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;font-family:inherit;background:#fff}
+  input:focus,select:focus{outline:none;border-color:var(--b3);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+  .field{margin-bottom:16px}
+  .orders{margin-top:8px}
+  .order{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:#f8fafc;position:relative}
+  .order .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .order .full{grid-column:1/3}
+  .order h4{font-size:13px;color:var(--mut);margin-bottom:10px;font-weight:700}
+  .rm{position:absolute;top:10px;right:10px;background:none;border:none;color:#ef4444;font-size:13px;cursor:pointer;font-weight:600}
+  .add{background:#eef2ff;color:var(--b2);border:1px dashed #c7d2fe;padding:10px;border-radius:10px;width:100%;font-weight:600;cursor:pointer;font-size:14px}
+  .add:disabled{opacity:.5;cursor:not-allowed}
+  .note{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .go{margin-top:20px;width:100%;background:linear-gradient(135deg,var(--b2),var(--b3));color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+  .go:hover{filter:brightness(1.05)}
+  .foot{text-align:center;color:var(--mut);font-size:12.5px;margin-top:14px}
+  @media(max-width:520px){.order .grid{grid-template-columns:1fr}.order .full{grid-column:auto}}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Napravite prototip softvera za svoju proizvodnju namještaja po mjeri</h1>
+    <p>Unesite par svojih naloga i za par sekundi dobijate klikabilni prototip praćenja proizvodnje, na vašim primjerima.</p>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="step">Korak 1 · vaša firma</div>
+      <div class="field">
+        <label for="firma">Naziv firme</label>
+        <input id="firma" type="text" placeholder="npr. Namještaj Kovačević" maxlength="40">
+      </div>
+
+      <div class="step">Korak 2 · vaši nalozi (do 5)</div>
+      <h2 style="margin-bottom:8px">Unesite nekoliko trenutnih naloga</h2>
+      <div class="orders" id="orders"></div>
+      <button class="add" id="addBtn" type="button">+ Dodaj nalog</button>
+      <div class="note">Demo je ograničen na 5 naloga. Puna verzija nema ograničenja i ima materijale, zalihe, izvještaje, priloge i rokove po fazi.</div>
+
+      <button class="go" id="go" type="button">Napravi moj prototip →</button>
+      <div class="foot">Izmišljeni ili vaši primjeri · prototip · Datamaks</div>
+    </div>
+  </div>
+
+<script>
+const FAZE=["Nacrt i mjere","Rezanje","CNC obrada","Kantiranje","Montaža","Lakiranje","Spremno"];
+const MAX=5;
+const ordersEl=document.getElementById('orders');
+const addBtn=document.getElementById('addBtn');
+const samples=[
+  {p:"Kuhinja po mjeri",n:"Restoran Dunav",d:"4.2 m + otok",f:"Rezanje",r:"7"},
+  {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6"}
+];
+function fazaOptions(sel){return FAZE.map(f=>`<option ${f===sel?'selected':''}>${f}</option>`).join('');}
+function orderHTML(o={}){
+  return `<div class="order">
+    <button class="rm" type="button" onclick="this.parentNode.remove();refresh()">Ukloni</button>
+    <h4>NALOG</h4>
+    <div class="grid">
+      <div class="full"><label>Proizvod</label><input class="p" maxlength="40" value="${o.p||''}" placeholder="npr. Kuhinja po mjeri"></div>
+      <div><label>Naručilac</label><input class="n" maxlength="40" value="${o.n||''}" placeholder="npr. Marić"></div>
+      <div><label>Dimenzije</label><input class="d" maxlength="30" value="${o.d||''}" placeholder="npr. 3.0 × 2.4 m"></div>
+      <div><label>Faza</label><select class="f">${fazaOptions(o.f)}</select></div>
+      <div><label>Rok (dana)</label><input class="r" type="number" min="0" max="90" value="${o.r||''}" placeholder="npr. 7"></div>
+    </div>
+  </div>`;
+}
+function refresh(){
+  const n=ordersEl.children.length;
+  addBtn.disabled = n>=MAX;
+  addBtn.textContent = n>=MAX ? "Dostignut limit demo verzije (5)" : "+ Dodaj nalog";
+}
+function addOrder(o){ if(ordersEl.children.length>=MAX) return; ordersEl.insertAdjacentHTML('beforeend',orderHTML(o)); refresh(); }
+samples.forEach(addOrder);
+addBtn.onclick=()=>addOrder();
+
+function b64(json){ return btoa(unescape(encodeURIComponent(json))); }
+document.getElementById('go').onclick=()=>{
+  const firma=(document.getElementById('firma').value||'').trim() || 'Vaša firma';
+  const nalozi=[...ordersEl.children].map(o=>({
+    p:(o.querySelector('.p').value||'').trim(),
+    n:(o.querySelector('.n').value||'').trim(),
+    d:(o.querySelector('.d').value||'').trim(),
+    f:o.querySelector('.f').value,
+    r:(o.querySelector('.r').value||'').trim()
+  })).filter(x=>x.p);
+  if(!nalozi.length){ alert('Dodajte bar jedan nalog sa nazivom proizvoda.'); return; }
+  const cfg=b64(JSON.stringify({firma,nalozi}));
+  location.href='app.html#cfg='+cfg;
+};
+</script>
+</body>
+</html>
