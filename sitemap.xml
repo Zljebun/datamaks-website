@@ -104,6 +104,14 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Rjesenje: softver za namjestaj po mjeri -->
+  <url>
+    <loc>https://datamaks.net/softver-za-namjestaj-po-mjeri/</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Politika privatnosti -->
   <url>
     <loc>https://datamaks.net/privatnost.html</loc>
