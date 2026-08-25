@@ -8,32 +8,66 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{--b1:#1e3a8a;--b2:#1e40af;--b3:#2563eb;--ink:#0f172a;--mut:#64748b;--line:#e6eaf0;--bg:#f1f5f9}
+  :root{--b1:#1e3a8a;--b2:#1e40af;--b3:#2563eb;--ink:#0f172a;--mut:#64748b;--line:#e6eaf0;--bg:#f1f5f9;--wd:#b5501a;--wd2:#7a3a12}
   body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--bg)}
-  .top{background:linear-gradient(135deg,#7a3a12,#b5501a);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+  .top{background:linear-gradient(135deg,var(--wd2),var(--wd));color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
   .top .logo{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Plus Jakarta Sans'}
   .top b{font-family:'Plus Jakarta Sans'}
   .top .demo{margin-left:auto;background:rgba(255,255,255,.18);padding:5px 10px;border-radius:999px;font-size:12px}
   .tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:4px;padding:0 12px;overflow-x:auto}
   .tab{padding:14px 14px;font-weight:600;color:var(--mut);white-space:nowrap;border-bottom:3px solid transparent;cursor:pointer;font-size:14px}
-  .tab.active{color:#b5501a;border-bottom-color:#b5501a}
-  .tab.lock{color:#94a3b8;cursor:not-allowed}
-  .tab.lock:after{content:" 🔒"}
+  .tab.active{color:var(--wd);border-bottom-color:var(--wd)}
   .banner{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;margin:14px;padding:12px 14px;border-radius:12px;font-size:13.5px}
-  .board{display:flex;gap:14px;padding:6px 14px 90px;overflow-x:auto}
+  .view{padding-bottom:90px}
+  .board{display:flex;gap:14px;padding:6px 14px;overflow-x:auto}
   .col{min-width:230px;flex:0 0 230px;background:#eef2f6;border-radius:14px;padding:10px}
   .col h3{font-size:13px;color:#475569;margin:4px 6px 10px;display:flex;justify-content:space-between}
   .col h3 span{background:#dbe3ec;border-radius:999px;padding:1px 8px}
-  .cardn{background:#fff;border-left:4px solid #b5501a;border-radius:10px;padding:11px 12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(2,6,23,.06);cursor:pointer}
+  .cardn{background:#fff;border-left:4px solid var(--wd);border-radius:10px;padding:11px 12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(2,6,23,.06);cursor:pointer}
   .cardn .t{font-weight:700;font-size:14px;margin-bottom:2px}
   .cardn .m{font-size:12.5px;color:var(--mut)}
   .cardn .rok{display:inline-block;margin-top:8px;font-size:11.5px;background:#f1f5f9;color:#475569;border-radius:999px;padding:2px 8px}
+  /* generic panel */
+  .pad{padding:14px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(2,6,23,.05)}
+  .panel h2{font-family:'Plus Jakarta Sans';font-size:16px;margin-bottom:12px}
+  .alarm{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:12px;padding:11px 14px;font-size:13.5px;margin-bottom:14px;font-weight:600}
+  /* materials table */
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:0 8px 8px;border-bottom:1px solid var(--line)}
+  td{padding:11px 8px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .pill.ok{background:#dcfce7;color:#166534}
+  .pill.low{background:#ffedd5;color:#9a3412}
+  .pill.buy{background:#fee2e2;color:#991b1b}
+  /* KPI */
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:0 1px 3px rgba(2,6,23,.05)}
+  .kpi .k{font-size:12px;color:var(--mut);font-weight:600}
+  .kpi .v{font-family:'Plus Jakarta Sans';font-size:26px;font-weight:800;margin-top:2px}
+  .kpi .v.warn{color:#b91c1c}
+  /* bars */
+  .barrow{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13px}
+  .barrow .lbl{flex:0 0 120px;color:#475569}
+  .barrow .track{flex:1;background:#eef2f6;border-radius:999px;height:12px;overflow:hidden}
+  .barrow .fill{height:100%;background:linear-gradient(90deg,var(--wd),#d2691e);border-radius:999px}
+  .barrow .cnt{flex:0 0 26px;text-align:right;font-weight:700;color:#475569}
+  /* attachments */
+  .att{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:#fff}
+  .att .h{font-weight:700;font-size:14px;margin-bottom:2px}
+  .att .s{font-size:12.5px;color:var(--mut);margin-bottom:10px}
+  .files{display:flex;flex-wrap:wrap;gap:8px}
+  .file{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12.5px;background:#f8fafc;cursor:pointer}
+  .file .ic{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+  .ic.pdf{background:#dc2626}.ic.img{background:#2563eb}.ic.xls{background:#16a34a}
+  .hint{font-size:12px;color:var(--mut);margin-top:6px}
   .cta{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--b2);color:#fff;border:2px solid rgba(255,255,255,.9);border-radius:999px;padding:13px 18px;font-weight:700;text-decoration:none;box-shadow:0 10px 28px rgba(30,64,175,.5);font-size:14.5px}
   /* modal */
   .ov{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:flex-end;justify-content:center;z-index:50}
   .ov.on{display:flex}
   .sheet{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;max-height:88vh;overflow:auto}
-  .sh-h{background:linear-gradient(135deg,#7a3a12,#b5501a);color:#fff;padding:16px 18px;position:sticky;top:0}
+  .sh-h{background:linear-gradient(135deg,var(--wd2),var(--wd));color:#fff;padding:16px 18px;position:sticky;top:0}
   .sh-h .x{float:right;cursor:pointer;font-size:20px;opacity:.9}
   .sh-b{padding:16px 18px}
   .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:14px}
@@ -42,8 +76,7 @@
   .ph{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:#94a3b8}
   .ph.done{background:#dcfce7;border-color:#bbf7d0;color:#166534}
   .ph.now{background:#ffedd5;border-color:#fed7aa;color:#9a3412;font-weight:700}
-  .locked{margin:16px;padding:16px;border:1px dashed #cbd5e1;border-radius:12px;background:#fff;color:#475569;font-size:14px}
-  .locked b{color:var(--ink)}
+  @media(max-width:520px){.kpis{grid-template-columns:1fr 1fr}.barrow .lbl{flex:0 0 96px}}
 </style>
 </head>
 <body>
@@ -53,15 +86,18 @@
     <div class="demo">DEMO prototip · vaši primjeri</div>
   </div>
   <div class="tabs">
-    <div class="tab active">Tabla</div>
-    <div class="tab lock" onclick="lockMsg()">Materijali</div>
-    <div class="tab lock" onclick="lockMsg()">Izvještaji</div>
-    <div class="tab lock" onclick="lockMsg()">Prilozi</div>
+    <div class="tab active" data-v="tabla" onclick="showTab('tabla',this)">Tabla</div>
+    <div class="tab" data-v="materijali" onclick="showTab('materijali',this)">Materijali</div>
+    <div class="tab" data-v="izvjestaji" onclick="showTab('izvjestaji',this)">Izvještaji</div>
+    <div class="tab" data-v="prilozi" onclick="showTab('prilozi',this)">Prilozi</div>
   </div>
 
-  <div class="banner">Ovo je <b>vaš demo prototip</b>. Puna verzija ima materijale i zalihe (sa alarmom), izvještaje u realnom vremenu, priloge (nacrti/fotografije), rokove po fazi i još. <b>Za punu verziju javite se.</b></div>
+  <div class="banner">Ovo je <b>vaš demo prototip na vašim primjerima</b>. Svi tabovi su otključani da vidite kompletan tok. Puna verzija radi sa vašom bazom uživo, sa korisnicima, pravima pristupa i alarmima. <b>Za punu verziju javite se.</b></div>
 
-  <div class="board" id="board"></div>
+  <div class="view board" id="view-tabla"></div>
+  <div class="view pad" id="view-materijali" hidden></div>
+  <div class="view pad" id="view-izvjestaji" hidden></div>
+  <div class="view pad" id="view-prilozi" hidden></div>
 
   <a class="cta" href="https://datamaks.net/?utm_source=prototip&utm_medium=selfserve&utm_campaign=namjestaj#kontakt">Napravi punu verziju →</a>
 
@@ -82,15 +118,18 @@ function loadCfg(){
   ]};
 }
 const cfg=loadCfg();
+function esc(s){return (s||'').replace(/[&<>]/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[x]))}
+
 document.getElementById('firma').textContent=cfg.firma;
 document.getElementById('ini').textContent=(cfg.firma.trim()[0]||'S').toUpperCase()+(cfg.firma.trim().split(/\s+/)[1]?.[0]||'').toUpperCase();
 
-const board=document.getElementById('board');
+/* ---------- TAB: TABLA (kanban) ---------- */
+const board=document.getElementById('view-tabla');
 FAZE.forEach(f=>{
   const items=cfg.nalozi.filter(n=>n.f===f);
   const col=document.createElement('div');col.className='col';
   col.innerHTML=`<h3>${f} <span>${items.length}</span></h3>`;
-  items.forEach((n,i)=>{
+  items.forEach(n=>{
     const idx=cfg.nalozi.indexOf(n);
     const c=document.createElement('div');c.className='cardn';
     c.innerHTML=`<div class="t">${esc(n.p)}</div><div class="m">${esc(n.n||'')}${n.d?' · '+esc(n.d):''}</div>${n.r?`<div class="rok">za ${esc(n.r)} d</div>`:''}`;
@@ -99,8 +138,88 @@ FAZE.forEach(f=>{
   });
   board.appendChild(col);
 });
-function esc(s){return (s||'').replace(/[&<>]/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[x]))}
 
+/* ---------- TAB: MATERIJALI ---------- */
+const MAT=[
+  {n:"Iverica 18mm bijela",j:"ploča",st:24,min:15},
+  {n:"Iverica 18mm hrast natur",j:"ploča",st:8,min:12},
+  {n:"MDF 18mm za lakiranje",j:"ploča",st:16,min:10},
+  {n:"Kant traka ABS 2mm",j:"rolna",st:3,min:5},
+  {n:"Šarke sa usporivačem",j:"kom",st:180,min:120},
+  {n:"Vodilice pune ekstenzije",j:"par",st:22,min:40},
+  {n:"Ljepilo za kantiranje",j:"kg",st:12,min:8},
+  {n:"Lak poliuretanski mat",j:"l",st:9,min:10}
+];
+function matStatus(m){ if(m.st<m.min) return ['buy','naruči']; if(m.st<m.min*1.3) return ['low','nisko']; return ['ok','na stanju']; }
+(function renderMat(){
+  const ispod=MAT.filter(m=>m.st<m.min).length;
+  const rows=MAT.map(m=>{const [cls,lbl]=matStatus(m);return `<tr>
+      <td>${esc(m.n)}</td>
+      <td class="num">${m.st} ${esc(m.j)}</td>
+      <td class="num">${m.min}</td>
+      <td style="text-align:right"><span class="pill ${cls}">${lbl}</span></td></tr>`;}).join('');
+  document.getElementById('view-materijali').innerHTML=`
+    ${ispod?`<div class="alarm">⚠ ${ispod} materijala ispod minimuma zaliha. Naručiti prije nego stane proizvodnja.</div>`:''}
+    <div class="panel"><h2>Materijali i zalihe</h2>
+      <table><thead><tr><th>Materijal</th><th style="text-align:right">Na stanju</th><th style="text-align:right">Min</th><th style="text-align:right">Status</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="hint">U punoj verziji zalihe se skidaju automatski po utrošku na nalog, sa alarmom na mail kad materijal padne ispod minimuma.</div>
+    </div>`;
+})();
+
+/* ---------- TAB: IZVJEŠTAJI ---------- */
+(function renderIzv(){
+  const total=cfg.nalozi.length;
+  const spremno=cfg.nalozi.filter(n=>n.f==="Spremno").length;
+  const uradu=total-spremno;
+  const hitni=cfg.nalozi.filter(n=>n.r!==undefined && n.r!==null && n.r!=='' && Number(n.r)<=3);
+  const maxc=Math.max(1,...FAZE.map(f=>cfg.nalozi.filter(n=>n.f===f).length));
+  const bars=FAZE.map(f=>{const c=cfg.nalozi.filter(n=>n.f===f).length;return `
+    <div class="barrow"><div class="lbl">${f}</div><div class="track"><div class="fill" style="width:${Math.round(c/maxc*100)}%"></div></div><div class="cnt">${c}</div></div>`;}).join('');
+  const hlist=hitni.length?hitni.map(n=>`<div class="row"><b>${esc(n.p)}</b><span>za ${esc(String(n.r))} dana · ${esc(n.f)}</span></div>`).join(''):'<div class="hint">Nema naloga sa rokom kraćim od 3 dana.</div>';
+  document.getElementById('view-izvjestaji').innerHTML=`
+    <div class="kpis">
+      <div class="kpi"><div class="k">Aktivnih naloga</div><div class="v">${uradu}</div></div>
+      <div class="kpi"><div class="k">Spremno za isporuku</div><div class="v">${spremno}</div></div>
+      <div class="kpi"><div class="k">Hitni (rok ≤ 3 dana)</div><div class="v ${hitni.length?'warn':''}">${hitni.length}</div></div>
+      <div class="kpi"><div class="k">Ukupno naloga</div><div class="v">${total}</div></div>
+    </div>
+    <div class="panel"><h2>Opterećenje po fazi</h2>${bars}</div>
+    <div class="panel"><h2>Hitni rokovi</h2>${hlist}
+      <div class="hint">Puna verzija šalje podsjetnik na mail za svaki nalog kojem se bliži rok.</div>
+    </div>`;
+})();
+
+/* ---------- TAB: PRILOZI ---------- */
+(function renderPril(){
+  const setovi=[
+    ['Nacrt.pdf','pdf','Mjere.xlsx','xls','Foto lokacije.jpg','img'],
+    ['Skica ormara.pdf','pdf','Foto prostora.jpg','img'],
+    ['Nacrt pulta.pdf','pdf','Detalj luka.jpg','img','Ponuda.xlsx','xls']
+  ];
+  const cards=cfg.nalozi.map((n,i)=>{
+    const s=setovi[i%setovi.length];
+    let files='';for(let k=0;k<s.length;k+=2){files+=`<div class="file" onclick="filMsg()"><span class="ic ${s[k+1]}">${s[k+1].toUpperCase()}</span>${esc(s[k])}</div>`;}
+    return `<div class="att"><div class="h">${esc(n.p)}</div><div class="s">${esc(n.n||'')}${n.d?' · '+esc(n.d):''}</div><div class="files">${files}</div></div>`;
+  }).join('');
+  document.getElementById('view-prilozi').innerHTML=`
+    <div class="panel"><h2>Prilozi po nalogu</h2>
+      <div class="hint" style="margin-bottom:12px">Nacrti, mjere i fotografije zakačeni direktno uz svaki nalog, dostupni majstoru na tabli.</div>
+      ${cards}
+    </div>`;
+})();
+
+/* ---------- tab switch ---------- */
+function showTab(v,el){
+  document.querySelectorAll('.view').forEach(x=>x.hidden=true);
+  document.getElementById('view-'+v).hidden=false;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  window.scrollTo(0,0);
+}
+function filMsg(){alert('Demo prilog. U punoj verziji ovdje se otvara stvarni fajl (nacrt, mjere, fotografija).');}
+
+/* ---------- modal naloga ---------- */
 function open_(i){
   const n=cfg.nalozi[i]; const fi=FAZE.indexOf(n.f);
   const flow=FAZE.map((f,k)=>`<span class="ph ${k<fi?'done':k===fi?'now':''}">${k+1}. ${f}</span>`).join('');
@@ -110,15 +229,13 @@ function open_(i){
       <div class="row"><b>Faza</b><span>${esc(n.f)}</span></div>
       <div class="row"><b>Dimenzije</b><span>${esc(n.d||'-')}</span></div>
       <div class="row"><b>Naručilac</b><span>${esc(n.n||'-')}</span></div>
-      <div class="row"><b>Rok</b><span>${n.r?('za '+esc(n.r)+' dana'):'-'}</span></div>
+      <div class="row"><b>Rok</b><span>${n.r?('za '+esc(String(n.r))+' dana'):'-'}</span></div>
       <div style="margin-top:14px;font-size:12px;font-weight:700;color:#9a3412">TOK PROIZVODNJE</div>
       <div class="flow">${flow}</div>
-    </div>
-    <div class="locked">🔒 U punoj verziji ovdje su i: <b>opis materijala i utrošak (BOM)</b>, <b>prilozi (nacrti/fotografije)</b>, <b>rok po svakoj fazi</b>, blokada naloga i isporuka/montaža.</div>`;
+    </div>`;
   document.getElementById('ov').classList.add('on');
 }
 function close_(){document.getElementById('ov').classList.remove('on')}
-function lockMsg(){alert('Ova sekcija je dostupna u punoj verziji. Javite se da je aktiviramo za vašu firmu.')}
 </script>
 </body>
 </html>
