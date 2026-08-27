@@ -83,6 +83,16 @@
   .ph{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:#94a3b8}
   .ph.done{background:#dcfce7;border-color:#bbf7d0;color:#166534}
   .ph.now{background:#ffedd5;border-color:#fed7aa;color:#9a3412;font-weight:700}
+  .sh-prog{height:7px;background:rgba(255,255,255,.28);border-radius:999px;margin-top:12px;overflow:hidden}
+  .sh-prog i{display:block;height:100%;background:#fff;border-radius:999px}
+  .sub{font-size:12px;font-weight:700;color:#9a3412;margin-top:18px;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
+  .tl .s{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13.5px;color:#94a3b8}
+  .tl .s .dot{width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:0 0 20px;background:#fff}
+  .tl .s.done{color:#166534}.tl .s.done .dot{background:#16a34a;border-color:#16a34a;color:#fff}
+  .tl .s.now{color:#9a3412;font-weight:700}.tl .s.now .dot{border-color:var(--wd);color:var(--wd)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:11.5px;background:#f1f5f9;color:#475569;border-radius:999px;padding:3px 9px}
+  .mfiles .file{margin-top:8px}
   @media(max-width:520px){.kpis{grid-template-columns:1fr 1fr}.barrow .lbl{flex:0 0 96px}}
 </style>
 </head>
@@ -140,6 +150,22 @@ function rokMeta(r){
   return {cls, txt:'za '+d+' d'};
 }
 function progPct(f){ return Math.round((FAZE.indexOf(f)+1)/FAZE.length*100); }
+const ATT_SETS=[
+  ['Nacrt.pdf','pdf','Mjere.xlsx','xls','Foto lokacije.jpg','img'],
+  ['Skica ormara.pdf','pdf','Foto prostora.jpg','img'],
+  ['Nacrt pulta.pdf','pdf','Detalj luka.jpg','img','Ponuda.xlsx','xls']
+];
+function isporukaDatum(r){
+  if(r===''||r===undefined||r===null||isNaN(Number(r))) return '-';
+  const d=new Date(); d.setDate(d.getDate()+Number(r));
+  const p=x=>String(x).padStart(2,'0');
+  return p(d.getDate())+'.'+p(d.getMonth()+1)+'.'+d.getFullYear()+'.';
+}
+function filesHTML(i){
+  const s=ATT_SETS[i%ATT_SETS.length]; let out='';
+  for(let k=0;k<s.length;k+=2){ out+=`<div class="file" onclick="filMsg()"><span class="ic ${s[k+1]}">${s[k+1].toUpperCase()}</span>${esc(s[k])}</div>`; }
+  return out;
+}
 FAZE.forEach(f=>{
   const items=cfg.nalozi.filter(n=>n.f===f);
   const col=document.createElement('div');col.className='col';
@@ -222,15 +248,8 @@ function matStatus(st,min){ if(st<min) return ['buy','naruči']; if(st<min*1.3) 
 
 /* ---------- TAB: PRILOZI ---------- */
 (function renderPril(){
-  const setovi=[
-    ['Nacrt.pdf','pdf','Mjere.xlsx','xls','Foto lokacije.jpg','img'],
-    ['Skica ormara.pdf','pdf','Foto prostora.jpg','img'],
-    ['Nacrt pulta.pdf','pdf','Detalj luka.jpg','img','Ponuda.xlsx','xls']
-  ];
   const cards=cfg.nalozi.map((n,i)=>{
-    const s=setovi[i%setovi.length];
-    let files='';for(let k=0;k<s.length;k+=2){files+=`<div class="file" onclick="filMsg()"><span class="ic ${s[k+1]}">${s[k+1].toUpperCase()}</span>${esc(s[k])}</div>`;}
-    return `<div class="att"><div class="h">${esc(n.p)}</div><div class="s">${esc(n.n||'')}${n.d?' · '+esc(n.d):''}</div><div class="files">${files}</div></div>`;
+    return `<div class="att"><div class="h">${esc(n.p)}</div><div class="s">${esc(n.n||'')}${n.d?' · '+esc(n.d):''}</div><div class="files">${filesHTML(i)}</div></div>`;
   }).join('');
   document.getElementById('view-prilozi').innerHTML=`
     <div class="panel"><h2>Prilozi po nalogu</h2>
@@ -251,18 +270,41 @@ function filMsg(){alert('Demo prilog. U punoj verziji ovdje se otvara stvarni fa
 
 /* ---------- modal naloga ---------- */
 function open_(i){
-  const n=cfg.nalozi[i]; const fi=FAZE.indexOf(n.f);
-  const flow=FAZE.map((f,k)=>`<span class="ph ${k<fi?'done':k===fi?'now':''}">${k+1}. ${f}</span>`).join('');
+  const n=cfg.nalozi[i]; const fi=FAZE.indexOf(n.f); const pct=progPct(n.f);
+  const sljed = fi<FAZE.length-1 ? FAZE[fi+1] : 'Isporuka';
+  const rm=rokMeta(n.r); const pillCls = rm.cls==='urg'?'buy':rm.cls==='soon'?'low':'ok';
+  const tl=FAZE.map((f,k)=>{
+    const cls=k<fi?'done':k===fi?'now':'';
+    const ic=k<fi?'✓':(k+1);
+    return `<div class="s ${cls}"><span class="dot">${ic}</span>${f}</div>`;
+  }).join('');
+  const mat=MAT.filter(m=>FAZE.indexOf(m.faza)<=fi);
+  const matChips = mat.length
+    ? mat.map(m=>`<span class="chip">${esc(m.n)} · ${m.po} ${esc(m.j)}</span>`).join('')
+    : '<span class="chip">utrošak počinje u fazi „Rezanje"</span>';
   document.getElementById('sheet').innerHTML=`
-    <div class="sh-h"><span class="x" onclick="close_()">✕</span><div style="font-family:'Plus Jakarta Sans';font-size:19px;font-weight:700">${esc(n.p)}</div><div style="opacity:.85;font-size:13px">${esc(n.n||'')}</div></div>
+    <div class="sh-h"><span class="x" onclick="close_()">✕</span>
+      <div style="font-family:'Plus Jakarta Sans';font-size:19px;font-weight:700">${esc(n.p)}</div>
+      <div style="opacity:.85;font-size:13px">${esc(n.n||'Bez naručioca')}${n.d?' · '+esc(n.d):''}</div>
+      <div class="sh-prog"><i style="width:${pct}%"></i></div>
+      <div style="opacity:.9;font-size:12px;margin-top:6px">${pct}% završeno · faza ${fi+1}/${FAZE.length}</div>
+    </div>
     <div class="sh-b">
-      <div class="row"><b>Faza</b><span>${esc(n.f)}</span></div>
-      <div class="row"><b>Dimenzije</b><span>${esc(n.d||'-')}</span></div>
+      <div class="row"><b>Trenutna faza</b><span>${esc(n.f)}</span></div>
+      <div class="row"><b>Sljedeća faza</b><span>${esc(sljed)}</span></div>
       <div class="row"><b>Naručilac</b><span>${esc(n.n||'-')}</span></div>
-      <div class="row"><b>Rok</b><span>${n.r?('za '+esc(String(n.r))+' dana'):'-'}</span></div>
-      <div class="row"><b>Napredak</b><span>${progPct(n.f)}% · faza ${fi+1}/${FAZE.length}</span></div>
-      <div style="margin-top:14px;font-size:12px;font-weight:700;color:#9a3412">TOK PROIZVODNJE</div>
-      <div class="flow">${flow}</div>
+      <div class="row"><b>Dimenzije</b><span>${esc(n.d||'-')}</span></div>
+      <div class="row"><b>Rok</b><span>${rm.txt?`<span class="pill ${pillCls}">${rm.txt}</span>`:'-'}</span></div>
+      <div class="row"><b>Procijenjena isporuka</b><span>${isporukaDatum(n.r)}</span></div>
+
+      <div class="sub">Tok proizvodnje</div>
+      <div class="tl">${tl}</div>
+
+      <div class="sub">Materijal na ovom nalogu</div>
+      <div class="chips">${matChips}</div>
+
+      <div class="sub">Prilozi</div>
+      <div class="mfiles">${filesHTML(i)}</div>
     </div>`;
   document.getElementById('ov').classList.add('on');
 }
