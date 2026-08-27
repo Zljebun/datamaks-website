@@ -159,30 +159,41 @@ FAZE.forEach(f=>{
 });
 
 /* ---------- TAB: MATERIJALI ---------- */
+// baza = početno stanje, po = utrošak po nalogu, faza = od koje faze se materijal troši
 const MAT=[
-  {n:"Iverica 18mm bijela",j:"ploča",st:24,min:15},
-  {n:"Iverica 18mm hrast natur",j:"ploča",st:8,min:12},
-  {n:"MDF 18mm za lakiranje",j:"ploča",st:16,min:10},
-  {n:"Kant traka ABS 2mm",j:"rolna",st:3,min:5},
-  {n:"Šarke sa usporivačem",j:"kom",st:180,min:120},
-  {n:"Vodilice pune ekstenzije",j:"par",st:22,min:40},
-  {n:"Ljepilo za kantiranje",j:"kg",st:12,min:8},
-  {n:"Lak poliuretanski mat",j:"l",st:9,min:10}
+  {n:"Iverica 18mm bijela",j:"ploča",baza:24,po:6,faza:"Rezanje",min:15},
+  {n:"Iverica 18mm hrast natur",j:"ploča",baza:18,po:4,faza:"Rezanje",min:10},
+  {n:"MDF 18mm za lakiranje",j:"ploča",baza:20,po:3,faza:"Rezanje",min:8},
+  {n:"Kant traka ABS 2mm",j:"rolna",baza:6,po:2,faza:"Kantiranje",min:4},
+  {n:"Ljepilo za kantiranje",j:"kg",baza:10,po:2,faza:"Kantiranje",min:6},
+  {n:"Šarke sa usporivačem",j:"kom",baza:160,po:24,faza:"Montaža",min:100},
+  {n:"Vodilice pune ekstenzije",j:"par",baza:48,po:8,faza:"Montaža",min:30},
+  {n:"Lak poliuretanski mat",j:"l",baza:14,po:3,faza:"Lakiranje",min:8}
 ];
-function matStatus(m){ if(m.st<m.min) return ['buy','naruči']; if(m.st<m.min*1.3) return ['low','nisko']; return ['ok','na stanju']; }
+function matStatus(st,min){ if(st<min) return ['buy','naruči']; if(st<min*1.3) return ['low','nisko']; return ['ok','na stanju']; }
 (function renderMat(){
-  const ispod=MAT.filter(m=>m.st<m.min).length;
-  const rows=MAT.map(m=>{const [cls,lbl]=matStatus(m);return `<tr>
-      <td>${esc(m.n)}</td>
+  const fi=f=>FAZE.indexOf(f);
+  // svaki nalog koji je ušao u fazu utroška (ili dalje) skida materijal sa stanja
+  const calc=MAT.map(m=>{
+    const nal=cfg.nalozi.filter(n=>fi(n.f)>=fi(m.faza)).length;
+    const utr=nal*m.po;
+    const st=Math.max(0,m.baza-utr);
+    const [cls,lbl]=matStatus(st,m.min);
+    return Object.assign({},m,{nal,utr,st,cls,lbl});
+  });
+  const ispod=calc.filter(m=>m.st<m.min).length;
+  const rows=calc.map(m=>`<tr>
+      <td>${esc(m.n)}<div style="font-size:11.5px;color:var(--mut)">troši se od faze „${esc(m.faza)}"</div></td>
+      <td class="num">${m.utr} ${esc(m.j)}<div style="font-size:11.5px;color:var(--mut)">${m.nal} nal.</div></td>
       <td class="num">${m.st} ${esc(m.j)}</td>
       <td class="num">${m.min}</td>
-      <td style="text-align:right"><span class="pill ${cls}">${lbl}</span></td></tr>`;}).join('');
+      <td style="text-align:right"><span class="pill ${m.cls}">${m.lbl}</span></td></tr>`).join('');
   document.getElementById('view-materijali').innerHTML=`
     ${ispod?`<div class="alarm">⚠ ${ispod} materijala ispod minimuma zaliha. Naručiti prije nego stane proizvodnja.</div>`:''}
     <div class="panel"><h2>Materijali i zalihe</h2>
-      <table><thead><tr><th>Materijal</th><th style="text-align:right">Na stanju</th><th style="text-align:right">Min</th><th style="text-align:right">Status</th></tr></thead>
+      <table><thead><tr><th>Materijal</th><th style="text-align:right">Utrošeno</th><th style="text-align:right">Na stanju</th><th style="text-align:right">Min</th><th style="text-align:right">Status</th></tr></thead>
       <tbody>${rows}</tbody></table>
-      <div class="hint">U punoj verziji zalihe se skidaju automatski po utrošku na nalog, sa alarmom na mail kad materijal padne ispod minimuma.</div>
+      <div class="hint">Utrošak i stanje se računaju iz <b>vaših naloga</b>: svaki nalog koji je ušao u odgovarajuću fazu skida materijal sa stanja. U punoj verziji ide po stvarnom normativu po proizvodu, uz alarm na mail kad materijal padne ispod minimuma.</div>
     </div>`;
 })();
 
