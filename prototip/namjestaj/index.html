@@ -67,7 +67,8 @@ const ordersEl=document.getElementById('orders');
 const addBtn=document.getElementById('addBtn');
 const samples=[
   {p:"Kuhinja po mjeri",n:"Restoran Dunav",d:"4.2 m + otok",f:"Rezanje",r:"7"},
-  {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6"}
+  {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6"},
+  {p:"Recepcijski pult",n:"Hotel Panorama",d:"luk 3.2 m",f:"Montaža",r:"2"}
 ];
 function fazaOptions(sel){return FAZE.map(f=>`<option ${f===sel?'selected':''}>${f}</option>`).join('');}
 function orderHTML(o={}){
