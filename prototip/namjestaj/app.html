@@ -167,7 +167,7 @@
   <div class="imgov" id="imgov" onclick="imgClose()"></div>
 
 <script>
-const FAZE=["Nacrt i mjere","Rezanje","CNC obrada","Kantiranje","Montaža","Lakiranje","Spremno"];
+const FAZE=["Nacrt i mjere","Rezanje","CNC obrada","Kantiranje","Lakiranje","Montaža","Spremno"];
 function unb64(s){try{return decodeURIComponent(escape(atob(s)))}catch(e){return null}}
 function loadCfg(){
   const m=location.hash.match(/cfg=([^&]+)/);
@@ -190,13 +190,13 @@ function fmtKM(x){return (Number(x)||0).toLocaleString('de-DE')+' KM'}
 const VAL={"Kuhinja po mjeri":6800,"Ugradni ormar":2900,"Recepcijski pult":4400};
 const LOGN={"Nacrt i mjere":"Uzete mjere i potvrđen nacrt","Rezanje":"Ploče iskrojene","CNC obrada":"CNC obrada završena","Kantiranje":"Kantiranje završeno","Montaža":"Montaža u toku","Lakiranje":"Lakiranje završeno","Spremno":"Spremno za isporuku"};
 const FOTOIMG={
-  "Nacrt i mjere":"/prototip/namjestaj/foto/faza-1-nacrt.jpg",
-  "Rezanje":"/prototip/namjestaj/foto/faza-2-rezanje.jpg",
-  "CNC obrada":"/prototip/namjestaj/foto/faza-3-cnc.jpg",
-  "Kantiranje":"/prototip/namjestaj/foto/faza-4-kantiranje.jpg",
-  "Montaža":"/prototip/namjestaj/foto/faza-5-montaza.jpg",
-  "Lakiranje":"/prototip/namjestaj/foto/faza-6-lakiranje.jpg",
-  "Spremno":"/prototip/namjestaj/foto/faza-7-spremno.jpg"
+  "Nacrt i mjere":"/prototip/namjestaj/foto/nacrt.jpg",
+  "Rezanje":"/prototip/namjestaj/foto/rezanje.jpg",
+  "CNC obrada":"/prototip/namjestaj/foto/cnc.jpg",
+  "Kantiranje":"/prototip/namjestaj/foto/kantiranje.jpg",
+  "Lakiranje":"/prototip/namjestaj/foto/lakiranje.jpg",
+  "Montaža":"/prototip/namjestaj/foto/montaza.jpg",
+  "Spremno":"/prototip/namjestaj/foto/spremno.jpg"
 };
 function seedLog(n){
   const fi=FAZE.indexOf(n.f); const out=[];
