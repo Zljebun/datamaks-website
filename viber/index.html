@@ -25,15 +25,29 @@
     <img class="logo" src="https://datamaks.net/assets/social/vb-icon.png" alt="Viber">
     <h1>Otvaramo Viber...</h1>
     <p>Ako se Viber ne otvori sam za koju sekundu, tapni dugme ispod.</p>
-    <a class="btn" id="vbtn" href="viber://add?number=38765469565">Otvori Viber chat</a>
+    <a class="btn" id="vbtn" href="viber://chat?number=%2B38765469565">Otvori Viber chat</a>
     <div>ili pozovi <a class="tel" href="tel:+38765469565">+387 65 469 565</a></div>
     <div class="mut">Datamaks d.o.o · datamaks.net</div>
   </div>
   <script>
-    // Auto-pokušaj otvaranja Vibera na učitavanju; dugme ostaje kao rezerva
-    var VB = "viber://add?number=38765469565";
-    function openViber(){ window.location.href = VB; }
-    window.addEventListener('load', function(){ setTimeout(openViber, 400); });
+    // Web ne moze detektovati da li je Viber vec pokrenut, pa idemo sekvencom:
+    // 1) prvo "chat" (otvori razgovor) - najbolje kad je Viber u pozadini
+    // 2) ako se app nije otvorio (stranica jos vidljiva), fallback "add" - kad je Viber ugasen
+    var CHAT = "viber://chat?number=%2B38765469565";
+    var ADD  = "viber://add?number=38765469565";
+    var appOpened = false;
+    function markOpened(){ appOpened = true; }
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) markOpened(); });
+    window.addEventListener('blur', markOpened);
+    window.addEventListener('pagehide', markOpened);
+
+    function tryChat(){ window.location.href = CHAT; }
+    function tryAdd(){ if(!appOpened){ window.location.href = ADD; } }
+
+    window.addEventListener('load', function(){
+      setTimeout(tryChat, 300);
+      setTimeout(tryAdd, 1600);
+    });
   </script>
 </body>
 </html>
