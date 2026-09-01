@@ -5,17 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Viber · Datamaks</title>
 <meta name="robots" content="noindex">
-<script>
-  // Preusmjerenje na Viber (radi na uređaju gdje je Viber instaliran)
-  location.replace("viber://add?number=38765469565");
-</script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Arial,Helvetica,sans-serif;background:#f1f5f9;color:#111827;
+       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:32px 26px;
+        max-width:360px;width:100%;text-align:center;box-shadow:0 6px 24px rgba(2,6,23,.08)}
+  .logo{width:64px;height:64px;border-radius:16px;margin:0 auto 16px;display:block}
+  h1{font-size:19px;margin-bottom:6px}
+  p{font-size:14px;color:#374151;line-height:1.6;margin-bottom:22px}
+  .btn{display:block;background:#7360F2;color:#fff;text-decoration:none;font-size:16px;
+       font-weight:bold;padding:15px 18px;border-radius:12px;margin-bottom:14px}
+  .tel{display:inline-block;color:#2b5ec9;text-decoration:none;font-size:14px;font-weight:bold}
+  .mut{font-size:12px;color:#94a3b8;margin-top:18px}
+</style>
 </head>
-<body style="font-family:Arial,Helvetica,sans-serif;text-align:center;padding:48px 20px;color:#111827;">
-  <p style="font-size:16px;">Otvaramo Viber...</p>
-  <p style="font-size:14px;color:#374151;line-height:1.7;">
-    Ako se Viber ne otvori automatski,
-    <a href="viber://add?number=38765469565" style="color:#7360F2;font-weight:bold;text-decoration:none;">kliknite ovdje</a>,
-    ili nam pišite na <a href="tel:+38765469565" style="color:#2b5ec9;text-decoration:none;">+387 65 469 565</a>.
-  </p>
+<body>
+  <div class="card">
+    <img class="logo" src="https://datamaks.net/assets/social/vb-icon.png" alt="Viber">
+    <h1>Piši nam na Viber</h1>
+    <p>Klikni dugme ispod da otvoriš razgovor sa nama na Viberu.</p>
+    <a class="btn" href="viber://add?number=38765469565">Otvori Viber chat</a>
+    <div>ili pozovi <a class="tel" href="tel:+38765469565">+387 65 469 565</a></div>
+    <div class="mut">Datamaks d.o.o · datamaks.net</div>
+  </div>
 </body>
 </html>
