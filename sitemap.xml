@@ -112,6 +112,22 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Blog -->
+  <url>
+    <loc>https://datamaks.net/blog/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Blog: link za pracenje narudzbe -->
+  <url>
+    <loc>https://datamaks.net/blog/link-za-pracenje-narudzbe/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Politika privatnosti -->
   <url>
     <loc>https://datamaks.net/privatnost.html</loc>

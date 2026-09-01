@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Datamaks</title>
+  <meta name="description" content="Praktični tekstovi o digitalizaciji poslovanja: softver za proizvodnju, praćenje naloga, rokovi i odnos sa kupcima. Iz iskustva Datamaks tima.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://datamaks.net/blog/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://datamaks.net/blog/">
+  <meta property="og:title" content="Blog | Datamaks">
+  <meta property="og:description" content="Praktični tekstovi o digitalizaciji poslovanja: softver za proizvodnju, praćenje naloga, rokovi i odnos sa kupcima.">
+  <meta property="og:image" content="https://datamaks.net/assets/images/og-image.jpg">
+  <meta property="og:locale" content="bs_BA">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+
+  <link rel="stylesheet" href="/assets/css/style.min.css?v=15">
+
+  <style>
+    .bl-hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:140px 0 52px}
+    .bl-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:2.1rem;margin:0 0 12px}
+    .bl-hero p{font-size:1.1rem;opacity:.94;max-width:640px;margin:0}
+    .bl-sec{padding:52px 0}
+    .bl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+    .bl-card{display:block;background:#fff;border:1px solid #e6eaf0;border-radius:16px;padding:26px;box-shadow:0 1px 3px rgba(2,6,23,.05);text-decoration:none;transition:transform .15s,box-shadow .15s}
+    .bl-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(2,6,23,.09)}
+    .bl-card .tag{font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:#2563eb;font-weight:700;margin:0 0 10px}
+    .bl-card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.25rem;color:#0f172a;margin:0 0 10px;line-height:1.3}
+    .bl-card p{color:#475569;font-size:1rem;line-height:1.6;margin:0 0 14px}
+    .bl-card .date{font-size:.9rem;color:#94a3b8;margin:0}
+    body[data-theme="dark"] .bl-card{background:#0f172a;border-color:#1e293b}
+    body[data-theme="dark"] .bl-card h2{color:#e2e8f0}
+    body[data-theme="dark"] .bl-card p{color:#cbd5e1}
+    @media(max-width:720px){.bl-grid{grid-template-columns:1fr}.bl-hero h1{font-size:1.7rem}}
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/assets/images/logo.png" alt="Datamaks" width="183" height="100">
+        </a>
+        <nav class="nav">
+          <ul class="nav-links">
+            <li><a href="/#usluge" class="nav-link">Usluge</a></li>
+            <li><a href="/#prototipi" class="nav-link">Prototipi</a></li>
+            <li><a href="/#zasto-mi" class="nav-link">Zašto mi</a></li>
+            <li><a href="/#kontakt" class="nav-link">Kontakt</a></li>
+          </ul>
+          <div class="lang-switcher">
+            <button class="lang-toggle" aria-label="BS - Odaberi jezik">
+              <span class="lang-flag current-flag">🇧🇦</span>
+              <span class="current-lang">BS</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="lang-dropdown">
+              <a href="/" class="lang-btn active"><span class="lang-flag">🇧🇦</span><span class="lang-code">BS</span><span class="lang-name">Bosanski</span></a>
+              <a href="/hr/" class="lang-btn"><span class="lang-flag">🇭🇷</span><span class="lang-code">HR</span><span class="lang-name">Hrvatski</span></a>
+              <a href="/sr/" class="lang-btn"><span class="lang-flag">🇷🇸</span><span class="lang-code">SR</span><span class="lang-name">Srpski</span></a>
+              <a href="/en/" class="lang-btn"><span class="lang-flag">🇬🇧</span><span class="lang-code">EN</span><span class="lang-name">English</span></a>
+              <a href="/de/" class="lang-btn"><span class="lang-flag">🇩🇪</span><span class="lang-code">DE</span><span class="lang-name">Deutsch</span></a>
+            </div>
+          </div>
+          <a href="/#kontakt" class="btn btn-primary">Zakaži razgovor</a>
+          <button class="mobile-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="bl-hero">
+      <div class="container">
+        <h1>Blog</h1>
+        <p>Praktični tekstovi o digitalizaciji poslovanja. Kako softver po mjeri rješava svakodnevne probleme u proizvodnji i radu sa kupcima.</p>
+      </div>
+    </section>
+
+    <section class="bl-sec">
+      <div class="container">
+        <div class="bl-grid">
+          <a href="/blog/link-za-pracenje-narudzbe/" class="bl-card">
+            <p class="tag">Namještaj po mjeri</p>
+            <h2>Šta klijent vidi kad mu pošaljete link za praćenje narudžbe</h2>
+            <p>Kupci žele znati status svoje narudžbe bez zvanja. Evo kako izgleda kad proizvođač namještaja pošalje kupcu link i zašto to gradi povjerenje.</p>
+            <p class="date">1. septembar 2026.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Imate ideju za digitalizaciju procesa?</h2>
+        <p>20 minuta razgovora. Vi opišete kako radite, mi kažemo šta je moguće.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Zakaži razgovor</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <img src="/assets/images/logo-white.png" alt="Datamaks" width="183" height="100">
+          </a>
+          <p>Digitalizacija poslovanja za mala i srednja preduzeća. Automatizacija procesa, bolje odluke, manji troškovi.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Rješenja</h3>
+          <ul class="footer-links">
+            <li><a href="/softver-za-namjestaj-po-mjeri/">Namještaj po mjeri</a></li>
+            <li><a href="/prototip/namjestaj/">Živi prototip</a></li>
+            <li><a href="/#prototipi">Portfolio</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Kontakt</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:info@datamaks.net">info@datamaks.net</a></li>
+            <li><a href="tel:+38765469565">+387 65 469 565</a></li>
+            <li><a href="tel:+436677970082">+43 667 797 0082</a></li>
+            <li>Veljka Mladjenovica bb<br>78000 Banja Luka, BiH</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Datamaks d.o.o. Sva prava zadržana. · <a href="/privatnost.html">Politika privatnosti</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var header = document.getElementById('header');
+    window.addEventListener('scroll', function(){ if(window.scrollY>50){header.classList.add('scrolled');}else{header.classList.remove('scrolled');} });
+    var mt = document.querySelector('.mobile-toggle'); var nl = document.querySelector('.nav-links');
+    if(mt){ mt.addEventListener('click', function(){ nl.classList.toggle('active'); mt.classList.toggle('active'); mt.setAttribute('aria-expanded', nl.classList.contains('active')); }); }
+    document.querySelectorAll('.lang-toggle').forEach(function(t){ t.addEventListener('click', function(e){ e.stopPropagation(); t.closest('.lang-switcher').classList.toggle('open'); }); });
+    document.addEventListener('click', function(){ document.querySelectorAll('.lang-switcher').forEach(function(s){ s.classList.remove('open'); }); });
+  </script>
+  <script src="/assets/js/consent.js" defer></script>
+</body>
+</html>
