@@ -3,110 +3,552 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Napravite prototip za svoju proizvodnju namještaja · Datamaks</title>
+<title>Vaš prototip · Proizvodnja namještaja · Datamaks</title>
 <meta name="robots" content="noindex">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{--b1:#1e3a8a;--b2:#1e40af;--b3:#2563eb;--acc:#93c5fd;--ink:#0f172a;--mut:#64748b;--line:#e2e8f0}
-  body{font-family:'Inter',sans-serif;color:var(--ink);background:#f1f5f9}
-  .hero{background:linear-gradient(135deg,var(--b1),var(--b3));color:#fff;padding:48px 20px 90px;text-align:center}
-  .hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;line-height:1.2;max-width:720px;margin:0 auto 12px}
-  .hero p{opacity:.9;max-width:620px;margin:0 auto;font-size:16px}
-  .wrap{max-width:760px;margin:-60px auto 60px;padding:0 16px}
-  .card{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(2,6,23,.10);padding:26px}
-  .step{font-size:13px;font-weight:700;color:var(--b2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
-  h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;margin-bottom:18px}
-  label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}
-  input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;font-family:inherit;background:#fff}
-  input:focus,select:focus{outline:none;border-color:var(--b3);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-  .field{margin-bottom:16px}
-  .orders{margin-top:8px}
-  .order{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:#f8fafc;position:relative}
-  .order .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .order .full{grid-column:1/3}
-  .order h4{font-size:13px;color:var(--mut);margin-bottom:10px;font-weight:700}
-  .rm{position:absolute;top:10px;right:10px;background:none;border:none;color:#ef4444;font-size:13px;cursor:pointer;font-weight:600}
-  .add{background:#eef2ff;color:var(--b2);border:1px dashed #c7d2fe;padding:10px;border-radius:10px;width:100%;font-weight:600;cursor:pointer;font-size:14px}
-  .add:disabled{opacity:.5;cursor:not-allowed}
-  .note{font-size:12.5px;color:var(--mut);margin-top:6px}
-  .go{margin-top:20px;width:100%;background:linear-gradient(135deg,var(--b2),var(--b3));color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
-  .go:hover{filter:brightness(1.05)}
-  .foot{text-align:center;color:var(--mut);font-size:12.5px;margin-top:14px}
-  @media(max-width:520px){.order .grid{grid-template-columns:1fr}.order .full{grid-column:auto}}
+  :root{--b1:#1e3a8a;--b2:#1e40af;--b3:#2563eb;--ink:#0f172a;--mut:#64748b;--line:#e6eaf0;--bg:#f1f5f9;--wd:#b5501a;--wd2:#7a3a12}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--bg)}
+  .top{background:linear-gradient(135deg,var(--wd2),var(--wd));color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+  .top .logo{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Plus Jakarta Sans'}
+  .top b{font-family:'Plus Jakarta Sans'}
+  .top .demo{margin-left:auto;background:rgba(255,255,255,.18);padding:5px 10px;border-radius:999px;font-size:12px}
+  .tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:4px;padding:0 12px;overflow-x:auto}
+  .tab{padding:14px 14px;font-weight:600;color:var(--mut);white-space:nowrap;border-bottom:3px solid transparent;cursor:pointer;font-size:14px}
+  .tab.active{color:var(--wd);border-bottom-color:var(--wd)}
+  .banner{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;margin:14px;padding:12px 14px;border-radius:12px;font-size:13.5px}
+  .view{padding-bottom:90px}
+  .board{display:flex;gap:14px;padding:6px 14px;overflow-x:auto}
+  .col{min-width:230px;flex:0 0 230px;background:#eef2f6;border-radius:14px;padding:10px}
+  .col h3{font-size:13px;color:#475569;margin:4px 6px 10px;display:flex;justify-content:space-between}
+  .col h3 span{background:#dbe3ec;border-radius:999px;padding:1px 8px}
+  .cardn{background:#fff;border-left:4px solid var(--wd);border-radius:10px;padding:11px 12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(2,6,23,.06);cursor:pointer}
+  .cardn .t{font-weight:700;font-size:14px;margin-bottom:2px}
+  .cardn .m{font-size:12.5px;color:var(--mut)}
+  .cardn .rok{display:inline-block;margin-top:8px;font-size:11.5px;background:#f1f5f9;color:#475569;border-radius:999px;padding:2px 8px;font-weight:700}
+  .cardn .rok.urg{background:#fee2e2;color:#991b1b}
+  .cardn .rok.soon{background:#ffedd5;color:#9a3412}
+  .cardn.urg{border-left-color:#dc2626}
+  .cardn.soon{border-left-color:#ea580c}
+  .cardn .prog{height:5px;background:#eef2f6;border-radius:999px;margin-top:9px;overflow:hidden}
+  .cardn .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--wd),#d2691e);border-radius:999px}
+  .col .empty{font-size:12px;color:#94a3b8;text-align:center;padding:16px 6px;border:1px dashed #d7dee7;border-radius:10px}
+  /* generic panel */
+  .pad{padding:14px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(2,6,23,.05)}
+  .panel h2{font-family:'Plus Jakarta Sans';font-size:16px;margin-bottom:12px}
+  .alarm{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:12px;padding:11px 14px;font-size:13.5px;margin-bottom:14px;font-weight:600}
+  /* materials table */
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:0 8px 8px;border-bottom:1px solid var(--line)}
+  td{padding:11px 8px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .pill.ok{background:#dcfce7;color:#166534}
+  .pill.low{background:#ffedd5;color:#9a3412}
+  .pill.buy{background:#fee2e2;color:#991b1b}
+  /* materijali kao kartice (mobile-first) */
+  .matc{border:1px solid var(--line);border-left:4px solid #16a34a;border-radius:12px;padding:11px 13px;margin-bottom:10px;background:#fff}
+  .matc.low{border-left-color:#ea580c}
+  .matc.buy{border-left-color:#dc2626}
+  .matc.fin{border-left-color:var(--wd);cursor:pointer}
+  .matc-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .matc-n{font-weight:700;font-size:14px}
+  .matc-f{font-weight:400;font-size:11.5px;color:var(--mut);margin-top:2px}
+  .matc-s{display:flex;gap:18px;margin-top:11px;flex-wrap:wrap}
+  .matc-s>div{display:flex;flex-direction:column;font-size:11.5px;color:var(--mut)}
+  .matc-s>div b{font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:1px}
+  .matc-s>div i{font-style:normal;font-size:11px;color:#94a3b8}
+  /* KPI */
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:0 1px 3px rgba(2,6,23,.05)}
+  .kpi .k{font-size:12px;color:var(--mut);font-weight:600}
+  .kpi .v{font-family:'Plus Jakarta Sans';font-size:26px;font-weight:800;margin-top:2px}
+  .kpi .v.warn{color:#b91c1c}
+  /* bars */
+  .barrow{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13px}
+  .barrow .lbl{flex:0 0 120px;color:#475569}
+  .barrow .track{flex:1;background:#eef2f6;border-radius:999px;height:12px;overflow:hidden}
+  .barrow .fill{height:100%;background:linear-gradient(90deg,var(--wd),#d2691e);border-radius:999px}
+  .barrow .cnt{flex:0 0 26px;text-align:right;font-weight:700;color:#475569}
+  /* attachments */
+  .att{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:#fff}
+  .att .h{font-weight:700;font-size:14px;margin-bottom:2px}
+  .att .s{font-size:12.5px;color:var(--mut);margin-bottom:10px}
+  .files{display:flex;flex-wrap:wrap;gap:8px}
+  .file{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12.5px;background:#f8fafc;cursor:pointer}
+  .file .ic{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+  .ic.pdf{background:#dc2626}.ic.img{background:#2563eb}.ic.xls{background:#16a34a}
+  .hint{font-size:12px;color:var(--mut);margin-top:6px}
+  .cta{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--b2);color:#fff;border:2px solid rgba(255,255,255,.9);border-radius:999px;padding:13px 18px;font-weight:700;text-decoration:none;box-shadow:0 10px 28px rgba(30,64,175,.5);font-size:14.5px}
+  /* modal */
+  .ov{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:flex-end;justify-content:center;z-index:50}
+  .ov.on{display:flex}
+  .sheet{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;max-height:88vh;overflow:auto}
+  .sh-h{background:linear-gradient(135deg,var(--wd2),var(--wd));color:#fff;padding:16px 18px;position:sticky;top:0;z-index:5}
+  .sh-h .x{float:right;cursor:pointer;font-size:20px;opacity:.9}
+  .sh-b{padding:16px 18px}
+  .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:14px}
+  .row b{color:var(--mut);font-weight:600}
+  .flow{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .ph{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:#94a3b8}
+  .ph.done{background:#dcfce7;border-color:#bbf7d0;color:#166534}
+  .ph.now{background:#ffedd5;border-color:#fed7aa;color:#9a3412;font-weight:700}
+  .sh-prog{height:7px;background:rgba(255,255,255,.28);border-radius:999px;margin-top:12px;overflow:hidden}
+  .sh-prog i{display:block;height:100%;background:#fff;border-radius:999px}
+  .sub{font-size:12px;font-weight:700;color:#9a3412;margin-top:18px;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
+  .tl .s{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13.5px;color:#94a3b8}
+  .tl .s .dot{width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:0 0 20px;background:#fff}
+  .tl .s.done{color:#166534}.tl .s.done .dot{background:#16a34a;border-color:#16a34a;color:#fff}
+  .tl .s.now{color:#9a3412;font-weight:700}.tl .s.now .dot{border-color:var(--wd);color:var(--wd)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:11.5px;background:#f1f5f9;color:#475569;border-radius:999px;padding:3px 9px}
+  .mfiles .file{margin-top:8px}
+  /* akcije u modalu */
+  .btnrow{display:flex;gap:8px;margin-top:4px;margin-bottom:6px;flex-wrap:wrap}
+  .btn{flex:1;min-width:120px;border:none;border-radius:10px;padding:11px 12px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .btn.primary{background:var(--wd);color:#fff}
+  .btn.ghost{background:#f1f5f9;color:#475569}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  /* dnevnik napretka */
+  .log .e{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9}
+  .log .e .d{flex:0 0 60px;color:#94a3b8;font-size:12px}
+  .log .e .c{color:#334155;font-size:13.5px}
+  /* foto napretka */
+  .pfoto{display:flex;gap:8px;flex-wrap:wrap}
+  .pfoto .t{width:104px;height:78px;border-radius:10px;background-size:cover;background-position:center;cursor:pointer;position:relative;overflow:hidden;border:1px solid var(--line)}
+  .pfoto .t .lab{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-size:9.5px;font-weight:600;padding:12px 6px 4px;line-height:1.1}
+  /* lightbox */
+  .imgov{position:fixed;inset:0;background:rgba(2,6,23,.92);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:70;padding:20px;cursor:zoom-out}
+  .imgov.on{display:flex}
+  .imgov img{max-width:100%;max-height:80vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .imgov .cap{color:#fff;font-size:14px;font-weight:600}
+  /* klijentski status (overlay) */
+  .cust{position:fixed;inset:0;background:#0b1220;display:none;z-index:60;overflow:auto}
+  .cust.on{display:block}
+  .cwrap{max-width:460px;margin:0 auto;min-height:100%;background:#f8fafc}
+  .chd{background:linear-gradient(135deg,var(--wd2),var(--wd));color:#fff;padding:22px 18px}
+  .cbd{padding:18px}
+  .cbig{font-family:'Plus Jakarta Sans';font-size:44px;font-weight:800;color:var(--wd);line-height:1}
+  .cx{position:fixed;top:12px;right:16px;color:#fff;font-size:26px;cursor:pointer;z-index:61}
+  /* dodaj nalog */
+  .addbar{padding:12px 14px 2px;display:flex;align-items:center;gap:10px}
+  .addbar .btn{flex:0 0 auto;min-width:0;padding:10px 16px}
+  .addbar .note{font-size:12px;color:var(--mut)}
+  .fl{display:block;font-size:12px;font-weight:600;color:var(--mut);margin:12px 0 4px}
+  .fi{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;background:#fff}
+  @media(max-width:520px){.kpis{grid-template-columns:1fr 1fr}.barrow .lbl{flex:0 0 96px}.addbar .note{display:none}}
 </style>
 </head>
 <body>
-  <div class="hero">
-    <h1>Napravite prototip softvera za svoju proizvodnju namještaja po mjeri</h1>
-    <p>Unesite par svojih naloga i za par sekundi dobijate klikabilni prototip praćenja proizvodnje, na vašim primjerima.</p>
+  <div class="top">
+    <div class="logo" id="ini">ST</div>
+    <div><b id="firma">Vaša firma</b><div style="font-size:12px;opacity:.85">Proizvodnja namještaja po mjeri</div></div>
+    <div class="demo">DEMO prototip</div>
   </div>
-  <div class="wrap">
-    <div class="card">
-      <div class="step">Korak 1 · vaša firma</div>
-      <div class="field">
-        <label for="firma">Naziv firme</label>
-        <input id="firma" type="text" placeholder="npr. Namještaj Kovačević" maxlength="40">
-      </div>
-
-      <div class="step">Korak 2 · vaši nalozi (do 5)</div>
-      <h2 style="margin-bottom:8px">Unesite nekoliko trenutnih naloga</h2>
-      <div class="orders" id="orders"></div>
-      <button class="add" id="addBtn" type="button">+ Dodaj nalog</button>
-      <div class="note">Demo je ograničen na 5 naloga. Puna verzija nema ograničenja i ima materijale, zalihe, izvještaje, priloge i rokove po fazi.</div>
-
-      <button class="go" id="go" type="button">Napravi moj prototip →</button>
-      <div class="foot">Izmišljeni ili vaši primjeri · prototip · Datamaks</div>
-    </div>
+  <div class="tabs">
+    <div class="tab active" data-v="tabla" onclick="showTab('tabla',this)">Tabla</div>
+    <div class="tab" data-v="materijali" onclick="showTab('materijali',this)">Materijali</div>
+    <div class="tab" data-v="izvjestaji" onclick="showTab('izvjestaji',this)">Izvještaji</div>
+    <div class="tab" data-v="finansije" onclick="showTab('finansije',this)">Finansije</div>
+    <div class="tab" data-v="prilozi" onclick="showTab('prilozi',this)">Prilozi</div>
   </div>
+
+  <div class="banner">Ovo je <b>živi demo</b> sistema za praćenje proizvodnje namještaja, popunjen primjerima. Svi tabovi su otključani da vidite kompletan tok. Dodajte i svoj nalog i pratite ga kroz proizvodnju. Puna verzija radi sa vašom bazom uživo, sa korisnicima, pravima pristupa i alarmima.</div>
+
+  <div class="addbar"><button class="btn primary" onclick="openAdd()">＋ Dodaj nalog</button><span class="note">Unesite svoj proizvod i pratite ga na tabli</span></div>
+
+  <div class="view board" id="view-tabla"></div>
+  <div class="view pad" id="view-materijali" hidden></div>
+  <div class="view pad" id="view-izvjestaji" hidden></div>
+  <div class="view pad" id="view-finansije" hidden></div>
+  <div class="view pad" id="view-prilozi" hidden></div>
+
+  <a class="cta" href="https://datamaks.net/?utm_source=prototip&utm_medium=selfserve&utm_campaign=namjestaj#kontakt">Napravi punu verziju →</a>
+
+  <div class="ov" id="ov" onclick="if(event.target===this)close_()">
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <div class="ov" id="addov" onclick="if(event.target===this)addClose()">
+    <div class="sheet" id="addsheet"></div>
+  </div>
+
+  <div class="cust" id="cust"></div>
+  <div class="imgov" id="imgov" onclick="imgClose()"></div>
 
 <script>
 const FAZE=["Nacrt i mjere","Rezanje","CNC obrada","Kantiranje","Lakiranje","Montaža","Spremno"];
-const MAX=5;
-const ordersEl=document.getElementById('orders');
-const addBtn=document.getElementById('addBtn');
-const samples=[
-  {p:"Kuhinja po mjeri",n:"Restoran Dunav",d:"4.2 m + otok",f:"Rezanje",r:"7"},
-  {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6"},
-  {p:"Recepcijski pult",n:"Hotel Panorama",d:"luk 3.2 m",f:"Montaža",r:"2"}
-];
-function fazaOptions(sel){return FAZE.map(f=>`<option ${f===sel?'selected':''}>${f}</option>`).join('');}
-function orderHTML(o={}){
-  return `<div class="order">
-    <button class="rm" type="button" onclick="this.parentNode.remove();refresh()">Ukloni</button>
-    <h4>NALOG</h4>
-    <div class="grid">
-      <div class="full"><label>Proizvod</label><input class="p" maxlength="40" value="${o.p||''}" placeholder="npr. Kuhinja po mjeri"></div>
-      <div><label>Naručilac</label><input class="n" maxlength="40" value="${o.n||''}" placeholder="npr. Marić"></div>
-      <div><label>Dimenzije</label><input class="d" maxlength="30" value="${o.d||''}" placeholder="npr. 3.0 × 2.4 m"></div>
-      <div><label>Faza</label><select class="f">${fazaOptions(o.f)}</select></div>
-      <div><label>Rok (dana)</label><input class="r" type="number" min="0" max="90" value="${o.r||''}" placeholder="npr. 7"></div>
-    </div>
-  </div>`;
+function unb64(s){try{return decodeURIComponent(escape(atob(s)))}catch(e){return null}}
+function loadCfg(){
+  const m=location.hash.match(/cfg=([^&]+)/);
+  if(m){const j=unb64(m[1]); if(j){try{return JSON.parse(j)}catch(e){}}}
+  return {firma:"Namještaj Kovačević",nalozi:[
+    {p:"Kuhinja po mjeri",n:"Restoran Dunav",d:"4.2 m + otok",f:"Rezanje",r:"7",v:6800,a:2500},
+    {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6",v:2900,a:1000},
+    {p:"Recepcijski pult",n:"Hotel Panorama",d:"luk 3.2 m",f:"Montaža",r:"2",v:4400,a:2200}
+  ]};
 }
-function refresh(){
-  const n=ordersEl.children.length;
-  addBtn.disabled = n>=MAX;
-  addBtn.textContent = n>=MAX ? "Dostignut limit demo verzije (5)" : "+ Dodaj nalog";
-}
-function addOrder(o){ if(ordersEl.children.length>=MAX) return; ordersEl.insertAdjacentHTML('beforeend',orderHTML(o)); refresh(); }
-samples.forEach(addOrder);
-addBtn.onclick=()=>addOrder();
+const cfg=loadCfg();
+function esc(s){return (s||'').replace(/[&<>]/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[x]))}
 
-function b64(json){ return btoa(unescape(encodeURIComponent(json))); }
-document.getElementById('go').onclick=()=>{
-  const firma=(document.getElementById('firma').value||'').trim() || 'Vaša firma';
-  const nalozi=[...ordersEl.children].map(o=>({
-    p:(o.querySelector('.p').value||'').trim(),
-    n:(o.querySelector('.n').value||'').trim(),
-    d:(o.querySelector('.d').value||'').trim(),
-    f:o.querySelector('.f').value,
-    r:(o.querySelector('.r').value||'').trim()
-  })).filter(x=>x.p);
-  if(!nalozi.length){ alert('Dodajte bar jedan nalog sa nazivom proizvoda.'); return; }
-  const cfg=b64(JSON.stringify({firma,nalozi}));
-  location.href='app.html?v=20260901#cfg='+cfg;
+/* ---------- helpers ---------- */
+function pad(x){return String(x).padStart(2,'0')}
+function fmtD(d){return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'}
+function today(){return fmtD(new Date())}
+function daysAgo(k){const d=new Date();d.setDate(d.getDate()-k);return fmtD(d)}
+function fmtKM(x){return (Number(x)||0).toLocaleString('de-DE')+' KM'}
+const VAL={"Kuhinja po mjeri":6800,"Ugradni ormar":2900,"Recepcijski pult":4400};
+const LOGN={"Nacrt i mjere":"Uzete mjere i potvrđen nacrt","Rezanje":"Ploče iskrojene","CNC obrada":"CNC obrada završena","Kantiranje":"Kantiranje završeno","Montaža":"Montaža u toku","Lakiranje":"Lakiranje završeno","Spremno":"Spremno za isporuku"};
+const FOTOIMG={
+  "Nacrt i mjere":"/prototip/namjestaj/foto/nacrt.jpg",
+  "Rezanje":"/prototip/namjestaj/foto/rezanje.jpg",
+  "CNC obrada":"/prototip/namjestaj/foto/cnc.jpg",
+  "Kantiranje":"/prototip/namjestaj/foto/kantiranje.jpg",
+  "Lakiranje":"/prototip/namjestaj/foto/lakiranje.jpg",
+  "Montaža":"/prototip/namjestaj/foto/montaza.jpg",
+  "Spremno":"/prototip/namjestaj/foto/spremno.jpg"
 };
+function seedLog(n){
+  const fi=FAZE.indexOf(n.f); const out=[];
+  for(let k=fi;k>=0;k--){ out.push({t:daysAgo((fi-k)*2+1), txt:LOGN[FAZE[k]]||('Faza: '+FAZE[k])}); }
+  return out;
+}
+function enrich(n){
+  if(n.v===undefined||n.v===null||n.v==='') n.v=VAL[n.p]||3000;
+  n.v=Number(n.v)||0;
+  if(n.a===undefined||n.a===null||n.a==='') n.a=Math.round(n.v*0.4/50)*50;
+  n.a=Number(n.a)||0;
+  if(!Array.isArray(n.log)) n.log=seedLog(n);
+  return n;
+}
+cfg.nalozi.forEach(enrich);
+
+document.getElementById('firma').textContent=cfg.firma;
+document.getElementById('ini').textContent=(cfg.firma.trim()[0]||'S').toUpperCase()+(cfg.firma.trim().split(/\s+/)[1]?.[0]||'').toUpperCase();
+
+function rokMeta(r){
+  if(r===''||r===undefined||r===null) return {cls:'',txt:''};
+  const d=Number(r);
+  if(isNaN(d)) return {cls:'',txt:esc(String(r))};
+  let cls=''; if(d<=3) cls='urg'; else if(d<=7) cls='soon';
+  return {cls, txt:'za '+d+' d'};
+}
+function progPct(f){ return Math.round((FAZE.indexOf(f)+1)/FAZE.length*100); }
+function tlHTML(fi){
+  return FAZE.map((f,k)=>{
+    const cls=k<fi?'done':k===fi?'now':''; const ic=k<fi?'✓':(k+1);
+    return `<div class="s ${cls}"><span class="dot">${ic}</span>${f}</div>`;
+  }).join('');
+}
+const ATT_SETS=[
+  ['Nacrt.pdf','pdf','Mjere.xlsx','xls','Foto lokacije.jpg','img'],
+  ['Skica ormara.pdf','pdf','Foto prostora.jpg','img'],
+  ['Nacrt pulta.pdf','pdf','Detalj luka.jpg','img','Ponuda.xlsx','xls']
+];
+function isporukaDatum(r){
+  if(r===''||r===undefined||r===null||isNaN(Number(r))) return '-';
+  const d=new Date(); d.setDate(d.getDate()+Number(r));
+  return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear()+'.';
+}
+function filesHTML(i){
+  const s=ATT_SETS[i%ATT_SETS.length]; let out='';
+  for(let k=0;k<s.length;k+=2){ out+=`<div class="file" onclick="filMsg()"><span class="ic ${s[k+1]}">${s[k+1].toUpperCase()}</span>${esc(s[k])}</div>`; }
+  return out;
+}
+function fotoHTML(n){
+  const fi=FAZE.indexOf(n.f); let out='';
+  for(let k=0;k<=fi;k++){
+    const f=FAZE[k]; const img=FOTOIMG[f];
+    if(img){ out+=`<div class="t" style="background-image:url('${img}')" onclick="imgView('${img}','${esc(f)}')"><span class="lab">${esc(f)}</span></div>`; }
+  }
+  return out||'<div class="hint">Foto napretka se dodaje kako posao odmiče.</div>';
+}
+function imgView(src,cap){
+  document.getElementById('imgov').innerHTML=`<img src="${src}" alt="${cap}"><div class="cap">${cap}</div>`;
+  document.getElementById('imgov').classList.add('on');
+}
+function imgClose(){document.getElementById('imgov').classList.remove('on')}
+
+/* ---------- TAB: TABLA (kanban) ---------- */
+const board=document.getElementById('view-tabla');
+function renderBoard(){
+  board.innerHTML='';
+  FAZE.forEach(f=>{
+    const items=cfg.nalozi.filter(n=>n.f===f);
+    const col=document.createElement('div');col.className='col';
+    col.innerHTML=`<h3>${f} <span>${items.length}</span></h3>`;
+    if(!items.length){ col.insertAdjacentHTML('beforeend','<div class="empty">Nema naloga</div>'); }
+    items.forEach(n=>{
+      const idx=cfg.nalozi.indexOf(n);
+      const rm=rokMeta(n.r); const pct=progPct(n.f);
+      const c=document.createElement('div');c.className='cardn'+(rm.cls?' '+rm.cls:'');
+      c.innerHTML=`<div class="t">${esc(n.p)}</div><div class="m">${esc(n.n||'')}${n.d?' · '+esc(n.d):''}</div>`+
+        `<div class="prog" title="${pct}% kroz proizvodnju"><i style="width:${pct}%"></i></div>`+
+        `${rm.txt?`<div class="rok ${rm.cls}">${rm.txt}</div>`:''}`;
+      c.onclick=()=>open_(idx);
+      col.appendChild(c);
+    });
+    board.appendChild(col);
+  });
+}
+
+/* ---------- TAB: MATERIJALI ---------- */
+// baza = početno stanje, po = utrošak po nalogu, faza = od koje faze se materijal troši
+const MAT=[
+  {n:"Iverica 18mm bijela",j:"ploča",baza:24,po:6,faza:"Rezanje",min:15},
+  {n:"Iverica 18mm hrast natur",j:"ploča",baza:18,po:4,faza:"Rezanje",min:10},
+  {n:"MDF 18mm za lakiranje",j:"ploča",baza:20,po:3,faza:"Rezanje",min:8},
+  {n:"Kant traka ABS 2mm",j:"rolna",baza:6,po:2,faza:"Kantiranje",min:4},
+  {n:"Ljepilo za kantiranje",j:"kg",baza:10,po:2,faza:"Kantiranje",min:6},
+  {n:"Šarke sa usporivačem",j:"kom",baza:160,po:24,faza:"Montaža",min:100},
+  {n:"Vodilice pune ekstenzije",j:"par",baza:48,po:8,faza:"Montaža",min:30},
+  {n:"Lak poliuretanski mat",j:"l",baza:14,po:3,faza:"Lakiranje",min:8}
+];
+function matStatus(st,min){ if(st<min) return ['buy','naruči']; if(st<min*1.3) return ['low','nisko']; return ['ok','na stanju']; }
+function renderMat(){
+  const fi=f=>FAZE.indexOf(f);
+  // svaki nalog koji je ušao u fazu utroška (ili dalje) skida materijal sa stanja
+  const calc=MAT.map(m=>{
+    const nal=cfg.nalozi.filter(n=>fi(n.f)>=fi(m.faza)).length;
+    const utr=nal*m.po;
+    const st=Math.max(0,m.baza-utr);
+    const [cls,lbl]=matStatus(st,m.min);
+    return Object.assign({},m,{nal,utr,st,cls,lbl});
+  });
+  const ispod=calc.filter(m=>m.st<m.min).length;
+  const cards=calc.map(m=>`<div class="matc ${m.cls}">
+      <div class="matc-h">
+        <div class="matc-n">${esc(m.n)}<div class="matc-f">troši se od faze „${esc(m.faza)}"</div></div>
+        <span class="pill ${m.cls}">${m.lbl}</span>
+      </div>
+      <div class="matc-s">
+        <div><span>Utrošeno</span><b>${m.utr} ${esc(m.j)}</b><i>${m.nal} nal.</i></div>
+        <div><span>Na stanju</span><b>${m.st} ${esc(m.j)}</b></div>
+        <div><span>Minimum</span><b>${m.min} ${esc(m.j)}</b></div>
+      </div>
+    </div>`).join('');
+  document.getElementById('view-materijali').innerHTML=`
+    ${ispod?`<div class="alarm">⚠ ${ispod} materijala ispod minimuma zaliha. Naručiti prije nego stane proizvodnja.</div>`:''}
+    <div class="panel"><h2>Materijali i zalihe</h2>
+      ${cards}
+      <div class="hint">Utrošak i stanje se računaju iz <b>vaših naloga</b>: svaki nalog koji je ušao u odgovarajuću fazu skida materijal sa stanja. U punoj verziji ide po stvarnom normativu po proizvodu, uz alarm na mail kad materijal padne ispod minimuma.</div>
+    </div>`;
+}
+
+/* ---------- TAB: IZVJEŠTAJI ---------- */
+function renderIzv(){
+  const total=cfg.nalozi.length;
+  const spremno=cfg.nalozi.filter(n=>n.f==="Spremno").length;
+  const uradu=total-spremno;
+  const hitni=cfg.nalozi.filter(n=>n.r!==undefined && n.r!==null && n.r!=='' && Number(n.r)<=3);
+  const maxc=Math.max(1,...FAZE.map(f=>cfg.nalozi.filter(n=>n.f===f).length));
+  const bars=FAZE.map(f=>{const c=cfg.nalozi.filter(n=>n.f===f).length;return `
+    <div class="barrow"><div class="lbl">${f}</div><div class="track"><div class="fill" style="width:${Math.round(c/maxc*100)}%"></div></div><div class="cnt">${c}</div></div>`;}).join('');
+  const hlist=hitni.length?hitni.map(n=>`<div class="row"><b>${esc(n.p)}</b><span>za ${esc(String(n.r))} dana · ${esc(n.f)}</span></div>`).join(''):'<div class="hint">Nema naloga sa rokom kraćim od 3 dana.</div>';
+  document.getElementById('view-izvjestaji').innerHTML=`
+    <div class="kpis">
+      <div class="kpi"><div class="k">Aktivnih naloga</div><div class="v">${uradu}</div></div>
+      <div class="kpi"><div class="k">Spremno za isporuku</div><div class="v">${spremno}</div></div>
+      <div class="kpi"><div class="k">Hitni (rok ≤ 3 dana)</div><div class="v ${hitni.length?'warn':''}">${hitni.length}</div></div>
+      <div class="kpi"><div class="k">Ukupno naloga</div><div class="v">${total}</div></div>
+    </div>
+    <div class="panel"><h2>Opterećenje po fazi</h2>${bars}</div>
+    <div class="panel"><h2>Hitni rokovi</h2>${hlist}
+      <div class="hint">Puna verzija šalje podsjetnik na mail za svaki nalog kojem se bliži rok.</div>
+    </div>`;
+}
+
+/* ---------- TAB: FINANSIJE ---------- */
+function renderFin(){
+  const tot=cfg.nalozi.reduce((s,n)=>s+n.v,0);
+  const paid=cfg.nalozi.reduce((s,n)=>s+n.a,0);
+  const ost=tot-paid;
+  const cards=cfg.nalozi.map((n,i)=>`<div class="matc fin" onclick="open_(${i})">
+      <div class="matc-h">
+        <div class="matc-n">${esc(n.p)}<div class="matc-f">${esc(n.n||'')}</div></div>
+      </div>
+      <div class="matc-s">
+        <div><span>Vrijednost</span><b>${fmtKM(n.v)}</b></div>
+        <div><span>Uplaćeno</span><b>${fmtKM(n.a)}</b></div>
+        <div><span>Za naplatu</span><b>${fmtKM(n.v-n.a)}</b></div>
+      </div>
+    </div>`).join('');
+  document.getElementById('view-finansije').innerHTML=`
+    <div class="kpis">
+      <div class="kpi"><div class="k">Ukupna vrijednost</div><div class="v" style="font-size:21px">${fmtKM(tot)}</div></div>
+      <div class="kpi"><div class="k">Naplaćeno</div><div class="v" style="font-size:21px">${fmtKM(paid)}</div></div>
+      <div class="kpi"><div class="k">Za naplatu</div><div class="v warn" style="font-size:21px">${fmtKM(ost)}</div></div>
+      <div class="kpi"><div class="k">Broj naloga</div><div class="v">${cfg.nalozi.length}</div></div>
+    </div>
+    <div class="panel"><h2>Finansije po nalogu</h2>
+      ${cards}
+      <div class="hint">Klik na nalog otvara detalje. U punoj verziji se povezuje sa predračunima i fakturama, uz podsjetnik za naplatu preostalog iznosa.</div>
+    </div>`;
+}
+
+/* ---------- TAB: PRILOZI ---------- */
+function renderPril(){
+  const cards=cfg.nalozi.map((n,i)=>{
+    return `<div class="att"><div class="h">${esc(n.p)}</div><div class="s">${esc(n.n||'')}${n.d?' · '+esc(n.d):''}</div><div class="files">${filesHTML(i)}</div></div>`;
+  }).join('');
+  document.getElementById('view-prilozi').innerHTML=`
+    <div class="panel"><h2>Prilozi po nalogu</h2>
+      <div class="hint" style="margin-bottom:12px">Nacrti, mjere i fotografije zakačeni direktno uz svaki nalog, dostupni majstoru na tabli.</div>
+      ${cards}
+    </div>`;
+}
+
+function renderAll(){ renderBoard(); renderMat(); renderIzv(); renderFin(); renderPril(); }
+renderAll();
+
+/* ---------- tab switch ---------- */
+function showTab(v,el){
+  document.querySelectorAll('.view').forEach(x=>x.hidden=true);
+  document.getElementById('view-'+v).hidden=false;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  window.scrollTo(0,0);
+}
+function filMsg(){alert('Demo prilog. U punoj verziji ovdje se otvara stvarni fajl (nacrt, mjere, fotografija).');}
+
+/* ---------- modal naloga ---------- */
+function open_(i){
+  const n=cfg.nalozi[i]; const fi=FAZE.indexOf(n.f); const pct=progPct(n.f);
+  const sljed = fi<FAZE.length-1 ? FAZE[fi+1] : 'Isporuka';
+  const rm=rokMeta(n.r); const pillCls = rm.cls==='urg'?'buy':rm.cls==='soon'?'low':'ok';
+  const tl=tlHTML(fi);
+  const mat=MAT.filter(m=>FAZE.indexOf(m.faza)<=fi);
+  const matChips = mat.length
+    ? mat.map(m=>`<span class="chip">${esc(m.n)} · ${m.po} ${esc(m.j)}</span>`).join('')
+    : '<span class="chip">utrošak počinje u fazi „Rezanje"</span>';
+  const logHTML=(n.log||[]).map(e=>`<div class="e"><div class="d">${esc(e.t)}</div><div class="c">${esc(e.txt)}</div></div>`).join('')||'<div class="hint">Nema unosa.</div>';
+  const ost=n.v-n.a;
+  document.getElementById('sheet').innerHTML=`
+    <div class="sh-h"><span class="x" onclick="close_()">✕</span>
+      <div style="font-family:'Plus Jakarta Sans';font-size:19px;font-weight:700">${esc(n.p)}</div>
+      <div style="opacity:.85;font-size:13px">${esc(n.n||'Bez naručioca')}${n.d?' · '+esc(n.d):''}</div>
+      <div class="sh-prog"><i style="width:${pct}%"></i></div>
+      <div style="opacity:.9;font-size:12px;margin-top:6px">${pct}% završeno · faza ${fi+1}/${FAZE.length}</div>
+    </div>
+    <div class="sh-b">
+      <div class="btnrow">
+        <button class="btn ghost" onclick="advancePhase(${i},-1)" ${fi===0?'disabled':''}>◀ Vrati fazu</button>
+        <button class="btn primary" onclick="advancePhase(${i},1)" ${fi===FAZE.length-1?'disabled':''}>Sljedeća faza ▶</button>
+      </div>
+      <div class="row"><b>Trenutna faza</b><span>${esc(n.f)}</span></div>
+      <div class="row"><b>Sljedeća faza</b><span>${esc(sljed)}</span></div>
+      <div class="row"><b>Naručilac</b><span>${esc(n.n||'-')}</span></div>
+      <div class="row"><b>Dimenzije</b><span>${esc(n.d||'-')}</span></div>
+      <div class="row"><b>Rok</b><span>${rm.txt?`<span class="pill ${pillCls}">${rm.txt}</span>`:'-'}</span></div>
+      <div class="row"><b>Procijenjena isporuka</b><span>${isporukaDatum(n.r)}</span></div>
+
+      <div class="sub">Finansije</div>
+      <div class="row"><b>Vrijednost naloga</b><span>${fmtKM(n.v)}</span></div>
+      <div class="row"><b>Uplaćeno (avans)</b><span>${fmtKM(n.a)}</span></div>
+      <div class="row"><b>Za naplatu</b><span><b>${fmtKM(ost)}</b></span></div>
+
+      <div class="sub">Tok proizvodnje</div>
+      <div class="tl">${tl}</div>
+
+      <div class="sub">Dnevnik napretka</div>
+      <div class="log">${logHTML}</div>
+
+      <div class="sub">Foto napretka</div>
+      <div class="pfoto">${fotoHTML(n)}</div>
+
+      <div class="sub">Materijal na ovom nalogu</div>
+      <div class="chips">${matChips}</div>
+
+      <div class="sub">Prilozi</div>
+      <div class="mfiles">${filesHTML(i)}</div>
+
+      <div class="btnrow" style="margin-top:20px">
+        <button class="btn ghost" style="flex:1 0 100%" onclick="custView(${i})">👁 Prikaži link za klijenta</button>
+      </div>
+    </div>`;
+  document.getElementById('ov').classList.add('on');
+}
+function advancePhase(i,dir){
+  const n=cfg.nalozi[i]; let fi=FAZE.indexOf(n.f)+dir;
+  fi=Math.max(0,Math.min(FAZE.length-1,fi)); n.f=FAZE[fi];
+  n.log=Array.isArray(n.log)?n.log:[];
+  n.log.unshift({t:today(),txt:(dir>0?'Prešlo u fazu: ':'Vraćeno u fazu: ')+n.f});
+  renderAll(); open_(i);
+}
+function close_(){document.getElementById('ov').classList.remove('on')}
+
+/* ---------- dodaj nalog ---------- */
+function openAdd(){
+  const opts=FAZE.map(f=>`<option>${f}</option>`).join('');
+  document.getElementById('addsheet').innerHTML=`
+    <div class="sh-h"><span class="x" onclick="addClose()">✕</span>
+      <div style="font-family:'Plus Jakarta Sans';font-size:19px;font-weight:700">Novi nalog</div>
+      <div style="opacity:.85;font-size:13px">Dodajte nalog i odmah ga pratite na tabli</div>
+    </div>
+    <div class="sh-b">
+      <label class="fl">Proizvod *</label>
+      <input class="fi" id="a-p" placeholder="npr. Kuhinja po mjeri">
+      <label class="fl">Naručilac</label>
+      <input class="fi" id="a-n" placeholder="npr. Porodica Marković">
+      <label class="fl">Dimenzije / opis</label>
+      <input class="fi" id="a-d" placeholder="npr. 3.2 m + otok">
+      <label class="fl">Faza</label>
+      <select class="fi" id="a-f">${opts}</select>
+      <label class="fl">Rok (dana)</label>
+      <input class="fi" id="a-r" type="number" min="0" placeholder="npr. 7">
+      <div class="btnrow" style="margin-top:18px">
+        <button class="btn ghost" onclick="addClose()">Otkaži</button>
+        <button class="btn primary" onclick="addOrder()">Dodaj na tablu</button>
+      </div>
+    </div>`;
+  document.getElementById('addov').classList.add('on');
+}
+function addClose(){document.getElementById('addov').classList.remove('on')}
+function addOrder(){
+  const p=document.getElementById('a-p').value.trim();
+  if(!p){alert('Unesite naziv proizvoda.');return;}
+  const nal=enrich({
+    p, n:document.getElementById('a-n').value.trim(),
+    d:document.getElementById('a-d').value.trim(),
+    f:document.getElementById('a-f').value,
+    r:document.getElementById('a-r').value.trim()
+  });
+  cfg.nalozi.push(nal);
+  renderAll(); addClose();
+  document.querySelectorAll('.view').forEach(x=>x.hidden=true);
+  document.getElementById('view-tabla').hidden=false;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.tab[data-v="tabla"]').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ---------- klijentski status ---------- */
+function custView(i){
+  const n=cfg.nalozi[i]; const fi=FAZE.indexOf(n.f); const pct=progPct(n.f);
+  document.getElementById('cust').innerHTML=`
+    <span class="cx" onclick="custClose()">✕</span>
+    <div class="cwrap">
+      <div class="chd">
+        <div style="opacity:.85;font-size:13px">${esc(cfg.firma)}</div>
+        <div style="font-family:'Plus Jakarta Sans';font-size:22px;font-weight:800;margin-top:4px">Vaša narudžba</div>
+        <div style="opacity:.9;margin-top:2px">${esc(n.p)}${n.d?' · '+esc(n.d):''}</div>
+      </div>
+      <div class="cbd">
+        <div class="cbig">${pct}%</div>
+        <div style="color:var(--mut);margin:2px 0 6px">završeno · trenutno: <b style="color:var(--ink)">${esc(n.f)}</b></div>
+        <div class="sh-prog" style="background:#e6eaf0;margin-bottom:18px"><i style="width:${pct}%;background:linear-gradient(90deg,var(--wd),#d2691e)"></i></div>
+        <div class="sub">Tok proizvodnje</div>
+        <div class="tl">${tlHTML(fi)}</div>
+        <div class="panel" style="margin-top:16px"><div class="row" style="border:none;padding:2px 0"><b>Procijenjena isporuka</b><span><b>${isporukaDatum(n.r)}</b></span></div></div>
+        <div class="hint">Ovako izgleda stranica koju vaš kupac otvori preko linka koji mu pošaljete. Vidi samo status svoje narudžbe, ne vidi cijene ni druge naloge.</div>
+      </div>
+    </div>`;
+  document.getElementById('cust').classList.add('on');
+  window.scrollTo(0,0);
+}
+function custClose(){document.getElementById('cust').classList.remove('on')}
 </script>
 <script defer src="/assets/js/consent.js"></script>
 </body>
