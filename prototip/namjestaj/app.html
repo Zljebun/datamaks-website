@@ -52,6 +52,7 @@
   .matc{border:1px solid var(--line);border-left:4px solid #16a34a;border-radius:12px;padding:11px 13px;margin-bottom:10px;background:#fff}
   .matc.low{border-left-color:#ea580c}
   .matc.buy{border-left-color:#dc2626}
+  .matc.fin{border-left-color:var(--wd);cursor:pointer}
   .matc-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .matc-n{font-weight:700;font-size:14px}
   .matc-f{font-weight:400;font-size:11.5px;color:var(--mut);margin-top:2px}
@@ -330,11 +331,16 @@ function renderFin(){
   const tot=cfg.nalozi.reduce((s,n)=>s+n.v,0);
   const paid=cfg.nalozi.reduce((s,n)=>s+n.a,0);
   const ost=tot-paid;
-  const rows=cfg.nalozi.map((n,i)=>`<tr onclick="open_(${i})" style="cursor:pointer">
-      <td>${esc(n.p)}<div style="font-size:11.5px;color:var(--mut)">${esc(n.n||'')}</div></td>
-      <td class="num">${fmtKM(n.v)}</td>
-      <td class="num">${fmtKM(n.a)}</td>
-      <td class="num"><b>${fmtKM(n.v-n.a)}</b></td></tr>`).join('');
+  const cards=cfg.nalozi.map((n,i)=>`<div class="matc fin" onclick="open_(${i})">
+      <div class="matc-h">
+        <div class="matc-n">${esc(n.p)}<div class="matc-f">${esc(n.n||'')}</div></div>
+      </div>
+      <div class="matc-s">
+        <div><span>Vrijednost</span><b>${fmtKM(n.v)}</b></div>
+        <div><span>Uplaćeno</span><b>${fmtKM(n.a)}</b></div>
+        <div><span>Za naplatu</span><b>${fmtKM(n.v-n.a)}</b></div>
+      </div>
+    </div>`).join('');
   document.getElementById('view-finansije').innerHTML=`
     <div class="kpis">
       <div class="kpi"><div class="k">Ukupna vrijednost</div><div class="v" style="font-size:21px">${fmtKM(tot)}</div></div>
@@ -343,8 +349,7 @@ function renderFin(){
       <div class="kpi"><div class="k">Broj naloga</div><div class="v">${cfg.nalozi.length}</div></div>
     </div>
     <div class="panel"><h2>Finansije po nalogu</h2>
-      <table><thead><tr><th>Nalog</th><th style="text-align:right">Vrijednost</th><th style="text-align:right">Uplaćeno</th><th style="text-align:right">Za naplatu</th></tr></thead>
-      <tbody>${rows}</tbody></table>
+      ${cards}
       <div class="hint">Klik na nalog otvara detalje. U punoj verziji se povezuje sa predračunima i fakturama, uz podsjetnik za naplatu preostalog iznosa.</div>
     </div>`;
 }
