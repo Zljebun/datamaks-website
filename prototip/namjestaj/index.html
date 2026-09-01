@@ -105,7 +105,7 @@ document.getElementById('go').onclick=()=>{
   })).filter(x=>x.p);
   if(!nalozi.length){ alert('Dodajte bar jedan nalog sa nazivom proizvoda.'); return; }
   const cfg=b64(JSON.stringify({firma,nalozi}));
-  location.href='app.html#cfg='+cfg;
+  location.href='app.html?v=20260901#cfg='+cfg;
 };
 </script>
 <script defer src="/assets/js/consent.js"></script>
