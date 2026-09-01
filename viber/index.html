@@ -23,11 +23,17 @@
 <body>
   <div class="card">
     <img class="logo" src="https://datamaks.net/assets/social/vb-icon.png" alt="Viber">
-    <h1>Piši nam na Viber</h1>
-    <p>Klikni dugme ispod da otvoriš razgovor sa nama na Viberu.</p>
-    <a class="btn" href="viber://add?number=38765469565">Otvori Viber chat</a>
+    <h1>Otvaramo Viber...</h1>
+    <p>Ako se Viber ne otvori sam za koju sekundu, tapni dugme ispod.</p>
+    <a class="btn" id="vbtn" href="viber://add?number=38765469565">Otvori Viber chat</a>
     <div>ili pozovi <a class="tel" href="tel:+38765469565">+387 65 469 565</a></div>
     <div class="mut">Datamaks d.o.o · datamaks.net</div>
   </div>
+  <script>
+    // Auto-pokušaj otvaranja Vibera na učitavanju; dugme ostaje kao rezerva
+    var VB = "viber://add?number=38765469565";
+    function openViber(){ window.location.href = VB; }
+    window.addEventListener('load', function(){ setTimeout(openViber, 400); });
+  </script>
 </body>
 </html>
