@@ -138,6 +138,9 @@
   .addbar .note{font-size:12px;color:var(--mut)}
   .fl{display:block;font-size:12px;font-weight:600;color:var(--mut);margin:12px 0 4px}
   .fi{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;background:#fff}
+  .frow{display:flex;gap:10px}
+  .frow>div{flex:1;min-width:0}
+  textarea.fi{resize:vertical;min-height:46px}
   @media(max-width:520px){.kpis{grid-template-columns:1fr 1fr}.barrow .lbl{flex:0 0 96px}.addbar .note{display:none}}
 </style>
 </head>
@@ -157,7 +160,7 @@
 
   <div class="banner">Ovo je <b>živi demo</b> sistema za praćenje proizvodnje namještaja, popunjen primjerima. Svi tabovi su otključani da vidite kompletan tok. Dodajte i svoj nalog i pratite ga kroz proizvodnju. Puna verzija radi sa vašom bazom uživo, sa korisnicima, pravima pristupa i alarmima.</div>
 
-  <div class="addbar"><button class="btn primary" onclick="openAdd()">＋ Dodaj nalog</button><span class="note">Unesite svoj proizvod i pratite ga na tabli</span></div>
+  <div class="addbar"><button class="btn primary" onclick="openForm()">＋ Dodaj nalog</button><span class="note">Unesite svoj proizvod i pratite ga na tabli</span></div>
 
   <div class="view board" id="view-tabla"></div>
   <div class="view pad" id="view-materijali" hidden></div>
@@ -185,9 +188,28 @@ function loadCfg(){
   const m=location.hash.match(/cfg=([^&]+)/);
   if(m){const j=unb64(m[1]); if(j){try{return JSON.parse(j)}catch(e){}}}
   return {firma:"Namještaj Kovačević",nalozi:[
-    {p:"Kuhinja po mjeri",n:"Restoran Dunav",d:"4.2 m + otok",f:"Rezanje",r:"7",v:6800,a:2500},
-    {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6",v:2900,a:1000},
-    {p:"Recepcijski pult",n:"Hotel Panorama",d:"luk 3.2 m",f:"Montaža",r:"2",v:4400,a:2200}
+    {p:"Kuhinja po mjeri",n:"Restoran Dunav",d:"4.2 m + otok",f:"Rezanje",r:"7",v:6800,a:2500,tel:"065 111 222",materijal:"Iverica hrast natur, fronte mat bijela",odgovorni:"Marko"},
+    {p:"Ugradni ormar",n:"Enterijeri Kovačević",d:"3.4 × 2.6 m",f:"Nacrt i mjere",r:"6",v:2900,a:1000,materijal:"Iverica bijela"},
+    {p:"Recepcijski pult",n:"Hotel Panorama",d:"luk 3.2 m",f:"Montaža",r:"2",v:4400,a:2200,odgovorni:"Nedžad",napomena:"Klijent traži logo na frontu"},
+    {p:"TV komoda",n:"Porodica Marković",d:"2.4 m viseća",f:"Kantiranje",r:"5",v:1200,a:400},
+    {p:"Garderober",n:"Stan Aleksić",d:"2.8 × 2.4 m",f:"Lakiranje",r:"4",v:2200,a:1100,tel:"066 340 900"},
+    {p:"Kancelarijski sto",n:"Advokat Simić",d:"1.8 m + kontejner",f:"Spremno",r:"1",v:900,a:900},
+    {p:"Dječja soba",n:"Porodica Jovanović",d:"krevet, ormar, sto",f:"CNC obrada",r:"9",v:2600,a:800,materijal:"Iverica u boji"},
+    {p:"Kupatilski elementi",n:"Vila Zlatibor",d:"donji ormarić i ogledalo",f:"Rezanje",r:"8",v:1400,a:500},
+    {p:"Trpezarijski sto",n:"Kafana Stari Grad",d:"produžni 2.0 m",f:"Nacrt i mjere",r:"12",v:1100,a:0},
+    {p:"Komoda",n:"Porodica Babić",d:"1.2 m, 4 fioke",f:"Kantiranje",r:"6",v:700,a:300},
+    {p:"Predsoblje",n:"Stan Petrović",d:"garderoba i klupa",f:"Montaža",r:"3",v:1600,a:800,odgovorni:"Marko"},
+    {p:"Konferencijski sto",n:"Firma Delta",d:"3.6 m ovalni",f:"Lakiranje",r:"5",v:3200,a:1600},
+    {p:"Polica za knjige",n:"Biblioteka Centar",d:"zid 4 m",f:"Spremno",r:"0",v:1800,a:1800},
+    {p:"Radni pult",n:"Frizerski salon Ana",d:"3 radna mjesta",f:"CNC obrada",r:"10",v:2400,a:1000},
+    {p:"Vitrina",n:"Zlatara Marić",d:"staklo i LED",f:"Rezanje",r:"7",v:2100,a:700,napomena:"LED rasvjeta uključena u cijenu"},
+    {p:"Kuhinjski otok",n:"Penthouse Vraca",d:"2.6 m sa sudoperom",f:"Kantiranje",r:"4",v:3800,a:1900,materijal:"Fenix crna mat"},
+    {p:"Noćni ormarići",n:"Hotel Panorama",d:"20 kom za sobe",f:"CNC obrada",r:"14",v:3000,a:1500,napomena:"Serija za 20 soba"},
+    {p:"Plakar klizni",n:"Stan Đukić",d:"3.0 × 2.5 m",f:"Nacrt i mjere",r:"11",v:1900,a:600},
+    {p:"Šank za kafić",n:"Caffe Mostar",d:"L oblik 3.5 m",f:"Montaža",r:"2",v:2700,a:1350,odgovorni:"Nedžad"},
+    {p:"Regal dnevni boravak",n:"Porodica Kovač",d:"zid 3.6 m",f:"Lakiranje",r:"6",v:2500,a:1000},
+    {p:"Garderobni ormar",n:"Hostel River",d:"6 kom za sobe",f:"Spremno",r:"1",v:2400,a:2400},
+    {p:"Kuhinja po mjeri",n:"Stan Novi grad",d:"3.0 m ravna",f:"CNC obrada",r:"8",v:4200,a:1500,materijal:"Iverica antracit"}
   ]};
 }
 const cfg=loadCfg();
@@ -297,14 +319,14 @@ function renderBoard(){
 /* ---------- TAB: MATERIJALI ---------- */
 // baza = početno stanje, po = utrošak po nalogu, faza = od koje faze se materijal troši
 const MAT=[
-  {n:"Iverica 18mm bijela",j:"ploča",baza:24,po:6,faza:"Rezanje",min:15},
-  {n:"Iverica 18mm hrast natur",j:"ploča",baza:18,po:4,faza:"Rezanje",min:10},
-  {n:"MDF 18mm za lakiranje",j:"ploča",baza:20,po:3,faza:"Rezanje",min:8},
-  {n:"Kant traka ABS 2mm",j:"rolna",baza:6,po:2,faza:"Kantiranje",min:4},
-  {n:"Ljepilo za kantiranje",j:"kg",baza:10,po:2,faza:"Kantiranje",min:6},
-  {n:"Šarke sa usporivačem",j:"kom",baza:160,po:24,faza:"Montaža",min:100},
-  {n:"Vodilice pune ekstenzije",j:"par",baza:48,po:8,faza:"Montaža",min:30},
-  {n:"Lak poliuretanski mat",j:"l",baza:14,po:3,faza:"Lakiranje",min:8}
+  {n:"Iverica 18mm bijela",j:"ploča",baza:150,po:6,faza:"Rezanje",min:30},
+  {n:"Iverica 18mm hrast natur",j:"ploča",baza:100,po:4,faza:"Rezanje",min:20},
+  {n:"MDF 18mm za lakiranje",j:"ploča",baza:90,po:3,faza:"Rezanje",min:20},
+  {n:"Kant traka ABS 2mm",j:"rolna",baza:40,po:2,faza:"Kantiranje",min:12},
+  {n:"Ljepilo za kantiranje",j:"kg",baza:50,po:2,faza:"Kantiranje",min:15},
+  {n:"Šarke sa usporivačem",j:"kom",baza:200,po:24,faza:"Montaža",min:100},
+  {n:"Vodilice pune ekstenzije",j:"par",baza:80,po:8,faza:"Montaža",min:30},
+  {n:"Lak poliuretanski mat",j:"l",baza:40,po:3,faza:"Lakiranje",min:12}
 ];
 function matStatus(st,min){ if(st<min) return ['buy','naruči']; if(st<min*1.3) return ['low','nisko']; return ['ok','na stanju']; }
 function renderMat(){
@@ -440,7 +462,11 @@ function open_(i){
       <div class="row"><b>Trenutna faza</b><span>${esc(n.f)}</span></div>
       <div class="row"><b>Sljedeća faza</b><span>${esc(sljed)}</span></div>
       <div class="row"><b>Naručilac</b><span>${esc(n.n||'-')}</span></div>
+      ${n.tel?`<div class="row"><b>Telefon</b><span>${esc(n.tel)}</span></div>`:''}
+      ${n.email?`<div class="row"><b>Email</b><span>${esc(n.email)}</span></div>`:''}
       <div class="row"><b>Dimenzije</b><span>${esc(n.d||'-')}</span></div>
+      ${n.materijal?`<div class="row"><b>Materijal i boja</b><span>${esc(n.materijal)}</span></div>`:''}
+      ${n.odgovorni?`<div class="row"><b>Odgovorni</b><span>${esc(n.odgovorni)}</span></div>`:''}
       <div class="row"><b>Rok</b><span>${rm.txt?`<span class="pill ${pillCls}">${rm.txt}</span>`:'-'}</span></div>
       <div class="row"><b>Procijenjena isporuka</b><span>${isporukaDatum(n.r)}</span></div>
 
@@ -461,11 +487,14 @@ function open_(i){
       <div class="sub">Materijal na ovom nalogu</div>
       <div class="chips">${matChips}</div>
 
+      ${n.napomena?`<div class="sub">Napomena</div><div style="font-size:13.5px;color:#334155">${esc(n.napomena)}</div>`:''}
+
       <div class="sub">Prilozi</div>
       <div class="mfiles">${filesHTML(i)}</div>
 
       <div class="btnrow" style="margin-top:20px">
-        <button class="btn ghost" style="flex:1 0 100%" onclick="custView(${i})">👁 Prikaži link za klijenta</button>
+        <button class="btn primary" onclick="openForm(${i})">✎ Uredi nalog</button>
+        <button class="btn ghost" onclick="custView(${i})">👁 Link za klijenta</button>
       </div>
     </div>`;
   document.getElementById('ov').classList.add('on');
@@ -479,49 +508,78 @@ function advancePhase(i,dir){
 }
 function close_(){document.getElementById('ov').classList.remove('on')}
 
-/* ---------- dodaj nalog ---------- */
-function openAdd(){
-  const opts=FAZE.map(f=>`<option>${f}</option>`).join('');
+/* ---------- dodaj / uredi nalog ---------- */
+let editIdx=null;
+function openForm(idx){
+  editIdx = (idx===undefined||idx===null) ? null : idx;
+  const n = editIdx!==null ? cfg.nalozi[editIdx] : {};
+  const v=x=>(x===undefined||x===null)?'':esc(String(x));
+  const opts=FAZE.map(f=>`<option ${f===n.f?'selected':''}>${f}</option>`).join('');
+  const naslov = editIdx!==null ? 'Uredi nalog' : 'Novi nalog';
+  const podnaslov = editIdx!==null ? 'Izmijenite podatke ovog naloga' : 'Dodajte nalog i odmah ga pratite na tabli';
+  const dugme = editIdx!==null ? 'Sačuvaj izmjene' : 'Dodaj na tablu';
   document.getElementById('addsheet').innerHTML=`
-    <div class="sh-h"><span class="x" onclick="addClose()">✕</span>
-      <div style="font-family:'Plus Jakarta Sans';font-size:19px;font-weight:700">Novi nalog</div>
-      <div style="opacity:.85;font-size:13px">Dodajte nalog i odmah ga pratite na tabli</div>
+    <div class="sh-h"><span class="x" onclick="formClose()">✕</span>
+      <div style="font-family:'Plus Jakarta Sans';font-size:19px;font-weight:700">${naslov}</div>
+      <div style="opacity:.85;font-size:13px">${podnaslov}</div>
     </div>
     <div class="sh-b">
       <label class="fl">Proizvod *</label>
-      <input class="fi" id="a-p" placeholder="npr. Kuhinja po mjeri">
+      <input class="fi" id="f-p" value="${v(n.p)}" placeholder="npr. Kuhinja po mjeri">
       <label class="fl">Naručilac</label>
-      <input class="fi" id="a-n" placeholder="npr. Porodica Marković">
+      <input class="fi" id="f-n" value="${v(n.n)}" placeholder="npr. Porodica Marković">
+      <div class="frow">
+        <div><label class="fl">Telefon</label><input class="fi" id="f-tel" value="${v(n.tel)}" placeholder="+387 ..."></div>
+        <div><label class="fl">Email</label><input class="fi" id="f-email" value="${v(n.email)}" placeholder="ime@email.com"></div>
+      </div>
       <label class="fl">Dimenzije / opis</label>
-      <input class="fi" id="a-d" placeholder="npr. 3.2 m + otok">
-      <label class="fl">Faza</label>
-      <select class="fi" id="a-f">${opts}</select>
-      <label class="fl">Rok (dana)</label>
-      <input class="fi" id="a-r" type="number" min="0" placeholder="npr. 7">
+      <input class="fi" id="f-d" value="${v(n.d)}" placeholder="npr. 3.2 m + otok">
+      <label class="fl">Materijal i boja</label>
+      <input class="fi" id="f-materijal" value="${v(n.materijal)}" placeholder="npr. Iverica hrast natur">
+      <div class="frow">
+        <div><label class="fl">Faza</label><select class="fi" id="f-f">${opts}</select></div>
+        <div><label class="fl">Rok (dana)</label><input class="fi" id="f-r" type="number" min="0" value="${v(n.r)}" placeholder="7"></div>
+      </div>
+      <div class="frow">
+        <div><label class="fl">Vrijednost (KM)</label><input class="fi" id="f-v" type="number" min="0" value="${v(n.v)}" placeholder="npr. 6800"></div>
+        <div><label class="fl">Avans (KM)</label><input class="fi" id="f-a" type="number" min="0" value="${v(n.a)}" placeholder="npr. 2500"></div>
+      </div>
+      <label class="fl">Odgovorni majstor</label>
+      <input class="fi" id="f-odg" value="${v(n.odgovorni)}" placeholder="npr. Marko">
+      <label class="fl">Napomena</label>
+      <textarea class="fi" id="f-nap" rows="2" placeholder="npr. klijent traži mat lak">${v(n.napomena)}</textarea>
       <div class="btnrow" style="margin-top:18px">
-        <button class="btn ghost" onclick="addClose()">Otkaži</button>
-        <button class="btn primary" onclick="addOrder()">Dodaj na tablu</button>
+        <button class="btn ghost" onclick="formClose()">Otkaži</button>
+        <button class="btn primary" onclick="saveForm()">${dugme}</button>
       </div>
     </div>`;
   document.getElementById('addov').classList.add('on');
 }
-function addClose(){document.getElementById('addov').classList.remove('on')}
-function addOrder(){
-  const p=document.getElementById('a-p').value.trim();
-  if(!p){alert('Unesite naziv proizvoda.');return;}
-  const nal=enrich({
-    p, n:document.getElementById('a-n').value.trim(),
-    d:document.getElementById('a-d').value.trim(),
-    f:document.getElementById('a-f').value,
-    r:document.getElementById('a-r').value.trim()
-  });
-  cfg.nalozi.push(nal);
-  renderAll(); addClose();
-  document.querySelectorAll('.view').forEach(x=>x.hidden=true);
-  document.getElementById('view-tabla').hidden=false;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.tab[data-v="tabla"]').classList.add('active');
-  window.scrollTo(0,0);
+function formClose(){document.getElementById('addov').classList.remove('on')}
+function saveForm(){
+  const g=id=>document.getElementById(id).value.trim();
+  const p=g('f-p'); if(!p){alert('Unesite naziv proizvoda.');return;}
+  const vRaw=g('f-v'), aRaw=g('f-a');
+  const base={p, n:g('f-n'), tel:g('f-tel'), email:g('f-email'), d:g('f-d'),
+    materijal:g('f-materijal'), f:g('f-f'), r:g('f-r'), odgovorni:g('f-odg'), napomena:g('f-nap')};
+  if(editIdx!==null){
+    const n=cfg.nalozi[editIdx]; const oldF=n.f;
+    Object.assign(n,base);
+    if(vRaw!=='') n.v=Number(vRaw)||0;
+    if(aRaw!=='') n.a=Number(aRaw)||0;
+    if(oldF!==n.f){ n.log=Array.isArray(n.log)?n.log:[]; n.log.unshift({t:today(),txt:'Faza promijenjena na: '+n.f}); }
+    renderAll(); formClose(); open_(editIdx);
+  }else{
+    if(vRaw!=='') base.v=Number(vRaw)||0;
+    if(aRaw!=='') base.a=Number(aRaw)||0;
+    cfg.nalozi.push(enrich(base));
+    renderAll(); formClose();
+    document.querySelectorAll('.view').forEach(x=>x.hidden=true);
+    document.getElementById('view-tabla').hidden=false;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelector('.tab[data-v="tabla"]').classList.add('active');
+    window.scrollTo(0,0);
+  }
 }
 
 /* ---------- klijentski status ---------- */
