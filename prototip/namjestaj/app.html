@@ -117,8 +117,13 @@
   .log .e .c{color:#334155;font-size:13.5px}
   /* foto napretka */
   .pfoto{display:flex;gap:8px;flex-wrap:wrap}
-  .pfoto .t{width:80px;height:62px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#fff;font-size:9.5px;line-height:1.1;text-align:center;cursor:pointer;background:linear-gradient(135deg,var(--wd2),var(--wd));padding:4px}
-  .pfoto .t span{font-size:17px}
+  .pfoto .t{width:104px;height:78px;border-radius:10px;background-size:cover;background-position:center;cursor:pointer;position:relative;overflow:hidden;border:1px solid var(--line)}
+  .pfoto .t .lab{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-size:9.5px;font-weight:600;padding:12px 6px 4px;line-height:1.1}
+  /* lightbox */
+  .imgov{position:fixed;inset:0;background:rgba(2,6,23,.92);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:70;padding:20px;cursor:zoom-out}
+  .imgov.on{display:flex}
+  .imgov img{max-width:100%;max-height:80vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .imgov .cap{color:#fff;font-size:14px;font-weight:600}
   /* klijentski status (overlay) */
   .cust{position:fixed;inset:0;background:#0b1220;display:none;z-index:60;overflow:auto}
   .cust.on{display:block}
@@ -159,6 +164,7 @@
   </div>
 
   <div class="cust" id="cust"></div>
+  <div class="imgov" id="imgov" onclick="imgClose()"></div>
 
 <script>
 const FAZE=["Nacrt i mjere","Rezanje","CNC obrada","Kantiranje","Montaža","Lakiranje","Spremno"];
@@ -183,7 +189,15 @@ function daysAgo(k){const d=new Date();d.setDate(d.getDate()-k);return fmtD(d)}
 function fmtKM(x){return (Number(x)||0).toLocaleString('de-DE')+' KM'}
 const VAL={"Kuhinja po mjeri":6800,"Ugradni ormar":2900,"Recepcijski pult":4400};
 const LOGN={"Nacrt i mjere":"Uzete mjere i potvrđen nacrt","Rezanje":"Ploče iskrojene","CNC obrada":"CNC obrada završena","Kantiranje":"Kantiranje završeno","Montaža":"Montaža u toku","Lakiranje":"Lakiranje završeno","Spremno":"Spremno za isporuku"};
-const FOTOIC={"Nacrt i mjere":"📐","Rezanje":"🪚","CNC obrada":"⚙️","Kantiranje":"📏","Montaža":"🔩","Lakiranje":"🎨","Spremno":"✅"};
+const FOTOIMG={
+  "Nacrt i mjere":"/prototip/namjestaj/foto/faza-1-nacrt.jpg",
+  "Rezanje":"/prototip/namjestaj/foto/faza-2-rezanje.jpg",
+  "CNC obrada":"/prototip/namjestaj/foto/faza-3-cnc.jpg",
+  "Kantiranje":"/prototip/namjestaj/foto/faza-4-kantiranje.jpg",
+  "Montaža":"/prototip/namjestaj/foto/faza-5-montaza.jpg",
+  "Lakiranje":"/prototip/namjestaj/foto/faza-6-lakiranje.jpg",
+  "Spremno":"/prototip/namjestaj/foto/faza-7-spremno.jpg"
+};
 function seedLog(n){
   const fi=FAZE.indexOf(n.f); const out=[];
   for(let k=fi;k>=0;k--){ out.push({t:daysAgo((fi-k)*2+1), txt:LOGN[FAZE[k]]||('Faza: '+FAZE[k])}); }
@@ -233,9 +247,17 @@ function filesHTML(i){
 }
 function fotoHTML(n){
   const fi=FAZE.indexOf(n.f); let out='';
-  for(let k=0;k<=fi;k++){ out+=`<div class="t" onclick="filMsg()"><span>${FOTOIC[FAZE[k]]||'📷'}</span>${esc(FAZE[k])}</div>`; }
+  for(let k=0;k<=fi;k++){
+    const f=FAZE[k]; const img=FOTOIMG[f];
+    if(img){ out+=`<div class="t" style="background-image:url('${img}')" onclick="imgView('${img}','${esc(f)}')"><span class="lab">${esc(f)}</span></div>`; }
+  }
   return out||'<div class="hint">Foto napretka se dodaje kako posao odmiče.</div>';
 }
+function imgView(src,cap){
+  document.getElementById('imgov').innerHTML=`<img src="${src}" alt="${cap}"><div class="cap">${cap}</div>`;
+  document.getElementById('imgov').classList.add('on');
+}
+function imgClose(){document.getElementById('imgov').classList.remove('on')}
 
 /* ---------- TAB: TABLA (kanban) ---------- */
 const board=document.getElementById('view-tabla');
