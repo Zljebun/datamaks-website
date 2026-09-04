@@ -165,8 +165,27 @@
     }, true);
   }
 
+  // Heartbeat mjerenje zadržavanja (radi i cookieless jer je gtag uvijek učitan).
+  // Broji AKTIVNO vrijeme (pauzira kad je tab skriven) i šalje event na pragovima.
+  // Zasebna imena (stay_15s, stay_30s...) -> lako se čita "koliko ih ostalo bar Ns".
+  function attachHeartbeat() {
+    var marks = [15, 30, 60, 120, 180];
+    var idx = 0, sec = 0;
+    setInterval(function () {
+      if (document.visibilityState !== 'visible') return;
+      sec++;
+      while (idx < marks.length && sec >= marks[idx]) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'stay_' + marks[idx] + 's', { page_path: location.pathname });
+        }
+        idx++;
+      }
+    }, 1000);
+  }
+
   function init() {
     attachProtoTracking();
+    attachHeartbeat();
     if (!readChoice()) showBanner();  // pokaži banner samo ako izbor još nije napravljen
   }
 
