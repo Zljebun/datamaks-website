@@ -1,7 +1,10 @@
-/* Datamaks - GDPR cookie consent + gated Google Analytics 4
-   GA4 loads ONLY after the visitor clicks "Accept". Choice is stored in
-   localStorage (dm_consent = "granted" | "denied"). No analytics cookies
-   are set before consent. Banner text follows <html lang>. */
+/* Datamaks - GDPR cookie consent + Google Analytics 4 (Consent Mode v2)
+   gtag se učitava ODMAH, ali podrazumijevano BEZ kolačića
+   (analytics_storage: denied) -> GA šalje anonimne pingove bez kolačića,
+   pa se svaka posjeta mjeri (uključujući paid iz reklama). Tek na "Prihvatam"
+   se uključuju kolačići (analytics_storage: granted) za precizniju statistiku.
+   Izbor se pamti u localStorage (dm_consent = "granted" | "denied").
+   Banner tekst prati <html lang>. */
 (function () {
   'use strict';
 
@@ -10,23 +13,23 @@
 
   var TEXT = {
     bs: {
-      msg: 'Koristimo kolačiće za anonimnu analitiku posjeta (Google Analytics) kako bismo poboljšali sajt. Učitavamo ih tek uz vaš pristanak.',
+      msg: 'Analitiku posjeta koristimo radi poboljšanja sajta. Bez vašeg pristanka mjerimo anonimno i bez kolačića. Uz pristanak koristimo kolačiće za precizniju statistiku.',
       accept: 'Prihvatam', reject: 'Odbijam'
     },
     hr: {
-      msg: 'Koristimo kolačiće za anonimnu analitiku posjeta (Google Analytics) kako bismo poboljšali stranicu. Učitavamo ih tek uz vaš pristanak.',
+      msg: 'Analitiku posjeta koristimo radi poboljšanja stranice. Bez vašeg pristanka mjerimo anonimno i bez kolačića. Uz pristanak koristimo kolačiće za precizniju statistiku.',
       accept: 'Prihvaćam', reject: 'Odbijam'
     },
     sr: {
-      msg: 'Koristimo kolačiće za anonimnu analitiku poseta (Google Analytics) kako bismo poboljšali sajt. Učitavamo ih tek uz vašu saglasnost.',
+      msg: 'Analitiku poseta koristimo radi poboljšanja sajta. Bez vaše saglasnosti merimo anonimno i bez kolačića. Uz saglasnost koristimo kolačiće za precizniju statistiku.',
       accept: 'Prihvatam', reject: 'Odbijam'
     },
     en: {
-      msg: 'We use cookies for anonymous visit analytics (Google Analytics) to improve this site. They load only with your consent.',
+      msg: 'We use visit analytics to improve this site. Without your consent we measure anonymously and without cookies. With consent we use cookies for more accurate statistics.',
       accept: 'Accept', reject: 'Decline'
     },
     de: {
-      msg: 'Wir verwenden Cookies für anonyme Besuchsstatistiken (Google Analytics), um diese Website zu verbessern. Sie werden erst mit Ihrer Zustimmung geladen.',
+      msg: 'Wir nutzen Besuchsstatistiken zur Verbesserung dieser Website. Ohne Ihre Zustimmung messen wir anonym und ohne Cookies. Mit Zustimmung verwenden wir Cookies für genauere Statistiken.',
       accept: 'Akzeptieren', reject: 'Ablehnen'
     }
   };
@@ -41,24 +44,43 @@
     try { localStorage.setItem(STORE_KEY, v); } catch (e) {}
   }
 
-  function loadGA() {
-    if (window.__dmGaLoaded) return;
-    window.__dmGaLoaded = true;
+  // gtag + Consent Mode se postavljaju ODMAH, prije bilo kakvog izbora.
+  // U "denied" stanju GA šalje cookieless pingove (bez kolačića), pa se
+  // posjete mjere anonimno. Na "granted" se kolačići uključuju.
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  window.gtag = gtag;
+
+  var prior = readChoice();
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: (prior === 'granted') ? 'granted' : 'denied'
+  });
+
+  (function loadGA() {
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
     document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    window.gtag = gtag;
     gtag('js', new Date());
     gtag('config', GA_ID, { anonymize_ip: true });
     // Kontakt forma preusmjerava na /thank-you.html — svaka posjeta te strane je
-    // uspješno poslan upit. Šaljemo konverziju generate_lead samo kad je GA učitan
-    // (tj. uz pristanak na kolačiće). Registrovana kao key event u property 548110029.
+    // uspješno poslan upit. Konverzija generate_lead se sada šalje uvijek
+    // (cookieless ako nema pristanka). Key event u property 548110029.
     if (location.pathname.indexOf('thank-you') !== -1) {
       gtag('event', 'generate_lead');
     }
+  })();
+
+  function grantConsent() {
+    saveChoice('granted');
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+  }
+  function denyConsent() {
+    saveChoice('denied');
+    gtag('consent', 'update', { analytics_storage: 'denied' });
   }
 
   function injectStyles() {
@@ -120,20 +142,19 @@
       bar.classList.remove('is-visible');
       setTimeout(function () { if (bar.parentNode) bar.parentNode.removeChild(bar); }, 350);
     }
-    accept.addEventListener('click', function () { saveChoice('granted'); loadGA(); dismiss(); });
-    reject.addEventListener('click', function () { saveChoice('denied'); dismiss(); });
+    accept.addEventListener('click', function () { grantConsent(); dismiss(); });
+    reject.addEventListener('click', function () { denyConsent(); dismiss(); });
 
     requestAnimationFrame(function () { bar.classList.add('is-visible'); });
   }
 
-  // Mjerenje klika na prototipe (funnel korak 2). Delegirani listener; šalje
-  // GA4 event samo ako je GA učitan (uz pristanak) — inače tiho ne radi ništa.
+  // Mjerenje klika na prototipe (funnel korak 2). gtag je uvijek prisutan, pa
+  // se event šalje i bez pristanka (cookieless).
   function attachProtoTracking() {
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[href*="/mockups/"]');
       if (!a || typeof window.gtag !== 'function') return;
       var href = a.getAttribute('href') || '';
-      // izvuci naziv prototipa iz putanje /mockups/<naziv>/...
       var m = href.match(/\/mockups\/([^\/?#]+)/);
       var item = m ? m[1] : 'svi';
       window.gtag('event', 'select_content', {
@@ -146,10 +167,7 @@
 
   function init() {
     attachProtoTracking();
-    var choice = readChoice();
-    if (choice === 'granted') { loadGA(); return; }
-    if (choice === 'denied') { return; }
-    showBanner();
+    if (!readChoice()) showBanner();  // pokaži banner samo ako izbor još nije napravljen
   }
 
   if (document.body) init();
