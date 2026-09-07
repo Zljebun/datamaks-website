@@ -283,6 +283,10 @@
             <input type="tel" id="lf-phone" name="phone" required placeholder="065 000 000">
           </div>
           <div class="fg">
+            <label for="lf-email">Email <span style="font-weight:400;color:#94a3b8">(opciono)</span></label>
+            <input type="email" id="lf-email" name="email" placeholder="vas@email.com">
+          </div>
+          <div class="fg">
             <label for="lf-msg">Šta vas najviše muči <span style="font-weight:400;color:#94a3b8">(opciono)</span></label>
             <textarea id="lf-msg" name="message" placeholder="npr. gubim pregled naloga i rokova"></textarea>
           </div>
@@ -379,10 +383,11 @@
         btn.disabled = true;
         var name = (leadForm.querySelector('[name=name]')||{}).value||'';
         var phone = (leadForm.querySelector('[name=phone]')||{}).value||'';
+        var email = (leadForm.querySelector('[name=email]')||{}).value||'';
         var msg = (leadForm.querySelector('[name=message]')||{}).value||'';
         var payload = {
           ime: name,
-          email: '',
+          email: email || 'upit-bez-emaila@datamaks.net',
           firma: '',
           tip: 'Softver za namjestaj (landing)',
           poruka: (msg ? msg + '\n' : '') + 'Telefon/Viber: ' + phone,
