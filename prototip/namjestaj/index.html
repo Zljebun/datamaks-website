@@ -84,12 +84,18 @@
   .hint{font-size:12px;color:var(--mut);margin-top:6px}
   .cta{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--b2);color:#fff;border:2px solid rgba(255,255,255,.9);border-radius:999px;padding:13px 18px;font-weight:700;text-decoration:none;box-shadow:0 10px 28px rgba(30,64,175,.5);font-size:14.5px}
   .chat-float{position:fixed;left:16px;bottom:16px;z-index:40;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .chat-actions{display:flex;flex-direction:column;gap:10px;align-items:flex-start;opacity:0;transform:translateY(12px) scale(.95);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+  .chat-float.open .chat-actions{opacity:1;transform:none;pointer-events:auto}
   .chat-btn{display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:999px;color:#fff;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.2)}
   .chat-btn svg{width:22px;height:22px;fill:#fff;flex:0 0 auto}
   .chat-btn.viber{background:#7360F2}
   .chat-btn.whatsapp{background:#25D366}
   .chat-btn.poziv{background:#0f172a}
-  @media(max-width:520px){.chat-btn .chat-text{display:none}.chat-btn{padding:13px;border-radius:50%}}
+  .chat-fab{width:54px;height:54px;border-radius:50%;border:none;background:#0f172a;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+  .chat-fab svg{width:26px;height:26px;fill:#fff}
+  .chat-fab .ic-close{display:none}
+  .chat-float.open .chat-fab .ic-open{display:none}
+  .chat-float.open .chat-fab .ic-close{display:block}
   /* modal */
   .ov{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:flex-end;justify-content:center;z-index:50}
   .ov.on{display:flex}
@@ -616,8 +622,9 @@ function custView(i){
 }
 function custClose(){document.getElementById('cust').classList.remove('on')}
 </script>
-<!-- Click-to-chat: Viber (BiH) + WhatsApp (AT/EU) + Poziv -->
-<div class="chat-float">
+<!-- Click-to-chat FAB: Viber (BiH) + WhatsApp (AT/EU) + Poziv -->
+<div class="chat-float" id="chatFloat">
+  <div class="chat-actions">
   <a class="chat-btn viber" href="viber://add?number=38765469565" aria-label="Piši nam na Viber (BiH)">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 5.82 2 10.5c0 2.3 1.09 4.4 2.9 5.94-.1 1.22-.55 2.55-1.45 3.66-.2.24-.02.6.29.56 1.86-.2 3.35-.9 4.4-1.62.9.24 1.86.36 2.86.36 5.5 0 10-3.82 10-8.5S17.5 2 12 2zm4.44 11.13c-.2.56-1.16 1.07-1.62 1.14-.41.06-.94.09-1.51-.1-.35-.11-.8-.26-1.37-.5-2.41-1.04-3.98-3.47-4.1-3.63-.12-.16-.98-1.3-.98-2.48s.62-1.76.84-2c.22-.24.48-.3.64-.3l.46.01c.15 0 .35-.06.54.41.2.48.67 1.66.73 1.78.06.12.1.26.02.42-.08.16-.12.26-.24.4l-.36.42c-.12.12-.24.25-.1.49.14.24.62 1.02 1.33 1.65.91.81 1.68 1.07 1.92 1.19.24.12.38.1.52-.06.14-.16.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.14 1.14z"/></svg>
     <span class="chat-text">Viber</span>
@@ -631,7 +638,20 @@ function custClose(){document.getElementById('cust').classList.remove('on')}
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.18z"/></svg>
     <span class="chat-text">Pozovi</span>
   </a>
+  </div>
+  <button class="chat-fab" id="chatFab" type="button" aria-label="Kontakt" aria-expanded="false">
+    <svg class="ic-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71L12 12.01l-6.3-6.3-1.41 1.41L10.59 13.4l-6.3 6.3 1.41 1.41 6.3-6.3 6.3 6.3 1.41-1.41-6.3-6.3 6.3-6.3z"/></svg>
+  </button>
 </div>
+<script>
+  (function(){
+    var f=document.getElementById('chatFloat'), b=document.getElementById('chatFab');
+    if(!b) return;
+    b.addEventListener('click', function(e){ e.stopPropagation(); var o=f.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
+    document.addEventListener('click', function(e){ if(!f.contains(e.target)){ f.classList.remove('open'); b.setAttribute('aria-expanded','false'); } });
+  })();
+</script>
 <script defer src="/assets/js/consent.js"></script>
 </body>
 </html>
