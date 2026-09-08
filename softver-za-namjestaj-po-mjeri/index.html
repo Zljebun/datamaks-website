@@ -401,7 +401,7 @@
     }
 
     // GA4 mjerenje kontakata (klik na Viber/WhatsApp/poziv)
-    function dmTrack(name, kanal){ if(window.gtag){ gtag('event', name, { kanal: kanal, stranica: 'landing-softver' }); } }
+    function dmTrack(name, kanal){ if(window.gtag){ gtag('event', name, { kanal: kanal, stranica: 'landing-softver' }); } if(window.fbq){ fbq('track','Lead',{ content_name: 'kontakt-'+kanal }); } }
     document.querySelectorAll('.chat-btn.viber').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','viber'); }); });
     document.querySelectorAll('.chat-btn.whatsapp').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','whatsapp'); }); });
     document.querySelectorAll('.chat-btn.poziv').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','telefon'); }); });

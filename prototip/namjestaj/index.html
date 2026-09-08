@@ -651,7 +651,7 @@ function custClose(){document.getElementById('cust').classList.remove('on')}
     b.addEventListener('click', function(e){ e.stopPropagation(); var o=f.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
     document.addEventListener('click', function(e){ if(!f.contains(e.target)){ f.classList.remove('open'); b.setAttribute('aria-expanded','false'); } });
     // GA4 mjerenje kontakata
-    function dmTrack(kanal){ if(window.gtag){ gtag('event','kontakt_klik',{ kanal: kanal, stranica: 'prototip-namjestaj' }); } }
+    function dmTrack(kanal){ if(window.gtag){ gtag('event','kontakt_klik',{ kanal: kanal, stranica: 'prototip-namjestaj' }); } if(window.fbq){ fbq('track','Lead',{ content_name: 'kontakt-'+kanal }); } }
     document.querySelectorAll('.chat-btn.viber').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('viber'); }); });
     document.querySelectorAll('.chat-btn.whatsapp').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('whatsapp'); }); });
     document.querySelectorAll('.chat-btn.poziv').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('telefon'); }); });

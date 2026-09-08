@@ -74,13 +74,35 @@
     }
   })();
 
+  // Meta Pixel (Datamaks). Consent-gated: dok nema pristanka eventi se drze
+  // (revoke) i posalju tek na "granted". Standardni fbq snippet.
+  var PIXEL_ID = '1387485776211055';
+  (function loadPixel() {
+    if (window.fbq) return;
+    var n = window.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+    if (!window._fbq) window._fbq = n;
+    n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+    var t = document.createElement('script'); t.async = true;
+    t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(t);
+    fbq('consent', (prior === 'granted') ? 'grant' : 'revoke');
+    fbq('init', PIXEL_ID);
+    fbq('track', 'PageView');
+    // thank-you = uspjesno poslata forma → Lead (kao i generate_lead za GA)
+    if (location.pathname.indexOf('thank-you') !== -1) {
+      fbq('track', 'Lead');
+    }
+  })();
+
   function grantConsent() {
     saveChoice('granted');
     gtag('consent', 'update', { analytics_storage: 'granted' });
+    if (window.fbq) fbq('consent', 'grant');
   }
   function denyConsent() {
     saveChoice('denied');
     gtag('consent', 'update', { analytics_storage: 'denied' });
+    if (window.fbq) fbq('consent', 'revoke');
   }
 
   function injectStyles() {
