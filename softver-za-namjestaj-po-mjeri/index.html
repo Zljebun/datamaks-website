@@ -134,6 +134,11 @@
     .chat-float.open .chat-fab{background:#0f172a}
     .chat-float.open .chat-fab .ic-open{display:none}
     .chat-float.open .chat-fab .ic-close{display:block}
+    /* Viber-first hero CTA */
+    .btn-viber{background:#7360F2;color:#fff;border:2px solid #7360F2}
+    .btn-viber:hover{background:#5a48d6;border-color:#5a48d6;color:#fff}
+    .lp-hero-alt{margin:14px 0 0;font-size:.98rem;opacity:.92}
+    .lp-hero-alt a{color:#fff;text-decoration:underline}
     /* Inline lead form */
     .lp-lead{max-width:560px;margin:26px auto 0;background:#fff;border:1px solid #e6eaf0;border-radius:18px;padding:26px 26px 24px;box-shadow:0 6px 24px rgba(2,6,23,.08);text-align:left}
     .lp-lead h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.25rem;margin:0 0 6px;color:#0f172a}
@@ -197,12 +202,13 @@
     <!-- Hero -->
     <section class="lp-hero">
       <div class="container">
-        <h1>Softver za praćenje proizvodnje namještaja po mjeri</h1>
-        <p>Umjesto papira i tabela, dobijte jasan pregled svih naloga kroz faze proizvodnje. Datamaks pravi softver po mjeri za proizvođače namještaja, prilagođen vašem načinu rada.</p>
+        <h1>Gubite pregled naloga i rokova u svesci i Excelu?</h1>
+        <p>Softver po mjeri za proizvođače namještaja vodi svaki nalog kroz faze proizvodnje, materijale i rokove. Pišite nam na Viber kako sada radite, javimo vam isti dan šta bi softver riješio i pokažemo primjer.</p>
         <div class="lp-cta-row">
-          <a href="/prototip/namjestaj/" class="btn btn-primary btn-large">Isprobajte živi prototip</a>
-          <a href="#upit" class="btn btn-secondary btn-large">Tražite ponudu</a>
+          <a href="viber://add?number=38765469565" class="btn btn-large btn-viber" data-kanal="viber">Pišite nam na Viber</a>
+          <a href="/prototip/namjestaj/" class="btn btn-secondary btn-large">Isprobajte živi prototip</a>
         </div>
+        <p class="lp-hero-alt">ili <a href="https://wa.me/436677970082" data-kanal="whatsapp">WhatsApp</a> · <a href="tel:+38765469565" data-kanal="telefon">pozovite +387 65 469 565</a></p>
       </div>
     </section>
 
@@ -405,6 +411,7 @@
     document.querySelectorAll('.chat-btn.viber').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','viber'); }); });
     document.querySelectorAll('.chat-btn.whatsapp').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','whatsapp'); }); });
     document.querySelectorAll('.chat-btn.poziv').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','telefon'); }); });
+    document.querySelectorAll('.lp-hero [data-kanal]').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik', a.getAttribute('data-kanal')); }); });
 
     // Kratki upit -> isti Supabase endpoint kao kontakt forma
     var leadForm = document.getElementById('lead-form');
