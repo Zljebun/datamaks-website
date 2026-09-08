@@ -96,6 +96,11 @@
   .chat-fab .ic-close{display:none}
   .chat-float.open .chat-fab .ic-open{display:none}
   .chat-float.open .chat-fab .ic-close{display:block}
+  .viber-cta{margin:14px;padding:16px;border-radius:14px;background:linear-gradient(135deg,#efe9ff,#f6f2ff);border:1px solid #ddd3ff}
+  .viber-cta__txt{font-size:14px;color:#0f172a;margin-bottom:12px;line-height:1.5}
+  .viber-cta__btns{display:flex;gap:10px;flex-wrap:wrap}
+  .vc-btn{padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+  .vc-viber{background:#7360F2}.vc-wa{background:#25D366}.vc-call{background:#0f172a}
   /* modal */
   .ov{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:flex-end;justify-content:center;z-index:50}
   .ov.on{display:flex}
@@ -173,6 +178,15 @@
   </div>
 
   <div class="banner">Ovo je <b>živi demo</b> sistema za praćenje proizvodnje namještaja, popunjen primjerima. Svi tabovi su otključani da vidite kompletan tok. Dodajte i svoj nalog i pratite ga kroz proizvodnju. Puna verzija radi sa vašom bazom uživo, sa korisnicima, pravima pristupa i alarmima.</div>
+
+  <div class="viber-cta">
+    <div class="viber-cta__txt"><b>Sviđa vam se?</b> Pišite nam na Viber i javimo vam isti dan kako bi ovakav sistem izgledao baš za vašu radionicu.</div>
+    <div class="viber-cta__btns">
+      <a class="vc-btn vc-viber" href="viber://add?number=38765469565" data-kanal="viber">Pišite na Viber</a>
+      <a class="vc-btn vc-wa" href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp">WhatsApp</a>
+      <a class="vc-btn vc-call" href="tel:+38765469565" data-kanal="telefon">Pozovi</a>
+    </div>
+  </div>
 
   <div class="addbar"><button class="btn primary" onclick="openForm()">＋ Dodaj nalog</button><span class="note">Unesite svoj proizvod i pratite ga na tabli</span></div>
 
@@ -655,6 +669,7 @@ function custClose(){document.getElementById('cust').classList.remove('on')}
     document.querySelectorAll('.chat-btn.viber').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('viber'); }); });
     document.querySelectorAll('.chat-btn.whatsapp').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('whatsapp'); }); });
     document.querySelectorAll('.chat-btn.poziv').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('telefon'); }); });
+    document.querySelectorAll('.viber-cta [data-kanal]').forEach(function(a){ a.addEventListener('click', function(){ dmTrack(a.getAttribute('data-kanal')); }); });
   })();
 </script>
 <script defer src="/assets/js/consent.js"></script>
