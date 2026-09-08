@@ -175,6 +175,18 @@
   <span class="demo-flag" id="demoFlag">DEMO · izmišljeni podaci</span>
 </div>
 
+<div id="viberCta" style="margin:12px 14px;padding:14px 16px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa">
+  <div style="font-size:13.5px;line-height:1.5;color:#0f172a;margin-bottom:10px"><b>Sviđa vam se?</b> Pišite nam na Viber, opišite vaše procese i isti dan ćete dobiti prototip konkretno za vašu proizvodnju.</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff;background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff;background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff;background:#0f172a">Pozovi</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('#viberCta [data-kanal]').forEach(function(a){a.addEventListener('click',function(){var k=a.getAttribute('data-kanal');if(window.gtag)gtag('event','kontakt_klik',{kanal:k,stranica:'mockup-lignum'});if(window.fbq)fbq('track','Lead',{content_name:'kontakt-'+k});});});
+</script>
+
 <div id="view" class="wrap"></div>
 <footer id="footer">Demo prototip · podaci su izmišljeni · © Datamaks</footer>
 
