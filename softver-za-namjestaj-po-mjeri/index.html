@@ -400,11 +400,18 @@
       });
     }
 
+    // GA4 mjerenje kontakata (klik na Viber/WhatsApp/poziv)
+    function dmTrack(name, kanal){ if(window.gtag){ gtag('event', name, { kanal: kanal, stranica: 'landing-softver' }); } }
+    document.querySelectorAll('.chat-btn.viber').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','viber'); }); });
+    document.querySelectorAll('.chat-btn.whatsapp').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','whatsapp'); }); });
+    document.querySelectorAll('.chat-btn.poziv').forEach(function(a){ a.addEventListener('click', function(){ dmTrack('kontakt_klik','telefon'); }); });
+
     // Kratki upit -> isti Supabase endpoint kao kontakt forma
     var leadForm = document.getElementById('lead-form');
     if (leadForm) {
       leadForm.addEventListener('submit', async function(e){
         e.preventDefault();
+        if(window.gtag){ gtag('event','lead_form_submit',{ stranica: 'landing-softver' }); }
         var btn = leadForm.querySelector('button[type=submit]');
         var orig = btn.textContent;
         btn.textContent = 'Slanje...';
