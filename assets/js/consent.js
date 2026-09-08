@@ -205,9 +205,54 @@
     }, 1000);
   }
 
+  // Jedinstveni kontakt FAB (isti na cijelom sajtu): plavi headset -> Viber/WhatsApp/Poziv.
+  function injectFab() {
+    if (document.getElementById('dm-fab')) return;
+    var css =
+      '#dm-fab{position:fixed;right:20px;bottom:20px;z-index:9990;display:flex;flex-direction:column;gap:12px;align-items:flex-end;font-family:inherit}' +
+      '#dm-fab .dm-acts{display:flex;flex-direction:column;gap:12px;align-items:flex-end;opacity:0;transform:translateY(12px) scale(.95);pointer-events:none;transition:opacity .2s ease,transform .2s ease}' +
+      '#dm-fab.open .dm-acts{opacity:1;transform:none;pointer-events:auto}' +
+      '#dm-fab a.dm-b{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;color:#fff;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.18)}' +
+      '#dm-fab a.dm-b svg{width:24px;height:24px;fill:#fff;flex:0 0 auto}' +
+      '#dm-fab .v{background:#7360F2}#dm-fab .w{background:#25D366}#dm-fab .p{background:#1e40af}' +
+      '#dm-fab button.dm-t{width:60px;height:60px;border-radius:50%;border:none;background:#1e40af;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(30,64,175,.5)}' +
+      '#dm-fab button.dm-t svg{width:28px;height:28px;fill:#fff}' +
+      '#dm-fab .ic-x{display:none}#dm-fab.open button.dm-t{background:#0f172a}#dm-fab.open .ic-o{display:none}#dm-fab.open .ic-x{display:block}' +
+      '@media(max-width:520px){#dm-fab a.dm-b .t{display:none}#dm-fab a.dm-b{padding:14px;border-radius:50%}}';
+    var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+    var VB = '<svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 5.82 2 10.5c0 2.3 1.09 4.4 2.9 5.94-.1 1.22-.55 2.55-1.45 3.66-.2.24-.02.6.29.56 1.86-.2 3.35-.9 4.4-1.62.9.24 1.86.36 2.86.36 5.5 0 10-3.82 10-8.5S17.5 2 12 2zm4.44 11.13c-.2.56-1.16 1.07-1.62 1.14-.41.06-.94.09-1.51-.1-.35-.11-.8-.26-1.37-.5-2.41-1.04-3.98-3.47-4.1-3.63-.12-.16-.98-1.3-.98-2.48s.62-1.76.84-2c.22-.24.48-.3.64-.3l.46.01c.15 0 .35-.06.54.41.2.48.67 1.66.73 1.78.06.12.1.26.02.42-.08.16-.12.26-.24.4l-.36.42c-.12.12-.24.25-.1.49.14.24.62 1.02 1.33 1.65.91.81 1.68 1.07 1.92 1.19.24.12.38.1.52-.06.14-.16.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.4.66 1.64.78.24.12.4.18.46.28.06.1.06.58-.14 1.14z"/></svg>';
+    var WA = '<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
+    var CL = '<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.18z"/></svg>';
+    var HS = '<svg class="ic-o" viewBox="0 0 24 24"><path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h4v1h-7v2h6c1.66 0 3-1.34 3-3V10c0-4.97-4.03-9-9-9z"/></svg>';
+    var XI = '<svg class="ic-x" viewBox="0 0 24 24"><path d="M18.3 5.71L12 12.01l-6.3-6.3-1.41 1.41L10.59 13.4l-6.3 6.3 1.41 1.41 6.3-6.3 6.3 6.3 1.41-1.41-6.3-6.3 6.3-6.3z"/></svg>';
+    var w = document.createElement('div'); w.id = 'dm-fab';
+    w.innerHTML =
+      '<div class="dm-acts">' +
+      '<a class="dm-b v" href="viber://add?number=38765469565" data-k="viber" aria-label="Viber">' + VB + '<span class="t">Viber</span></a>' +
+      '<a class="dm-b w" href="https://wa.me/436677970082" target="_blank" rel="noopener" data-k="whatsapp" aria-label="WhatsApp">' + WA + '<span class="t">WhatsApp</span></a>' +
+      '<a class="dm-b p" href="tel:+38765469565" data-k="telefon" aria-label="Pozovi">' + CL + '<span class="t">Pozovi</span></a>' +
+      '</div>' +
+      '<button class="dm-t" type="button" aria-label="Kontakt" aria-expanded="false">' + HS + XI + '</button>';
+    document.body.appendChild(w);
+    var tgl = w.querySelector('.dm-t');
+    tgl.addEventListener('click', function (e) { e.stopPropagation(); var o = w.classList.toggle('open'); tgl.setAttribute('aria-expanded', o); });
+    document.addEventListener('click', function (e) { if (!w.contains(e.target)) { w.classList.remove('open'); tgl.setAttribute('aria-expanded', 'false'); } });
+    var arr = w.querySelectorAll('a[data-k]');
+    for (var i = 0; i < arr.length; i++) {
+      (function (a) {
+        a.addEventListener('click', function () {
+          var k = a.getAttribute('data-k');
+          if (typeof window.gtag === 'function') window.gtag('event', 'kontakt_klik', { kanal: k, stranica: location.pathname });
+          if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'kontakt-' + k });
+        });
+      })(arr[i]);
+    }
+  }
+
   function init() {
     attachProtoTracking();
     attachHeartbeat();
+    injectFab();
     if (!readChoice()) showBanner();  // pokaži banner samo ako izbor još nije napravljen
   }
 
