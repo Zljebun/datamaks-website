@@ -122,6 +122,12 @@
 
   <!-- Blog: rokovi u izradi namjestaja -->
   <url>
+    <loc>https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://datamaks.net/blog/rokovi-izrada-namjestaja/</loc>
     <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
