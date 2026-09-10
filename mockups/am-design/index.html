@@ -160,9 +160,6 @@
     <div class="tag" id="brandTag">Namještaj po mjeri</div>
   </div>
   <div class="spacer"></div>
-  <select id="langSel" onchange="setLang(this.value)" title="Jezik / Language">
-    <option value="bs">BS</option><option value="en">EN</option><option value="de">DE</option><option value="hr">HR</option><option value="sr">SR</option>
-  </select>
   <div class="user"><span class="avatar" id="userAv">AM</span><span id="userName">AM Design · proizvodnja</span></div>
 </header>
 
@@ -191,7 +188,6 @@ document.querySelectorAll('#viberCta [data-kanal]').forEach(function(a){a.addEve
 <div id="view" class="wrap"></div>
 <footer id="footer">Demo prototip · podaci su izmišljeni · © Datamaks</footer>
 
-<a id="ctaBack" class="cta-back" target="_top" rel="noopener" href="#">Napravi ovakav za svoju firmu  &rarr;</a>
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal"></div>
@@ -521,11 +517,6 @@ function applyStatic(){
   el("demoFlag").textContent=t("demo");
   el("newBtn").textContent=t("newNalog");
   el("footer").textContent=t("footer");
-  el("langSel").value=LANG;
-  var _cb=el("ctaBack");
-  if(_cb){ var _b=(LANG==="bs")?"https://datamaks.net/":"https://datamaks.net/"+LANG+"/";
-    _cb.href=_b+"?utm_source=mockup&utm_medium=cta&utm_campaign=lignum#mockup";
-    _cb.textContent=(CTA_BACK[LANG]||CTA_BACK.bs)+"  →"; }
   const tabs={tabla:"tab_tabla",nalozi:"tab_nalozi",materijal:"tab_materijal",faze:"tab_faze",pregled:"tab_pregled"};
   document.querySelectorAll(".tab").forEach(tb=>tb.textContent=t(tabs[tb.dataset.view]));
 }
