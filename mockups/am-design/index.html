@@ -507,7 +507,6 @@ const prioPill=pr=>`<span class="pill p-${pr}">${prioName(pr)}</span>`;
 
 // ---- Jezik ----------------------------------------------------------------
 function setLang(l){ if(!STR[l])return; LANG=l; localStorage.setItem("ln_lang",l); closeModal(); applyStatic(); rerender(); }
-const CTA_BACK={bs:"Napravi ovakav za svoju firmu",hr:"Napravi ovakav za svoju firmu",sr:"Napravi ovakav za svoju firmu",en:"Build one for your business",de:"So etwas für Ihre Firma"};
 function applyStatic(){
   document.documentElement.lang=LANG;
   document.title=t("title");
