@@ -891,6 +891,27 @@ function createNalog(){
 applyStatic();
 setView("tabla");
 </script>
+<script>
+/* Signal na ntfy kad AM Design stvarno otvori i zadrzi se na prototipu (filtrira botove/link-skenere) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_amdesign_ntfy';
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=amdesign/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'AM Design je otvorio prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/am-design/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){
+    if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } }
+  },1000);
+  ['pointerdown','keydown'].forEach(function(ev){
+    document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true});
+  });
+})();
+</script>
 <script defer src="/assets/js/consent.js"></script>
 </body>
 </html>
