@@ -1,15 +1,6 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- D shape -->
-  <path d="M4 4h12c6.6 0 12 5.4 12 12s-5.4 12-12 12H4V4z" fill="#1e40af"/>
-
-  <!-- Inner cutout -->
-  <path d="M8 8h8c4.4 0 8 3.6 8 8s-3.6 8-8 8H8V8z" fill="white"/>
-  <path d="M11 11h5c2.8 0 5 2.2 5 5s-2.2 5-5 5h-5V11z" fill="#1e40af"/>
-
-  <!-- Arrow -->
-  <path d="M16 2L22 9H18V16H14V9H10L16 2Z" fill="#1e40af"/>
-
-  <!-- Data diamonds -->
-  <rect x="14" y="19" width="4" height="4" rx="0.5" transform="rotate(45 16 21)" fill="white"/>
-  <rect x="18" y="22" width="2.5" height="2.5" rx="0.3" transform="rotate(45 19.25 23.25)" fill="white"/>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="12" fill="#1e40af"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"
+        d="M20 14 H32 C42.5 14 50 22 50 32 C50 42 42.5 50 32 50 H20 Z
+           M28 22 H32 C38 22 42 26.5 42 32 C42 37.5 38 42 32 42 H28 Z"/>
 </svg>
