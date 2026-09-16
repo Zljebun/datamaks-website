@@ -894,7 +894,10 @@ setView("tabla");
 <script>
 /* Signal na ntfy kad INTUI stvarno otvori i zadrzi se na prototipu (filtrira botove/link-skenere) */
 (function(){
-  var TOPIC='datamaks-posjete-7g3x', KEY='dm_intui_ntfy';
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_intui_ntfy', OWNER='dm_owner';
+  // Owner-detection: Milanov uredjaj (?owner=1) ne salje beacon; ?owner=0 ponisti.
+  try{ if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1'); if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER); }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
   try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
   function send(){
     try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
