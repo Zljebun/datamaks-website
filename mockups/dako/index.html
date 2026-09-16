@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dako design · praćenje naloga namještaja po mjeri (demo)</title>
+<meta name="description" content="Klikabilni demo prototip za Dako design: praćenje naloga za namještaj po mjeri (kuhinje, plakari, kupatila, sobe, poslovni prostori), od mjerenja i dizajna do montaže. Izmišljeni podaci, stvarna logika.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/dako/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230f766e'/%3E%3Ctext%20x='32'%20y='44'%20font-family='Arial'%20font-size='24'%20font-weight='bold'%20fill='%23fff'%20text-anchor='middle'%3EDK%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --brand:#0f766e; --brand2:#14958a; --accent:#b45309; --action:#0f766e;
+    --bg:#f2f8f7; --card:#fff; --line:#dcebe8; --muted:#5c6b68; --text:#12211f;
+    --ok:#15803d; --warn:#b45309; --late:#c02626; --track:#e6f1ef;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#d3efe9;margin-top:3px}
+  header .spacer{flex:1}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:var(--accent)}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 12px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--accent)}
+  .demo-flag{margin-left:10px;background:#d6efe9;color:var(--brand);border:1px solid #b6e0d8;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.08)}
+  .wrap{padding:16px 20px;max-width:1200px;margin:0 auto}
+  .viberCta{margin:12px 20px;padding:14px 16px;border-radius:14px;background:#ddf1ed;border:1px solid #b6e0d8;max-width:1200px}
+  .viberCta .t{font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .viberCta a{padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;cursor:pointer;transition:.12s}
+  .kpi:hover{border-color:var(--accent);box-shadow:0 3px 12px rgba(15,118,110,.12);transform:translateY(-1px)}
+  .kpi .big{font-size:22px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--late)}
+
+  .viewhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:16px;color:var(--brand)}
+  .viewhead .sub{font-size:13px;color:var(--muted)}
+  .filterbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .filterbar input,.filterbar select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--text)}
+  .filterbar input{flex:0 1 260px}
+
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+  .col{flex:0 0 232px;background:#f6fbfa;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .col.done{background:#f1f8f2;border-color:#cfe6d4}
+  .col-h{padding:10px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .col.done .col-h{color:var(--ok)}
+  .wip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:12px;color:var(--muted);font-weight:700}
+  .col-body{padding:10px;display:flex;flex-direction:column;gap:9px;min-height:60px}
+  .card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:9px 11px;cursor:pointer;box-shadow:0 1px 2px rgba(20,80,70,.06);transition:.1s}
+  .card:hover{box-shadow:0 4px 12px rgba(20,80,70,.15);transform:translateY(-1px)}
+  .card.pr-visok{border-left-color:#c02626}.card.pr-srednji{border-left-color:#b45309}.card.pr-nizak{border-left-color:#94a3b8}
+  .card.late{background:#fff6f5}
+  .card .cid{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .card .cp{font-weight:700;font-size:13.5px;margin:2px 0 1px}
+  .card .ck{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+  .card .adv{border:0;background:var(--brand);color:#fff;border-radius:6px;min-width:28px;height:25px;cursor:pointer;font-size:14px;font-weight:700}
+  .card .adv:hover{filter:brightness(1.1)}
+  .pbar{height:4px;background:var(--track);border-radius:3px;margin-top:8px;overflow:hidden}
+  .pbar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--brand))}
+
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+  .p-late{background:#fde2e2;color:var(--late)}.p-today{background:#fdefda;color:#9a6413}.p-soon{background:#e0efec;color:var(--brand)}
+  .p-done{background:#dff0e3;color:var(--ok)}.p-faza{background:#d9efeb;color:var(--brand)}
+  .p-visok{background:#fee2e2;color:#b91c1c}.p-srednji{background:#ffedd5;color:#9a3412}.p-nizak{background:#e8eaed;color:#475569}
+  .who{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff}
+  .tip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+  .tip.privatno{background:#eef2ff;color:#3730a3}.tip.poslovni{background:#fef3c7;color:#92400e}
+
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 13px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:10px 13px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}.tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:14px}
+  .bar.clk{cursor:pointer;border-radius:8px;padding:4px 6px;margin:5px -6px}.bar.clk:hover{background:var(--track)}
+  .bar .blab{width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--brand))}
+  .bar .val{width:120px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .overlay{position:fixed;inset:0;background:rgba(15,60,55,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(15,60,55,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .msub{font-size:12.5px;color:#d6efe9;margin-top:3px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.9}
+  .mbody{padding:18px 20px}
+  .latebanner{background:#fde2e2;border:1px solid #f6c2c2;color:#8f1d1d;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .kv{display:flex;font-size:14.5px;padding:5px 0;border-bottom:1px dashed #e3efec}
+  .kv .k{width:130px;color:var(--muted)}.kv .v{flex:1}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 8px}
+  .stepper{display:flex;flex-wrap:wrap;gap:4px}
+  .step{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}
+  .step .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#fff}
+  .step.done .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+  .step.cur .dot{border-color:var(--accent);color:var(--accent)}
+  .step.cur{color:var(--brand);font-weight:700}
+  .step .arr{color:var(--line)}
+  .lines{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+  .lines th,.lines td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .actions{padding:14px 20px;background:#f6fbfa;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #bfe0da;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow input,.frow select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow input:focus,.frow select:focus{outline:none;border-color:var(--accent)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+
+  @media(max-width:640px){
+    .tbl{border:0;background:transparent}
+    .tbl thead{display:none}
+    .tbl tbody tr{display:block;margin-bottom:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .tbl tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 13px;text-align:right}
+    .tbl tbody td::before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:600;text-align:left;flex:0 0 auto}
+    .tbl tbody td:not(:last-child){border-bottom:1px solid var(--track)}
+    .filterbar input{flex:1 1 100%}
+  }
+  @media(max-width:560px){
+    .overlay{padding:0}.modal{border-radius:0;min-height:100vh}
+    .mbody{padding:16px 16px}.kv{flex-direction:column;gap:1px;padding:7px 0}.kv .k{width:auto;font-size:12.5px}
+    .stepper{gap:2px}.step{font-size:11px}.step .arr{display:none}.actions button.primary{flex:1 1 100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">DK</div>
+  <div class="brand">
+    <div class="name">Dako design</div>
+    <div class="tag">Praćenje naloga · namještaj po mjeri</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="user"><span class="avatar">DK</span><span>Proizvodnja</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="tabla" onclick="setView('tabla')">Tabla</div>
+  <div class="tab" data-view="nalozi" onclick="setView('nalozi')">Nalozi</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" onclick="openNovi()">+ Novi nalog</button>
+  <span class="demo-flag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div class="viberCta">
+  <div class="t"><b>Ovaj prototip je napravljen baš za Dako design.</b> Na osnovu vaše djelatnosti, namještaj po mjeri (kuhinje, plakari, kupatila, sobe i poslovni prostori), ovako bi izgledalo kad svaki nalog stoji na jednom mjestu: od mjerenja i dizajna, kroz proizvodnju, do transporta i montaže. Odmah se vidi šta kasni, šta ide na montažu i koliki je posao u izradi. Sviđa vam se? Javite se pa da ga prilagodimo tačno vašem načinu rada.</div>
+  <div class="btns">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="background:#12211f">Pozovi</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.viberCta [data-kanal]').forEach(function(a){a.addEventListener('click',function(){var k=a.getAttribute('data-kanal');if(window.gtag)gtag('event','kontakt_klik',{kanal:k,stranica:'mockup-dako'});});});
+</script>
+
+<div id="view" class="wrap"></div>
+<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const FAZE=["Mjerenje i dizajn","Ponuda i odobrenje","Proizvodnja","Transport","Montaža","Primopredaja"];
+const LAST=5;
+const ODG=[ {n:"Projektant",boja:"#0f766e"}, {n:"Proizvodnja",boja:"#b45309"}, {n:"Montaža",boja:"#6d28d9"} ];
+
+// nalog: naziv(proizvod), narucilac(kupac), tip(privatno/poslovni), lokacija, vr(KM), rok(dana), faza, pr, odg, poz[], montaza, prilozi[], nap
+let NAL=[
+ {id:"NL-412", naziv:"Kuhinja u obliku L", narucilac:"Privatno (Borik)", tip:"privatno", lokacija:"Banja Luka", vr:7800, rok:4, faza:2, pr:"visok", odg:1,
+   poz:[{n:"Donji elementi",k:6},{n:"Gornji elementi",k:7},{n:"Radna ploča",k:1}], nap:"", prilozi:[{n:"Nacrt kuhinje.pdf"},{n:"3D render.jpg"}]},
+ {id:"NL-411", naziv:"Ugradni plakar (klizna vrata)", narucilac:"Privatno (Lauš)", tip:"privatno", lokacija:"Banja Luka", vr:3400, rok:6, faza:1, pr:"srednji", odg:0, poz:[{n:"Korpus",k:1},{n:"Klizna vrata",k:3}], nap:"", prilozi:[]},
+ {id:"NL-410", naziv:"Kuhinja sa otokom", narucilac:"Privatno (Trn)", tip:"privatno", lokacija:"Laktaši", vr:9500, rok:2, faza:3, pr:"visok", odg:2, poz:[{n:"Elementi",k:12},{n:"Otok",k:1},{n:"Kvarc ploča",k:1}], nap:"", montaza:{datum:2,tim:2}, prilozi:[]},
+ {id:"NL-409", naziv:"Kupatilski namještaj", narucilac:"Privatno (Centar)", tip:"privatno", lokacija:"BL", vr:2200, rok:-1, faza:2, pr:"srednji", odg:1, poz:[{n:"Ormarić ispod lavaboa",k:1},{n:"Visoki ormar",k:1}], nap:"Kasni: čeka se vodootporna ploča.", prilozi:[]},
+ {id:"NL-408", naziv:"Recepcija i pult (poslovni)", narucilac:"Investitor (poslovni prostor)", tip:"poslovni", lokacija:"BL", vr:14000, rok:15, faza:0, pr:"srednji", odg:0, poz:[{n:"Recepcijski pult",k:1},{n:"Zidne police",k:8}], nap:"", prilozi:[{n:"Tlocrt prostora.pdf"}]},
+ {id:"NL-407", naziv:"Dnevna soba (TV zid i police)", narucilac:"Privatno (Starčevica)", tip:"privatno", lokacija:"BL", vr:4100, rok:1, faza:4, pr:"visok", odg:2, poz:[{n:"TV komoda",k:1},{n:"Zidne police",k:5}], nap:"", montaza:{datum:1,tim:2}, prilozi:[]},
+ {id:"NL-406", naziv:"Spavaća soba (komplet)", narucilac:"Privatno (Obilićevo)", tip:"privatno", lokacija:"BL", vr:5600, rok:9, faza:1, pr:"nizak", odg:0, poz:[{n:"Ormar",k:1},{n:"Komoda",k:2},{n:"Noćni ormarići",k:2}], nap:"", prilozi:[]},
+ {id:"NL-405", naziv:"Kuhinja (visoki sjaj)", narucilac:"Privatno (Petrićevac)", tip:"privatno", lokacija:"BL", vr:8900, rok:7, faza:2, pr:"srednji", odg:1, poz:[{n:"Elementi",k:14},{n:"Kvarc ploča",k:1}], nap:"", prilozi:[]},
+ {id:"NL-404", naziv:"Ordinacija - čekaonica (poslovni)", narucilac:"Stomatološka ordinacija", tip:"poslovni", lokacija:"Prijedor", vr:6500, rok:12, faza:0, pr:"srednji", odg:0, poz:[{n:"Pult",k:1},{n:"Ormari",k:4}], nap:"", prilozi:[]},
+ {id:"NL-403", naziv:"Kuhinja mala", narucilac:"Privatno (Rosulje)", tip:"privatno", lokacija:"BL", vr:3900, rok:-2, faza:5, pr:"srednji", odg:2, poz:[{n:"Elementi",k:8}], nap:"Primopredaja završena.", montaza:{datum:-3,tim:2}, prilozi:[]},
+ {id:"NL-402", naziv:"Ugradni ormar (hodnik)", narucilac:"Privatno (Paprikovac)", tip:"privatno", lokacija:"BL", vr:2600, rok:-2, faza:4, pr:"visok", odg:2, poz:[{n:"Korpus",k:1},{n:"Vrata",k:4}], nap:"Kasni montaža, dogovoriti termin sa kupcem.", montaza:{datum:-1,tim:2}, prilozi:[]},
+];
+
+const el=id=>document.getElementById(id);
+let VIEW="tabla";
+const isDone=p=>p.faza>=LAST;
+const isLate=p=>!isDone(p)&&p.rok<0;
+const money=v=>Math.round(v).toLocaleString("de-DE")+" KM";
+const m2=n=>String(n).padStart(2,"0");
+function fmtDate(off){const d=new Date();d.setDate(d.getDate()+off);return d.getDate()+"."+m2(d.getMonth()+1)+".";}
+const prioName={visok:"Visok",srednji:"Srednji",nizak:"Nizak"};
+function rokPill(p){
+  if(isDone(p)) return '<span class="pill p-done">✓ predano</span>';
+  if(p.rok<0) return '<span class="pill p-late">kasni '+(-p.rok)+" d</span>";
+  if(p.rok===0) return '<span class="pill p-today">rok danas</span>';
+  if(p.rok===1) return '<span class="pill p-soon">sutra</span>';
+  return '<span class="pill p-soon">za '+p.rok+" d</span>";
+}
+function fazaTag(p){return isDone(p)?'<span class="pill p-done">'+FAZE[LAST]+"</span>":'<span class="pill p-faza">'+FAZE[p.faza]+"</span>";}
+const prioTag=pr=>'<span class="pill p-'+pr+'">'+prioName[pr]+"</span>";
+function whoTag(i){const o=ODG[i];return '<span class="who" style="background:'+o.boja+'">'+o.n+"</span>";}
+const tipTag=t=>'<span class="tip '+t+'">'+(t==="poslovni"?"Poslovni":"Privatno")+"</span>";
+const rowCls=p=>(isLate(p)?"late ":"")+"pr-"+p.pr;
+const progress=p=>Math.round(p.faza/LAST*100);
+const pozUkupno=p=>(p.poz||[]).reduce((s,x)=>s+x.k,0);
+
+function setView(v){VIEW=v;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));render();}
+function render(){if(VIEW==="tabla")return renderTabla();if(VIEW==="nalozi")return renderNalozi();return renderPregled();}
+
+function kpiRow(){
+  const akt=NAL.filter(p=>!isDone(p));
+  const vr=akt.reduce((s,p)=>s+p.vr,0);
+  const kasni=NAL.filter(isLate).length;
+  const montaza=NAL.filter(p=>!isDone(p)&&p.faza===4).length;
+  const predano=NAL.filter(isDone).length;
+  return '<div class="kpis">'+
+   '<div class="kpi" onclick="openKpi(\'akt\')"><div class="big">'+akt.length+'</div><div class="lab">Naloga u izradi</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'akt\')"><div class="big" style="font-size:18px">'+money(vr)+'</div><div class="lab">Vrijednost u izradi</div></div>'+
+   '<div class="kpi '+(kasni?"warn":"")+'" onclick="openKpi(\'kasni\')"><div class="big">'+kasni+'</div><div class="lab">Kasni</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'montaza\')"><div class="big">'+montaza+'</div><div class="lab">Za montažu</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'predano\')"><div class="big">'+predano+'</div><div class="lab">Predano</div></div>'+
+  '</div>';
+}
+
+function renderTabla(){
+  let h=kpiRow();
+  h+='<div class="viewhead"><h3>Tabla naloga</h3><span class="sub">Svaki nalog putuje kroz faze. „›“ pomjera u sljedeću fazu, klik na karticu otvara detalje.</span></div>';
+  h+='<div class="board">';
+  for(let f=0;f<=LAST;f++){
+    const inCol=NAL.filter(p=>p.faza===f);
+    h+='<div class="col'+(f===LAST?" done":"")+'"><div class="col-h"><span>'+FAZE[f]+'</span><span class="wip">'+inCol.length+'</span></div><div class="col-body">';
+    h+=inCol.map(p=>{
+      const canAdv=f<LAST;
+      return '<div class="card '+rowCls(p)+'" onclick="openNalog(\''+p.id+'\')">'+
+        '<div class="cid">'+p.id+' · '+money(p.vr)+'</div>'+
+        '<div class="cp">'+p.naziv+'</div>'+
+        '<div class="ck">'+p.narucilac+'</div>'+
+        '<div class="crow">'+rokPill(p)+(canAdv?'<button class="adv" title="Sljedeća faza" onclick="event.stopPropagation();advance(\''+p.id+'\')">›</button>':whoTag(p.odg))+'</div>'+
+        '<div class="pbar"><span style="width:'+progress(p)+'%"></span></div>'+
+      '</div>';
+    }).join("")||'<div class="hint" style="padding:6px">Prazno</div>';
+    h+='</div></div>';
+  }
+  h+='</div>';
+  el("view").innerHTML=h;
+}
+
+function renderNalozi(){
+  let h='<div class="viewhead"><h3>Svi nalozi</h3><span class="sub">Poredano po roku.</span></div>';
+  h+='<div class="filterbar"><input id="q" placeholder="🔍 Pretraga (proizvod, kupac, ID)…" oninput="renderNalozi()"><select id="fst" onchange="renderNalozi()"><option value="">Sve faze</option>'+FAZE.map((f,i)=>'<option value="'+i+'">'+f+'</option>').join("")+'</select><select id="fk" onchange="renderNalozi()"><option value="">Svi</option><option value="late">Samo u kašnjenju</option></select></div>';
+  const q=(el("q")?.value||"").toLowerCase(), fst=el("fst")?.value, fk=el("fk")?.value;
+  let rows=NAL.slice().sort((a,b)=>{if(isDone(a)!==isDone(b))return isDone(a)?1:-1;return a.rok-b.rok;});
+  rows=rows.filter(p=>{
+    const okQ=!q||(p.naziv+" "+p.narucilac+" "+p.id).toLowerCase().includes(q);
+    const okF=fst===""||fst==null||String(p.faza)===fst;
+    const okK=fk!=="late"||isLate(p);
+    return okQ&&okF&&okK;
+  });
+  h+='<table class="tbl"><thead><tr><th>Nalog</th><th>Kupac</th><th>Tip</th><th class="num">Vrijednost</th><th>Rok</th><th>Faza</th><th>Odgovoran</th></tr></thead><tbody>';
+  h+=rows.map(p=>'<tr onclick="openNalog(\''+p.id+'\')">'+
+    '<td data-label="Nalog"><b>'+p.id+'</b> '+p.naziv+'</td>'+
+    '<td data-label="Kupac">'+p.narucilac+'</td>'+
+    '<td data-label="Tip">'+tipTag(p.tip)+'</td>'+
+    '<td class="num" data-label="Vrijednost">'+money(p.vr)+'</td>'+
+    '<td data-label="Rok">'+rokPill(p)+'</td>'+
+    '<td data-label="Faza">'+fazaTag(p)+'</td>'+
+    '<td data-label="Odgovoran">'+whoTag(p.odg)+'</td></tr>').join("");
+  h+='</tbody></table>';
+  if(!rows.length) h+='<div class="hint" style="padding:14px">Nema naloga za zadati filter.</div>';
+  el("view").innerHTML=h;
+}
+
+function renderPregled(){
+  let h=kpiRow();
+  const akt=NAL.filter(p=>!isDone(p));
+  h+='<div class="viewhead"><h3>Pregled</h3><span class="sub">Klik na KPI karticu ili traku daje spisak tih naloga.</span></div>';
+  h+='<div class="grid2">';
+  h+='<div class="panel"><h3>Vrijednost u izradi po fazi</h3>';
+  const maxV=Math.max(1,...FAZE.slice(0,LAST).map((_,i)=>akt.filter(p=>p.faza===i).reduce((s,p)=>s+p.vr,0)));
+  for(let i=0;i<LAST;i++){const v=akt.filter(p=>p.faza===i).reduce((s,p)=>s+p.vr,0);
+    h+='<div class="bar clk" onclick="openFaza('+i+')"><div class="blab">'+FAZE[i]+'</div><div class="track"><div class="fill" style="width:'+(v/maxV*100)+'%"></div></div><div class="val">'+money(v)+' ›</div></div>';}
+  h+='</div>';
+  h+='<div class="panel"><h3>Opterećenje po odgovornom (aktivno)</h3>';
+  const maxO=Math.max(1,...ODG.map((_,i)=>akt.filter(p=>p.odg===i).length));
+  ODG.forEach((o,i)=>{const c=akt.filter(p=>p.odg===i).length;
+    h+='<div class="bar clk" onclick="openOdg('+i+')"><div class="blab"><span class="who" style="background:'+o.boja+'">'+o.n+'</span></div><div class="track"><div class="fill" style="width:'+(c/maxO*100)+'%;background:'+o.boja+'"></div></div><div class="val">'+c+' naloga ›</div></div>';});
+  h+='</div></div>';
+  h+='<div class="panel"><h3>Ukratko</h3><div class="hint" style="font-size:14px;line-height:1.7;color:var(--text)">U izradi: <b>'+akt.length+'</b> naloga, ukupne vrijednosti <b>'+money(akt.reduce((s,p)=>s+p.vr,0))+'</b>. Kasni: <b style="color:var(--late)">'+NAL.filter(isLate).length+'</b>, za montažu: <b>'+NAL.filter(p=>!isDone(p)&&p.faza===4).length+'</b>. Svaki nalog, stavke, rok i montaža na jednom mjestu umjesto po papirima i tabelama.</div></div>';
+  el("view").innerHTML=h;
+}
+
+function nalRow(p){
+  return '<div class="card '+rowCls(p)+'" style="margin-bottom:9px" onclick="openNalog(\''+p.id+'\')">'+
+    '<div class="cid">'+p.id+' · '+money(p.vr)+'</div><div class="cp">'+p.naziv+'</div>'+
+    '<div class="ck">'+p.narucilac+' · '+p.lokacija+'</div>'+
+    '<div class="crow">'+rokPill(p)+' '+fazaTag(p)+' '+whoTag(p.odg)+'</div></div>';
+}
+function openList(title,arr){
+  let h='<div class="mhead"><div><h2>'+title+'</h2><div class="msub">'+arr.length+' naloga</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody" style="padding:12px 14px">'+(arr.length?arr.map(nalRow).join(""):'<div class="hint" style="padding:14px">Nema naloga.</div>')+'</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openKpi(w){
+  if(w==="akt")return openList("Nalozi u izradi",NAL.filter(p=>!isDone(p)));
+  if(w==="kasni")return openList("Nalozi u kašnjenju",NAL.filter(isLate));
+  if(w==="montaza")return openList("Za montažu",NAL.filter(p=>!isDone(p)&&p.faza===4));
+  if(w==="predano")return openList("Predani nalozi",NAL.filter(isDone));
+}
+function openFaza(i){openList("Faza: "+FAZE[i],NAL.filter(p=>p.faza===i));}
+function openOdg(i){openList("Odgovoran: "+ODG[i].n,NAL.filter(p=>!isDone(p)&&p.odg===i));}
+
+function openNalog(id){
+  const p=NAL.find(x=>x.id===id);if(!p)return;
+  const steps=FAZE.map((f,i)=>'<div class="step '+(i<p.faza?"done":(i===p.faza?"cur":""))+'"><span class="dot">'+(i<p.faza?"✓":(i+1))+'</span>'+f+'</div>'+(i<LAST?'<span class="arr">›</span>':'')).join("");
+  let h='<div class="mhead"><div><h2>'+p.naziv+'</h2><div class="msub">'+p.id+' · '+p.narucilac+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(isLate(p)) h+='<div class="latebanner">⚠ Nalog kasni '+(-p.rok)+' d (rok '+fmtDate(p.rok)+'). Provjerite fazu i obavijestite kupca.</div>';
+  h+='<div class="stepper" style="margin-bottom:14px">'+steps+'</div>';
+  h+='<div class="kv"><div class="k">Kupac</div><div class="v">'+p.narucilac+' &nbsp; '+tipTag(p.tip)+'</div></div>';
+  h+='<div class="kv"><div class="k">Lokacija</div><div class="v">'+p.lokacija+'</div></div>';
+  h+='<div class="kv"><div class="k">Vrijednost</div><div class="v"><b>'+money(p.vr)+'</b></div></div>';
+  h+='<div class="kv"><div class="k">Rok</div><div class="v">'+fmtDate(p.rok)+' '+rokPill(p)+'</div></div>';
+  h+='<div class="kv"><div class="k">Prioritet</div><div class="v">'+prioTag(p.pr)+'</div></div>';
+  h+='<div class="kv"><div class="k">Odgovoran</div><div class="v">'+whoTag(p.odg)+'</div></div>';
+  h+='<div class="sec-title">Stavke ('+pozUkupno(p)+' kom)</div>';
+  h+='<table class="lines"><thead><tr><th>Stavka</th><th class="num">Kom</th></tr></thead><tbody>'+
+     (p.poz||[]).map(x=>'<tr><td>'+x.n+'</td><td class="num">'+x.k+'</td></tr>').join("")+'</tbody></table>';
+  if(p.montaza){h+='<div class="sec-title">Montaža</div><div class="kv"><div class="k">Datum</div><div class="v">'+fmtDate(p.montaza.datum)+'</div></div><div class="kv"><div class="k">Tim</div><div class="v">'+whoTag(p.montaza.tim)+'</div></div>';}
+  if(p.prilozi&&p.prilozi.length){h+='<div class="sec-title">Prilozi (nacrti)</div><div class="hint" style="font-size:13.5px">'+p.prilozi.map(x=>"📎 "+x.n).join(" &nbsp; ")+'</div>';}
+  if(p.nap){h+='<div class="sec-title">Napomena</div><div class="hint" style="font-size:13.5px">'+p.nap+'</div>';}
+  h+='</div>';
+  h+='<div class="actions">';
+  if(!isDone(p)) h+='<button class="primary" onclick="advance(\''+p.id+'\')">Sljedeća faza: '+FAZE[p.faza+1]+'</button>';
+  else h+='<span class="hint">Nalog je predan (primopredaja završena).</span>';
+  h+='<button class="secondary" onclick="alert(\'Demo: ovdje bi se poslao status kupcu.\')">Obavijesti kupca</button>';
+  h+='</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function closeModal(){el("overlay").classList.remove("open");}
+function advance(id){const p=NAL.find(x=>x.id===id);if(!p||isDone(p))return;p.faza++;if(el("overlay").classList.contains("open")&&!isDone(p))openNalog(id);else if(isDone(p))closeModal();render();}
+
+function openNovi(){
+  const oOpts=ODG.map((o,i)=>'<option value="'+i+'">'+o.n+"</option>").join("");
+  let h='<div class="mhead"><div><h2>Novi nalog</h2><div class="msub">Namještaj po mjeri</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  h+='<div class="frow"><label>Proizvod *</label><input id="n_naziv" placeholder="npr. Kuhinja u obliku L"></div>';
+  h+='<div class="row2"><div class="frow"><label>Kupac</label><input id="n_nar" placeholder="ime / firma"></div><div class="frow"><label>Tip</label><select id="n_tip"><option value="privatno">Privatno</option><option value="poslovni">Poslovni</option></select></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Lokacija</label><input id="n_lok" placeholder="grad"></div><div class="frow"><label>Vrijednost (KM)</label><input id="n_vr" type="number" min="0" step="100" value="0"></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Rok isporuke</label><input id="n_rok" type="date"></div><div class="frow"><label>Prioritet</label><select id="n_pr"><option value="visok">Visok</option><option value="srednji" selected>Srednji</option><option value="nizak">Nizak</option></select></div></div>';
+  h+='<div class="frow"><label>Odgovoran</label><select id="n_odg">'+oOpts+'</select></div>';
+  h+='</div>';
+  h+='<div class="actions"><button class="primary" onclick="createNalog()">Otvori nalog</button><span class="hint">Kreće od faze „Mjerenje i dizajn“.</span></div>';
+  el("modal").innerHTML=h;
+  const d=new Date();d.setDate(d.getDate()+10);el("n_rok").value=d.getFullYear()+"-"+m2(d.getMonth()+1)+"-"+m2(d.getDate());
+  el("overlay").classList.add("open");
+  setTimeout(()=>el("n_naziv").focus(),40);
+}
+function createNalog(){
+  const naziv=(el("n_naziv").value||"").trim();if(!naziv){el("n_naziv").focus();return;}
+  let rok=10;const dv=el("n_rok").value;if(dv){const d0=new Date();d0.setHours(0,0,0,0);rok=Math.round((new Date(dv)-d0)/86400000);}
+  const nums=NAL.map(p=>+p.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="NL-"+(Math.max(0,...nums)+1);
+  NAL.unshift({id,naziv,narucilac:(el("n_nar").value||"").trim()||"—",tip:el("n_tip").value,lokacija:(el("n_lok").value||"").trim()||"—",vr:parseInt(el("n_vr").value)||0,rok,faza:0,pr:el("n_pr").value,odg:parseInt(el("n_odg").value)||0,poz:[],prilozi:[],nap:""});
+  closeModal();setView("tabla");openNalog(id);
+}
+
+setView("tabla");
+</script>
+
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_dako_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=dako/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Dako design je otvorio prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/dako/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+</body>
+</html>
