@@ -102,13 +102,46 @@
     ],
     "founder": {
       "@type": "Person",
-      "name": "Milan Babić"
+      "@id": "https://datamaks.net/#milan",
+      "name": "Milan Babić",
+      "jobTitle": "Direktor"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "telephone": "+38765469565",
+      "email": "info@datamaks.net",
+      "areaServed": ["BA", "RS", "HR", "AT", "DE"],
+      "availableLanguage": ["Bosnian", "Serbian", "Croatian", "German", "English"]
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Usluge Datamaksa",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Softver po mjeri", "description": "Web platforme i poslovne aplikacije razvijene po mjeri procesa firme." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI asistenti i automatizacija", "description": "AI asistenti i automatizacija poslovnih procesa za mala i srednja preduzeća." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Poslovna inteligencija i podaci (BI)", "description": "Business intelligence, izvještaji i objedinjavanje podataka u realnom vremenu." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digitalizacija poslovanja", "description": "Prelazak sa Excela i papira na softver: praćenje proizvodnje, zaliha, narudžbi i projekata." } }
+      ]
     },
     "identifier": {
       "@type": "PropertyValue",
       "propertyID": "JIB",
       "value": "4404883830006"
     }
+  }
+  </script>
+
+  <!-- WebSite entitet (za agente/answer engine) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://datamaks.net/#website",
+    "url": "https://datamaks.net",
+    "name": "Datamaks",
+    "inLanguage": ["bs", "en", "de", "hr", "sr"],
+    "publisher": { "@id": "https://datamaks.net/#organization" }
   }
   </script>
 

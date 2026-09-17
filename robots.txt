@@ -10,9 +10,43 @@ Sitemap: https://datamaks.net/sitemap.xml
 # Crawl-delay (optional, for polite crawling)
 Crawl-delay: 1
 
-# AI Crawlers
+# AI Crawlers — treniranje (dozvoljeno)
 User-agent: GPTBot
 Allow: /
 
 User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# AI Crawlers — živo dohvatanje za odgovore (bitno za citiranje u AI odgovorima)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-CloudVertexBot
 Allow: /

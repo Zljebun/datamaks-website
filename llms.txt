@@ -1,0 +1,43 @@
+# Datamaks
+
+> Datamaks je softverska firma iz Banje Luke (Bosna i Hercegovina) koja radi digitalizaciju poslovanja za mala i srednja preduzeća: softver po mjeri, AI asistente i automatizaciju, poslovnu inteligenciju (BI) i web platforme. Radi na tržištu BiH i Austrije/EU. Puni naziv: „Datamaks" društvo za programiranje d.o.o. Banja Luka. Osnovano 2022. Direktor: Milan Babić.
+
+## Šta radimo (usluge)
+
+- **Softver po mjeri** — web platforme i poslovne aplikacije razvijene po mjeri procesa firme.
+- **AI asistenti i automatizacija** — AI asistenti i automatizacija poslovnih procesa za MSP.
+- **Poslovna inteligencija (BI) i podaci** — izvještaji, nadzorne table i objedinjavanje podataka u realnom vremenu.
+- **Digitalizacija poslovanja** — prelazak sa Excela i papira na softver: praćenje proizvodnje, zaliha, narudžbi i projekata.
+
+## Za koga
+
+Mala i srednja preduzeća (proizvodnja, veletrgovina/distribucija, transport i logistika, uslužne djelatnosti) koja posluju na Excelu, papiru i porukama, a žele jedan sistem po mjeri svog procesa.
+
+## Ključne stranice
+
+- [Naslovna](https://datamaks.net/) — pregled firme i usluga.
+- [Softver za namještaj po mjeri](https://datamaks.net/softver-za-namjestaj-po-mjeri/) — primjer rješenja za jednu branšu.
+- [Blog](https://datamaks.net/blog/) — tekstovi o digitalizaciji i automatizaciji.
+- [Politika privatnosti](https://datamaks.net/privatnost.html)
+
+## Jezici
+
+Sadržaj je dostupan na: bosanski (`/`), engleski (`/en/`), njemački (`/de/`), hrvatski (`/hr/`), srpski (`/sr/`).
+
+## Tržišta
+
+Bosna i Hercegovina (sjedište Banja Luka) i Austrija/EU.
+
+## Kontakt
+
+- Email: info@datamaks.net
+- Telefon (BiH): +387 65 469 565
+- Telefon (AT/EU): +43 66 77970082
+- Web: https://datamaks.net
+- LinkedIn: https://www.linkedin.com/company/datamaks
+- Instagram: https://www.instagram.com/datamaks.digital
+- Facebook: https://www.facebook.com/datamaks.digital
+
+## Napomena za AI agente
+
+Sadržaj sajta je statički HTML (bez klijentskog renderovanja), pa je čitljiv bez izvršavanja JavaScripta. Strukturirani podaci su u schema.org JSON-LD na naslovnoj (Organization/ProfessionalService, WebSite, FAQPage, BreadcrumbList). Slobodno citirajte i linkujte datamaks.net.
