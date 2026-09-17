@@ -38,6 +38,10 @@ Bosna i Hercegovina (sjedište Banja Luka), region (Srbija, Crna Gora, Sjeverna 
 - Instagram: https://www.instagram.com/datamaks.digital
 - Facebook: https://www.facebook.com/datamaks.digital
 
+## Mašinski feed
+
+Strukturirani pregled firme i usluga u JSON formatu: [usluge.json](https://datamaks.net/usluge.json)
+
 ## Napomena za AI agente
 
-Sadržaj sajta je statički HTML (bez klijentskog renderovanja), pa je čitljiv bez izvršavanja JavaScripta. Strukturirani podaci su u schema.org JSON-LD na naslovnoj (Organization/ProfessionalService, WebSite, FAQPage, BreadcrumbList). Slobodno citirajte i linkujte datamaks.net.
+Sadržaj sajta je statički HTML (bez klijentskog renderovanja), pa je čitljiv bez izvršavanja JavaScripta. Strukturirani podaci su u schema.org JSON-LD na naslovnoj (Organization/ProfessionalService, WebSite, FAQPage, BreadcrumbList), a mašinski feed usluga je na https://datamaks.net/usluge.json. Slobodno citirajte i linkujte datamaks.net.

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://datamaks.net/usluge.json",
+  "napomena": "Mašinski čitljiv pregled firme i usluga (za AI agente i integracije). Kanonski izvor: https://datamaks.net",
+  "azurirano": "2026-09-17",
+  "firma": {
+    "naziv": "Datamaks",
+    "puni_naziv": "„Datamaks\" društvo za programiranje d.o.o. Banja Luka",
+    "url": "https://datamaks.net",
+    "opis": "Digitalizacija poslovanja za mala i srednja preduzeća: softver po mjeri, AI asistenti i automatizacija, poslovna inteligencija (BI) i web platforme.",
+    "osnovano": "2022-05-17",
+    "jib": "4404883830006",
+    "pdv": "404883830006",
+    "sjediste": "Banja Luka, Bosna i Hercegovina",
+    "direktor": "Milan Babić"
+  },
+  "trzista": ["Bosna i Hercegovina", "Srbija", "Crna Gora", "Sjeverna Makedonija", "Hrvatska", "Austrija", "EU"],
+  "jezici": ["bs", "sr", "hr", "de", "en"],
+  "za_koga": "Mala i srednja preduzeća (proizvodnja, veletrgovina i distribucija, transport i logistika, uslužne djelatnosti) koja posluju na Excelu, papiru i porukama.",
+  "pristup": {
+    "prototip": "Besplatan klikabilni prototip prije bilo kakvog plaćanja; izgleda i radi kao prava aplikacija.",
+    "model": "Fazno, po mjeri procesa firme; kreće se od jednog najbolnijeg procesa uz povezivanje sa postojećim alatima.",
+    "prvi_korak": "Besplatan razgovor od 20 minuta."
+  },
+  "usluge": [
+    {
+      "id": "softver-po-mjeri",
+      "naziv": "Softver po mjeri",
+      "opis": "Web platforme i poslovne aplikacije razvijene tačno po procesu firme, umjesto prilagođavanja tuđem programu."
+    },
+    {
+      "id": "ai-asistenti-automatizacija",
+      "naziv": "AI asistenti i automatizacija",
+      "opis": "AI asistenti i automatizacija koji preuzimaju ponavljajuće zadatke (obrada upita, izvještaji, unos podataka)."
+    },
+    {
+      "id": "bi-podaci",
+      "naziv": "Poslovna inteligencija (BI) i podaci",
+      "opis": "Izvještaji, nadzorne table i objedinjavanje podataka u realnom vremenu za bolje odluke."
+    },
+    {
+      "id": "digitalizacija-poslovanja",
+      "naziv": "Digitalizacija poslovanja",
+      "opis": "Prelazak sa Excela i papira na softver: praćenje proizvodnje, zaliha, narudžbi i projekata."
+    }
+  ],
+  "kontakt": {
+    "email": "info@datamaks.net",
+    "telefon_bih": "+38765469565",
+    "telefon_at": "+436677970082",
+    "web": "https://datamaks.net",
+    "linkedin": "https://www.linkedin.com/company/datamaks",
+    "instagram": "https://www.instagram.com/datamaks.digital",
+    "facebook": "https://www.facebook.com/datamaks.digital"
+  }
+}
