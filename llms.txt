@@ -1,6 +1,6 @@
 # Datamaks
 
-> Datamaks je softverska firma iz Banje Luke (Bosna i Hercegovina) koja radi digitalizaciju poslovanja za mala i srednja preduzeća: softver po mjeri, AI asistente i automatizaciju, poslovnu inteligenciju (BI) i web platforme. Radi na tržištu BiH i Austrije/EU. Puni naziv: „Datamaks" društvo za programiranje d.o.o. Banja Luka. Osnovano 2022. Direktor: Milan Babić.
+> Datamaks je softverska firma iz Banje Luke (Bosna i Hercegovina) koja radi digitalizaciju poslovanja za mala i srednja preduzeća: softver po mjeri, AI asistente i automatizaciju, poslovnu inteligenciju (BI) i web platforme. Radi u BiH, regionu (Srbija, Crna Gora, Sjeverna Makedonija, Hrvatska) i u Austriji/EU. Puni naziv: „Datamaks" društvo za programiranje d.o.o. Banja Luka. Osnovano 2022. Direktor: Milan Babić.
 
 ## Šta radimo (usluge)
 
@@ -26,7 +26,7 @@ Sadržaj je dostupan na: bosanski (`/`), engleski (`/en/`), njemački (`/de/`), 
 
 ## Tržišta
 
-Bosna i Hercegovina (sjedište Banja Luka) i Austrija/EU.
+Bosna i Hercegovina (sjedište Banja Luka), region (Srbija, Crna Gora, Sjeverna Makedonija, Hrvatska) i Austrija/EU.
 
 ## Kontakt
 
