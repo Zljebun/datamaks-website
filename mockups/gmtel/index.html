@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GMTEL Logistics · praćenje pošiljki, carine i skladišta (demo)</title>
+<meta name="description" content="Klikabilni demo prototip za GMTEL Logistics: praćenje pošiljki od vrata do vrata kroz faze, špedicija i carinjenje, kontrolna lista dokumenata (CMR, carinska deklaracija, EUR.1), carinsko skladište. Izmišljeni podaci, stvarna logika.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/gmtel/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230e5aa7'/%3E%3Cpath%20d='M8%2040 h26 v-14 h10 l8%208 v6 h-4 a4%204%200%201%200%20-8%200 h-14 a4%204%200%201%200%20-8%200 h-6 z'%20fill='%23fff'/%3E%3Ccircle%20cx='22'%20cy='44'%20r='4'%20fill='%23f59e0b'/%3E%3Ccircle%20cx='44'%20cy='44'%20r='4'%20fill='%23f59e0b'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --brand:#0e5aa7; --brand2:#1e73c4; --accent:#f59e0b; --action:#0e5aa7;
+    --bg:#f2f6fb; --card:#fff; --line:#e2e8f2; --muted:#5b657a; --text:#131a29;
+    --ok:#15803d; --warn:#b45309; --late:#c02626; --track:#e9eefa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#d7e6fb;margin-top:3px}
+  header .spacer{flex:1}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:var(--accent)}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 12px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--accent)}
+  .demo-flag{margin-left:10px;background:#d7e6fb;color:var(--brand);border:1px solid #b9d3f6;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.1)}
+  .wrap{padding:16px 20px;max-width:1200px;margin:0 auto}
+  .viberCta{margin:12px 20px;padding:14px 16px;border-radius:14px;background:#e6effc;border:1px solid #cbddf9;max-width:1200px}
+  .viberCta .t{font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .viberCta a{padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;cursor:pointer;transition:.12s}
+  .kpi:hover{border-color:var(--accent);box-shadow:0 3px 12px rgba(14,90,167,.14);transform:translateY(-1px)}
+  .kpi .big{font-size:22px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--late)}
+
+  .viewhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:16px;color:var(--brand)}
+  .viewhead .sub{font-size:13px;color:var(--muted)}
+
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+  .col{flex:0 0 232px;background:#f6faff;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .col.done{background:#f1f8f2;border-color:#cfe6d4}
+  .col-h{padding:10px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .col.done .col-h{color:var(--ok)}
+  .wip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:12px;color:var(--muted);font-weight:700}
+  .col-body{padding:10px;display:flex;flex-direction:column;gap:9px;min-height:60px}
+  .card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:9px 11px;cursor:pointer;box-shadow:0 1px 2px rgba(20,40,90,.06);transition:.1s}
+  .card:hover{box-shadow:0 4px 12px rgba(20,40,90,.14);transform:translateY(-1px)}
+  .card.pr-visok{border-left-color:#c02626}.card.pr-srednji{border-left-color:#f59e0b}.card.pr-nizak{border-left-color:#94a3b8}
+  .card.late{background:#fff6f5}
+  .card .cid{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+  .card .cp{font-weight:700;font-size:13.5px;margin:3px 0 1px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .card .ck{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+  .card .adv{border:0;background:var(--brand);color:#fff;border-radius:6px;min-width:28px;height:25px;cursor:pointer;font-size:14px;font-weight:700}
+  .card .adv:hover{filter:brightness(1.1)}
+  .flag{font-size:10.5px;font-weight:800;letter-spacing:.4px;background:#eef2f9;border:1px solid #d8e2f0;color:#3a4a63;border-radius:4px;padding:1px 5px}
+  .arrow{color:var(--muted);font-weight:700}
+
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+  .p-late{background:#fde2e2;color:var(--late)}.p-today{background:#fdefda;color:#9a6413}.p-soon{background:#e7edfb;color:var(--brand)}
+  .p-done{background:#dff0e3;color:var(--ok)}.p-faza{background:#e3ebfb;color:var(--brand)}
+  .p-visok{background:#fee2e2;color:#b91c1c}.p-srednji{background:#ffedd5;color:#9a3412}.p-nizak{background:#e8eaed;color:#475569}
+  .p-cok{background:#dff0e3;color:var(--ok)}.p-ctoku{background:#fef3c7;color:#92400e}.p-cceka{background:#e3ebfb;color:var(--brand)}
+  .p-docok{background:#dff0e3;color:var(--ok)}.p-docmiss{background:#fee2e2;color:#b91c1c}
+  .who{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff}
+
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 13px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:10px 13px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}.tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .rowlate{background:#fff6f5}
+
+  .capwrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .capbar{height:26px;background:var(--track);border-radius:8px;overflow:hidden;position:relative}
+  .capbar span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .capbar b{position:absolute;left:12px;top:0;line-height:26px;color:#fff;font-size:13px}
+  .palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(15px,1fr));gap:3px;margin-top:12px}
+  .pal{aspect-ratio:1;border-radius:2px;background:#e5ebf4}
+  .pal.on{background:var(--brand)}.pal.warnp{background:var(--accent)}
+
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:14px}
+  .bar.clk{cursor:pointer;border-radius:8px;padding:4px 6px;margin:5px -6px}.bar.clk:hover{background:var(--track)}
+  .bar .blab{width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .bar .val{width:120px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .overlay{position:fixed;inset:0;background:rgba(12,22,48,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(12,22,48,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:18px}
+  .mhead .msub{font-size:12.5px;color:#d7e6fb;margin-top:3px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.9}
+  .mbody{padding:18px 20px}
+  .latebanner{background:#fde2e2;border:1px solid #f6c2c2;color:#8f1d1d;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .kv{display:flex;font-size:14.5px;padding:5px 0;border-bottom:1px dashed #e6ecf7}
+  .kv .k{width:140px;color:var(--muted)}.kv .v{flex:1}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 8px}
+  .stepper{display:flex;flex-wrap:wrap;gap:4px}
+  .step{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}
+  .step .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#fff}
+  .step.done .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+  .step.cur .dot{border-color:var(--accent);color:var(--accent)}
+  .step.cur{color:var(--brand);font-weight:700}
+  .step .arr{color:var(--line)}
+  .doclist{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+  .docrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px;cursor:pointer;background:#fff}
+  .docrow:hover{background:var(--track)}
+  .docrow.miss{border-color:#f2c9c9;background:#fff7f6}
+  .docrow .dname{display:flex;align-items:center;gap:8px}
+  .chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+  .chk.on{background:var(--ok);border-color:var(--ok)}
+  .actions{padding:14px 20px;background:#f6faff;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.1)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #c1d5f2;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow input,.frow select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow input:focus,.frow select:focus{outline:none;border-color:var(--brand2)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+
+  @media(max-width:640px){
+    .tbl{border:0;background:transparent}
+    .tbl thead{display:none}
+    .tbl tbody tr{display:block;margin-bottom:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .tbl tbody tr.rowlate{background:#fff6f5}
+    .tbl tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 13px;text-align:right}
+    .tbl tbody td::before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:600;text-align:left;flex:0 0 auto}
+    .tbl tbody td:not(:last-child){border-bottom:1px solid var(--track)}
+  }
+  @media(max-width:560px){
+    .overlay{padding:0}.modal{border-radius:0;min-height:100vh}
+    .mbody{padding:16px 16px}.kv{flex-direction:column;gap:1px;padding:7px 0}.kv .k{width:auto;font-size:12.5px}
+    .stepper{gap:2px}.step{font-size:11px}.step .arr{display:none}.actions button.primary{flex:1 1 100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">GM</div>
+  <div class="brand">
+    <div class="name">GMTEL Logistics</div>
+    <div class="tag">Pošiljke · carina · skladište — od vrata do vrata</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="user"><span class="avatar">GM</span><span>Otprema</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="posiljke" onclick="setView('posiljke')">Pošiljke</div>
+  <div class="tab" data-view="carina" onclick="setView('carina')">Carina i dokumenti</div>
+  <div class="tab" data-view="skladiste" onclick="setView('skladiste')">Carinsko skladište</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" onclick="openNovi()">+ Nova pošiljka</button>
+  <span class="demo-flag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div class="viberCta">
+  <div class="t"><b>Ovaj prototip je napravljen baš za GMTEL Logistics.</b> Na osnovu vaše djelatnosti, međunarodni transport, špedicija i carinsko skladište, ovako bi izgledalo kad svaka pošiljka „od vrata do vrata“ stoji na jednom mjestu: od naloga i utovara, kroz transport i carinjenje, do skladišta i isporuke. Odmah se vidi šta je na carini, kojoj pošiljci fali dokument (CMR, carinska deklaracija, EUR.1) i koliko je popunjeno carinsko skladište. Sviđa vam se? Javite se pa da ga prilagodimo tačno vašem toku posla.</div>
+  <div class="btns">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="background:#131a29">Pozovi</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.viberCta [data-kanal]').forEach(function(a){a.addEventListener('click',function(){var k=a.getAttribute('data-kanal');if(window.gtag)gtag('event','kontakt_klik',{kanal:k,stranica:'mockup-gmtel'});});});
+</script>
+
+<div id="view" class="wrap"></div>
+<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Model ----------------------------------------------------------------
+const FAZE=["Nalog","Utovar","U transportu","Carinjenje","Skladište","Isporučeno"];
+const LAST=5;
+const CARINARNICE=["Banja Luka","Gradiška","Aerodrom BL","Pošta"];
+const KAPACITET=180; // euro paletnih mjesta
+const VOZ=[ {n:"Zbirni (LTL)",boja:"#64748b"}, {n:"M. Zajac",boja:"#0e5aa7"}, {n:"D. Kovač",boja:"#0e7490"}, {n:"S. Ilić",boja:"#7c3aed"} ];
+
+// pošiljka: id, klijent, tip(uvoz/izvoz/tranzit/reeksport), odG,odD, doG,doD, roba, palete, kamion(idx VOZ), faza, pr, rok(dana ETA), carinarnica, carina(čeka/u toku/ocarinjeno/—), dok{}, mjesto, dwell, nap
+let POS=[
+ {id:"GM-2610", klijent:"Uvoznik elektronike (BL)", tip:"uvoz", odG:"München", odD:"DE", doG:"Banja Luka", doD:"BA", roba:"Elektro oprema", palete:12, kamion:1, faza:3, pr:"visok", rok:0, carinarnica:0, carina:"u toku",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":true,"Carinska deklaracija (IM4)":false,"EUR.1":false}, mjesto:"—", dwell:0, nap:"Roba na carini BL, čeka carinsku deklaraciju i EUR.1."},
+ {id:"GM-2609", klijent:"Izvoznik namještaja (Gradiška)", tip:"izvoz", odG:"Gradiška", odD:"BA", doG:"Wien", doD:"AT", roba:"Namještaj", palete:18, kamion:2, faza:2, pr:"srednji", rok:1, carinarnica:1, carina:"čeka",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":true,"Izvozna deklaracija (EX)":true,"EUR.1":true}, mjesto:"—", dwell:0, nap:"Svi dokumenti spremni, carinjenje na Gradišci."},
+ {id:"GM-2608", klijent:"Distributer (Zagreb)", tip:"tranzit", odG:"Rotterdam", odD:"NL", doG:"Zagreb", doD:"HR", roba:"Rezervni dijelovi", palete:8, kamion:1, faza:2, pr:"srednji", rok:2, carinarnica:0, carina:"—",
+   dok:{"CMR":true,"Faktura":true,"T1 (tranzitni dokument)":true}, mjesto:"—", dwell:0, nap:""},
+ {id:"GM-2607", klijent:"Uvoznik prehrane (BL)", tip:"uvoz", odG:"Ljubljana", odD:"SI", doG:"Banja Luka", doD:"BA", roba:"Prehrambeni proizvodi", palete:22, kamion:3, faza:4, pr:"visok", rok:-1, carinarnica:0, carina:"ocarinjeno",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":true,"Carinska deklaracija (IM4)":true,"EUR.1":true}, mjesto:"Skladište A / R2", dwell:3, nap:"KASNI isporuka: čeka termin istovara kod kupca."},
+ {id:"GM-2606", klijent:"Izvoznik metala (Prijedor)", tip:"izvoz", odG:"Prijedor", odD:"BA", doG:"Stuttgart", doD:"DE", roba:"Metalni profili", palete:16, kamion:3, faza:2, pr:"srednji", rok:3, carinarnica:1, carina:"čeka",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":false,"Izvozna deklaracija (EX)":false,"EUR.1":false}, mjesto:"—", dwell:0, nap:"Fali packing lista, EX deklaracija i EUR.1 od klijenta."},
+ {id:"GM-2605", klijent:"Uvoznik kozmetike (BL)", tip:"uvoz", odG:"Paris", odD:"FR", doG:"Banja Luka", doD:"BA", roba:"Kozmetika", palete:6, kamion:0, faza:3, pr:"srednji", rok:0, carinarnica:2, carina:"u toku",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":true,"Carinska deklaracija (IM4)":true,"EUR.1":false}, mjesto:"—", dwell:0, nap:"Carinjenje na aerodromu, čeka EUR.1 za povlaštenu stopu."},
+ {id:"GM-2604", klijent:"Distributer opreme (BL)", tip:"uvoz", odG:"Milano", odD:"IT", doG:"Banja Luka", doD:"BA", roba:"Mašinski dijelovi", palete:10, kamion:2, faza:5, pr:"srednji", rok:-3, carinarnica:0, carina:"ocarinjeno",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":true,"Carinska deklaracija (IM4)":true}, mjesto:"Otpremljeno", dwell:0, nap:"Isporučeno na vrijeme."},
+ {id:"GM-2603", klijent:"Izvoznik (Laktaši)", tip:"izvoz", odG:"Laktaši", odD:"BA", doG:"Zürich", doD:"CH", roba:"Plastika", palete:14, kamion:3, faza:1, pr:"nizak", rok:4, carinarnica:0, carina:"čeka",
+   dok:{"CMR":false,"Faktura":true,"Packing lista":true,"Izvozna deklaracija (EX)":false,"EUR.1":false}, mjesto:"—", dwell:0, nap:""},
+ {id:"GM-2602", klijent:"Uvoznik (Doboj)", tip:"uvoz", odG:"Praha", odD:"CZ", doG:"Doboj", doD:"BA", roba:"Građevinski materijal", palete:20, kamion:1, faza:4, pr:"srednji", rok:1, carinarnica:0, carina:"ocarinjeno",
+   dok:{"CMR":true,"Faktura":true,"Packing lista":true,"Carinska deklaracija (IM4)":true,"EUR.1":true}, mjesto:"Skladište B / R7", dwell:1, nap:"Spremno za isporuku, dogovoriti termin."},
+ {id:"GM-2601", klijent:"Uvoznik tekstila (BL)", tip:"uvoz", odG:"Barcelona", odD:"ES", doG:"Banja Luka", doD:"BA", roba:"Tekstil", palete:9, kamion:0, faza:0, pr:"nizak", rok:6, carinarnica:0, carina:"—",
+   dok:{"CMR":false,"Faktura":true,"Packing lista":false}, mjesto:"—", dwell:0, nap:""},
+];
+
+// ---- Helperi --------------------------------------------------------------
+const el=id=>document.getElementById(id);
+let VIEW="posiljke";
+const isDone=p=>p.faza>=LAST;
+const isLate=p=>!isDone(p)&&p.rok<0;
+const kg=v=>v.toLocaleString("de-DE");
+const prioName={visok:"Visok",srednji:"Srednji",nizak:"Nizak"};
+function rokPill(p){
+  if(isDone(p)) return '<span class="pill p-done">✓ isporučeno</span>';
+  if(p.rok<0) return '<span class="pill p-late">kasni '+(-p.rok)+" d</span>";
+  if(p.rok===0) return '<span class="pill p-today">rok danas</span>';
+  if(p.rok===1) return '<span class="pill p-soon">sutra</span>';
+  return '<span class="pill p-soon">za '+p.rok+" d</span>";
+}
+const prioTag=pr=>'<span class="pill p-'+pr+'">'+prioName[pr]+"</span>";
+function kamTag(i){const o=VOZ[i];return '<span class="who" style="background:'+o.boja+'">'+o.n+"</span>";}
+const rowCls=p=>(isLate(p)?"late ":"")+"pr-"+p.pr;
+const progress=p=>Math.round(p.faza/LAST*100);
+const relacija=p=>'<span class="flag">'+p.odD+'</span> <span class="arrow">→</span> <span class="flag">'+p.doD+'</span>';
+// dokumenti
+const docMissing=p=>Object.keys(p.dok).filter(k=>!p.dok[k]);
+const docAllOk=p=>docMissing(p).length===0;
+function docTag(p){const m=docMissing(p).length;return m?'<span class="pill p-docmiss">fali '+m+' dok.</span>':'<span class="pill p-docok">dok. ✓</span>';}
+// carina
+function carinaTag(p){
+  if(p.carina==="ocarinjeno") return '<span class="pill p-cok">ocarinjeno</span>';
+  if(p.carina==="u toku") return '<span class="pill p-ctoku">carina u toku</span>';
+  if(p.carina==="čeka") return '<span class="pill p-cceka">čeka carinu</span>';
+  return '<span class="hint">bez carine</span>';
+}
+const zauzeto=()=>POS.filter(p=>p.faza===4).reduce((s,p)=>s+p.palete,0);
+
+// ---- Render ---------------------------------------------------------------
+function setView(v){VIEW=v;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));render();}
+function render(){if(VIEW==="posiljke")return renderPosiljke();if(VIEW==="carina")return renderCarina();if(VIEW==="skladiste")return renderSkladiste();return renderPregled();}
+
+function kpiRow(){
+  const akt=POS.filter(p=>!isDone(p));
+  const utransp=akt.filter(p=>p.faza===2).length;
+  const nacarini=akt.filter(p=>p.faza===3||p.carina==="čeka"||p.carina==="u toku").length;
+  const falidok=akt.filter(p=>!docAllOk(p)).length;
+  const kasni=POS.filter(isLate).length;
+  const pop=Math.round(zauzeto()/KAPACITET*100);
+  return '<div class="kpis">'+
+   '<div class="kpi" onclick="openKpi(\'transp\')"><div class="big">'+utransp+'</div><div class="lab">U transportu</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'carina\')"><div class="big">'+nacarini+'</div><div class="lab">Na carini / čeka</div></div>'+
+   '<div class="kpi '+(falidok?"warn":"")+'" onclick="openKpi(\'dok\')"><div class="big">'+falidok+'</div><div class="lab">Fali dokument</div></div>'+
+   '<div class="kpi '+(kasni?"warn":"")+'" onclick="openKpi(\'kasni\')"><div class="big">'+kasni+'</div><div class="lab">Kasni</div></div>'+
+   '<div class="kpi" onclick="setView(\'skladiste\')"><div class="big">'+pop+'%</div><div class="lab">Skladište popunjeno</div></div>'+
+  '</div>';
+}
+
+function cardHtml(p){
+  const canAdv=p.faza<LAST;
+  return '<div class="card '+rowCls(p)+'" onclick="openPos(\''+p.id+'\')">'+
+    '<div class="cid">'+p.id+' · '+p.tip+'</div>'+
+    '<div class="cp">'+relacija(p)+' <span style="font-weight:600">'+p.doG+'</span></div>'+
+    '<div class="ck">'+p.roba+' · '+p.palete+' pal · '+p.klijent+'</div>'+
+    '<div class="crow">'+rokPill(p)+(p.faza===3?carinaTag(p):(canAdv?'<button class="adv" title="Sljedeća faza" onclick="event.stopPropagation();advance(\''+p.id+'\')">›</button>':kamTag(p.kamion)))+'</div>'+
+    '<div style="margin-top:7px">'+docTag(p)+'</div>'+
+    '<div style="height:4px;background:var(--track);border-radius:3px;margin-top:7px;overflow:hidden"><span style="display:block;height:100%;width:'+progress(p)+'%;background:linear-gradient(90deg,var(--accent),var(--brand))"></span></div>'+
+  '</div>';
+}
+
+function renderPosiljke(){
+  let h=kpiRow();
+  h+='<div class="viewhead"><h3>Pošiljke po fazi</h3><span class="sub">Svaka pošiljka putuje od naloga do isporuke. „›“ pomjera u sljedeću fazu, klik otvara relaciju, dokumente, carinu i skladište.</span></div>';
+  h+='<div class="board">';
+  for(let f=0;f<=LAST;f++){
+    const inCol=POS.filter(p=>p.faza===f);
+    h+='<div class="col'+(f===LAST?" done":"")+'"><div class="col-h"><span>'+FAZE[f]+'</span><span class="wip">'+inCol.length+'</span></div><div class="col-body">';
+    h+=inCol.map(cardHtml).join("")||'<div class="hint" style="padding:6px">Prazno</div>';
+    h+='</div></div>';
+  }
+  h+='</div>';
+  el("view").innerHTML=h;
+}
+
+function renderCarina(){
+  const list=POS.filter(p=>!isDone(p)&&(p.carina==="čeka"||p.carina==="u toku"||!docAllOk(p)));
+  let h='<div class="viewhead"><h3>Carina i dokumenti</h3><span class="sub">Pošiljke koje čekaju carinjenje ili kojima fali dokument. Crveno = fali dokument, treba požuriti kod klijenta.</span></div>';
+  const fali=list.filter(p=>!docAllOk(p)).length;
+  if(fali) h+='<div class="latebanner" style="display:block">⚠ '+fali+' pošiljki nema kompletne dokumente. Bez CMR-a, carinske deklaracije ili EUR.1 carinjenje staje.</div>';
+  h+='<table class="tbl"><thead><tr><th>Pošiljka</th><th>Relacija</th><th>Carinarnica</th><th>Carina</th><th>Dokumenti</th></tr></thead><tbody>';
+  list.sort((a,b)=>docMissing(b).length-docMissing(a).length).forEach(p=>{
+    h+='<tr class="'+(!docAllOk(p)?"rowlate":"")+'" onclick="openPos(\''+p.id+'\')">'+
+      '<td data-label="Pošiljka"><b>'+p.id+'</b><br><span class="hint">'+p.roba+'</span></td>'+
+      '<td data-label="Relacija">'+relacija(p)+' '+p.odG+' → '+p.doG+'</td>'+
+      '<td data-label="Carinarnica">'+(p.carina==="—"?"<span class=hint>tranzit</span>":CARINARNICE[p.carinarnica])+'</td>'+
+      '<td data-label="Carina">'+carinaTag(p)+'</td>'+
+      '<td data-label="Dokumenti">'+docTag(p)+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  if(!list.length) h='<div class="viewhead"><h3>Carina i dokumenti</h3></div><div class="panel"><div class="hint">Nema pošiljki na carini niti nedostajućih dokumenata.</div></div>';
+  el("view").innerHTML=h;
+}
+
+function renderSkladiste(){
+  const uskl=POS.filter(p=>p.faza===4);
+  const z=zauzeto(); const pop=Math.round(z/KAPACITET*100);
+  let h='<div class="viewhead"><h3>Carinsko skladište</h3><span class="sub">Kapacitet '+KAPACITET+' euro paletnih mjesta. Prikaz zauzetosti i pošiljki koje trenutno leže u skladištu (sa danima ležanja).</span></div>';
+  h+='<div class="capwrap"><div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px"><b>Zauzeto '+z+' / '+KAPACITET+' paleta</b><span class="'+(pop>85?"":"")+'">'+pop+'%</span></div>';
+  h+='<div class="capbar"><span style="width:'+pop+'%"></span><b>'+pop+'% popunjeno</b></div>';
+  // paletna mreza
+  h+='<div class="palette">';
+  for(let i=0;i<KAPACITET;i++){ h+='<div class="pal'+(i<z?" on":"")+'"></div>'; }
+  h+='</div></div>';
+  h+='<table class="tbl"><thead><tr><th>Pošiljka</th><th>Roba</th><th class="num">Palete</th><th>Mjesto</th><th class="num">Dana u skladištu</th><th>Carina</th></tr></thead><tbody>';
+  uskl.sort((a,b)=>b.dwell-a.dwell).forEach(p=>{
+    h+='<tr onclick="openPos(\''+p.id+'\')">'+
+      '<td data-label="Pošiljka"><b>'+p.id+'</b></td>'+
+      '<td data-label="Roba">'+p.roba+'</td>'+
+      '<td class="num" data-label="Palete">'+p.palete+'</td>'+
+      '<td data-label="Mjesto">'+p.mjesto+'</td>'+
+      '<td class="num" data-label="Dana">'+p.dwell+(p.dwell>=3?' ⚠':'')+'</td>'+
+      '<td data-label="Carina">'+carinaTag(p)+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  if(!uskl.length) h+='<div class="hint" style="margin-top:8px">Trenutno nema pošiljki u skladištu.</div>';
+  el("view").innerHTML=h;
+}
+
+function renderPregled(){
+  let h=kpiRow();
+  const akt=POS.filter(p=>!isDone(p));
+  h+='<div class="viewhead"><h3>Pregled</h3><span class="sub">Klik na KPI karticu ili traku daje spisak.</span></div>';
+  h+='<div class="grid2">';
+  h+='<div class="panel"><h3>Pošiljke po fazi</h3>';
+  const maxF=Math.max(1,...FAZE.map((_,i)=>POS.filter(p=>p.faza===i).length));
+  FAZE.forEach((f,i)=>{const c=POS.filter(p=>p.faza===i).length;
+    h+='<div class="bar clk" onclick="openFaza('+i+')"><div class="blab">'+f+'</div><div class="track"><div class="fill" style="width:'+(c/maxF*100)+'%"></div></div><div class="val">'+c+' ›</div></div>';});
+  h+='</div>';
+  h+='<div class="panel"><h3>Aktivne pošiljke po tipu</h3>';
+  const grp={}; akt.forEach(p=>grp[p.tip]=(grp[p.tip]||0)+1);
+  const keys=Object.keys(grp).sort((a,b)=>grp[b]-grp[a]); const maxV=Math.max(1,...keys.map(k=>grp[k]));
+  keys.forEach(k=>{h+='<div class="bar"><div class="blab">'+k+'</div><div class="track"><div class="fill" style="width:'+(grp[k]/maxV*100)+'%;background:linear-gradient(90deg,var(--accent),#fbbf24)"></div></div><div class="val">'+grp[k]+'</div></div>';});
+  h+='</div></div>';
+  const falidok=akt.filter(p=>!docAllOk(p)).length;
+  h+='<div class="panel"><h3>Ukratko</h3><div class="hint" style="font-size:14px;line-height:1.7;color:var(--text)">Aktivnih pošiljki: <b>'+akt.length+'</b>. U transportu: <b>'+akt.filter(p=>p.faza===2).length+'</b>, na carini/čeka: <b>'+akt.filter(p=>p.faza===3||p.carina==="čeka"||p.carina==="u toku").length+'</b>, fali dokument: <b style="color:var(--late)">'+falidok+'</b>, kasni: <b style="color:var(--late)">'+POS.filter(isLate).length+'</b>. Carinsko skladište popunjeno <b>'+Math.round(zauzeto()/KAPACITET*100)+'%</b>. Svaka pošiljka, dokumenti i carinski status na jednom mjestu.</div></div>';
+  el("view").innerHTML=h;
+}
+
+// ---- Spiskovi (KPI) -------------------------------------------------------
+function posRow(p){
+  return '<div class="card '+rowCls(p)+'" style="margin-bottom:9px" onclick="openPos(\''+p.id+'\')">'+
+    '<div class="cid">'+p.id+' · '+p.tip+'</div><div class="cp">'+relacija(p)+' '+p.odG+' → '+p.doG+'</div>'+
+    '<div class="ck">'+p.roba+' · '+p.palete+' pal · '+FAZE[p.faza]+'</div>'+
+    '<div class="crow">'+rokPill(p)+' '+docTag(p)+' '+carinaTag(p)+'</div></div>';
+}
+function openList(title,arr){
+  let h='<div class="mhead"><div><h2>'+title+'</h2><div class="msub">'+arr.length+' pošiljki</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody" style="padding:12px 14px">'+(arr.length?arr.map(posRow).join(""):'<div class="hint" style="padding:14px">Nema pošiljki.</div>')+'</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openKpi(w){
+  if(w==="transp")return openList("U transportu",POS.filter(p=>!isDone(p)&&p.faza===2));
+  if(w==="carina")return openList("Na carini / čeka carinu",POS.filter(p=>!isDone(p)&&(p.faza===3||p.carina==="čeka"||p.carina==="u toku")));
+  if(w==="dok")return openList("Fali dokument",POS.filter(p=>!isDone(p)&&!docAllOk(p)));
+  if(w==="kasni")return openList("Pošiljke u kašnjenju",POS.filter(isLate));
+}
+function openFaza(i){openList("Faza: "+FAZE[i],POS.filter(p=>p.faza===i));}
+
+// ---- Detalj pošiljke ------------------------------------------------------
+function openPos(id){
+  const p=POS.find(x=>x.id===id);if(!p)return;
+  const steps=FAZE.map((f,i)=>'<div class="step '+(i<p.faza?"done":(i===p.faza?"cur":""))+'"><span class="dot">'+(i<p.faza?"✓":(i+1))+'</span>'+f+'</div>'+(i<LAST?'<span class="arr">›</span>':'')).join("");
+  let h='<div class="mhead"><div><h2>'+p.id+' · '+p.tip+'</h2><div class="msub">'+p.odG+' ('+p.odD+') → '+p.doG+' ('+p.doD+')</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(isLate(p)) h+='<div class="latebanner">⚠ Pošiljka kasni '+(-p.rok)+' d. Obavijesti klijenta i dogovori termin isporuke.</div>';
+  if(!docAllOk(p)) h+='<div class="latebanner">⚠ Fali dokument ('+docMissing(p).join(", ")+'). Carinjenje ne može bez kompletne dokumentacije.</div>';
+  h+='<div class="stepper" style="margin-bottom:14px">'+steps+'</div>';
+  h+='<div class="kv"><div class="k">Relacija</div><div class="v">'+relacija(p)+' '+p.odG+' → '+p.doG+'</div></div>';
+  h+='<div class="kv"><div class="k">Klijent</div><div class="v">'+p.klijent+'</div></div>';
+  h+='<div class="kv"><div class="k">Roba</div><div class="v">'+p.roba+' · '+p.palete+' euro paleta</div></div>';
+  h+='<div class="kv"><div class="k">Kamion / linija</div><div class="v">'+kamTag(p.kamion)+'</div></div>';
+  h+='<div class="kv"><div class="k">Rok isporuke</div><div class="v">'+rokPill(p)+' '+prioTag(p.pr)+'</div></div>';
+  h+='<div class="kv"><div class="k">Carina</div><div class="v">'+carinaTag(p)+(p.carina!=="—"?' · '+CARINARNICE[p.carinarnica]:'')+'</div></div>';
+  if(p.faza===4) h+='<div class="kv"><div class="k">Skladište</div><div class="v">'+p.mjesto+' · '+p.dwell+' dana</div></div>';
+  // dokumenti
+  h+='<div class="sec-title">Dokumenti '+docTag(p)+'</div>';
+  h+='<div class="doclist">';
+  Object.keys(p.dok).forEach(k=>{
+    const on=p.dok[k];
+    h+='<div class="docrow '+(on?"":"miss")+'" onclick="toggleDoc(\''+p.id+'\',\''+k.replace(/'/g,"")+'\')"><div class="dname"><span class="chk '+(on?"on":"")+'">'+(on?"✓":"")+'</span>'+k+'</div>'+(on?'<span class="pill p-docok">ima</span>':'<span class="pill p-docmiss">fali</span>')+'</div>';
+  });
+  h+='</div>';
+  if(p.nap) h+='<div class="sec-title">Napomena</div><div class="hint" style="font-size:13.5px">'+p.nap+'</div>';
+  h+='</div>';
+  h+='<div class="actions">';
+  if(!isDone(p)){
+    if(p.faza===3) h+='<button class="primary" onclick="clearCarina(\''+p.id+'\')">Ocarinjeno → Skladište</button>';
+    else h+='<button class="primary" onclick="advance(\''+p.id+'\')">Sljedeća faza: '+FAZE[p.faza+1]+'</button>';
+  } else h+='<span class="hint">Pošiljka isporučena.</span>';
+  h+='<button class="secondary" onclick="alert(\'Demo: ovdje bi se generisao paket dokumenata (CMR, carinska deklaracija) i poslao klijentu/carini.\')">Dokumenti / obavijest</button>';
+  h+='</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function toggleDoc(id,key){const p=POS.find(x=>x.id===id);if(!p)return;const realKey=Object.keys(p.dok).find(k=>k.replace(/'/g,"")===key);if(realKey){p.dok[realKey]=!p.dok[realKey];openPos(id);}}
+function clearCarina(id){const p=POS.find(x=>x.id===id);if(!p)return;if(!docAllOk(p)){if(!confirm("Fali dokument ("+docMissing(p).join(", ")+"). Ipak označiti ocarinjeno?"))return;}p.carina="ocarinjeno";p.faza=4;p.mjesto="Skladište A / R"+(1+Math.floor(Math.random()*9));p.dwell=0;openPos(id);render();}
+function closeModal(){el("overlay").classList.remove("open");}
+function advance(id){const p=POS.find(x=>x.id===id);if(!p||isDone(p))return;p.faza++;if(el("overlay").classList.contains("open")&&!isDone(p))openPos(id);else if(isDone(p))closeModal();render();}
+
+// ---- Nova pošiljka --------------------------------------------------------
+const DRZ=["BA","DE","AT","SI","HR","RS","IT","NL","FR","CH","CZ","ES","SE","BE"];
+function openNovi(){
+  const kOpts=VOZ.map((o,i)=>'<option value="'+i+'">'+o.n+"</option>").join("");
+  const dOpts=DRZ.map(d=>'<option>'+d+'</option>').join("");
+  let h='<div class="mhead"><div><h2>Nova pošiljka</h2><div class="msub">Nalog za transport</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  h+='<div class="frow"><label>Klijent *</label><input id="n_kli" placeholder="Naziv klijenta"></div>';
+  h+='<div class="frow"><label>Tip</label><select id="n_tip"><option>uvoz</option><option>izvoz</option><option>tranzit</option><option>reeksport</option></select></div>';
+  h+='<div class="row2"><div class="frow"><label>Utovar (grad)</label><input id="n_odg" placeholder="npr. München"></div><div class="frow"><label>Država</label><select id="n_odd">'+dOpts+'</select></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Istovar (grad)</label><input id="n_dog" placeholder="npr. Banja Luka"></div><div class="frow"><label>Država</label><select id="n_dod">'+dOpts+'</select></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Roba</label><input id="n_roba" placeholder="npr. Elektro oprema"></div><div class="frow"><label>Euro palete</label><input id="n_pal" type="number" min="1" value="10"></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Kamion / linija</label><select id="n_kam">'+kOpts+'</select></div><div class="frow"><label>Rok (dana)</label><input id="n_rok" type="number" min="0" value="3"></div></div>';
+  h+='</div>';
+  h+='<div class="actions"><button class="primary" onclick="createPos()">Otvori pošiljku</button><span class="hint">Kreće od faze „Nalog“.</span></div>';
+  el("modal").innerHTML=h;
+  el("overlay").classList.add("open");
+  el("n_odd").value="DE"; el("n_dod").value="BA";
+  setTimeout(()=>el("n_kli").focus(),40);
+}
+function createPos(){
+  const nums=POS.map(p=>+p.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="GM-"+(Math.max(0,...nums)+1);
+  const tip=el("n_tip").value;
+  let dok={"CMR":false,"Faktura":false,"Packing lista":false};
+  if(tip==="uvoz")dok["Carinska deklaracija (IM4)"]=false, dok["EUR.1"]=false;
+  else if(tip==="izvoz")dok["Izvozna deklaracija (EX)"]=false, dok["EUR.1"]=false;
+  else if(tip==="tranzit")dok={"CMR":false,"Faktura":false,"T1 (tranzitni dokument)":false};
+  POS.unshift({id,klijent:el("n_kli").value||"Novi klijent",tip,odG:el("n_odg").value||"—",odD:el("n_odd").value,doG:el("n_dog").value||"—",doD:el("n_dod").value,roba:el("n_roba").value||"Roba",palete:parseInt(el("n_pal").value)||1,kamion:parseInt(el("n_kam").value)||0,faza:0,pr:"srednji",rok:parseInt(el("n_rok").value)||3,carinarnica:0,carina:(tip==="tranzit"?"—":"čeka"),dok,mjesto:"—",dwell:0,nap:""});
+  closeModal();setView("posiljke");openPos(id);
+}
+
+setView("posiljke");
+</script>
+
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_gmtel_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=gmtel/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'GMTEL je otvorio prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/gmtel/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+</body>
+</html>
