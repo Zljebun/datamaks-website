@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grand Company · veleprodaja, zalihe i narudžbe (demo)</title>
+<meta name="description" content="Klikabilni demo prototip za Grand Company: veleprodaja građevinskog materijala, praćenje narudžbi od upita do fakture, zalihe skladišta sa alarmom, dugovanja kupaca i rabati. Izmišljeni podaci, stvarna logika.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/grand-company/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23b45309'/%3E%3Cpath%20d='M14 40 L32 18 L50 40 Z' fill='%23fde68a'/%3E%3Crect%20x='26'%20y='40'%20width='12'%20height='10'%20fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --brand:#b45309; --brand2:#d97706; --accent:#b45309; --action:#b45309;
+    --bg:#f7f5f0; --card:#fff; --line:#e7e1d6; --muted:#6b6357; --text:#231c12;
+    --ok:#15803d; --warn:#b45309; --late:#c02626; --track:#f1ebe0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,#7c3d06,var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#f7e4c9;margin-top:3px}
+  header .spacer{flex:1}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:#0f766e}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 12px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+  .demo-flag{margin-left:10px;background:#fdecd2;color:var(--brand);border:1px solid #f5d9ac;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.08)}
+  .wrap{padding:16px 20px;max-width:1200px;margin:0 auto}
+  .viberCta{margin:12px 20px;padding:14px 16px;border-radius:14px;background:#fbf1e2;border:1px solid #f0dcbd;max-width:1200px}
+  .viberCta .t{font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .viberCta a{padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;cursor:pointer;transition:.12s}
+  .kpi:hover{border-color:var(--brand);box-shadow:0 3px 12px rgba(180,83,9,.14);transform:translateY(-1px)}
+  .kpi .big{font-size:21px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--late)}
+
+  .viewhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:16px;color:var(--brand)}
+  .viewhead .sub{font-size:13px;color:var(--muted)}
+
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+  .col{flex:0 0 232px;background:#faf6ef;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .col.done{background:#f1f8f2;border-color:#cfe6d4}
+  .col-h{padding:10px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .col.done .col-h{color:var(--ok)}
+  .wip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:12px;color:var(--muted);font-weight:700}
+  .col-body{padding:10px;display:flex;flex-direction:column;gap:9px;min-height:60px}
+  .card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:9px 11px;cursor:pointer;box-shadow:0 1px 2px rgba(80,50,10,.06);transition:.1s}
+  .card:hover{box-shadow:0 4px 12px rgba(80,50,10,.14);transform:translateY(-1px)}
+  .card.pr-visok{border-left-color:#c02626}.card.pr-srednji{border-left-color:#d97706}.card.pr-nizak{border-left-color:#b8ab97}
+  .card.late{background:#fff6f5}
+  .card .cid{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+  .card .cp{font-weight:700;font-size:13.5px;margin:2px 0 1px}
+  .card .ck{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+  .card .adv{border:0;background:var(--brand);color:#fff;border-radius:6px;min-width:28px;height:25px;cursor:pointer;font-size:14px;font-weight:700}
+  .card .adv:hover{filter:brightness(1.1)}
+
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+  .p-late{background:#fde2e2;color:var(--late)}.p-today{background:#fdefda;color:#9a6413}.p-soon{background:#f3e9d8;color:var(--brand)}
+  .p-done{background:#dff0e3;color:var(--ok)}.p-faza{background:#f3e9d8;color:var(--brand)}
+  .p-visok{background:#fee2e2;color:#b91c1c}.p-srednji{background:#ffedd5;color:#9a3412}.p-nizak{background:#ece7de;color:#5b5347}
+  .p-pla{background:#dff0e3;color:var(--ok)}.p-odgoda{background:#fef3c7;color:#92400e}
+  .who{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff}
+
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 13px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:10px 13px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}.tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .rowlow{background:#fff6f5}
+  .barmini{height:6px;background:var(--track);border-radius:4px;overflow:hidden;min-width:70px}
+  .barmini span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .barmini span.low{background:linear-gradient(90deg,#f87171,#c02626)}
+
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:14px}
+  .bar.clk{cursor:pointer;border-radius:8px;padding:4px 6px;margin:5px -6px}.bar.clk:hover{background:var(--track)}
+  .bar .blab{width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .bar .val{width:130px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .overlay{position:fixed;inset:0;background:rgba(40,28,10,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(40,28,10,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,#7c3d06,var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .msub{font-size:12.5px;color:#f7e4c9;margin-top:3px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.9}
+  .mbody{padding:18px 20px}
+  .latebanner{background:#fde2e2;border:1px solid #f6c2c2;color:#8f1d1d;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .okbanner{background:#e7f6ea;border:1px solid #c3e6cb;color:#1b5e2a;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .kv{display:flex;font-size:14.5px;padding:5px 0;border-bottom:1px dashed #ece4d6}
+  .kv .k{width:150px;color:var(--muted)}.kv .v{flex:1}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 8px}
+  .stepper{display:flex;flex-wrap:wrap;gap:4px}
+  .step{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}
+  .step .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#fff}
+  .step.done .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+  .step.cur .dot{border-color:var(--brand);color:var(--brand)}
+  .step.cur{color:var(--brand);font-weight:700}
+  .step .arr{color:var(--line)}
+  .lines{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+  .lines th,.lines td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .lines tfoot td{font-weight:700;border-top:2px solid var(--line);border-bottom:0}
+  .actions{padding:14px 20px;background:#faf6ef;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #e6cfa8;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow input,.frow select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow input:focus,.frow select:focus{outline:none;border-color:var(--brand2)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  .stavka-row{display:grid;grid-template-columns:1fr 70px 30px;gap:6px;margin-bottom:6px}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+
+  @media(max-width:640px){
+    .tbl{border:0;background:transparent}
+    .tbl thead{display:none}
+    .tbl tbody tr{display:block;margin-bottom:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .tbl tbody tr.rowlow{background:#fff6f5}
+    .tbl tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 13px;text-align:right}
+    .tbl tbody td::before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:600;text-align:left;flex:0 0 auto}
+    .tbl tbody td:not(:last-child){border-bottom:1px solid var(--track)}
+  }
+  @media(max-width:560px){
+    .overlay{padding:0}.modal{border-radius:0;min-height:100vh}
+    .mbody{padding:16px 16px}.kv{flex-direction:column;gap:1px;padding:7px 0}.kv .k{width:auto;font-size:12.5px}
+    .stepper{gap:2px}.step{font-size:11px}.step .arr{display:none}.actions button.primary{flex:1 1 100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">GC</div>
+  <div class="brand">
+    <div class="name">Grand Company</div>
+    <div class="tag">Veleprodaja · zalihe · narudžbe</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="user"><span class="avatar">GC</span><span>Komercijala</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="narudzbe" onclick="setView('narudzbe')">Narudžbe</div>
+  <div class="tab" data-view="zalihe" onclick="setView('zalihe')">Zalihe (lager)</div>
+  <div class="tab" data-view="kupci" onclick="setView('kupci')">Kupci</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" onclick="openNovi()">+ Nova narudžba</button>
+  <span class="demo-flag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div class="viberCta">
+  <div class="t"><b>Ovaj prototip je napravljen baš za Grand Company.</b> Na osnovu vaše djelatnosti, veleprodaje drva, građevinskog materijala i sanitarije, ovako bi izgledalo kad svaka narudžba stoji na jednom mjestu: od upita i ponude, preko komisioniranja u skladištu, do isporuke i fakture. Odmah se vidi šta ide danas na isporuku, koji artikal je pri kraju i koliko koji kupac duguje. Sviđa vam se? Javite se pa da ga prilagodimo tačno vašem načinu rada.</div>
+  <div class="btns">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="background:#231c12">Pozovi</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.viberCta [data-kanal]').forEach(function(a){a.addEventListener('click',function(){var k=a.getAttribute('data-kanal');if(window.gtag)gtag('event','kontakt_klik',{kanal:k,stranica:'mockup-grand-company'});});});
+</script>
+
+<div id="view" class="wrap"></div>
+<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Model ----------------------------------------------------------------
+const FAZE=["Upit","Ponuda","Potvrđeno","Komisioniranje","Isporuka","Fakturisano"];
+const LAST=5;
+const ODG=[ {n:"Komercijala",boja:"#b45309"}, {n:"Skladište",boja:"#0f766e"}, {n:"Dostava",boja:"#7c3aed"} ];
+
+// artikli (zalihe): naziv, jedinica, na stanju, minimum, lokacija, prodajna cijena (KM)
+let ART=[
+ {n:"Cement 25 kg", jed:"vreća", stanje:480, min:200, lok:"Regal A1", c:12},
+ {n:"Giter blok 20", jed:"kom", stanje:3200, min:1500, lok:"Vanjski plato", c:1.2},
+ {n:"Gips-kartonska ploča 12,5", jed:"ploča", stanje:140, min:200, lok:"Regal B2", c:18},
+ {n:"Mineralna vuna 10 cm", jed:"pak", stanje:85, min:60, lok:"Regal C1", c:45},
+ {n:"Stiropor EPS 5 cm", jed:"ploča", stanje:900, min:400, lok:"Regal C2", c:6.5},
+ {n:"OSB ploča 15 mm", jed:"kom", stanje:60, min:120, lok:"Regal B1", c:32},
+ {n:"Građevinsko drvo", jed:"m³", stanje:42, min:20, lok:"Stovarište", c:380},
+ {n:"Armaturna mreža Q188", jed:"kom", stanje:210, min:150, lok:"Vanjski plato", c:42},
+ {n:"PPR cijev 20 mm", jed:"šipka", stanje:340, min:200, lok:"Regal D1", c:8},
+ {n:"PVC kanalizac. cijev 110", jed:"šipka", stanje:55, min:80, lok:"Regal D2", c:14},
+ {n:"WC šolja komplet", jed:"kom", stanje:28, min:20, lok:"Regal E1", c:120},
+ {n:"Ljepilo za pločice 25 kg", jed:"vreća", stanje:260, min:150, lok:"Regal A2", c:15},
+];
+
+// kupci: naziv, tip, mjesto, saldo (dugovanje KM), rabat %
+let KUP=[
+ {n:"Gradnja d.o.o.", tip:"izvođač", mjesto:"Banja Luka", saldo:12400, rabat:8},
+ {n:"Gradido (prodavnica)", tip:"prodavnica", mjesto:"Prijedor", saldo:3200, rabat:5},
+ {n:"Investitor (stambena zgrada)", tip:"investitor", mjesto:"Banja Luka", saldo:0, rabat:0},
+ {n:"Putevi a.d.", tip:"građevinska firma", mjesto:"Laktaši", saldo:28900, rabat:10},
+ {n:"Majstor Perić s.p.", tip:"majstor", mjesto:"Gradiška", saldo:850, rabat:3},
+];
+
+// narudžbe: id, kupac(index), stavke[{a,kol}], faza, rok(dana), dostava, placeno, pr, odg, nap
+let NAR=[
+ {id:"NR-2051", kupac:3, stavke:[{a:0,kol:200},{a:7,kol:80},{a:1,kol:1000}], faza:3, rok:1, dostava:"Dostava vozilom", placeno:"na odgodu", pr:"visok", odg:1, nap:"Veliki nalog za gradilište, provjeriti da sve stane na kamion."},
+ {id:"NR-2050", kupac:0, stavke:[{a:2,kol:120},{a:3,kol:40}], faza:2, rok:2, dostava:"Dostava vozilom", placeno:"na odgodu", pr:"srednji", odg:0, nap:""},
+ {id:"NR-2049", kupac:1, stavke:[{a:4,kol:300},{a:11,kol:60}], faza:4, rok:0, dostava:"Dostava vozilom", placeno:"plaćeno", pr:"srednji", odg:2, nap:"Danas na dostavu za Prijedor."},
+ {id:"NR-2048", kupac:4, stavke:[{a:10,kol:2},{a:8,kol:20}], faza:1, rok:3, dostava:"Preuzimanje", placeno:"na odgodu", pr:"nizak", odg:0, nap:"Čeka potvrdu ponude."},
+ {id:"NR-2047", kupac:2, stavke:[{a:5,kol:100},{a:6,kol:5}], faza:0, rok:5, dostava:"Dostava vozilom", placeno:"na odgodu", pr:"nizak", odg:0, nap:"Upit sa gradilišta, treba ponuda."},
+ {id:"NR-2046", kupac:3, stavke:[{a:0,kol:300}], faza:5, rok:-2, dostava:"Dostava vozilom", placeno:"plaćeno", pr:"srednji", odg:1, nap:"Isporučeno i fakturisano."},
+ {id:"NR-2045", kupac:0, stavke:[{a:9,kol:40},{a:10,kol:3}], faza:2, rok:1, dostava:"Dostava vozilom", placeno:"na odgodu", pr:"visok", odg:0, nap:""},
+ {id:"NR-2044", kupac:1, stavke:[{a:1,kol:800}], faza:4, rok:0, dostava:"Dostava vozilom", placeno:"plaćeno", pr:"srednji", odg:2, nap:"Spremno, čeka utovar."},
+];
+
+// ---- Helperi --------------------------------------------------------------
+const el=id=>document.getElementById(id);
+let VIEW="narudzbe";
+const isDone=n=>n.faza>=LAST;
+const isLate=n=>!isDone(n)&&n.rok<0;
+const m2=x=>String(x).padStart(2,"0");
+const km=v=>Math.round(v).toLocaleString("de-DE")+" KM";
+const br=v=>v.toLocaleString("de-DE");
+function fmtDate(off){const d=new Date();d.setDate(d.getDate()+off);return d.getDate()+"."+m2(d.getMonth()+1)+".";}
+const prioName={visok:"Visok",srednji:"Srednji",nizak:"Nizak"};
+function vrijednost(n){let s=n.stavke.reduce((a,x)=>a+ART[x.a].c*x.kol,0);const r=KUP[n.kupac].rabat||0;return s*(1-r/100);}
+function rokPill(n){
+  if(isDone(n)) return '<span class="pill p-done">✓ fakturisano</span>';
+  if(n.rok<0) return '<span class="pill p-late">kasni '+(-n.rok)+" d</span>";
+  if(n.rok===0) return '<span class="pill p-today">rok danas</span>';
+  if(n.rok===1) return '<span class="pill p-soon">sutra</span>';
+  return '<span class="pill p-soon">za '+n.rok+" d</span>";
+}
+const prioTag=pr=>'<span class="pill p-'+pr+'">'+prioName[pr]+"</span>";
+function whoTag(i){const o=ODG[i];return '<span class="who" style="background:'+o.boja+'">'+o.n+"</span>";}
+const rowCls=n=>(isLate(n)?"late ":"")+"pr-"+n.pr;
+const progress=n=>Math.round(n.faza/LAST*100);
+const platTag=n=>n.placeno==="plaćeno"?'<span class="pill p-pla">plaćeno</span>':'<span class="pill p-odgoda">na odgodu</span>';
+const artLow=a=>a.stanje<a.min;
+function artPotrebno(idx){return NAR.filter(n=>!isDone(n)).reduce((s,n)=>s+n.stavke.filter(x=>x.a===idx).reduce((a,x)=>a+x.kol,0),0);}
+// ima li narudžba stavku ispod raspoloživog stanja
+function narNedostatak(n){return n.stavke.some(x=>ART[x.a].stanje < x.kol);}
+
+// ---- Render ---------------------------------------------------------------
+function setView(v){VIEW=v;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));render();}
+function render(){if(VIEW==="narudzbe")return renderNarudzbe();if(VIEW==="zalihe")return renderZalihe();if(VIEW==="kupci")return renderKupci();return renderPregled();}
+
+function kpiRow(){
+  const akt=NAR.filter(n=>!isDone(n));
+  const zaisp=akt.filter(n=>n.faza>=3).length;
+  const kasni=NAR.filter(isLate).length;
+  const low=ART.filter(artLow).length;
+  const dug=KUP.reduce((s,k)=>s+k.saldo,0);
+  return '<div class="kpis">'+
+   '<div class="kpi" onclick="openKpi(\'akt\')"><div class="big">'+akt.length+'</div><div class="lab">Narudžbi u toku</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'isp\')"><div class="big">'+zaisp+'</div><div class="lab">Za pripremu / isporuku</div></div>'+
+   '<div class="kpi '+(kasni?"warn":"")+'" onclick="openKpi(\'kasni\')"><div class="big">'+kasni+'</div><div class="lab">Kasni</div></div>'+
+   '<div class="kpi '+(low?"warn":"")+'" onclick="setView(\'zalihe\')"><div class="big">'+low+'</div><div class="lab">Artikala ispod min.</div></div>'+
+   '<div class="kpi '+(dug>0?"warn":"")+'" onclick="setView(\'kupci\')"><div class="big">'+km(dug)+'</div><div class="lab">Dugovanja kupaca</div></div>'+
+  '</div>';
+}
+
+function renderNarudzbe(){
+  let h=kpiRow();
+  h+='<div class="viewhead"><h3>Narudžbe</h3><span class="sub">Svaka narudžba putuje kroz faze. „›“ je pomjera dalje, klik otvara stavke, zalihe, kupca i dostavu.</span></div>';
+  h+='<div class="board">';
+  for(let f=0;f<=LAST;f++){
+    const inCol=NAR.filter(n=>n.faza===f);
+    h+='<div class="col'+(f===LAST?" done":"")+'"><div class="col-h"><span>'+FAZE[f]+'</span><span class="wip">'+inCol.length+'</span></div><div class="col-body">';
+    h+=inCol.map(n=>{
+      const canAdv=f<LAST;
+      return '<div class="card '+rowCls(n)+'" onclick="openNar(\''+n.id+'\')">'+
+        '<div class="cid">'+n.id+' · '+km(vrijednost(n))+'</div>'+
+        '<div class="cp">'+KUP[n.kupac].n+'</div>'+
+        '<div class="ck">'+n.stavke.length+' stavki · '+n.dostava+(narNedostatak(n)&&!isDone(n)?' · ⚠ zaliha':'')+'</div>'+
+        '<div class="crow">'+rokPill(n)+(canAdv?'<button class="adv" title="Sljedeća faza" onclick="event.stopPropagation();advance(\''+n.id+'\')">›</button>':whoTag(n.odg))+'</div>'+
+        '<div style="height:4px;background:var(--track);border-radius:3px;margin-top:8px;overflow:hidden"><span style="display:block;height:100%;width:'+progress(n)+'%;background:linear-gradient(90deg,var(--brand2),var(--brand))"></span></div>'+
+      '</div>';
+    }).join("")||'<div class="hint" style="padding:6px">Prazno</div>';
+    h+='</div></div>';
+  }
+  h+='</div>';
+  el("view").innerHTML=h;
+}
+
+function renderZalihe(){
+  const low=ART.filter(artLow).length;
+  let h='<div class="viewhead"><h3>Zalihe (lager)</h3><span class="sub">„Potrebno“ je zbir iz narudžbi u toku. Crveno = ispod minimuma, naruči kod dobavljača.</span></div>';
+  if(low) h+='<div class="latebanner" style="display:block">⚠ '+low+' artikala je ispod minimuma. Naruči na vrijeme da ne zakočiš isporuke.</div>';
+  h+='<table class="tbl"><thead><tr><th>Artikal</th><th>Lokacija</th><th class="num">Na stanju</th><th class="num">Min</th><th class="num">Potrebno</th><th>Popunjenost</th><th>Status</th></tr></thead><tbody>';
+  ART.forEach((a,i)=>{
+    const pot=artPotrebno(i); const low=artLow(a); const pct=Math.min(100,Math.round(a.stanje/(a.min*2)*100));
+    h+='<tr class="'+(low?"rowlow":"")+'" onclick="openArt('+i+')">'+
+      '<td data-label="Artikal"><b>'+a.n+'</b></td>'+
+      '<td data-label="Lokacija">'+a.lok+'</td>'+
+      '<td class="num" data-label="Na stanju">'+br(a.stanje)+' '+a.jed+'</td>'+
+      '<td class="num" data-label="Min">'+br(a.min)+'</td>'+
+      '<td class="num" data-label="Potrebno">'+br(pot)+'</td>'+
+      '<td data-label="Popunjenost"><div class="barmini"><span class="'+(low?"low":"")+'" style="width:'+pct+'%"></span></div></td>'+
+      '<td data-label="Status">'+(low?'<span class="pill p-late">naruči</span>':'<span class="pill p-done">ok</span>')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  el("view").innerHTML=h;
+}
+
+function renderKupci(){
+  const dug=KUP.reduce((s,k)=>s+k.saldo,0);
+  let h='<div class="viewhead"><h3>Kupci</h3><span class="sub">Saldo = koliko kupac trenutno duguje. Klik otvara narudžbe i rabat.</span></div>';
+  h+='<div class="panel" style="padding:12px 16px"><b>Ukupno potraživanja: '+km(dug)+'</b> <span class="hint">(zbir svih dugovanja)</span></div>';
+  h+='<table class="tbl"><thead><tr><th>Kupac</th><th>Tip</th><th>Mjesto</th><th class="num">Rabat</th><th class="num">Narudžbi</th><th class="num">Duguje</th></tr></thead><tbody>';
+  KUP.forEach((k,i)=>{
+    const nn=NAR.filter(n=>n.kupac===i).length;
+    h+='<tr class="'+(k.saldo>15000?"rowlow":"")+'" onclick="openKup('+i+')">'+
+      '<td data-label="Kupac"><b>'+k.n+'</b></td>'+
+      '<td data-label="Tip">'+k.tip+'</td>'+
+      '<td data-label="Mjesto">'+k.mjesto+'</td>'+
+      '<td class="num" data-label="Rabat">'+k.rabat+'%</td>'+
+      '<td class="num" data-label="Narudžbi">'+nn+'</td>'+
+      '<td class="num" data-label="Duguje">'+(k.saldo>0?'<b style="color:'+(k.saldo>15000?'var(--late)':'var(--text)')+'">'+km(k.saldo)+'</b>':'<span class="hint">0</span>')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  el("view").innerHTML=h;
+}
+
+function renderPregled(){
+  let h=kpiRow();
+  const akt=NAR.filter(n=>!isDone(n));
+  h+='<div class="viewhead"><h3>Pregled</h3><span class="sub">Klik na traku ili KPI daje spisak.</span></div>';
+  h+='<div class="grid2">';
+  h+='<div class="panel"><h3>Narudžbe po fazi</h3>';
+  const maxF=Math.max(1,...FAZE.map((_,i)=>NAR.filter(n=>n.faza===i).length));
+  FAZE.forEach((f,i)=>{const c=NAR.filter(n=>n.faza===i).length;
+    h+='<div class="bar clk" onclick="openFaza('+i+')"><div class="blab">'+f+'</div><div class="track"><div class="fill" style="width:'+(c/maxF*100)+'%"></div></div><div class="val">'+c+' narudžbi ›</div></div>';});
+  h+='</div>';
+  h+='<div class="panel"><h3>Vrijednost u toku po kupcu</h3>';
+  const grp={}; akt.forEach(n=>grp[n.kupac]=(grp[n.kupac]||0)+vrijednost(n));
+  const keys=Object.keys(grp).sort((a,b)=>grp[b]-grp[a]); const maxV=Math.max(1,...keys.map(k=>grp[k]));
+  keys.forEach(k=>{h+='<div class="bar clk" onclick="openKup('+k+')"><div class="blab">'+KUP[k].n+'</div><div class="track"><div class="fill" style="width:'+(grp[k]/maxV*100)+'%;background:linear-gradient(90deg,#0f766e,#0e7490)"></div></div><div class="val">'+km(grp[k])+'</div></div>';});
+  h+='</div></div>';
+  const promet=akt.reduce((s,n)=>s+vrijednost(n),0);
+  const dug=KUP.reduce((s,k)=>s+k.saldo,0);
+  h+='<div class="panel"><h3>Ukratko</h3><div class="hint" style="font-size:14px;line-height:1.7;color:var(--text)">U toku: <b>'+akt.length+'</b> narudžbi u vrijednosti <b>'+km(promet)+'</b>. Za pripremu/isporuku: <b>'+akt.filter(n=>n.faza>=3).length+'</b>, kasni: <b style="color:var(--late)">'+NAR.filter(isLate).length+'</b>. Artikala ispod minimuma: <b style="color:var(--late)">'+ART.filter(artLow).length+'</b>. Kupci ukupno duguju <b style="color:var(--late)">'+km(dug)+'</b>. Sve na jednom mjestu: narudžbe, lager i saldo kupaca.</div></div>';
+  el("view").innerHTML=h;
+}
+
+// ---- Spiskovi (KPI) -------------------------------------------------------
+function narRow(n){
+  return '<div class="card '+rowCls(n)+'" style="margin-bottom:9px" onclick="openNar(\''+n.id+'\')">'+
+    '<div class="cid">'+n.id+' · '+km(vrijednost(n))+'</div><div class="cp">'+KUP[n.kupac].n+'</div>'+
+    '<div class="ck">'+FAZE[n.faza]+' · '+n.dostava+'</div>'+
+    '<div class="crow">'+rokPill(n)+' '+platTag(n)+' '+whoTag(n.odg)+'</div></div>';
+}
+function openList(title,arr){
+  let h='<div class="mhead"><div><h2>'+title+'</h2><div class="msub">'+arr.length+' narudžbi</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody" style="padding:12px 14px">'+(arr.length?arr.map(narRow).join(""):'<div class="hint" style="padding:14px">Nema narudžbi.</div>')+'</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openKpi(w){
+  if(w==="akt")return openList("Narudžbe u toku",NAR.filter(n=>!isDone(n)));
+  if(w==="isp")return openList("Za pripremu / isporuku",NAR.filter(n=>!isDone(n)&&n.faza>=3));
+  if(w==="kasni")return openList("Narudžbe u kašnjenju",NAR.filter(isLate));
+}
+function openFaza(i){openList("Faza: "+FAZE[i],NAR.filter(n=>n.faza===i));}
+
+// ---- Detalj narudžbe ------------------------------------------------------
+function openNar(id){
+  const n=NAR.find(x=>x.id===id);if(!n)return; const k=KUP[n.kupac];
+  const steps=FAZE.map((f,i)=>'<div class="step '+(i<n.faza?"done":(i===n.faza?"cur":""))+'"><span class="dot">'+(i<n.faza?"✓":(i+1))+'</span>'+f+'</div>'+(i<LAST?'<span class="arr">›</span>':'')).join("");
+  let sub=n.stavke.reduce((a,x)=>a+ART[x.a].c*x.kol,0); const rab=sub*(k.rabat/100);
+  let h='<div class="mhead"><div><h2>'+k.n+'</h2><div class="msub">'+n.id+' · '+FAZE[n.faza]+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(isLate(n)) h+='<div class="latebanner">⚠ Narudžba kasni '+(-n.rok)+' d. Provjeri fazu i obavijesti kupca.</div>';
+  if(narNedostatak(n)&&!isDone(n)) h+='<div class="latebanner">⚠ Nema dovoljno na stanju za bar jednu stavku. Provjeri lager ili naruči.</div>';
+  h+='<div class="stepper" style="margin-bottom:14px">'+steps+'</div>';
+  h+='<div class="sec-title">Stavke</div>';
+  h+='<table class="lines"><thead><tr><th>Artikal</th><th class="num">Količina</th><th class="num">Cijena</th><th class="num">Iznos</th></tr></thead><tbody>'+
+     n.stavke.map(x=>{const a=ART[x.a];const man=a.stanje<x.kol;
+       return '<tr><td>'+a.n+(man?' <span class="pill p-late" style="font-size:10px">nema '+br(x.kol-a.stanje)+'</span>':'')+'</td><td class="num">'+br(x.kol)+' '+a.jed+'</td><td class="num">'+km(a.c)+'</td><td class="num">'+km(a.c*x.kol)+'</td></tr>';}).join("")+
+     '</tbody><tfoot>'+
+     '<tr><td colspan="3">Osnovica</td><td class="num">'+km(sub)+'</td></tr>'+
+     (k.rabat?'<tr><td colspan="3">Rabat '+k.rabat+'%</td><td class="num">-'+km(rab)+'</td></tr>':'')+
+     '<tr><td colspan="3">Za naplatu</td><td class="num">'+km(sub-rab)+'</td></tr></tfoot></table>';
+  h+='<div class="kv"><div class="k">Kupac</div><div class="v"><a href="javascript:openKup('+n.kupac+')" style="color:var(--brand)">'+k.n+'</a> · rabat '+k.rabat+'% · duguje '+km(k.saldo)+'</div></div>';
+  h+='<div class="kv"><div class="k">Dostava</div><div class="v">'+n.dostava+'</div></div>';
+  h+='<div class="kv"><div class="k">Plaćanje</div><div class="v">'+platTag(n)+'</div></div>';
+  h+='<div class="kv"><div class="k">Rok isporuke</div><div class="v">'+fmtDate(n.rok)+' '+rokPill(n)+'</div></div>';
+  h+='<div class="kv"><div class="k">Prioritet / zadužen</div><div class="v">'+prioTag(n.pr)+' &nbsp; '+whoTag(n.odg)+'</div></div>';
+  if(n.nap) h+='<div class="sec-title">Napomena</div><div class="hint" style="font-size:13.5px">'+n.nap+'</div>';
+  h+='</div>';
+  h+='<div class="actions">';
+  if(!isDone(n)) h+='<button class="primary" onclick="advance(\''+n.id+'\')">Sljedeća faza: '+FAZE[n.faza+1]+'</button>';
+  else h+='<span class="hint">Narudžba fakturisana.</span>';
+  h+='<button class="secondary" onclick="alert(\'Demo: ovdje bi se štampala ponuda / otpremnica / faktura.\')">Ponuda / otpremnica</button>';
+  h+='</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openArt(i){
+  const a=ART[i]; const pot=artPotrebno(i);
+  let h='<div class="mhead"><div><h2>'+a.n+'</h2><div class="msub">Artikal · '+a.lok+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(artLow(a)) h+='<div class="latebanner">⚠ Ispod minimuma. Narudžbe u toku traže '+br(pot)+' '+a.jed+'. Naruči kod dobavljača.</div>';
+  else h+='<div class="okbanner">Zaliha iznad minimuma.</div>';
+  h+='<div class="kv"><div class="k">Na stanju</div><div class="v"><b>'+br(a.stanje)+' '+a.jed+'</b></div></div>';
+  h+='<div class="kv"><div class="k">Minimum</div><div class="v">'+br(a.min)+' '+a.jed+'</div></div>';
+  h+='<div class="kv"><div class="k">Potrebno (u toku)</div><div class="v">'+br(pot)+' '+a.jed+'</div></div>';
+  h+='<div class="kv"><div class="k">Lokacija</div><div class="v">'+a.lok+'</div></div>';
+  h+='<div class="kv"><div class="k">Prodajna cijena</div><div class="v">'+km(a.c)+' / '+a.jed+'</div></div>';
+  h+='<div class="sec-title">Narudžbe koje traže ovaj artikal</div>';
+  const uses=NAR.filter(n=>!isDone(n)&&n.stavke.some(x=>x.a===i));
+  h+= uses.length? uses.map(n=>'<div class="kv"><div class="k">'+n.id+'</div><div class="v">'+KUP[n.kupac].n+' · '+br((n.stavke.find(x=>x.a===i)||{}).kol)+' '+a.jed+'</div></div>').join("") : '<div class="hint">Nijedna narudžba u toku.</div>';
+  h+='</div><div class="actions"><button class="primary" onclick="alert(\'Demo: kreira se narudžbenica prema dobavljaču.\')">Naruči kod dobavljača</button></div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openKup(i){
+  const k=KUP[i];
+  let h='<div class="mhead"><div><h2>'+k.n+'</h2><div class="msub">'+k.tip+' · '+k.mjesto+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(k.saldo>15000) h+='<div class="latebanner">⚠ Veliko dugovanje ('+km(k.saldo)+'). Razmotriti naplatu prije nove isporuke na odgodu.</div>';
+  h+='<div class="kv"><div class="k">Duguje (saldo)</div><div class="v"><b style="color:'+(k.saldo>15000?'var(--late)':'var(--text)')+'">'+km(k.saldo)+'</b></div></div>';
+  h+='<div class="kv"><div class="k">Rabat</div><div class="v">'+k.rabat+'%</div></div>';
+  h+='<div class="sec-title">Narudžbe</div>';
+  const nn=NAR.filter(n=>n.kupac===i);
+  h+= nn.length? nn.map(n=>'<div class="kv"><div class="k">'+n.id+'</div><div class="v"><a href="javascript:openNar(\''+n.id+'\')" style="color:var(--brand)">'+FAZE[n.faza]+'</a> · '+km(vrijednost(n))+' · '+platTag(n)+'</div></div>').join("") : '<div class="hint">Nema narudžbi.</div>';
+  h+='</div><div class="actions"><button class="secondary" onclick="alert(\'Demo: izvod otvorenih stavki i opomena kupcu.\')">Izvod / opomena</button></div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function closeModal(){el("overlay").classList.remove("open");}
+function advance(id){const n=NAR.find(x=>x.id===id);if(!n||isDone(n))return;if(n.faza===2&&narNedostatak(n)){if(!confirm("Nema dovoljno na stanju za neku stavku. Ipak nastaviti na komisioniranje?"))return;}n.faza++;if(el("overlay").classList.contains("open")&&!isDone(n))openNar(id);else if(isDone(n))closeModal();render();}
+
+// ---- Nova narudžba --------------------------------------------------------
+let novStavke=[{a:0,kol:100}];
+function openNovi(){
+  const kOpts=KUP.map((k,i)=>'<option value="'+i+'">'+k.n+"</option>").join("");
+  let h='<div class="mhead"><div><h2>Nova narudžba</h2><div class="msub">Kreira upit</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  h+='<div class="frow"><label>Kupac *</label><select id="n_kup">'+kOpts+'</select></div>';
+  h+='<div class="frow"><label>Stavke</label><div id="n_stavke"></div><button class="secondary" style="margin-top:4px" onclick="addStavka()">+ dodaj stavku</button></div>';
+  h+='<div class="row2"><div class="frow"><label>Dostava</label><select id="n_dost"><option>Dostava vozilom</option><option>Preuzimanje</option></select></div><div class="frow"><label>Rok isporuke</label><input id="n_rok" type="date"></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Prioritet</label><select id="n_pr"><option value="visok">Visok</option><option value="srednji" selected>Srednji</option><option value="nizak">Nizak</option></select></div><div class="frow"><label>Plaćanje</label><select id="n_pl"><option value="na odgodu">Na odgodu</option><option value="plaćeno">Plaćeno</option></select></div></div>';
+  h+='</div>';
+  h+='<div class="actions"><button class="primary" onclick="createNar()">Kreiraj narudžbu</button><span class="hint" id="n_sum"></span></div>';
+  el("modal").innerHTML=h;
+  novStavke=[{a:0,kol:100}]; drawStavke();
+  const d=new Date();d.setDate(d.getDate()+2);el("n_rok").value=d.getFullYear()+"-"+m2(d.getMonth()+1)+"-"+m2(d.getDate());
+  el("overlay").classList.add("open");
+}
+function drawStavke(){
+  const aOpts=(sel)=>ART.map((a,i)=>'<option value="'+i+'"'+(i===sel?" selected":"")+'>'+a.n+"</option>").join("");
+  el("n_stavke").innerHTML=novStavke.map((s,idx)=>'<div class="stavka-row"><select onchange="novStavke['+idx+'].a=+this.value;sumNov()">'+aOpts(s.a)+'</select><input type="number" min="1" value="'+s.kol+'" oninput="novStavke['+idx+'].kol=+this.value||0;sumNov()"><button class="secondary" style="padding:4px" onclick="novStavke.splice('+idx+',1);drawStavke()">×</button></div>').join("");
+  sumNov();
+}
+function addStavka(){novStavke.push({a:0,kol:50});drawStavke();}
+function sumNov(){const s=novStavke.reduce((a,x)=>a+ART[x.a].c*x.kol,0);if(el("n_sum"))el("n_sum").textContent="Osnovica: "+km(s);}
+function createNar(){
+  if(!novStavke.length){alert("Dodaj bar jednu stavku.");return;}
+  let rok=2;const dv=el("n_rok").value;if(dv){const d0=new Date();d0.setHours(0,0,0,0);rok=Math.round((new Date(dv)-d0)/86400000);}
+  const nums=NAR.map(n=>+n.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="NR-"+(Math.max(0,...nums)+1);
+  NAR.unshift({id,kupac:+el("n_kup").value,stavke:novStavke.map(s=>({a:s.a,kol:s.kol})),faza:0,rok,dostava:el("n_dost").value,placeno:el("n_pl").value,pr:el("n_pr").value,odg:0,nap:""});
+  closeModal();setView("narudzbe");openNar(id);
+}
+
+setView("narudzbe");
+</script>
+
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_grand_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=grand/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Grand Company je otvorio prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/grand-company/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+</body>
+</html>
