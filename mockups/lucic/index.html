@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lučić · radni nalozi, repromaterijal i smjene (demo)</title>
+<meta name="description" content="Klikabilni demo prototip za Lučić d.o.o. Srbac: proizvodnja plastične i papirne ambalaže, praćenje radnih naloga kroz faze (ekstruzija, štampa, konfekcija, pakovanje, isporuka), repromaterijal sa alarmom i raspored mašina po smjenama. Izmišljeni podaci, stvarna logika.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/lucic/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230f766e'/%3E%3Cpath%20d='M20 16 h20 a4 4 0 0 1 4 4 v28 a4 4 0 0 1 -4 4 h-20 a4 4 0 0 1 -4 -4 v-28 a4 4 0 0 1 4 -4 z' fill='%23a7f3d0'/%3E%3Crect%20x='24'%20y='12'%20width='16'%20height='8'%20rx='2'%20fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --brand:#0f766e; --brand2:#0d9488; --accent:#0f766e; --action:#0f766e;
+    --bg:#f2f7f5; --card:#fff; --line:#d9e6e1; --muted:#5a6b66; --text:#12211d;
+    --ok:#15803d; --warn:#b45309; --late:#c02626; --track:#e6f0ec;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,#0b5c54,var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#c8ece4;margin-top:3px}
+  header .spacer{flex:1}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:#b45309}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 12px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+  .demo-flag{margin-left:10px;background:#d3efe9;color:var(--brand);border:1px solid #b3e0d6;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.08)}
+  .wrap{padding:16px 20px;max-width:1200px;margin:0 auto}
+  .viberCta{margin:12px 20px;padding:14px 16px;border-radius:14px;background:#e4f2ee;border:1px solid #c4e2da;max-width:1200px}
+  .viberCta .t{font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .viberCta a{padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;cursor:pointer;transition:.12s}
+  .kpi:hover{border-color:var(--brand);box-shadow:0 3px 12px rgba(15,118,110,.14);transform:translateY(-1px)}
+  .kpi .big{font-size:21px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--late)}
+
+  .viewhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:16px;color:var(--brand)}
+  .viewhead .sub{font-size:13px;color:var(--muted)}
+
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+  .col{flex:0 0 232px;background:#f4faf8;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .col.done{background:#f1f8f2;border-color:#cfe6d4}
+  .col-h{padding:10px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .col.done .col-h{color:var(--ok)}
+  .wip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:12px;color:var(--muted);font-weight:700}
+  .col-body{padding:10px;display:flex;flex-direction:column;gap:9px;min-height:60px}
+  .card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:9px 11px;cursor:pointer;box-shadow:0 1px 2px rgba(10,50,40,.06);transition:.1s}
+  .card:hover{box-shadow:0 4px 12px rgba(10,50,40,.14);transform:translateY(-1px)}
+  .card.pr-visok{border-left-color:#c02626}.card.pr-srednji{border-left-color:#0d9488}.card.pr-nizak{border-left-color:#9fb3ad}
+  .card.late{background:#fff6f5}
+  .card .cid{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+  .card .cp{font-weight:700;font-size:13.5px;margin:2px 0 1px}
+  .card .ck{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+  .card .adv{border:0;background:var(--brand);color:#fff;border-radius:6px;min-width:28px;height:25px;cursor:pointer;font-size:14px;font-weight:700}
+  .card .adv:hover{filter:brightness(1.1)}
+
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+  .p-late{background:#fde2e2;color:var(--late)}.p-today{background:#fdefda;color:#9a6413}.p-soon{background:#dcefeb;color:var(--brand)}
+  .p-done{background:#dff0e3;color:var(--ok)}.p-faza{background:#dcefeb;color:var(--brand)}
+  .p-visok{background:#fee2e2;color:#b91c1c}.p-srednji{background:#ccf0e9;color:#0b5c54}.p-nizak{background:#e6ebe9;color:#4b5854}
+  .p-print{background:#fce7f3;color:#9d174d}
+  .who{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff;background:#0b5c54}
+
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 13px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:10px 13px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}.tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .rowlow{background:#fff6f5}
+  .barmini{height:6px;background:var(--track);border-radius:4px;overflow:hidden;min-width:70px}
+  .barmini span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .barmini span.low{background:linear-gradient(90deg,#f87171,#c02626)}
+
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:14px}
+  .bar.clk{cursor:pointer;border-radius:8px;padding:4px 6px;margin:5px -6px}.bar.clk:hover{background:var(--track)}
+  .bar .blab{width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .bar .val{width:120px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .overlay{position:fixed;inset:0;background:rgba(10,35,30,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(10,35,30,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,#0b5c54,var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .msub{font-size:12.5px;color:#c8ece4;margin-top:3px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.9}
+  .mbody{padding:18px 20px}
+  .latebanner{background:#fde2e2;border:1px solid #f6c2c2;color:#8f1d1d;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .okbanner{background:#e7f6ea;border:1px solid #c3e6cb;color:#1b5e2a;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .kv{display:flex;font-size:14.5px;padding:5px 0;border-bottom:1px dashed #dfeae6}
+  .kv .k{width:150px;color:var(--muted)}.kv .v{flex:1}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 8px}
+  .stepper{display:flex;flex-wrap:wrap;gap:4px}
+  .step{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}
+  .step .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#fff}
+  .step.done .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+  .step.cur .dot{border-color:var(--brand);color:var(--brand)}
+  .step.cur{color:var(--brand);font-weight:700}
+  .step .arr{color:var(--line)}
+  .lines{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+  .lines th,.lines td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .actions{padding:14px 20px;background:#f4faf8;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.08)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #bfe0d8;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow input,.frow select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow input:focus,.frow select:focus{outline:none;border-color:var(--brand2)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+
+  @media(max-width:640px){
+    .tbl{border:0;background:transparent}
+    .tbl thead{display:none}
+    .tbl tbody tr{display:block;margin-bottom:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .tbl tbody tr.rowlow{background:#fff6f5}
+    .tbl tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 13px;text-align:right}
+    .tbl tbody td::before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:600;text-align:left;flex:0 0 auto}
+    .tbl tbody td:not(:last-child){border-bottom:1px solid var(--track)}
+  }
+  @media(max-width:560px){
+    .overlay{padding:0}.modal{border-radius:0;min-height:100vh}
+    .mbody{padding:16px 16px}.kv{flex-direction:column;gap:1px;padding:7px 0}.kv .k{width:auto;font-size:12.5px}
+    .stepper{gap:2px}.step{font-size:11px}.step .arr{display:none}.actions button.primary{flex:1 1 100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">LU</div>
+  <div class="brand">
+    <div class="name">Lučić</div>
+    <div class="tag">Radni nalozi · repromaterijal · smjene</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="user"><span class="avatar">LU</span><span>Proizvodnja</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="nalozi" onclick="setView('nalozi')">Radni nalozi</div>
+  <div class="tab" data-view="repro" onclick="setView('repro')">Repromaterijal</div>
+  <div class="tab" data-view="masine" onclick="setView('masine')">Mašine / smjene</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" onclick="openNovi()">+ Novi nalog</button>
+  <span class="demo-flag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div class="viberCta">
+  <div class="t"><b>Ovaj prototip je napravljen baš za Lučić.</b> Na osnovu vaše djelatnosti, proizvodnje plastične i papirne ambalaže, ovako bi izgledalo kad svaki radni nalog stoji na jednom mjestu: od pripreme i dizajna, kroz ekstruziju, štampu i konfekciju, do pakovanja i isporuke. Odmah se vidi šta je na kojoj mašini i smjeni, koji repromaterijal ponestaje i šta ide u isporuku. Sviđa vam se? Javite se pa da ga prilagodimo tačno vašem pogonu.</div>
+  <div class="btns">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="background:#12211d">Pozovi</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.viberCta [data-kanal]').forEach(function(a){a.addEventListener('click',function(){var k=a.getAttribute('data-kanal');if(window.gtag)gtag('event','kontakt_klik',{kanal:k,stranica:'mockup-lucic'});});});
+</script>
+
+<div id="view" class="wrap"></div>
+<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Model ----------------------------------------------------------------
+const FAZE=["Priprema / dizajn","Ekstruzija","Štampa","Konfekcija","Pakovanje","Isporuka"];
+const LAST=5;
+const SMJENE=["I smjena (06–14)","II smjena (14–22)","III smjena (22–06)"];
+const MASINE=["Ekstruder 1","Ekstruder 2","Flekso štamparica","Varilica 1","Varilica 2","Papirna linija"];
+
+// repromaterijal: naziv, jedinica, na stanju, minimum
+let REP=[
+ {n:"Granulat PE (HDPE)", jed:"kg", stanje:8400, min:4000},
+ {n:"Regranulat PE", jed:"kg", stanje:1200, min:2000},
+ {n:"Master batch (boja)", jed:"kg", stanje:90, min:120},
+ {n:"Papir u rolnama (kraft)", jed:"kg", stanje:5200, min:2500},
+ {n:"Boja za flekso štampu", jed:"kg", stanje:180, min:100},
+ {n:"Ljepilo (papirne kese)", jed:"kg", stanje:60, min:80},
+ {n:"Tuljci / jezgra rolne", jed:"kom", stanje:900, min:500},
+ {n:"Kartonska ambalaža (transport)", jed:"kom", stanje:340, min:400},
+];
+
+// radni nalozi
+let NAL=[
+ {id:"RN-4012", proizvod:"PE kesa sa štampom", kupac:"Pekare Klas (Banja Luka)", kol:120000, jed:"kom", dim:"24×38 cm", stampa:{boje:2,dizajn:"logo Klas"}, masina:2, smjena:1, faza:2, rok:1, pr:"visok", bom:[{r:0,kol:900},{r:4,kol:12},{r:2,kol:6}], nap:"Provjeriti nijansu logotipa (Pantone) prije puštanja tiraža."},
+ {id:"RN-4011", proizvod:"Streč folija", kupac:"Veletrgovina Ambalaža", kol:4000, jed:"kg", dim:"50 cm / 23 μm", stampa:null, masina:1, smjena:1, faza:1, rok:2, pr:"srednji", bom:[{r:0,kol:4200}], nap:""},
+ {id:"RN-4010", proizvod:"Papirna kesa sa štampom", kupac:"Mesara Gold", kol:30000, jed:"kom", dim:"18×32 cm", stampa:{boje:1,dizajn:"logo"}, masina:5, smjena:0, faza:3, rok:0, pr:"visok", bom:[{r:3,kol:800},{r:5,kol:20},{r:4,kol:4}], nap:"Rok danas, dogovorena dostava popodne."},
+ {id:"RN-4009", proizvod:"PE kesa (majica)", kupac:"Trgovina Tempo", kol:200000, jed:"kom", dim:"30×50 cm", stampa:null, masina:0, smjena:0, faza:4, rok:1, pr:"srednji", bom:[{r:0,kol:1500},{r:1,kol:500}], nap:""},
+ {id:"RN-4008", proizvod:"Vreća za smeće (rolna)", kupac:"Distributer BL", kol:5000, jed:"rolni", dim:"60 L", stampa:null, masina:1, smjena:2, faza:0, rok:4, pr:"nizak", bom:[{r:1,kol:1800}], nap:""},
+ {id:"RN-4007", proizvod:"Ambalaža za pekaru", kupac:"Žitopromet", kol:50000, jed:"kom", dim:"papir 12×24", stampa:{boje:2,dizajn:"logo+tekst"}, masina:5, smjena:1, faza:5, rok:-1, pr:"srednji", bom:[{r:3,kol:500},{r:4,kol:6}], nap:"Isporučeno."},
+ {id:"RN-4006", proizvod:"PE kesa sa štampom", kupac:"Prehrambena AS", kol:80000, jed:"kom", dim:"22×40 cm", stampa:{boje:3,dizajn:"puni kolor"}, masina:2, smjena:2, faza:2, rok:2, pr:"srednji", bom:[{r:0,kol:700},{r:4,kol:10},{r:2,kol:5}], nap:""},
+ {id:"RN-4005", proizvod:"Papirna kesa (kraft)", kupac:"Bio market", kol:40000, jed:"kom", dim:"20×30 cm", stampa:null, masina:5, smjena:0, faza:4, rok:0, pr:"visok", bom:[{r:3,kol:700},{r:5,kol:18}], nap:"Rok danas za utovar."},
+];
+
+// ---- Helperi --------------------------------------------------------------
+const el=id=>document.getElementById(id);
+let VIEW="nalozi";
+const isDone=n=>n.faza>=LAST;
+const isLate=n=>!isDone(n)&&n.rok<0;
+const m2=x=>String(x).padStart(2,"0");
+const br=v=>v.toLocaleString("de-DE");
+function fmtDate(off){const d=new Date();d.setDate(d.getDate()+off);return d.getDate()+"."+m2(d.getMonth()+1)+".";}
+const prioName={visok:"Visok",srednji:"Srednji",nizak:"Nizak"};
+function rokPill(n){
+  if(isDone(n)) return '<span class="pill p-done">✓ isporučeno</span>';
+  if(n.rok<0) return '<span class="pill p-late">kasni '+(-n.rok)+" d</span>";
+  if(n.rok===0) return '<span class="pill p-today">rok danas</span>';
+  if(n.rok===1) return '<span class="pill p-soon">sutra</span>';
+  return '<span class="pill p-soon">za '+n.rok+" d</span>";
+}
+const prioTag=pr=>'<span class="pill p-'+pr+'">'+prioName[pr]+"</span>";
+const smjTag=i=>'<span class="who">'+["I","II","III"][i]+" smj.</span>";
+const rowCls=n=>(isLate(n)?"late ":"")+"pr-"+n.pr;
+const progress=n=>Math.round(n.faza/LAST*100);
+const stampaTxt=s=> s? s.boje+" boj"+(s.boje===1?"a":"e")+(s.dizajn?" · "+s.dizajn:"") : "bez štampe";
+const repLow=r=>r.stanje<r.min;
+function repPotrebno(idx){return NAL.filter(n=>!isDone(n)).reduce((s,n)=>s+(n.bom||[]).filter(b=>b.r===idx).reduce((a,b)=>a+b.kol,0),0);}
+
+// ---- Render ---------------------------------------------------------------
+function setView(v){VIEW=v;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));render();}
+function render(){if(VIEW==="nalozi")return renderNalozi();if(VIEW==="repro")return renderRepro();if(VIEW==="masine")return renderMasine();return renderPregled();}
+
+function kpiRow(){
+  const akt=NAL.filter(n=>!isDone(n));
+  const naStampi=akt.filter(n=>n.faza===2).length;
+  const zaisp=akt.filter(n=>n.faza>=4).length;
+  const kasni=NAL.filter(isLate).length;
+  const low=REP.filter(repLow).length;
+  return '<div class="kpis">'+
+   '<div class="kpi" onclick="openKpi(\'akt\')"><div class="big">'+akt.length+'</div><div class="lab">Naloga u proizvodnji</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'stampa\')"><div class="big">'+naStampi+'</div><div class="lab">Na štampi</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'isp\')"><div class="big">'+zaisp+'</div><div class="lab">Za pakovanje / isporuku</div></div>'+
+   '<div class="kpi '+(kasni?"warn":"")+'" onclick="openKpi(\'kasni\')"><div class="big">'+kasni+'</div><div class="lab">Kasni</div></div>'+
+   '<div class="kpi '+(low?"warn":"")+'" onclick="setView(\'repro\')"><div class="big">'+low+'</div><div class="lab">Repro ispod min.</div></div>'+
+  '</div>';
+}
+
+function renderNalozi(){
+  let h=kpiRow();
+  h+='<div class="viewhead"><h3>Radni nalozi</h3><span class="sub">Svaki nalog putuje kroz proizvodne faze. „›“ ga pomjera dalje, klik otvara materijal, štampu, mašinu i smjenu.</span></div>';
+  h+='<div class="board">';
+  for(let f=0;f<=LAST;f++){
+    const inCol=NAL.filter(n=>n.faza===f);
+    h+='<div class="col'+(f===LAST?" done":"")+'"><div class="col-h"><span>'+FAZE[f]+'</span><span class="wip">'+inCol.length+'</span></div><div class="col-body">';
+    h+=inCol.map(n=>{
+      const canAdv=f<LAST;
+      return '<div class="card '+rowCls(n)+'" onclick="openNal(\''+n.id+'\')">'+
+        '<div class="cid">'+n.id+' · '+br(n.kol)+' '+n.jed+'</div>'+
+        '<div class="cp">'+n.proizvod+'</div>'+
+        '<div class="ck">'+n.kupac+(n.stampa?' · '+n.stampa.boje+' boje':'')+'</div>'+
+        '<div class="crow">'+rokPill(n)+(canAdv?'<button class="adv" title="Sljedeća faza" onclick="event.stopPropagation();advance(\''+n.id+'\')">›</button>':smjTag(n.smjena))+'</div>'+
+        '<div style="height:4px;background:var(--track);border-radius:3px;margin-top:8px;overflow:hidden"><span style="display:block;height:100%;width:'+progress(n)+'%;background:linear-gradient(90deg,var(--brand2),var(--brand))"></span></div>'+
+      '</div>';
+    }).join("")||'<div class="hint" style="padding:6px">Prazno</div>';
+    h+='</div></div>';
+  }
+  h+='</div>';
+  el("view").innerHTML=h;
+}
+
+function renderRepro(){
+  const low=REP.filter(repLow).length;
+  let h='<div class="viewhead"><h3>Repromaterijal</h3><span class="sub">„Potrebno“ je zbir iz naloga u proizvodnji. Crveno = ispod minimuma, naruči da proizvodnja ne stane.</span></div>';
+  if(low) h+='<div class="latebanner" style="display:block">⚠ '+low+' stavki repromaterijala je ispod minimuma. Naruči na vrijeme.</div>';
+  h+='<table class="tbl"><thead><tr><th>Materijal</th><th class="num">Na stanju</th><th class="num">Minimum</th><th class="num">Potrebno</th><th>Popunjenost</th><th>Status</th></tr></thead><tbody>';
+  REP.forEach((r,i)=>{
+    const pot=repPotrebno(i); const low=repLow(r); const pct=Math.min(100,Math.round(r.stanje/(r.min*2)*100));
+    h+='<tr class="'+(low?"rowlow":"")+'" onclick="openRep('+i+')">'+
+      '<td data-label="Materijal"><b>'+r.n+'</b></td>'+
+      '<td class="num" data-label="Na stanju">'+br(r.stanje)+' '+r.jed+'</td>'+
+      '<td class="num" data-label="Minimum">'+br(r.min)+'</td>'+
+      '<td class="num" data-label="Potrebno">'+br(pot)+'</td>'+
+      '<td data-label="Popunjenost"><div class="barmini"><span class="'+(low?"low":"")+'" style="width:'+pct+'%"></span></div></td>'+
+      '<td data-label="Status">'+(low?'<span class="pill p-late">naruči</span>':'<span class="pill p-done">ok</span>')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  el("view").innerHTML=h;
+}
+
+function renderMasine(){
+  let h='<div class="viewhead"><h3>Mašine / smjene</h3><span class="sub">Šta je trenutno na kojoj mašini i u kojoj smjeni. Klik na nalog otvara detalje.</span></div>';
+  h+='<table class="tbl"><thead><tr><th>Mašina</th><th>Aktivni nalog</th><th>Proizvod</th><th>Smjena</th><th>Status</th></tr></thead><tbody>';
+  MASINE.forEach((m,i)=>{
+    const on=NAL.filter(n=>!isDone(n)&&n.masina===i);
+    if(on.length){
+      on.forEach(n=>{
+        h+='<tr onclick="openNal(\''+n.id+'\')">'+
+          '<td data-label="Mašina"><b>'+m+'</b></td>'+
+          '<td data-label="Nalog">'+n.id+'</td>'+
+          '<td data-label="Proizvod">'+n.proizvod+' ('+br(n.kol)+' '+n.jed+')</td>'+
+          '<td data-label="Smjena">'+SMJENE[n.smjena]+'</td>'+
+          '<td data-label="Status"><span class="pill p-faza">'+FAZE[n.faza]+'</span></td></tr>';
+      });
+    } else {
+      h+='<tr onclick="event.stopPropagation()"><td data-label="Mašina"><b>'+m+'</b></td><td colspan="3" class="hint">nema aktivnog naloga</td><td><span class="pill p-done">slobodna</span></td></tr>';
+    }
+  });
+  h+='</tbody></table>';
+  el("view").innerHTML=h;
+}
+
+function renderPregled(){
+  let h=kpiRow();
+  const akt=NAL.filter(n=>!isDone(n));
+  h+='<div class="viewhead"><h3>Pregled</h3><span class="sub">Klik na traku ili KPI daje spisak.</span></div>';
+  h+='<div class="grid2">';
+  h+='<div class="panel"><h3>Nalozi po fazi</h3>';
+  const maxF=Math.max(1,...FAZE.map((_,i)=>NAL.filter(n=>n.faza===i).length));
+  FAZE.forEach((f,i)=>{const c=NAL.filter(n=>n.faza===i).length;
+    h+='<div class="bar clk" onclick="openFaza('+i+')"><div class="blab">'+f+'</div><div class="track"><div class="fill" style="width:'+(c/maxF*100)+'%"></div></div><div class="val">'+c+' naloga ›</div></div>';});
+  h+='</div>';
+  h+='<div class="panel"><h3>Opterećenost mašina (aktivni nalozi)</h3>';
+  const maxM=Math.max(1,...MASINE.map((_,i)=>NAL.filter(n=>!isDone(n)&&n.masina===i).length));
+  MASINE.forEach((m,i)=>{const c=NAL.filter(n=>!isDone(n)&&n.masina===i).length;
+    h+='<div class="bar"><div class="blab">'+m+'</div><div class="track"><div class="fill" style="width:'+(c/maxM*100)+'%;background:linear-gradient(90deg,#b45309,#d97706)"></div></div><div class="val">'+c+' nalog'+(c===1?'':'a')+'</div></div>';});
+  h+='</div></div>';
+  const kom=akt.reduce((s,n)=>s+(n.jed==="kom"?n.kol:0),0);
+  h+='<div class="panel"><h3>Ukratko</h3><div class="hint" style="font-size:14px;line-height:1.7;color:var(--text)">U proizvodnji: <b>'+akt.length+'</b> naloga (<b>'+br(kom)+'</b> kom + folije/rolne). Na štampi: <b>'+akt.filter(n=>n.faza===2).length+'</b>, za pakovanje/isporuku: <b>'+akt.filter(n=>n.faza>=4).length+'</b>, kasni: <b style="color:var(--late)">'+NAL.filter(isLate).length+'</b>. Repromaterijala ispod minimuma: <b style="color:var(--late)">'+REP.filter(repLow).length+'</b>. Sve na jednom mjestu: nalozi, materijal i raspored mašina po smjenama.</div></div>';
+  el("view").innerHTML=h;
+}
+
+// ---- Spiskovi (KPI) -------------------------------------------------------
+function nalRow(n){
+  return '<div class="card '+rowCls(n)+'" style="margin-bottom:9px" onclick="openNal(\''+n.id+'\')">'+
+    '<div class="cid">'+n.id+' · '+br(n.kol)+' '+n.jed+'</div><div class="cp">'+n.proizvod+'</div>'+
+    '<div class="ck">'+n.kupac+' · '+FAZE[n.faza]+' · '+MASINE[n.masina]+'</div>'+
+    '<div class="crow">'+rokPill(n)+' '+smjTag(n.smjena)+'</div></div>';
+}
+function openList(title,arr){
+  let h='<div class="mhead"><div><h2>'+title+'</h2><div class="msub">'+arr.length+' naloga</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody" style="padding:12px 14px">'+(arr.length?arr.map(nalRow).join(""):'<div class="hint" style="padding:14px">Nema naloga.</div>')+'</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openKpi(w){
+  if(w==="akt")return openList("Nalozi u proizvodnji",NAL.filter(n=>!isDone(n)));
+  if(w==="stampa")return openList("Na štampi",NAL.filter(n=>!isDone(n)&&n.faza===2));
+  if(w==="isp")return openList("Za pakovanje / isporuku",NAL.filter(n=>!isDone(n)&&n.faza>=4));
+  if(w==="kasni")return openList("Nalozi u kašnjenju",NAL.filter(isLate));
+}
+function openFaza(i){openList("Faza: "+FAZE[i],NAL.filter(n=>n.faza===i));}
+
+// ---- Detalj naloga --------------------------------------------------------
+function openNal(id){
+  const n=NAL.find(x=>x.id===id);if(!n)return;
+  const steps=FAZE.map((f,i)=>'<div class="step '+(i<n.faza?"done":(i===n.faza?"cur":""))+'"><span class="dot">'+(i<n.faza?"✓":(i+1))+'</span>'+f+'</div>'+(i<LAST?'<span class="arr">›</span>':'')).join("");
+  let h='<div class="mhead"><div><h2>'+n.proizvod+'</h2><div class="msub">'+n.id+' · '+br(n.kol)+' '+n.jed+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(isLate(n)) h+='<div class="latebanner">⚠ Nalog kasni '+(-n.rok)+' d. Provjeri fazu i obavijesti kupca.</div>';
+  h+='<div class="stepper" style="margin-bottom:14px">'+steps+'</div>';
+  h+='<div class="kv"><div class="k">Kupac</div><div class="v">'+n.kupac+'</div></div>';
+  h+='<div class="kv"><div class="k">Količina</div><div class="v">'+br(n.kol)+' '+n.jed+'</div></div>';
+  h+='<div class="kv"><div class="k">Dimenzije</div><div class="v">'+n.dim+'</div></div>';
+  h+='<div class="kv"><div class="k">Štampa</div><div class="v">'+(n.stampa?'<span class="pill p-print">'+stampaTxt(n.stampa)+'</span>':'<span class="hint">bez štampe</span>')+'</div></div>';
+  h+='<div class="kv"><div class="k">Mašina / smjena</div><div class="v">'+MASINE[n.masina]+' · '+SMJENE[n.smjena]+'</div></div>';
+  h+='<div class="kv"><div class="k">Rok</div><div class="v">'+fmtDate(n.rok)+' '+rokPill(n)+'</div></div>';
+  h+='<div class="kv"><div class="k">Prioritet</div><div class="v">'+prioTag(n.pr)+'</div></div>';
+  h+='<div class="sec-title">Utrošak repromaterijala</div>';
+  h+='<table class="lines"><thead><tr><th>Materijal</th><th class="num">Količina</th></tr></thead><tbody>'+
+     (n.bom||[]).map(b=>'<tr><td>'+REP[b.r].n+'</td><td class="num">'+br(b.kol)+' '+REP[b.r].jed+'</td></tr>').join("")+'</tbody></table>';
+  if(n.nap) h+='<div class="sec-title">Napomena</div><div class="hint" style="font-size:13.5px">'+n.nap+'</div>';
+  h+='</div>';
+  h+='<div class="actions">';
+  if(!isDone(n)) h+='<button class="primary" onclick="advance(\''+n.id+'\')">Sljedeća faza: '+FAZE[n.faza+1]+'</button>';
+  else h+='<span class="hint">Nalog isporučen.</span>';
+  h+='<button class="secondary" onclick="alert(\'Demo: štampa radnog naloga i etikete sa dimenzijama i količinom.\')">Radni nalog / etiketa</button>';
+  h+='</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openRep(i){
+  const r=REP[i]; const pot=repPotrebno(i);
+  let h='<div class="mhead"><div><h2>'+r.n+'</h2><div class="msub">Repromaterijal</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(repLow(r)) h+='<div class="latebanner">⚠ Ispod minimuma. Nalozi u toku traže '+br(pot)+' '+r.jed+'. Naruči kod dobavljača.</div>';
+  else h+='<div class="okbanner">Zaliha iznad minimuma.</div>';
+  h+='<div class="kv"><div class="k">Na stanju</div><div class="v"><b>'+br(r.stanje)+' '+r.jed+'</b></div></div>';
+  h+='<div class="kv"><div class="k">Minimum</div><div class="v">'+br(r.min)+' '+r.jed+'</div></div>';
+  h+='<div class="kv"><div class="k">Potrebno (u toku)</div><div class="v">'+br(pot)+' '+r.jed+'</div></div>';
+  h+='<div class="sec-title">Nalozi koji troše ovaj materijal</div>';
+  const uses=NAL.filter(n=>!isDone(n)&&(n.bom||[]).some(b=>b.r===i));
+  h+= uses.length? uses.map(n=>'<div class="kv"><div class="k">'+n.id+'</div><div class="v">'+n.proizvod+' · '+br((n.bom.find(b=>b.r===i)||{}).kol)+' '+r.jed+'</div></div>').join("") : '<div class="hint">Nijedan aktivan nalog.</div>';
+  h+='</div><div class="actions"><button class="primary" onclick="alert(\'Demo: kreira se narudžbenica prema dobavljaču.\')">Naruči kod dobavljača</button></div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function closeModal(){el("overlay").classList.remove("open");}
+function advance(id){const n=NAL.find(x=>x.id===id);if(!n||isDone(n))return;n.faza++;if(el("overlay").classList.contains("open")&&!isDone(n))openNal(id);else if(isDone(n))closeModal();render();}
+
+// ---- Novi nalog -----------------------------------------------------------
+const PROIZVODI=["PE kesa (majica)","PE kesa sa štampom","Streč folija","Papirna kesa (kraft)","Papirna kesa sa štampom","Vreća za smeće (rolna)","Ambalaža za pekaru","Ambalaža za mesnicu"];
+function openNovi(){
+  const pOpts=PROIZVODI.map(x=>'<option>'+x+'</option>').join("");
+  const mOpts=MASINE.map((m,i)=>'<option value="'+i+'">'+m+"</option>").join("");
+  const sOpts=SMJENE.map((s,i)=>'<option value="'+i+'">'+s+"</option>").join("");
+  let h='<div class="mhead"><div><h2>Novi radni nalog</h2><div class="msub">Kreće od faze „Priprema / dizajn“</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  h+='<div class="frow"><label>Proizvod *</label><select id="n_pro">'+pOpts+'</select></div>';
+  h+='<div class="frow"><label>Kupac</label><input id="n_kup" placeholder="npr. Pekara / Mesnica / Trgovina"></div>';
+  h+='<div class="row2"><div class="frow"><label>Količina</label><input id="n_kol" type="number" min="0" step="1000" value="50000"></div><div class="frow"><label>Jedinica</label><select id="n_jed"><option>kom</option><option>kg</option><option>rolni</option></select></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Dimenzije</label><input id="n_dim" placeholder="npr. 24×38 cm"></div><div class="frow"><label>Štampa (broj boja, 0 = bez)</label><input id="n_boje" type="number" min="0" max="6" value="0"></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Mašina</label><select id="n_mas">'+mOpts+'</select></div><div class="frow"><label>Smjena</label><select id="n_smj">'+sOpts+'</select></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Prioritet</label><select id="n_pr"><option value="visok">Visok</option><option value="srednji" selected>Srednji</option><option value="nizak">Nizak</option></select></div><div class="frow"><label>Rok</label><input id="n_rok" type="date"></div></div>';
+  h+='</div>';
+  h+='<div class="actions"><button class="primary" onclick="createNal()">Otvori nalog</button></div>';
+  el("modal").innerHTML=h;
+  const d=new Date();d.setDate(d.getDate()+3);el("n_rok").value=d.getFullYear()+"-"+m2(d.getMonth()+1)+"-"+m2(d.getDate());
+  el("overlay").classList.add("open");
+  setTimeout(()=>el("n_kup").focus(),40);
+}
+function createNal(){
+  let rok=3;const dv=el("n_rok").value;if(dv){const d0=new Date();d0.setHours(0,0,0,0);rok=Math.round((new Date(dv)-d0)/86400000);}
+  const nums=NAL.map(n=>+n.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="RN-"+(Math.max(0,...nums)+1);
+  const boje=parseInt(el("n_boje").value)||0;
+  NAL.unshift({id,proizvod:el("n_pro").value,kupac:el("n_kup").value||"—",kol:parseInt(el("n_kol").value)||0,jed:el("n_jed").value,dim:el("n_dim").value||"—",stampa:(boje>0?{boje,dizajn:""}:null),masina:parseInt(el("n_mas").value)||0,smjena:parseInt(el("n_smj").value)||0,faza:0,rok,pr:el("n_pr").value,bom:[],nap:""});
+  closeModal();setView("nalozi");openNal(id);
+}
+
+setView("nalozi");
+</script>
+
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_lucic_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=lucic/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Lucic je otvorio prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/lucic/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+</body>
+</html>
