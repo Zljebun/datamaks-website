@@ -115,9 +115,17 @@
   <!-- Blog -->
   <url>
     <loc>https://datamaks.net/blog/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+
+  <!-- Blog: softver po mjeri ili gotovo rjesenje -->
+  <url>
+    <loc>https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Blog: efikasnije poslovanje softver i hardver -->
