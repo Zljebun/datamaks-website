@@ -30,6 +30,7 @@
   .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;align-self:center}
   .newbtn:hover{filter:brightness(1.1)}
   .wrap{padding:16px 20px;max-width:1200px;margin:0 auto}
+  .wrap.wide{max-width:1680px}
   .viberCta{margin:12px 20px;padding:14px 16px;border-radius:14px;background:#e8effc;border:1px solid #cddcfa;max-width:1200px}
   .viberCta .t{font-size:13.5px;line-height:1.55;margin-bottom:10px}
   .viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
@@ -51,8 +52,9 @@
   .chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12.5px;cursor:pointer;color:var(--muted);font-weight:600}
   .chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 
-  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
-  .col{flex:0 0 232px;background:#f7faff;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;cursor:grab;scroll-behavior:auto}
+  .board.drag{cursor:grabbing;user-select:none}
+  .col{flex:1 0 236px;min-width:236px;max-width:360px;background:#f7faff;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
   .col.done{background:#f1f8f2;border-color:#cfe6d4}
   .col-h{padding:10px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
   .col.done .col-h{color:var(--ok)}
@@ -291,7 +293,34 @@ function artPotrebno(idx){return NAR.filter(n=>!isDone(n)).reduce((s,n)=>s+(n.st
 
 // ---- Render ---------------------------------------------------------------
 function setView(v){VIEW=v;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));render();}
-function render(){if(VIEW==="narudzbe")return renderNarudzbe();if(VIEW==="lager")return renderLager();if(VIEW==="kupci")return renderKupci();if(VIEW==="montaze")return renderMontaze();return renderPregled();}
+function render(){
+  el("view").classList.toggle("wide", VIEW==="narudzbe");   // ploča koristi širi prostor na velikom ekranu
+  if(VIEW==="narudzbe"){ renderNarudzbe(); enableDragScroll(document.querySelector(".board")); return; }
+  if(VIEW==="lager")return renderLager();
+  if(VIEW==="kupci")return renderKupci();
+  if(VIEW==="montaze")return renderMontaze();
+  return renderPregled();
+}
+// Kanban ploču je moguće pomjerati lijevo-desno: povuci mišem (grab), ili vertikalni točkić -> horizontalno.
+function enableDragScroll(b){
+  if(!b) return;
+  var down=false, sx=0, sl=0, moved=0;
+  b.addEventListener("pointerdown",function(e){
+    if(e.target.closest("button")) return;                 // ne ometaj dugmad na karticama
+    down=true; sx=e.clientX; sl=b.scrollLeft; moved=0;
+    try{ b.setPointerCapture(e.pointerId); }catch(_){}
+    b.classList.add("drag");
+  });
+  b.addEventListener("pointermove",function(e){
+    if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>moved) moved=Math.abs(dx); b.scrollLeft=sl-dx;
+  });
+  function up(){ down=false; b.classList.remove("drag"); }
+  b.addEventListener("pointerup",up); b.addEventListener("pointercancel",up);
+  b.addEventListener("click",function(e){ if(moved>6){ e.stopPropagation(); e.preventDefault(); moved=0; } }, true);
+  b.addEventListener("wheel",function(e){
+    if(b.scrollWidth>b.clientWidth && Math.abs(e.deltaY)>Math.abs(e.deltaX)){ b.scrollLeft+=e.deltaY; e.preventDefault(); }
+  }, {passive:false});
+}
 
 function kpiRow(){
   const akt=NAR.filter(n=>!isDone(n));
