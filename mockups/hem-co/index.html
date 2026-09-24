@@ -299,15 +299,14 @@ function enableDragScroll(b){
   b.addEventListener("pointerdown",function(e){
     if(e.target.closest("button")) return;                 // ne ometaj dugmad na karticama
     down=true; sx=e.clientX; sl=b.scrollLeft; moved=0;
-    try{ b.setPointerCapture(e.pointerId); }catch(_){}
     b.classList.add("drag");
   });
   b.addEventListener("pointermove",function(e){
     if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>moved) moved=Math.abs(dx); b.scrollLeft=sl-dx;
   });
   function up(){ down=false; b.classList.remove("drag"); }
-  b.addEventListener("pointerup",up); b.addEventListener("pointercancel",up);
-  b.addEventListener("click",function(e){ if(moved>6){ e.stopPropagation(); e.preventDefault(); moved=0; } }, true);
+  b.addEventListener("pointerup",up); b.addEventListener("pointercancel",up); b.addEventListener("pointerleave",up);
+  b.addEventListener("click",function(e){ if(moved>6){ e.stopPropagation(); e.preventDefault(); } moved=0; }, true);
   b.addEventListener("wheel",function(e){
     if(b.scrollWidth>b.clientWidth && Math.abs(e.deltaY)>Math.abs(e.deltaX)){ b.scrollLeft+=e.deltaY; e.preventDefault(); }
   }, {passive:false});
