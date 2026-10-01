@@ -607,9 +607,67 @@ body.dragmode .kcol-h{opacity:.6}
   .crm-stats{margin-left:0!important;width:100%;justify-content:flex-start;gap:36px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-2)}
 }
 @media(max-width:460px){.kpi-grid{grid-template-columns:1fr 1fr}.pipeline{grid-template-columns:1fr 1fr}.big-progress{grid-template-columns:1fr}.detail-head .meta{gap:14px}}
+/* ===== LOGIN (prezentaciona brava) ===== */
+#loginGate{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-3) 100%)}
+.lg-card{width:100%;max-width:380px;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.4);padding:30px 28px;animation:lgIn .35s cubic-bezier(.16,.84,.3,1) both}
+@keyframes lgIn{from{opacity:0;transform:translateY(14px)}}
+.lg-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.lg-brand .mark{width:46px;height:46px;background:var(--navy);border-radius:11px;display:flex;align-items:center;justify-content:center}
+.lg-brand .mark svg{width:30px;height:30px}
+.lg-brand b{display:block;font-size:16px;font-weight:800;letter-spacing:.5px;color:var(--navy)}
+.lg-brand span{font-size:10px;letter-spacing:1px;color:var(--cyan);font-weight:700}
+.lg-card h2{margin:0;font-size:21px;color:var(--text)}
+.lg-sub{margin:4px 0 18px;font-size:13px;color:var(--muted)}
+.lg-card label{display:block;font-size:12px;font-weight:600;color:var(--navy-2);margin:12px 0 5px}
+.lg-card input[type=text],.lg-card input[type=password]{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font:inherit;font-size:14px;outline:none;box-sizing:border-box;transition:.12s}
+.lg-card input[type=text]:focus,.lg-card input[type=password]:focus{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-soft)}
+.lg-remember{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:500;margin:14px 0 2px;cursor:pointer}
+.lg-remember input{width:auto;margin:0}
+.lg-btn{width:100%;margin-top:16px;justify-content:center;padding:12px;font-size:15px}
+.lg-err{background:#fdecec;color:var(--red);border:1px solid #f6c9c9;border-radius:8px;padding:9px 12px;font-size:12.5px;margin-top:12px}
+.lg-foot{margin-top:18px;font-size:11px;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
+<div id="loginGate">
+  <div class="lg-card">
+    <div class="lg-brand">
+      <div class="mark"><svg viewBox="0 0 40 40" fill="none"><path d="M8 30 L20 8 L20 18 L14 30 Z" fill="#fff"/><path d="M20 8 L32 30 L24 30 L20 18 Z" fill="#29a3dc"/></svg></div>
+      <div><b>TEHNOPLAST</b><span>SISTEM PO MJERI</span></div>
+    </div>
+    <h2>Prijava</h2>
+    <div class="lg-sub">Pristup prototipu sistema</div>
+    <form onsubmit="return tpPrijava(event)" autocomplete="on">
+      <label for="lgUser">Korisničko ime</label>
+      <input id="lgUser" type="text" autocomplete="username" autofocus>
+      <label for="lgPass">Lozinka</label>
+      <input id="lgPass" type="password" autocomplete="current-password">
+      <div id="lgErr" class="lg-err" hidden>Pogrešno korisničko ime ili lozinka.</div>
+      <label class="lg-remember"><input type="checkbox" id="lgRemember" checked> Zapamti me na ovom uređaju</label>
+      <button class="btn lg-btn" type="submit">Prijavi se →</button>
+    </form>
+    <div class="lg-foot">Datamaks · prototip sistema za Tehnoplast</div>
+  </div>
+</div>
+<script>
+(function(){
+  var AUTH={user:'tehnoplast', pass:'Tehnoplast2026'}; /* ← PRISTUPNI PODACI za Danila; promijeni ovdje po želji */
+  window.tpPrijava=function(e){ if(e&&e.preventDefault)e.preventDefault();
+    var u=(document.getElementById('lgUser').value||'').trim().toLowerCase();
+    var p=(document.getElementById('lgPass').value||'');
+    if(u===AUTH.user.toLowerCase() && p===AUTH.pass){
+      try{ (document.getElementById('lgRemember').checked?localStorage:sessionStorage).setItem('tp_login','1'); }catch(_){}
+      var g=document.getElementById('loginGate'); if(g)g.remove();
+      return false;
+    }
+    var err=document.getElementById('lgErr'); if(err)err.hidden=false;
+    var pp=document.getElementById('lgPass'); pp.value=''; pp.focus();
+    return false;
+  };
+  window.tpOdjava=function(){try{localStorage.removeItem('tp_login');sessionStorage.removeItem('tp_login');}catch(_){}location.reload();};
+  try{ if(localStorage.getItem('tp_login')==='1' || sessionStorage.getItem('tp_login')==='1'){ var g=document.getElementById('loginGate'); if(g)g.remove(); } }catch(_){}
+})();
+</script>
 <div class="app">
   <!-- SIDEBAR -->
   <aside class="sidebar">
