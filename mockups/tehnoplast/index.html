@@ -53,7 +53,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .sb-user{padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:11px}
 .sb-user .av{width:34px;height:34px;border-radius:50%;background:var(--cyan);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
 .sb-user .info b{display:block;font-size:12.5px;color:#fff}
+.sb-user .info{flex:1;min-width:0}
 .sb-user .info span{font-size:11px;color:#8fb0d4}
+.sb-logout{margin-left:auto;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:transparent;color:#aec6e2;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.12s;flex-shrink:0}
+.sb-logout svg{width:17px;height:17px}
+.sb-logout:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.32)}
 
 /* MAIN */
 .main{flex:1;margin-left:248px;display:flex;flex-direction:column;min-width:0}
@@ -722,6 +726,7 @@ body.dragmode .kcol-h{opacity:.6}
     <div class="sb-user">
       <div class="av">DM</div>
       <div class="info"><b>Danilo Maksimović</b><span>Direktor</span></div>
+      <button class="sb-logout" title="Odjava" aria-label="Odjava" onclick="if(confirm('Odjaviti se iz prototipa?'))tpOdjava()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg></button>
     </div>
   </aside>
 
