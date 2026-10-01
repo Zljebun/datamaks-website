@@ -1015,7 +1015,7 @@ const CIJENE={osnova:3000,montaze:2400,mjerenja:800,reklamacije:1400,tiketi:2200
 /* ===== PREKIDAČ ZA CIJENE =====
    false = prototip bez cijena i ponude (za „vau efekat"). Prebaci na true da se sve prikaže.
    Može i preko URL-a bez diranja koda:  …/?cijene=1 (prikaži)  ili  …/?cijene=0 (sakrij). */
-const CIJENE_ON = false;
+const CIJENE_ON = true;
 const cijeneVidljive = /[?&]cijene=1/.test(location.search) ? true : (/[?&]cijene=0/.test(location.search) ? false : CIJENE_ON);
 const MJESECNO=500;
 /* moduli — boja identiteta + cijena (za traku na svim stranicama modula) */
