@@ -2225,7 +2225,7 @@ function vOffer(){
     if(p.c!==lastC){rows+=`<tr><td colspan="3" style="background:#eef4fa;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--navy-2);padding:11px 16px">${p.c}</td></tr>`;lastC=p.c;}
     const c=CIJENE[p.k];
     const dis=p.ob?'checked disabled':(p.off?'':'checked');
-    rows+=`<tr class="oi-row"><td style="width:44px;text-align:center"><input type="checkbox" class="oi-check oi" data-cijena="${c}" ${dis} onchange="offerRecalc()"></td><td><b>${p.naziv}</b>${p.ob?' <span class="pill gray">obavezno</span>':''}<div class="oi-opis">${p.opis}</div></td><td class="mono" style="text-align:right;font-weight:700;white-space:nowrap">${fmt(c)} KM</td></tr>`;
+    rows+=`<tr class="oi-row"><td style="width:44px;text-align:center"><input type="checkbox" class="oi-check oi" data-cijena="${c}" data-mod="${p.naziv}" ${dis} onchange="offerRecalc()"></td><td><b>${p.naziv}</b>${p.ob?' <span class="pill gray">obavezno</span>':''}<div class="oi-opis">${p.opis}</div></td><td class="mono" style="text-align:right;font-weight:700;white-space:nowrap">${fmt(c)} KM</td></tr>`;
   });
   rows+=`<tr><td colspan="3" style="background:#eef4fa;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--navy-2);padding:11px 16px">Cjelina 3 · Proizvodnja</td></tr>`;
   rows+=`<tr class="oi-row"><td></td><td><b>Praćenje proizvodnje</b><div class="oi-opis">ostaje uz Klaes; kod nas opciono, po dogovoru nakon uvida u Klaes</div></td><td class="mono" style="text-align:right;color:var(--muted)">Klaes</td></tr>`;
@@ -2442,6 +2442,11 @@ router();
     if(!lbl)lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,60);
     var cls=(el.className&&el.className.baseVal!==undefined?el.className.baseVal:el.className)||el.tagName||'';
     push('click',{lbl:lbl,cls:String(cls).split(' ')[0]});
+  }catch(_){}},true);
+  document.addEventListener('change',function(ev){try{
+    var el=ev.target; if(!el||!el.classList||!el.classList.contains('oi-check'))return;
+    push('offer',{mod:(el.getAttribute('data-mod')||''),on:el.checked?1:0,cij:(el.getAttribute('data-cijena')||'')});
+    flush();
   }catch(_){}},true);
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){push('hide',{dwell:Date.now()-rStart,total:Date.now()-t0});flush();}});
   window.addEventListener('pagehide',function(){push('end',{dwell:Date.now()-rStart,total:Date.now()-t0});flush();});
