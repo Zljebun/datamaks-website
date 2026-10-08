@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vinogradi Nuić · praćenje proizvodnje vina, šarži i narudžbi (demo)</title>
+<meta name="description" content="Klikabilni demo prototip za Vinograde Nuić: proizvodnja vina po šaržama i godištima, radni nalozi kroz berbu i prijem grožđa, preradu, fermentaciju, njegu, zrenje u bačvama i punjenje, sljedivost šarži i LOT, zalihe repromaterijala i narudžbe HoReCa i izvoza. Izmišljeni podaci, stvarna logika.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/vinogradi-nuic/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%237a1f3d'/%3E%3Cpath%20d='M26%2016h12v6a6%206%200%200%201-12%200z'%20fill='%23c9941f'/%3E%3Crect%20x='30'%20y='28'%20width='4'%20height='14'%20fill='%23c9941f'/%3E%3Crect%20x='24'%20y='42'%20width='16'%20height='5'%20rx='2'%20fill='%23c9941f'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --brand:#7a1f3d; --brand2:#9d2b4f; --accent:#c9941f; --action:#7a1f3d;
+    --bg:#faf5f6; --card:#fff; --line:#ecdcdf; --muted:#6a5257; --text:#241318;
+    --ok:#15803d; --warn:#b45309; --late:#c02626; --track:#f3e7ea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:11px 20px;display:flex;align-items:center;gap:13px}
+  .monogram{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .brand .name{font-weight:800;font-size:16px;line-height:1}
+  .brand .tag{font-size:11.5px;color:#f0d9df;margin-top:3px}
+  header .spacer{flex:1}
+  .user{display:flex;align-items:center;gap:8px;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:var(--accent)}
+  .toolbar{display:flex;align-items:center;gap:6px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .tab{padding:14px 12px 12px;font-size:15px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+  .tab.active{color:var(--brand);border-bottom-color:var(--accent)}
+  .demo-flag{margin-left:10px;background:#f0dde2;color:var(--brand);border:1px solid #e6c3cc;padding:4px 10px;border-radius:6px;font-size:12px;align-self:center}
+  .newbtn{margin-left:auto;background:var(--action);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;align-self:center}
+  .newbtn:hover{filter:brightness(1.1)}
+  .wrap{padding:16px 20px;max-width:1200px;margin:0 auto}
+  .wrap.wide{max-width:1680px}
+  .viberCta{margin:12px 20px;padding:14px 16px;border-radius:14px;background:#f6e6ea;border:1px solid #ecccd4;max-width:1200px}
+  .viberCta .t{font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .viberCta a{padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:16px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;cursor:pointer;transition:.12s}
+  .kpi:hover{border-color:var(--accent);box-shadow:0 3px 12px rgba(14,116,144,.12);transform:translateY(-1px)}
+  .kpi .big{font-size:22px;font-weight:800;color:var(--brand)}
+  .kpi .lab{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .kpi.warn .big{color:var(--late)}
+
+  .viewhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .viewhead h3{margin:0;font-size:16px;color:var(--brand)}
+  .viewhead .sub{font-size:13px;color:var(--muted)}
+
+  .board{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;cursor:grab;scroll-behavior:auto}
+  .board.drag{cursor:grabbing;user-select:none}
+  .col{flex:1 0 236px;min-width:236px;max-width:360px;background:#f4f9fb;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column}
+  .col.done{background:#eef7f0;border-color:#cfe6d4}
+  .col-h{padding:10px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  .col.done .col-h{color:var(--ok)}
+  .wip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:12px;color:var(--muted);font-weight:700}
+  .col-body{padding:10px;display:flex;flex-direction:column;gap:9px;min-height:60px}
+  .card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:9px 11px;cursor:pointer;box-shadow:0 1px 2px rgba(20,50,60,.06);transition:.1s}
+  .card:hover{box-shadow:0 4px 12px rgba(20,50,60,.14);transform:translateY(-1px)}
+  .card.pr-visok{border-left-color:#c02626}.card.pr-srednji{border-left-color:#d97706}.card.pr-nizak{border-left-color:#94a3b8}
+  .card.late{background:#fff6f5}
+  .card .cid{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+  .card .cp{font-weight:700;font-size:13.5px;margin:2px 0 1px}
+  .card .ck{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .crow{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+  .card .adv{border:0;background:var(--brand);color:#fff;border-radius:6px;min-width:28px;height:25px;cursor:pointer;font-size:14px;font-weight:700}
+  .card .adv:hover{filter:brightness(1.1)}
+
+  .pill{padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+  .p-late{background:#fde2e2;color:var(--late)}.p-today{background:#fdefda;color:#9a6413}.p-soon{background:#f3e3e7;color:var(--brand)}
+  .p-done{background:#dff0e3;color:var(--ok)}.p-faza{background:#f3e3e7;color:var(--brand)}
+  .p-visok{background:#fee2e2;color:#b91c1c}.p-srednji{background:#ffedd5;color:#9a3412}.p-nizak{background:#e8eaed;color:#475569}
+  .p-qcok{background:#dff0e3;color:var(--ok)}.p-qcfail{background:#fee2e2;color:#b91c1c}.p-qcwait{background:#fef3c7;color:#92400e}
+  .who{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff}
+
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .tbl thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:11px 13px;background:var(--track);border-bottom:1px solid var(--line)}
+  .tbl td{padding:10px 13px;border-bottom:1px solid var(--line)}
+  .tbl tbody tr{cursor:pointer}.tbl tbody tr:hover{background:var(--track)}
+  .tbl tbody tr:last-child td{border-bottom:0}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .rowlow{background:#fff6f5}
+  .barmini{height:6px;background:var(--track);border-radius:4px;overflow:hidden;min-width:70px}
+  .barmini span{display:block;height:100%;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .barmini span.low{background:linear-gradient(90deg,#f87171,#c02626)}
+
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:14px}
+  .bar.clk{cursor:pointer;border-radius:8px;padding:4px 6px;margin:5px -6px}.bar.clk:hover{background:var(--track)}
+  .bar .blab{width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--brand2),var(--brand))}
+  .bar .val{width:120px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .panel h3{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .overlay{position:fixed;inset:0;background:rgba(10,35,45,.5);display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:660px;width:100%;box-shadow:0 20px 60px rgba(10,35,45,.35);overflow:hidden}
+  .mhead{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:16px 20px;display:flex;align-items:flex-start;gap:12px}
+  .mhead h2{margin:0;font-size:19px}
+  .mhead .msub{font-size:12.5px;color:#f0d9df;margin-top:3px}
+  .mhead .x{margin-left:auto;cursor:pointer;font-size:22px;opacity:.9}
+  .mbody{padding:18px 20px}
+  .latebanner{background:#fde2e2;border:1px solid #f6c2c2;color:#8f1d1d;border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:12px;font-weight:600}
+  .kv{display:flex;font-size:14.5px;padding:5px 0;border-bottom:1px dashed #e0ebef}
+  .kv .k{width:150px;color:var(--muted)}.kv .v{flex:1}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--brand);font-weight:700;margin:16px 0 8px}
+  .stepper{display:flex;flex-wrap:wrap;gap:4px}
+  .step{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}
+  .step .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:#fff}
+  .step.done .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+  .step.cur .dot{border-color:var(--accent);color:var(--accent)}
+  .step.cur{color:var(--brand);font-weight:700}
+  .step .arr{color:var(--line)}
+  .lines{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+  .lines th,.lines td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .lines td.num,.lines th.num{text-align:right}
+  .qcgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13.5px}
+  @media(max-width:520px){.qcgrid{grid-template-columns:1fr}}
+  .qcrow{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed #e0ebef}
+  .actions{padding:14px 20px;background:#f4f9fb;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--action);color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+  button.primary:hover{filter:brightness(1.1)}
+  button.secondary{background:#fff;color:var(--brand);border:1px solid #bbdce4;padding:9px 13px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13.5px}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .frow{margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+  .frow label{font-size:13px;color:var(--muted);font-weight:600}
+  .frow input,.frow select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text)}
+  .frow input:focus,.frow select:focus{outline:none;border-color:var(--brand2)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  footer{padding:16px 20px;color:var(--muted);font-size:12px;text-align:center}
+
+  @media(max-width:640px){
+    .tbl{border:0;background:transparent}
+    .tbl thead{display:none}
+    .tbl tbody tr{display:block;margin-bottom:10px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .tbl tbody tr.rowlow{background:#fff6f5}
+    .tbl tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 13px;text-align:right}
+    .tbl tbody td::before{content:attr(data-label);color:var(--muted);font-size:12px;font-weight:600;text-align:left;flex:0 0 auto}
+    .tbl tbody td:not(:last-child){border-bottom:1px solid var(--track)}
+  }
+  @media(max-width:560px){
+    .overlay{padding:0}.modal{border-radius:0;min-height:100vh}
+    .mbody{padding:16px 16px}.kv{flex-direction:column;gap:1px;padding:7px 0}.kv .k{width:auto;font-size:12.5px}
+    .stepper{gap:2px}.step{font-size:11px}.step .arr{display:none}.actions button.primary{flex:1 1 100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">VN</div>
+  <div class="brand">
+    <div class="name">Vinogradi Nuić</div>
+    <div class="tag">Proizvodnja vina · šarže i godišta · narudžbe</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="user"><span class="avatar">VN</span><span>Podrum</span></div>
+</header>
+
+<div class="toolbar">
+  <div class="tab active" data-view="proizvodnja" onclick="setView('proizvodnja')">Proizvodnja</div>
+  <div class="tab" data-view="zalihe" onclick="setView('zalihe')">Repromaterijal</div>
+  <div class="tab" data-view="narudzbe" onclick="setView('narudzbe')">Narudžbe</div>
+  <div class="tab" data-view="pregled" onclick="setView('pregled')">Pregled</div>
+  <button class="newbtn" onclick="openNovi()">+ Nova šarža</button>
+  <span class="demo-flag">DEMO · izmišljeni podaci</span>
+</div>
+
+<div class="viberCta">
+  <div class="t"><b>Ovaj prototip je napravljen baš za Vinograde Nuić.</b> Na osnovu vaše djelatnosti, proizvodnja vina po berbama i godištima od autohtonih sorti Žilavke, Blatine i Trnjka, ovako bi izgledalo kad svaka šarža stoji na jednom mjestu: od berbe i prijema grožđa, kroz preradu, fermentaciju i njegu, zrenje u bačvama, do punjenja u boce i isporuke. Odmah se vidi koja šarža koliko zrije u kojoj bačvi, koje je godište, čega ponestaje od repromaterijala i koja narudžba za restoran ili izvoz je za isporuku, uz punu sljedivost preko broja šarže i LOT-a. Sviđa vam se? Javite se pa da ga prilagodimo tačno vašem procesu.</div>
+  <div class="btns">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="background:#141b2b">Pozovi</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.viberCta [data-kanal]').forEach(function(a){a.addEventListener('click',function(){var k=a.getAttribute('data-kanal');if(window.gtag)gtag('event','kontakt_klik',{kanal:k,stranica:'mockup-vinogradi-nuic'});});});
+</script>
+
+<div id="view" class="wrap"></div>
+<footer>Demo prototip · podaci su izmišljeni · © Datamaks</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ---- Model ----------------------------------------------------------------
+const FAZE=["Berba i prijem grožđa","Prerada (muljanje i ceđenje)","Fermentacija","Njega i pretakanje","Zrenje (bačve / hrast)","Punjenje i etiketiranje","Skladište / Isporuka"];
+const LAST=6, QCPHASE=0;
+const ODG=[ {n:"Podrum",boja:"#7a1f3d"}, {n:"Enolog",boja:"#9d2b4f"}, {n:"Punionica",boja:"#c9941f"} ];
+
+// repromaterijal (zalihe): naziv, jedinica, na stanju, minimum
+let SIR=[
+ {n:"Grožđe (berba / otkup)", jed:"kg", stanje:12400, min:8000},
+ {n:"Enološki kvasac", jed:"g", stanje:820, min:600},
+ {n:"Kalijev metabisulfit (sumpor)", jed:"kg", stanje:18, min:12},
+ {n:"Enološki tanini", jed:"kg", stanje:9, min:12},
+ {n:"Staklene boce 0,75 l", jed:"kom", stanje:9600, min:6000},
+ {n:"Pluteni čepovi", jed:"kom", stanje:3200, min:5000},
+ {n:"Etikete (prednja i zadnja)", jed:"kom", stanje:5400, min:6000},
+ {n:"Kartonska ambalaža 6/1", jed:"kom", stanje:980, min:500},
+];
+
+// radni nalog (šarža): kod, proizvod, sarza(dim/LOT), vrsta(kval), kol, jed, faza, pr, odg, rok(dana), zrenjeDana(mjeseci), qc{}, bom[{s,kol}], skladiste, narudzba, nap
+let NAL=[
+ {id:"RN-2042", proizvod:"Žilavka", dim:"LOT-25-ZIL", kval:"bijelo, suho", kol:4200, jed:"l", faza:QCPHASE, pr:"visok", odg:1, rok:1, zrenjeDana:6,
+   qc:{"Šećer (°Oe)":"OK 92","Ukupna kiselina g/l":"OK 6,8","pH":"OK 3,25","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:5800},{s:1,kol:120},{s:2,kol:1.2}], skladiste:"—", narudzba:"NR-318", nap:"Prijem grožđa iz berbe, kreće nova šarža Žilavke."},
+ {id:"RN-2041", proizvod:"Blatina", dim:"LOT-25-BLA", kval:"crno, suho", kol:3600, jed:"l", faza:2, pr:"srednji", odg:1, rok:2, zrenjeDana:10,
+   qc:{"Šećer (°Oe)":"OK 98","Ukupna kiselina g/l":"OK 5,9","pH":"OK 3,45","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:5200},{s:1,kol:110},{s:3,kol:2}], skladiste:"—", narudzba:"NR-317", nap:"Fermentacija u toku, kontrola temperature."},
+ {id:"RN-2040", proizvod:"Trnjak Premium", dim:"LOT-24-TRN", kval:"crno, barrique", kol:1800, jed:"l", faza:1, pr:"visok", odg:0, rok:0, zrenjeDana:18,
+   qc:{"Šećer (°Oe)":"OK 104","Ukupna kiselina g/l":"OK 5,6","pH":"OK 3,5","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:2600},{s:1,kol:60},{s:3,kol:1.5}], skladiste:"—", narudzba:"NR-315", nap:"Rok danas za preradu, vrhunska partija za barrique."},
+ {id:"RN-2039", proizvod:"Merlot Premium", dim:"LOT-25-MER", kval:"crno, suho", kol:1200, jed:"l", faza:QCPHASE, pr:"visok", odg:0, rok:-1, zrenjeDana:12,
+   qc:{"Šećer (°Oe)":"OK 101","Ukupna kiselina g/l":"NIJE OK (4,2, ispod granice)","pH":"NIJE OK (3,85, previsok)","Zdravstveno stanje grožđa":"NIJE OK (tragovi plijesni)"}, bom:[{s:0,kol:1700},{s:1,kol:40}], skladiste:"—", narudzba:"NR-314", nap:"KASNI: partija grožđa izvan parametara, zadržana do korekcije i nove kontrole."},
+ {id:"RN-2038", proizvod:"Blatina Barrique", dim:"LOT-24-BLB", kval:"crno, barrique", kol:2400, jed:"l", faza:4, pr:"srednji", odg:0, rok:5, zrenjeDana:14,
+   qc:{"Šećer (°Oe)":"OK 100","Ukupna kiselina g/l":"OK 5,7","pH":"OK 3,48","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:3400},{s:1,kol:70},{s:3,kol:3}], skladiste:"Podrum, bačve B4-B7", narudzba:"NR-320", nap:"U zrenju 9/14 mjeseci (hrastove bačve)."},
+ {id:"RN-2037", proizvod:"Cabernet Sauvignon", dim:"LOT-24-CAB", kval:"crno, suho", kol:2000, jed:"l", faza:5, pr:"srednji", odg:2, rok:1, zrenjeDana:12,
+   qc:{"Šećer (°Oe)":"OK 99","Ukupna kiselina g/l":"OK 5,8","pH":"OK 3,4","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:2800},{s:1,kol:60},{s:4,kol:2600},{s:5,kol:2600},{s:6,kol:2600},{s:7,kol:440}], skladiste:"Punionica", narudzba:"NR-313", nap:"Zrenje završeno, punjenje u boce, otprema sutra."},
+ {id:"RN-2036", proizvod:"Žilavka", dim:"LOT-24-ZIL", kval:"bijelo, suho", kol:3200, jed:"l", faza:3, pr:"srednji", odg:1, rok:3, zrenjeDana:6,
+   qc:{"Šećer (°Oe)":"OK 91","Ukupna kiselina g/l":"OK 7,0","pH":"OK 3,2","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:4400},{s:1,kol:90},{s:2,kol:1}], skladiste:"Inox tank T3", narudzba:"NR-321", nap:"Njega, pretakanje sa taloga."},
+ {id:"RN-2035", proizvod:"Cabernet Franc", dim:"LOT-23-CAF", kval:"crno, barrique", kol:1600, jed:"l", faza:6, pr:"srednji", odg:2, rok:-2, zrenjeDana:16,
+   qc:{"Šećer (°Oe)":"OK 102","Ukupna kiselina g/l":"OK 5,5","pH":"OK 3,52","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:2300},{s:1,kol:50},{s:5,kol:2100},{s:6,kol:360}], skladiste:"Otpremljeno", narudzba:"NR-309", nap:"Isporučeno na vrijeme (izvoz, Hrvatska)."},
+ {id:"RN-2034", proizvod:"Loza rakija", dim:"LOT-24-LOZ", kval:"rakija", kol:600, jed:"l", faza:4, pr:"nizak", odg:0, rok:6, zrenjeDana:24,
+   qc:{"Šećer (°Oe)":"—","Ukupna kiselina g/l":"—","pH":"—","Zdravstveno stanje grožđa":"OK"}, bom:[{s:0,kol:3000}], skladiste:"Podrum, bačve R1-R2", narudzba:"NR-322", nap:"Odležavanje 12/24 mjeseca."},
+];
+
+// narudžbe: kupac, tip, stavke[{p,k,j}], rok(dana), status
+let NARUDZBE=[
+ {id:"NR-318", kupac:"Restoran (Mostar)", tip:"horeca", stavke:[{p:"Žilavka",k:360,j:"boca"}], rok:1, status:"u proizvodnji"},
+ {id:"NR-317", kupac:"Vinoteka (Sarajevo)", tip:"vinoteka", stavke:[{p:"Blatina",k:240,j:"boca"}], rok:2, status:"u proizvodnji"},
+ {id:"NR-315", kupac:"Distributer (Split)", tip:"distributer", stavke:[{p:"Trnjak Premium",k:180,j:"boca"}], rok:0, status:"u proizvodnji"},
+ {id:"NR-321", kupac:"Hotel (Međugorje)", tip:"horeca", stavke:[{p:"Žilavka",k:300,j:"boca"}], rok:3, status:"primljeno"},
+ {id:"NR-313", kupac:"Vinoteka (Zagreb)", tip:"vinoteka", stavke:[{p:"Cabernet Sauvignon",k:260,j:"boca"}], rok:1, status:"spremno"},
+ {id:"NR-309", kupac:"Izvoz (Hrvatska, HoReCa lanac)", tip:"izvoz", stavke:[{p:"Cabernet Franc",k:210,j:"boca"}], rok:-2, status:"isporučeno"},
+ {id:"NR-320", kupac:"Restoran (Ljubuški)", tip:"horeca", stavke:[{p:"Blatina Barrique",k:220,j:"boca"}], rok:5, status:"u proizvodnji"},
+ {id:"NR-322", kupac:"Vinoteka (Dubrovnik)", tip:"vinoteka", stavke:[{p:"Loza rakija",k:120,j:"boca"}], rok:6, status:"u proizvodnji"},
+];
+
+// ---- Helperi --------------------------------------------------------------
+const el=id=>document.getElementById(id);
+let VIEW="proizvodnja";
+const isDone=p=>p.faza>=LAST;
+const isLate=p=>!isDone(p)&&p.rok<0;
+const m2=n=>String(n).padStart(2,"0");
+const kg=v=>v.toLocaleString("de-DE");
+function fmtDate(off){const d=new Date();d.setDate(d.getDate()+off);return d.getDate()+"."+m2(d.getMonth()+1)+".";}
+const prioName={visok:"Visok",srednji:"Srednji",nizak:"Nizak"};
+function rokPill(p){
+  if(isDone(p)) return '<span class="pill p-done">✓ isporučeno</span>';
+  if(p.rok<0) return '<span class="pill p-late">kasni '+(-p.rok)+" d</span>";
+  if(p.rok===0) return '<span class="pill p-today">rok danas</span>';
+  if(p.rok===1) return '<span class="pill p-soon">sutra</span>';
+  return '<span class="pill p-soon">za '+p.rok+" d</span>";
+}
+const prioTag=pr=>'<span class="pill p-'+pr+'">'+prioName[pr]+"</span>";
+function whoTag(i){const o=ODG[i];return '<span class="who" style="background:'+o.boja+'">'+o.n+"</span>";}
+const rowCls=p=>(isLate(p)?"late ":"")+"pr-"+p.pr;
+const progress=p=>Math.round(p.faza/LAST*100);
+// Kontrola mlijeka (mast/suha materija/mikrobiologija/temperatura)
+function qcState(p){
+  if(!p.qc||!Object.keys(p.qc).length) return "wait";
+  for(const k in p.qc){ if(/nije ok|pao|fail|izvan/i.test(p.qc[k])) return "fail"; }
+  return "ok";
+}
+function qcTag(p){const s=qcState(p);return s==="ok"?'<span class="pill p-qcok">grožđe ✓</span>':s==="fail"?'<span class="pill p-qcfail">kontrola pala</span>':'<span class="pill p-qcwait">čeka kontrolu</span>';}
+const sirLow=s=>s.stanje<s.min;
+function sirPotrebno(idx){return NAL.filter(p=>!isDone(p)).reduce((sum,p)=>sum+(p.bom||[]).filter(b=>b.s===idx).reduce((a,b)=>a+b.kol,0),0);}
+
+// ---- Render ---------------------------------------------------------------
+function setView(v){VIEW=v;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));render();}
+function render(){
+  el("view").classList.toggle("wide", VIEW==="proizvodnja");   // ploča koristi širi prostor na velikom ekranu
+  if(VIEW==="proizvodnja"){ renderProizvodnja(); enableDragScroll(document.querySelector(".board")); return; }
+  if(VIEW==="zalihe")return renderZalihe();
+  if(VIEW==="narudzbe")return renderNarudzbe();
+  return renderPregled();
+}
+// Kanban ploču je moguće pomjerati lijevo-desno: povuci mišem (grab), ili vertikalni točkić -> horizontalno.
+function enableDragScroll(b){
+  if(!b) return;
+  var down=false, sx=0, sl=0, moved=0;
+  b.addEventListener("pointerdown",function(e){
+    if(e.target.closest("button")) return;
+    down=true; sx=e.clientX; sl=b.scrollLeft; moved=0;
+    b.classList.add("drag");
+  });
+  b.addEventListener("pointermove",function(e){
+    if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>moved) moved=Math.abs(dx); b.scrollLeft=sl-dx;
+  });
+  function up(){ down=false; b.classList.remove("drag"); }
+  b.addEventListener("pointerup",up); b.addEventListener("pointercancel",up); b.addEventListener("pointerleave",up);
+  b.addEventListener("click",function(e){ if(moved>6){ e.stopPropagation(); e.preventDefault(); } moved=0; }, true);
+  b.addEventListener("wheel",function(e){
+    if(b.scrollWidth>b.clientWidth && Math.abs(e.deltaY)>Math.abs(e.deltaX)){ b.scrollLeft+=e.deltaY; e.preventDefault(); }
+  }, {passive:false});
+}
+
+function kpiRow(){
+  const akt=NAL.filter(p=>!isDone(p));
+  const uZrenju=akt.filter(p=>p.faza===4).length;
+  const kasni=NAL.filter(isLate).length;
+  const zaisp=akt.filter(p=>p.faza>=5).length;
+  const lowSir=SIR.filter(sirLow).length;
+  return '<div class="kpis">'+
+   '<div class="kpi" onclick="openKpi(\'akt\')"><div class="big">'+akt.length+'</div><div class="lab">Šarži u proizvodnji</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'zrenje\')"><div class="big">'+uZrenju+'</div><div class="lab">U zrenju (podrum)</div></div>'+
+   '<div class="kpi '+(kasni?"warn":"")+'" onclick="openKpi(\'kasni\')"><div class="big">'+kasni+'</div><div class="lab">Kasni</div></div>'+
+   '<div class="kpi" onclick="openKpi(\'isp\')"><div class="big">'+zaisp+'</div><div class="lab">Za isporuku</div></div>'+
+   '<div class="kpi '+(lowSir?"warn":"")+'" onclick="setView(\'zalihe\')"><div class="big">'+lowSir+'</div><div class="lab">Repro ispod min.</div></div>'+
+  '</div>';
+}
+
+function renderProizvodnja(){
+  let h=kpiRow();
+  h+='<div class="viewhead"><h3>Proizvodnja po šaržama</h3><span class="sub">Svaka šarža putuje kroz faze. Ploču pomjeraš lijevo-desno (povuci ili točkić). „›“ pomjera u sljedeću fazu, klik na karticu otvara vrstu, repromaterijal, zrenje i kontrolu grožđa.</span></div>';
+  h+='<div class="board">';
+  for(let f=0;f<=LAST;f++){
+    const inCol=NAL.filter(p=>p.faza===f);
+    h+='<div class="col'+(f===LAST?" done":"")+'"><div class="col-h"><span>'+FAZE[f]+'</span><span class="wip">'+inCol.length+'</span></div><div class="col-body">';
+    h+=inCol.map(p=>{
+      const canAdv=f<LAST;
+      return '<div class="card '+rowCls(p)+'" onclick="openNalog(\''+p.id+'\')">'+
+        '<div class="cid">'+p.id+' · '+p.dim+'</div>'+
+        '<div class="cp">'+p.proizvod+'</div>'+
+        '<div class="ck">'+kg(p.kol)+' '+p.jed+' · '+p.kval+'</div>'+
+        '<div class="crow">'+rokPill(p)+(f===QCPHASE?qcTag(p):(canAdv?'<button class="adv" title="Sljedeća faza" onclick="event.stopPropagation();advance(\''+p.id+'\')">›</button>':whoTag(p.odg)))+'</div>'+
+        '<div style="height:4px;background:var(--track);border-radius:3px;margin-top:8px;overflow:hidden"><span style="display:block;height:100%;width:'+progress(p)+'%;background:linear-gradient(90deg,var(--accent),var(--brand))"></span></div>'+
+      '</div>';
+    }).join("")||'<div class="hint" style="padding:6px">Prazno</div>';
+    h+='</div></div>';
+  }
+  h+='</div>';
+  el("view").innerHTML=h;
+}
+
+function renderZalihe(){
+  const low=SIR.filter(sirLow).length;
+  let h='<div class="viewhead"><h3>Repromaterijal i grožđe</h3><span class="sub">„Potrebno“ je zbir iz aktivnih šarži. Crveno = ispod minimuma, naruči da proizvodnja ne stane.</span></div>';
+  if(low) h+='<div class="latebanner" style="display:block">⚠ '+low+' stavki je ispod minimuma. Naruči na vrijeme.</div>';
+  h+='<table class="tbl"><thead><tr><th>Stavka</th><th class="num">Na stanju</th><th class="num">Minimum</th><th class="num">Potrebno (aktivno)</th><th>Popunjenost</th><th>Status</th></tr></thead><tbody>';
+  SIR.forEach((s,i)=>{
+    const pot=sirPotrebno(i); const lowc=sirLow(s); const pct=Math.min(100,Math.round(s.stanje/(s.min*2)*100));
+    h+='<tr class="'+(lowc?"rowlow":"")+'" onclick="openSir('+i+')">'+
+      '<td data-label="Stavka"><b>'+s.n+'</b></td>'+
+      '<td class="num" data-label="Na stanju">'+kg(s.stanje)+' '+s.jed+'</td>'+
+      '<td class="num" data-label="Minimum">'+kg(s.min)+' '+s.jed+'</td>'+
+      '<td class="num" data-label="Potrebno">'+kg(pot)+' '+s.jed+'</td>'+
+      '<td data-label="Popunjenost"><div class="barmini"><span class="'+(lowc?"low":"")+'" style="width:'+pct+'%"></span></div></td>'+
+      '<td data-label="Status">'+(lowc?'<span class="pill p-late">naruči</span>':'<span class="pill p-done">ok</span>')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  el("view").innerHTML=h;
+}
+
+function renderNarudzbe(){
+  let h='<div class="viewhead"><h3>Narudžbe (B2B)</h3><span class="sub">Restorani, vinoteke, distributeri, hoteli i izvoz.</span></div>';
+  h+='<table class="tbl"><thead><tr><th>Narudžba</th><th>Kupac</th><th>Stavke</th><th class="num">Rok</th><th>Status</th></tr></thead><tbody>';
+  const stX={"primljeno":'<span class="pill p-faza">primljeno</span>',"u proizvodnji":'<span class="pill p-soon">u proizvodnji</span>',"spremno":'<span class="pill p-today">spremno</span>',"isporučeno":'<span class="pill p-done">isporučeno</span>'};
+  NARUDZBE.slice().sort((a,b)=>a.rok-b.rok).forEach(o=>{
+    const st=o.stavke.map(x=>x.p+" ("+kg(x.k)+" "+x.j+")").join(", ");
+    h+='<tr onclick="openNarudzba(\''+o.id+'\')">'+
+      '<td data-label="Narudžba"><b>'+o.id+'</b></td>'+
+      '<td data-label="Kupac">'+o.kupac+'</td>'+
+      '<td data-label="Stavke">'+st+'</td>'+
+      '<td class="num" data-label="Rok">'+(o.rok<0?"prošao":(o.rok===0?"danas":"za "+o.rok+" d"))+'</td>'+
+      '<td data-label="Status">'+(stX[o.status]||o.status)+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  el("view").innerHTML=h;
+}
+
+function renderPregled(){
+  let h=kpiRow();
+  const akt=NAL.filter(p=>!isDone(p));
+  h+='<div class="viewhead"><h3>Pregled</h3><span class="sub">Klik na fazu ili traku daje spisak.</span></div>';
+  h+='<div class="grid2">';
+  h+='<div class="panel"><h3>Šarže po fazi</h3>';
+  const maxF=Math.max(1,...FAZE.map((_,i)=>NAL.filter(p=>p.faza===i).length));
+  FAZE.forEach((f,i)=>{const c=NAL.filter(p=>p.faza===i).length;
+    h+='<div class="bar clk" onclick="openFaza('+i+')"><div class="blab">'+f+'</div><div class="track"><div class="fill" style="width:'+(c/maxF*100)+'%"></div></div><div class="val">'+c+' šarži ›</div></div>';});
+  h+='</div>';
+  h+='<div class="panel"><h3>Proizvodnja po vrsti (aktivno, količina)</h3>';
+  const grp={}; akt.forEach(p=>grp[p.proizvod]=(grp[p.proizvod]||0)+p.kol);
+  const keys=Object.keys(grp).sort((a,b)=>grp[b]-grp[a]); const maxV=Math.max(1,...keys.map(k=>grp[k]));
+  keys.forEach(k=>{h+='<div class="bar"><div class="blab">'+k+'</div><div class="track"><div class="fill" style="width:'+(grp[k]/maxV*100)+'%;background:linear-gradient(90deg,var(--accent),#e0b24a)"></div></div><div class="val">'+kg(grp[k])+' l</div></div>';});
+  h+='</div></div>';
+  h+='<div class="panel"><h3>Ukratko</h3><div class="hint" style="font-size:14px;line-height:1.7;color:var(--text)">U proizvodnji: <b>'+akt.length+'</b> šarži. U zrenju: <b>'+akt.filter(p=>p.faza===4).length+'</b>, kasni: <b style="color:var(--late)">'+NAL.filter(isLate).length+'</b>, repromaterijala ispod minimuma: <b style="color:var(--late)">'+SIR.filter(sirLow).length+'</b>. Svaka šarža, sorta i godište, utrošak grožđa, vrijeme zrenja i kontrola grožđa na jednom mjestu, uz punu sljedivost preko broja šarže i LOT-a.</div></div>';
+  el("view").innerHTML=h;
+}
+
+// ---- Spiskovi (KPI) -------------------------------------------------------
+function nalRow(p){
+  return '<div class="card '+rowCls(p)+'" style="margin-bottom:9px" onclick="openNalog(\''+p.id+'\')">'+
+    '<div class="cid">'+p.id+' · '+p.dim+'</div><div class="cp">'+p.proizvod+'</div>'+
+    '<div class="ck">'+kg(p.kol)+' '+p.jed+' · '+p.kval+' · '+FAZE[p.faza]+'</div>'+
+    '<div class="crow">'+rokPill(p)+' '+qcTag(p)+' '+whoTag(p.odg)+'</div></div>';
+}
+function openList(title,arr){
+  let h='<div class="mhead"><div><h2>'+title+'</h2><div class="msub">'+arr.length+' šarži</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody" style="padding:12px 14px">'+(arr.length?arr.map(nalRow).join(""):'<div class="hint" style="padding:14px">Nema šarži.</div>')+'</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openKpi(w){
+  if(w==="akt")return openList("Šarže u proizvodnji",NAL.filter(p=>!isDone(p)));
+  if(w==="zrenje")return openList("U zrenju (podrum)",NAL.filter(p=>!isDone(p)&&p.faza===4));
+  if(w==="kasni")return openList("Šarže u kašnjenju",NAL.filter(isLate));
+  if(w==="isp")return openList("Za isporuku",NAL.filter(p=>!isDone(p)&&p.faza>=5));
+}
+function openFaza(i){openList("Faza: "+FAZE[i],NAL.filter(p=>p.faza===i));}
+
+// ---- Detalj naloga --------------------------------------------------------
+function openNalog(id){
+  const p=NAL.find(x=>x.id===id);if(!p)return;
+  const steps=FAZE.map((f,i)=>'<div class="step '+(i<p.faza?"done":(i===p.faza?"cur":""))+'"><span class="dot">'+(i<p.faza?"✓":(i+1))+'</span>'+f+'</div>'+(i<LAST?'<span class="arr">›</span>':'')).join("");
+  let h='<div class="mhead"><div><h2>'+p.proizvod+'</h2><div class="msub">'+p.id+' · '+p.dim+' · '+kg(p.kol)+' '+p.jed+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(isLate(p)) h+='<div class="latebanner">⚠ Šarža kasni '+(-p.rok)+' d. Provjeri fazu i obavijesti kupca (narudžba '+p.narudzba+').</div>';
+  if(qcState(p)==="fail") h+='<div class="latebanner">⚠ Kontrola grožđa i mošta nije prošla. Šaržu ne puštati dalje dok se ne riješi.</div>';
+  h+='<div class="stepper" style="margin-bottom:14px">'+steps+'</div>';
+  h+='<div class="kv"><div class="k">Broj šarže (LOT)</div><div class="v"><b>'+p.dim+'</b> (sljedivost)</div></div>';
+  h+='<div class="kv"><div class="k">Proizvod</div><div class="v">'+p.proizvod+'</div></div>';
+  h+='<div class="kv"><div class="k">Vrsta</div><div class="v">'+p.kval+'</div></div>';
+  h+='<div class="kv"><div class="k">Količina</div><div class="v">'+kg(p.kol)+' '+p.jed+'</div></div>';
+  h+='<div class="kv"><div class="k">Zrenje</div><div class="v">'+(p.faza===4?('u toku, plan '+p.zrenjeDana+' mjeseci'):(p.zrenjeDana+' mjeseci (plan)'))+'</div></div>';
+  h+='<div class="kv"><div class="k">Rok</div><div class="v">'+fmtDate(p.rok)+' '+rokPill(p)+'</div></div>';
+  h+='<div class="kv"><div class="k">Prioritet / smjena</div><div class="v">'+prioTag(p.pr)+' &nbsp; '+whoTag(p.odg)+'</div></div>';
+  h+='<div class="kv"><div class="k">Skladište / podrum</div><div class="v">'+p.skladiste+'</div></div>';
+  h+='<div class="kv"><div class="k">Narudžba</div><div class="v">'+p.narudzba+'</div></div>';
+  h+='<div class="sec-title">Utrošak grožđa i repromaterijala</div>';
+  h+='<table class="lines"><thead><tr><th>Stavka</th><th class="num">Količina</th></tr></thead><tbody>'+
+     (p.bom||[]).map(b=>'<tr><td>'+SIR[b.s].n+'</td><td class="num">'+kg(b.kol)+' '+SIR[b.s].jed+'</td></tr>').join("")+'</tbody></table>';
+  h+='<div class="sec-title">Kontrola grožđa i mošta '+qcTag(p)+'</div>';
+  if(Object.keys(p.qc||{}).length){
+    h+='<div class="qcgrid">'+Object.keys(p.qc).map(k=>'<div class="qcrow"><span>'+k+'</span><b>'+p.qc[k]+'</b></div>').join("")+'</div>';
+  } else h+='<div class="hint">Još nije na kontroli.</div>';
+  if(p.nap) h+='<div class="sec-title">Napomena</div><div class="hint" style="font-size:13.5px">'+p.nap+'</div>';
+  h+='</div>';
+  h+='<div class="actions">';
+  if(!isDone(p)){
+    if(p.faza===QCPHASE) h+='<button class="primary" onclick="advance(\''+p.id+'\')">Grožđe prihvaćeno → '+FAZE[p.faza+1]+'</button>';
+    else h+='<button class="primary" onclick="advance(\''+p.id+'\')">Sljedeća faza: '+FAZE[p.faza+1]+'</button>';
+  } else h+='<span class="hint">Šarža isporučena.</span>';
+  h+='<button class="secondary" onclick="alert(\'Demo: ovdje bi se štampala deklaracija i etiketa sa brojem šarže, sortom, godištem i LOT-om.\')">Etiketa / šarža</button>';
+  h+='</div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openSir(i){
+  const s=SIR[i]; const pot=sirPotrebno(i);
+  let h='<div class="mhead"><div><h2>'+s.n+'</h2><div class="msub">Repromaterijal · zalihe</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  if(sirLow(s)) h+='<div class="latebanner">⚠ Ispod minimuma. Aktivne šarže traže '+kg(pot)+' '+s.jed+'. Naruči kod dobavljača / kooperanta.</div>';
+  h+='<div class="kv"><div class="k">Na stanju</div><div class="v"><b>'+kg(s.stanje)+' '+s.jed+'</b></div></div>';
+  h+='<div class="kv"><div class="k">Minimum</div><div class="v">'+kg(s.min)+' '+s.jed+'</div></div>';
+  h+='<div class="kv"><div class="k">Potrebno (aktivne šarže)</div><div class="v">'+kg(pot)+' '+s.jed+'</div></div>';
+  h+='<div class="sec-title">Šarže koje troše ovu stavku</div>';
+  const uses=NAL.filter(p=>!isDone(p)&&(p.bom||[]).some(b=>b.s===i));
+  h+= uses.length? uses.map(p=>'<div class="kv"><div class="k">'+p.id+'</div><div class="v">'+p.proizvod+' · '+kg((p.bom.find(b=>b.s===i)||{}).kol)+' '+s.jed+'</div></div>').join("") : '<div class="hint">Nijedna aktivna šarža.</div>';
+  h+='</div><div class="actions"><button class="primary" onclick="alert(\'Demo: kreira se narudžbenica prema dobavljaču / plan berbe i otkupa grožđa.\')">Naruči kod dobavljača</button></div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function openNarudzba(id){
+  const o=NARUDZBE.find(x=>x.id===id);if(!o)return;
+  let h='<div class="mhead"><div><h2>'+o.kupac+'</h2><div class="msub">'+o.id+'</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  h+='<div class="kv"><div class="k">Status</div><div class="v">'+o.status+'</div></div>';
+  h+='<div class="kv"><div class="k">Rok</div><div class="v">'+(o.rok<0?"prošao":(o.rok===0?"danas":"za "+o.rok+" dana"))+'</div></div>';
+  h+='<div class="sec-title">Stavke</div><table class="lines"><thead><tr><th>Proizvod</th><th class="num">Količina</th></tr></thead><tbody>'+
+     o.stavke.map(x=>'<tr><td>'+x.p+'</td><td class="num">'+kg(x.k)+' '+x.j+'</td></tr>').join("")+'</tbody></table>';
+  const vez=NAL.filter(p=>p.narudzba===o.id);
+  if(vez.length){h+='<div class="sec-title">Vezane šarže</div>'+vez.map(p=>'<div class="kv"><div class="k">'+p.id+' · '+p.dim+'</div><div class="v">'+FAZE[p.faza]+' '+qcTag(p)+'</div></div>').join("");}
+  h+='</div><div class="actions"><button class="secondary" onclick="alert(\'Demo: obavijest kupcu o statusu narudžbe.\')">Obavijesti kupca</button></div>';
+  el("modal").innerHTML=h; el("overlay").classList.add("open");
+}
+function closeModal(){el("overlay").classList.remove("open");}
+function advance(id){const p=NAL.find(x=>x.id===id);if(!p||isDone(p))return;if(p.faza===QCPHASE&&qcState(p)==="fail"){if(!confirm("Kontrola grožđa nije prošla. Ipak pustiti šaržu dalje?"))return;}p.faza++;if(el("overlay").classList.contains("open")&&!isDone(p))openNalog(id);else if(isDone(p))closeModal();render();}
+
+// ---- Nova šarža -----------------------------------------------------------
+const PROIZVODI=["Žilavka","Blatina","Trnjak Premium","Syrah Premium","Merlot Premium","Cabernet Sauvignon","Cabernet Franc","Blatina Barrique","Loza rakija"];
+const KVAL=["bijelo, suho","crno, suho","crno, barrique","rakija"];
+function openNovi(){
+  const pOpts=PROIZVODI.map(x=>'<option>'+x+'</option>').join("");
+  const kOpts=KVAL.map(x=>'<option>'+x+'</option>').join("");
+  const oOpts=ODG.map((o,i)=>'<option value="'+i+'">'+o.n+"</option>").join("");
+  let h='<div class="mhead"><div><h2>Nova šarža</h2><div class="msub">Nova proizvodnja</div></div><div class="x" onclick="closeModal()">×</div></div>';
+  h+='<div class="mbody">';
+  h+='<div class="frow"><label>Proizvod *</label><select id="n_pro">'+pOpts+'</select></div>';
+  h+='<div class="row2"><div class="frow"><label>Vrsta</label><select id="n_kval">'+kOpts+'</select></div><div class="frow"><label>Količina (l)</label><input id="n_kol" type="number" min="0" step="10" value="2000"></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Plan zrenja (mjeseci)</label><input id="n_zr" type="number" min="0" step="1" value="12"></div><div class="frow"><label>Odgovoran</label><select id="n_odg">'+oOpts+'</select></div></div>';
+  h+='<div class="row2"><div class="frow"><label>Prioritet</label><select id="n_pr"><option value="visok">Visok</option><option value="srednji" selected>Srednji</option><option value="nizak">Nizak</option></select></div><div class="frow"><label>Rok</label><input id="n_rok" type="date"></div></div>';
+  h+='</div>';
+  h+='<div class="actions"><button class="primary" onclick="createNalog()">Otvori šaržu</button><span class="hint">Kreće od faze „Berba i prijem grožđa“.</span></div>';
+  el("modal").innerHTML=h;
+  const d=new Date();d.setDate(d.getDate()+3);el("n_rok").value=d.getFullYear()+"-"+m2(d.getMonth()+1)+"-"+m2(d.getDate());
+  el("overlay").classList.add("open");
+  setTimeout(()=>el("n_kol").focus(),40);
+}
+function createNalog(){
+  let rok=3;const dv=el("n_rok").value;if(dv){const d0=new Date();d0.setHours(0,0,0,0);rok=Math.round((new Date(dv)-d0)/86400000);}
+  const nums=NAL.map(p=>+p.id.split("-")[1]).filter(x=>!isNaN(x));
+  const id="RN-"+(Math.max(0,...nums)+1);
+  NAL.unshift({id,proizvod:el("n_pro").value,dim:"LOT-"+(Math.max(0,...nums)+1),kval:el("n_kval").value,kol:parseInt(el("n_kol").value)||0,jed:"l",faza:0,pr:el("n_pr").value,odg:parseInt(el("n_odg").value)||0,rok,zrenjeDana:parseInt(el("n_zr").value)||0,qc:{},bom:[],skladiste:"—",narudzba:"—",nap:""});
+  closeModal();setView("proizvodnja");openNalog(id);
+}
+
+setView("proizvodnja");
+</script>
+
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_vinogradi-nuic_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=vinogradi-nuic/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Vinogradi Nuic su otvorili prototip i zadrzali se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/vinogradi-nuic/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+<script>
+/* ===== PRACENJE PONASANJA (nezavisno od GA4) -> api.datamaks.net ===== */
+(function(){try{
+  if(!/(^|\.)datamaks\.net$/i.test(location.hostname)) return; // samo na objavljenom demou
+  var EP='https://api.datamaks.net/e';
+  var SLUG=(location.pathname.match(/\/mockups\/([^\/]+)/)||[])[1]||'demo';
+  var g=function(k){try{return localStorage.getItem(k);}catch(_){return null;}};
+  var s=function(k,v){try{localStorage.setItem(k,v);}catch(_){}};
+  try{ if(/[?&]owner=1/.test(location.search)) s('dm_owner','1'); if(/[?&]owner=0/.test(location.search)) localStorage.removeItem('dm_owner'); }catch(_){}
+  var own=g('dm_owner')?1:0;
+  var rid=function(){return Math.random().toString(36).slice(2,10);};
+  var vid=g('dm_vid'); if(!vid){vid=rid()+rid(); s('dm_vid',vid);}
+  var sid=rid()+Date.now().toString(36);
+  var t0=Date.now();
+  var at=document.querySelector('.tab.active');
+  var curView=(at&&at.dataset&&at.dataset.view)?at.dataset.view:'start';
+  var secMs={}, segStart=Date.now(), visible=(document.visibilityState!=='hidden');
+  function accrue(){ if(visible){ var n=Date.now(); secMs[curView]=(secMs[curView]||0)+(n-segStart); segStart=n; } }  // samo vidljivo vrijeme, bez preklapanja
+  var q=[];
+  function push(type,extra){var e={t:type,ms:Date.now()-t0};if(extra)for(var k in extra)e[k]=extra[k];q.push(e);if(q.length>=25)flush();}
+  function flush(){if(!q.length)return;var p=JSON.stringify({sid:sid,vid:vid,own:own,slug:SLUG,href:location.href,ref:document.referrer,w:screen.width,h:screen.height,q:q});q=[];try{if(navigator.sendBeacon)navigator.sendBeacon(EP,p);else fetch(EP,{method:'POST',body:p,keepalive:true});}catch(_){}}
+  push('start',{view:curView}); flush();
+  if(typeof window.setView==='function'){var _sv=window.setView;window.setView=function(v){try{accrue();push('view',{from:curView,to:String(v)});curView=String(v);segStart=Date.now();flush();}catch(_){}return _sv.apply(this,arguments);};}
+  document.addEventListener('click',function(ev){try{
+    var el=ev.target.closest&&ev.target.closest('a,button,.kpi,.card,.ncard,.rtask,[data-open],[onclick],tr[onclick],.chip,.btn');
+    if(!el) return;
+    if(el.hasAttribute&&el.hasAttribute('data-view')) return;        // promjena sekcije -> hvata se kao 'view'
+    var oc=(el.getAttribute&&el.getAttribute('onclick'))||'';
+    if(/setView\(/.test(oc)) return;
+    var lbl=(el.getAttribute&&el.getAttribute('data-open'))||'';
+    if(!lbl) lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,50);
+    var cls=(((el.className&&el.className.baseVal!==undefined)?el.className.baseVal:el.className)||el.tagName||'')+'';
+    push('click',{lbl:lbl,cls:cls.split(' ')[0]});
+  }catch(_){}},true);
+  document.addEventListener('visibilitychange',function(){try{
+    if(document.visibilityState==='hidden'){ accrue(); visible=false; push('hide',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }
+    else { visible=true; segStart=Date.now(); }
+  }catch(_){}});
+  window.addEventListener('pagehide',function(){try{ accrue(); push('end',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }catch(_){}});
+  setInterval(flush,8000);
+}catch(_){}})();
+</script>
+</body>
+</html>
