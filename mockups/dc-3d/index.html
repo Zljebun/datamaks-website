@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distributivni centar (3D demo) · Datamaks</title>
+<meta name="description" content="3D prikaz distributivnog centra uživo: regali, viljuškari, dokovi i kamioni, sa KPI panelom i logom događaja. Klikabilno, izmišljeni podaci, stvarna logika. Datamaks.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/dc-3d/">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+<style>
+  :root{ --brand:#2563eb; --brand2:#1e3a8a; --cyan:#29a3dc; --ink:#0f172a; --warn:#f59e0b; --danger:#ef4444; --ok:#22c55e; }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b1220;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#e8eef7}
+  #app{position:fixed;inset:0}
+  canvas{display:block}
+  /* HUD */
+  .hud{position:absolute;pointer-events:none;z-index:5}
+  .panel{background:rgba(12,20,36,.82);border:1px solid rgba(120,160,220,.22);border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(0,0,0,.35)}
+  #brand{top:14px;left:14px;padding:12px 16px}
+  #brand .t{font-weight:800;font-size:16px;letter-spacing:.2px}
+  #brand .s{font-size:12px;opacity:.8;margin-top:2px}
+  #brand .demo{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;letter-spacing:.08em;color:#0b1220;background:var(--cyan);padding:3px 8px;border-radius:999px}
+  #kpis{top:14px;right:14px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:300px}
+  .kpi{padding:10px 12px}
+  .kpi .v{font-size:22px;font-weight:800;line-height:1}
+  .kpi .l{font-size:11px;opacity:.78;margin-top:4px}
+  .kpi.warn .v{color:var(--warn)}
+  #log{left:14px;bottom:14px;width:360px;max-width:calc(100vw - 28px);padding:10px 12px}
+  #log h4{margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;font-weight:700}
+  #log ul{list-style:none;margin:0;padding:0;max-height:168px;overflow:hidden}
+  #log li{font-size:12.5px;padding:4px 0;border-bottom:1px solid rgba(120,160,220,.1);display:flex;gap:8px;animation:fin .3s ease}
+  #log li .ts{opacity:.55;font-variant-numeric:tabular-nums}
+  @keyframes fin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  #hint{right:14px;bottom:14px;padding:8px 12px;font-size:12px;opacity:.9}
+  /* info card on click */
+  #card{position:absolute;z-index:6;min-width:200px;max-width:260px;padding:12px 14px;display:none;pointer-events:none}
+  #card .h{font-weight:800;font-size:14px;margin-bottom:6px;color:#dCE8Fb}
+  #card .row{font-size:12.5px;display:flex;justify-content:space-between;gap:12px;padding:2px 0}
+  #card .row b{font-weight:600;opacity:.75}
+  .tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px}
+  .tag.ok{background:rgba(34,197,94,.2);color:#8ef0b0}
+  .tag.warn{background:rgba(245,158,11,.2);color:#fdd27a}
+  .tag.move{background:rgba(41,163,220,.2);color:#9fe0f6}
+  #loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:10;background:#0b1220}
+  #loading .sp{width:34px;height:34px;border:3px solid rgba(120,160,220,.25);border-top-color:var(--cyan);border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media(max-width:720px){
+    #kpis{width:168px;grid-template-columns:1fr}
+    #log{width:300px}
+    #hint{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div id="brand" class="hud panel">
+  <div class="t">Distributivni centar</div>
+  <div class="s">Pregled operacija uživo · Datamaks</div>
+  <span class="demo">3D DEMO · izmišljeni podaci</span>
+</div>
+
+<div id="kpis" class="hud">
+  <div class="kpi panel"><div class="v" id="k_nar">0</div><div class="l">Narudžbe danas</div></div>
+  <div class="kpi panel"><div class="v" id="k_izd">0</div><div class="l">Izdato paleta</div></div>
+  <div class="kpi panel"><div class="v" id="k_dok">0</div><div class="l">Vozila na doku</div></div>
+  <div class="kpi panel"><div class="v" id="k_pri">0</div><div class="l">Prijem danas</div></div>
+  <div class="kpi panel warn" style="grid-column:1 / -1"><div class="v" id="k_low">0</div><div class="l">Artikli ispod minimuma</div></div>
+</div>
+
+<div id="log" class="hud panel">
+  <h4>Događaji uživo</h4>
+  <ul id="logul"></ul>
+</div>
+
+<div id="hint" class="hud panel">Rotiraj mišem · točkić za zum · klikni na vozilo ili regal</div>
+<div id="card" class="panel"></div>
+
+<div id="loading"><div class="sp"></div><div>Učitavanje 3D scene...</div></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const SKU = ['HDPE cijev PE100','PVC profil','Fasadna boja','Keramika','Cement','Izolacija','Vodomaterijal','Alat'];
+const GRAD = ['Banja Luka','Tuzla','Sarajevo','Gradiška','Doboj','Prijedor','Bijeljina'];
+const rnd = (a,b)=> a + Math.random()*(b-a);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const pad = n => String(n).padStart(2,'0');
+
+let renderer, scene, camera, controls, raycaster, pointer, clock;
+const pickables = [];
+const forklifts = [];
+const trucks = [];
+const docks = [];
+
+function init(){
+  const app = document.getElementById('app');
+  renderer = new THREE.WebGLRenderer({ antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  app.appendChild(renderer.domElement);
+
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0e1830);
+  scene.fog = new THREE.Fog(0x0e1830, 95, 240);
+
+  camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 500);
+  camera.position.set(34, 30, 40);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 2, 0);
+  controls.enableDamping = true; controls.dampingFactor = 0.08;
+  controls.maxPolarAngle = Math.PI/2.15; controls.minDistance = 14; controls.maxDistance = 95;
+
+  // svjetlo
+  scene.add(new THREE.HemisphereLight(0xbcd3ff, 0x20273a, 0.9));
+  const sun = new THREE.DirectionalLight(0xfff2d6, 1.5);
+  sun.position.set(30, 45, 20); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048,2048);
+  const s = 55; const c = sun.shadow.camera;
+  c.left=-s; c.right=s; c.top=s; c.bottom=-s; c.near=1; c.far=140;
+  scene.add(sun);
+
+  buildFloor();
+  buildRacks();
+  buildDockWall();
+  buildTrucks();
+  buildForklifts();
+
+  raycaster = new THREE.Raycaster();
+  pointer = new THREE.Vector2();
+  clock = new THREE.Clock();
+
+  renderer.domElement.addEventListener('pointerdown', onPick);
+  window.addEventListener('resize', onResize);
+  document.getElementById('loading').style.display='none';
+  animate();
+}
+
+function buildFloor(){
+  const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(90, 80),
+    new THREE.MeshStandardMaterial({ color:0x2a3550, roughness:.95 })
+  );
+  floor.rotation.x = -Math.PI/2; floor.receiveShadow = true; scene.add(floor);
+  // oznake voznih traka
+  const grid = new THREE.GridHelper(90, 36, 0x3f557a, 0x33435f);
+  grid.position.y = 0.02; scene.add(grid);
+}
+
+function labelMat(c){ return new THREE.MeshStandardMaterial({ color:c, roughness:.8, metalness:.05 }); }
+
+function makeRack(x, z){
+  const g = new THREE.Group();
+  const steel = labelMat(0x8795ad);
+  // dva stuba + police kao jedan boksoliki regal
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(6, 7, 2.4), new THREE.MeshStandardMaterial({color:0x5b6b86, roughness:.9, transparent:true, opacity:.25}));
+  frame.position.y = 3.5; g.add(frame);
+  // police sa paletama (3 nivoa x 3 mjesta)
+  let low = 0;
+  for(let lvl=0; lvl<3; lvl++){
+    const shelf = new THREE.Mesh(new THREE.BoxGeometry(6, .15, 2.4), steel);
+    shelf.position.set(0, 1.2 + lvl*2.2, 0); shelf.castShadow=true; shelf.receiveShadow=true; g.add(shelf);
+    for(let p=0; p<3; p++){
+      if(Math.random()<0.18){ continue; } // prazno mjesto
+      const full = Math.random();
+      const col = full<0.16 ? 0xef4444 : (full<0.34 ? 0xf59e0b : 0xcaa472);
+      if(full<0.16) low++;
+      const pallet = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.1, 1.9), labelMat(col));
+      pallet.position.set(-2 + p*2, 1.2 + lvl*2.2 + 0.63, 0);
+      pallet.castShadow = true; g.add(pallet);
+    }
+  }
+  g.position.set(x, 0, z);
+  g.userData = { type:'Regal', id:'R-'+(x<0?'A':'B')+Math.abs(Math.round(z)), low };
+  pickables.push(g); scene.add(g);
+  return g;
+}
+
+function buildRacks(){
+  // dva bloka regala sa prolazom; redovi po Z
+  for(let r=0; r<5; r++){
+    const z = -18 + r*8;
+    makeRack(-12, z);
+    makeRack(-4, z);
+    makeRack(12, z);
+    makeRack(20, z);
+  }
+}
+
+function buildDockWall(){
+  // zid sa dok-vratima na -X strani (zapad)
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(1.2, 10, 70), labelMat(0x37425e));
+  wall.position.set(-30, 5, 0); wall.castShadow=true; wall.receiveShadow=true; scene.add(wall);
+  for(let d=0; d<4; d++){
+    const z = -21 + d*14;
+    const door = new THREE.Mesh(new THREE.BoxGeometry(1.4, 7, 6), labelMat(0x202a40));
+    door.position.set(-29.3, 4, z); scene.add(door);
+    // broj doka (mala ploča)
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(.2,1.4,2.2), labelMat(0x29a3dc));
+    plate.position.set(-28.5, 8.6, z); scene.add(plate);
+    docks.push({ z, busy:false });
+  }
+}
+
+function makeTruckMesh(color){
+  const g = new THREE.Group();
+  const cab = new THREE.Mesh(new THREE.BoxGeometry(3.2, 3.2, 3.2), labelMat(color));
+  cab.position.set(4.4, 2.0, 0); cab.castShadow=true; g.add(cab);
+  const trailer = new THREE.Mesh(new THREE.BoxGeometry(9, 4, 3.4), labelMat(0xd7ddea));
+  trailer.position.set(-1.6, 2.6, 0); trailer.castShadow=true; g.add(trailer);
+  // tocak-indikacija
+  const wheelMat = labelMat(0x11151f);
+  [-4,-1,3.6].forEach(x=>{ [1.9,-1.9].forEach(z=>{
+    const w = new THREE.Mesh(new THREE.CylinderGeometry(.8,.8,.5,14), wheelMat);
+    w.rotation.x=Math.PI/2; w.position.set(x,.8,z); g.add(w);
+  })});
+  return g;
+}
+
+function buildTrucks(){
+  const colors=[0x2563eb,0xef4444,0x22c55e];
+  for(let i=0;i<3;i++){
+    const t = makeTruckMesh(colors[i]);
+    const id='TR-'+(2100+Math.floor(rnd(10,99)));
+    t.userData={ type:'Kamion', id, status:'na doku', roba:pick(SKU), odrediste:pick(GRAD) };
+    // dodijeli dok
+    const dk = docks[i]; dk.busy=true; t.userData.dok = i+1;
+    t.position.set(-24, 0, dk.z); // nos okrenut ka zidu (zapad)
+    pickables.push(t); scene.add(t); trucks.push({ mesh:t, dockIndex:i, state:'docked', timer:rnd(8,16) });
+  }
+  // cetvrti dok slobodan za dolaske/odlaske (ciklus u animaciji)
+}
+
+function makeForkliftMesh(){
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.8,1.3,1.3), labelMat(0xf2b01e));
+  body.position.y=1.0; body.castShadow=true; g.add(body);
+  const cab = new THREE.Mesh(new THREE.BoxGeometry(1.0,1.1,1.1), labelMat(0x25303f));
+  cab.position.set(-.3,2.1,0); g.add(cab);
+  const mast = new THREE.Mesh(new THREE.BoxGeometry(.2,2.6,1.1), labelMat(0x333a46));
+  mast.position.set(1.0,1.6,0); g.add(mast);
+  const forks = new THREE.Mesh(new THREE.BoxGeometry(1.3,.15,1.0), labelMat(0x8a929e));
+  forks.position.set(1.7,.5,0); g.add(forks);
+  const load = new THREE.Mesh(new THREE.BoxGeometry(1.3,1.0,1.1), labelMat(0xcaa472));
+  load.position.set(1.7,1.15,0); load.visible=false; g.add(load);
+  g.userData={ load };
+  return g;
+}
+
+function buildForklifts(){
+  // rute: od zone dokova (zapad) do regala (istok) i nazad
+  const routes = [
+    [ new THREE.Vector3(-22,0,-6), new THREE.Vector3(0,0,-6), new THREE.Vector3(8,0,-18), new THREE.Vector3(0,0,-6), new THREE.Vector3(-22,0,-6) ],
+    [ new THREE.Vector3(-22,0,4),  new THREE.Vector3(-8,0,4), new THREE.Vector3(-8,0,14), new THREE.Vector3(-8,0,4), new THREE.Vector3(-22,0,4) ],
+    [ new THREE.Vector3(-22,0,10), new THREE.Vector3(4,0,10), new THREE.Vector3(16,0,2), new THREE.Vector3(4,0,10), new THREE.Vector3(-22,0,10) ],
+  ];
+  routes.forEach((route,i)=>{
+    const f = makeForkliftMesh();
+    f.userData = Object.assign(f.userData, { type:'Viljuškar', id:'V'+(i+1), status:'u vožnji', roba:pick(SKU) });
+    f.position.copy(route[0]);
+    pickables.push(f); scene.add(f);
+    forklifts.push({ mesh:f, route, seg:0, t:Math.random(), speed:rnd(2.2,3.2) });
+  });
+}
+
+function onResize(){
+  camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// klik / tap -> info kartica
+function onPick(e){
+  pointer.x = (e.clientX/window.innerWidth)*2 - 1;
+  pointer.y = -(e.clientY/window.innerHeight)*2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(pickables, true);
+  const card = document.getElementById('card');
+  if(!hits.length){ card.style.display='none'; return; }
+  // nadji root pickable
+  let o = hits[0].object;
+  while(o && !o.userData.type) o = o.parent;
+  if(!o){ card.style.display='none'; return; }
+  const u = o.userData; let html='';
+  if(u.type==='Kamion'){
+    html = `<div class="h">${u.id} <span class="tag ok">na doku ${u.dok}</span></div>
+      <div class="row"><b>Tip</b><span>Kamion</span></div>
+      <div class="row"><b>Roba</b><span>${u.roba}</span></div>
+      <div class="row"><b>Odredište</b><span>${u.odrediste}</span></div>`;
+  } else if(u.type==='Viljuškar'){
+    const carrying = o.userData.load && o.userData.load.visible;
+    html = `<div class="h">${u.id} <span class="tag move">${carrying?'nosi paletu':'u vožnji'}</span></div>
+      <div class="row"><b>Tip</b><span>Viljuškar</span></div>
+      <div class="row"><b>Zadatak</b><span>${carrying? 'odlaganje u regal':'preuzimanje sa doka'}</span></div>
+      <div class="row"><b>Roba</b><span>${u.roba}</span></div>`;
+  } else if(u.type==='Regal'){
+    const tag = u.low>0 ? `<span class="tag warn">${u.low} ispod min.</span>` : `<span class="tag ok">uredno</span>`;
+    html = `<div class="h">Regal ${u.id} ${tag}</div>
+      <div class="row"><b>Zona</b><span>${u.id.includes('A')?'Zapad':'Istok'}</span></div>
+      <div class="row"><b>Niske zalihe</b><span>${u.low}</span></div>`;
+  }
+  card.innerHTML = html;
+  card.style.display='block';
+  const cx = Math.min(e.clientX+14, window.innerWidth-270);
+  const cy = Math.min(e.clientY+14, window.innerHeight-130);
+  card.style.left = cx+'px'; card.style.top = cy+'px';
+}
+
+// ---- animacija vozila ----
+function moveForklift(f, dt){
+  const a = f.route[f.seg], b = f.route[f.seg+1];
+  const d = a.distanceTo(b);
+  f.t += (f.speed*dt)/Math.max(d,0.001);
+  const m = f.mesh;
+  if(f.t>=1){
+    f.t=0; f.seg++;
+    if(f.seg>=f.route.length-1){ f.seg=0; }
+    // na dokovskom kraju uzmi paletu, na regalnom je odloži
+    const atDock = f.route[f.seg].x < -18;
+    m.userData.load.visible = !atDock;
+  }
+  m.position.lerpVectors(a,b,f.t);
+  const dir = new THREE.Vector3().subVectors(b,a);
+  if(dir.lengthSq()>1e-4) m.rotation.y = Math.atan2(dir.x, dir.z) - Math.PI/2;
+}
+
+let arriving = null; // kamion u dolasku/odlasku na 4. dok
+function cycleTrucks(dt){
+  const free = docks[3];
+  if(!arriving && Math.random()<0.004){
+    const t = makeTruckMesh(0xf59e0b);
+    const id='TR-'+(2100+Math.floor(rnd(10,99)));
+    t.userData={ type:'Kamion', id, status:'dolazak', roba:pick(SKU), odrediste:pick(GRAD), dok:4 };
+    t.position.set(-10, 0, 40); t.rotation.y=0;
+    pickables.push(t); scene.add(t);
+    arriving = { mesh:t, phase:'in', z:40, timer:0 };
+    logEvent(`Kamion ${id} najavljen, dok 4`);
+  }
+  if(arriving){
+    const t=arriving.mesh;
+    if(arriving.phase==='in'){
+      // dovezi do z doka pa do zida
+      if(t.position.z > free.z+0.2){ t.position.z -= 9*dt; }
+      else if(t.position.x > -24){ t.rotation.y=Math.PI/2; t.position.x -= 7*dt; }
+      else { arriving.phase='wait'; arriving.timer=rnd(6,10); free.busy=true; t.userData.status='na doku';
+             logEvent(`Kamion ${t.userData.id} na doku 4, istovar u toku`); }
+    } else if(arriving.phase==='wait'){
+      arriving.timer-=dt; if(arriving.timer<=0){ arriving.phase='out'; t.rotation.y=0;
+             logEvent(`Kamion ${t.userData.id} krenuo, odredište ${t.userData.odrediste}`); }
+    } else {
+      t.position.z += 10*dt;
+      if(t.position.z>44){ scene.remove(t); const i=pickables.indexOf(t); if(i>=0)pickables.splice(i,1); free.busy=false; arriving=null; }
+    }
+  }
+}
+
+// ---- KPI + log ----
+const K = { nar:0, izd:0, pri:0, low:0 };
+function recountLow(){ K.low = pickables.filter(p=>p.userData.type==='Regal').reduce((a,p)=>a+(p.userData.low||0),0); }
+function setK(){
+  k_nar.textContent=K.nar; k_izd.textContent=K.izd; k_pri.textContent=K.pri; k_low.textContent=K.low;
+  k_dok.textContent = docks.filter(d=>d.busy).length;
+}
+function logEvent(txt){
+  const ul = document.getElementById('logul');
+  const d = new Date(); const ts = pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  const li = document.createElement('li');
+  li.innerHTML = `<span class="ts">${ts}</span><span>${txt}</span>`;
+  ul.insertBefore(li, ul.firstChild);
+  while(ul.children.length>7) ul.removeChild(ul.lastChild);
+}
+const EVENTS = [
+  ()=>{ K.izd++; return `Viljuškar ${pick(['V1','V2','V3'])} odložio paletu ${pick(SKU)} u regal`; },
+  ()=>{ K.nar++; return `Narudžba N-${Math.floor(rnd(3000,3999))} spremna za utovar`; },
+  ()=>{ K.pri++; return `Prijem robe: ${pick(SKU)} ${Math.floor(rnd(4,20))} paleta`; },
+  ()=> `Viljuškar ${pick(['V1','V2','V3'])} preuzeo paletu sa doka`,
+  ()=> `Niska zaliha: ${pick(SKU)} ispod minimuma`,
+  ()=>{ K.nar++; return `Kupac ${pick(['Market','Gradnja','Trgovina','Kooperant'])} ${pick(GRAD)}, nova narudžba`; },
+];
+function tick(){ const txt = pick(EVENTS)(); logEvent(txt); setK(); }
+
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  forklifts.forEach(f=>moveForklift(f,dt));
+  cycleTrucks(dt);
+  controls.update();
+  renderer.render(scene,camera);
+}
+
+// seed + start
+try{
+  if(!window.WebGLRenderingContext){ throw new Error('nema WebGL'); }
+  init();
+  recountLow(); K.nar=Math.floor(rnd(70,110)); K.izd=Math.floor(rnd(120,200)); K.pri=Math.floor(rnd(8,20)); setK();
+  for(let i=0;i<5;i++) setTimeout(tick, i*250);
+  setInterval(tick, 2600);
+}catch(err){
+  document.getElementById('loading').innerHTML = '<div style="max-width:320px;text-align:center">Vaš pregledač ne podržava 3D prikaz (WebGL). Otvorite na računaru u Chrome ili Safari.</div>';
+}
+</script>
+</body>
+</html>
