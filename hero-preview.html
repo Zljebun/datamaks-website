@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <!-- Essential Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- SEO Meta Tags -->
+  <title>Digitalizacija poslovanja za MSP | Datamaks</title>
+  <meta name="description" content="Automatizujemo vaše poslovne procese i pravimo sisteme za bolje poslovne odluke. Custom softverska rješenja za proizvodnju, distribuciju, veleprodaju i usluge.">
+  <meta name="keywords" content="digitalizacija poslovanja, automatizacija procesa, poslovni softver, custom software, ERP, CRM, Banja Luka, Bosna i Hercegovina, poslovno savjetovanje">
+  <meta name="author" content="Datamaks d.o.o.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://datamaks.net/hero-preview.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://datamaks.net/">
+  <meta property="og:title" content="Datamaks | Digitalizacija Poslovanja za Mala i Srednja Preduzeća">
+  <meta property="og:description" content="Automatizujemo vaše poslovne procese i pravimo sisteme za bolje poslovne odluke. Brže i jeftinije nego što mislite.">
+  <meta property="og:image" content="https://datamaks.net/assets/images/og-image.jpg">
+  <meta property="og:locale" content="bs_BA">
+  <meta property="og:locale:alternate" content="hr_HR">
+  <meta property="og:locale:alternate" content="sr_RS">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="de_DE">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://datamaks.net/">
+  <meta name="twitter:title" content="Datamaks | Digitalizacija Poslovanja">
+  <meta name="twitter:description" content="Automatizujemo vaše poslovne procese i pravimo sisteme za bolje poslovne odluke.">
+  <meta name="twitter:image" content="https://datamaks.net/assets/images/og-image.jpg">
+
+  <!-- Alternate Languages -->
+  <link rel="alternate" hreflang="bs" href="https://datamaks.net/">
+  <link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/">
+  <link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/">
+  <link rel="alternate" hreflang="en" href="https://datamaks.net/en/">
+  <link rel="alternate" hreflang="de" href="https://datamaks.net/de/">
+  <link rel="alternate" hreflang="x-default" href="https://datamaks.net/en/">
+
+  <!-- Mašinski feed usluga (za AI agente / integracije) -->
+  <link rel="alternate" type="application/json" title="Datamaks usluge (JSON)" href="https://datamaks.net/usluge.json">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/images/favicon-96.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+
+  <!-- Fonts (non-render-blocking) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.min.css?v=15">
+
+  <!-- Hero 3D (skladiste) -->
+  <style>
+    .hero-3d{position:relative;width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;
+      background:#0e1830;box-shadow:0 24px 60px rgba(15,23,42,.28),0 2px 6px rgba(15,23,42,.1);
+      border:1px solid rgba(120,160,220,.18)}
+    .hero-3d-poster{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;
+      transition:opacity .5s ease}
+    .hero-3d-poster svg{position:absolute;inset:0}
+    .hero-3d-play{position:relative;margin-bottom:16px;font-size:.78rem;font-weight:700;letter-spacing:.04em;
+      color:#cfe0f5;background:rgba(12,20,36,.7);border:1px solid rgba(120,160,220,.3);
+      padding:7px 14px;border-radius:999px;backdrop-filter:blur(4px)}
+    .hero-3d-ready .hero-3d-poster{opacity:0;pointer-events:none}
+    .hero3d-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none}
+    .hero3d-hud{position:absolute;inset:0;pointer-events:none;z-index:3;font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;color:#e8eef7}
+    .hero3d-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:7px;
+      font-size:11px;font-weight:800;letter-spacing:.1em;background:rgba(12,20,36,.78);
+      border:1px solid rgba(120,160,220,.25);padding:6px 11px;border-radius:999px}
+    .hero3d-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:h3pulse 1.8s infinite}
+    @keyframes h3pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 7px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+    .hero3d-kpis{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px;width:116px}
+    .hero3d-kpi{background:rgba(12,20,36,.78);border:1px solid rgba(120,160,220,.22);border-radius:10px;padding:7px 10px;text-align:right}
+    .hero3d-kpi b{display:block;font-size:17px;font-weight:800;line-height:1}
+    .hero3d-kpi span{font-size:9.5px;opacity:.75;letter-spacing:.02em}
+    .hero3d-kpi-warn b{color:#fbbf24}
+    .hero3d-ticker{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(12,20,36,.78);
+      border:1px solid rgba(120,160,220,.22);border-radius:10px;padding:7px 11px;font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+    .hero3d-full{position:absolute;right:12px;bottom:46px;z-index:4;font-size:11px;font-weight:700;
+      color:#0b1220;background:#29a3dc;padding:5px 11px;border-radius:999px;text-decoration:none;
+      box-shadow:0 4px 12px rgba(41,163,220,.4)}
+    .hero3d-full:hover{background:#4bb6e8}
+    .hero3d-card{position:absolute;z-index:5;display:none;min-width:150px;max-width:190px;padding:10px 12px;
+      background:rgba(12,20,36,.92);border:1px solid rgba(120,160,220,.28);border-radius:12px;
+      box-shadow:0 10px 28px rgba(0,0,0,.4);color:#e8eef7;font-family:Inter,sans-serif;pointer-events:none}
+    .hero3d-card .h{font-weight:800;font-size:12.5px;margin-bottom:6px;color:#dCE8Fb;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .hero3d-card .row{font-size:11.5px;display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+    .hero3d-card .row b{font-weight:600;opacity:.72}
+    .hero3d-card .tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:999px}
+    .hero3d-card .tag.ok{background:rgba(34,197,94,.2);color:#8ef0b0}
+    .hero3d-card .tag.warn{background:rgba(245,158,11,.2);color:#fdd27a}
+    .hero3d-card .tag.move{background:rgba(41,163,220,.2);color:#9fe0f6}
+    .hero-3d-cap{margin:12px 2px 0;font-size:.82rem;color:#64748b;text-align:center}
+  </style>
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://datamaks.net/#organization",
+    "name": "Datamaks",
+    "legalName": "Datamaks društvo za programiranje d.o.o. Banja Luka",
+    "alternateName": "Datamaks d.o.o. Banja Luka",
+    "foundingDate": "2022-05-17",
+    "vatID": "404883830006",
+    "description": "Digitalizacija poslovanja i automatizacija poslovnih procesa za mala i srednja preduzeća",
+    "url": "https://datamaks.net",
+    "logo": "https://datamaks.net/assets/images/logo.png",
+    "image": [
+      "https://datamaks.net/assets/images/og-image.jpg",
+      "https://datamaks.net/assets/images/og-4x3.jpg",
+      "https://datamaks.net/assets/images/og-square.jpg"
+    ],
+    "telephone": ["+38765469565", "+436677970082"],
+    "email": "info@datamaks.net",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Veljka Mladjenovica bb",
+      "postalCode": "78000",
+      "addressLocality": "Banja Luka",
+      "addressCountry": "BA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "44.7722",
+      "longitude": "17.1910"
+    },
+    "areaServed": ["BA", "RS", "ME", "MK", "HR", "AT", "DE"],
+    "serviceType": ["Business Consulting", "Software Development", "Process Automation", "Digital Transformation"],
+    "priceRange": "$$",
+    "openingHours": "Mo-Fr 09:00-17:00",
+    "sameAs": [
+      "https://www.linkedin.com/company/datamaks",
+      "https://www.instagram.com/datamaks.digital",
+      "https://www.facebook.com/datamaks.digital",
+      "https://share.google/22L4SLuBoyZuX86pS"
+    ],
+    "founder": {
+      "@type": "Person",
+      "@id": "https://datamaks.net/#milan",
+      "name": "Milan Babić",
+      "jobTitle": "Direktor"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "telephone": "+38765469565",
+      "email": "info@datamaks.net",
+      "areaServed": ["BA", "RS", "ME", "MK", "HR", "AT", "DE"],
+      "availableLanguage": ["Bosnian", "Serbian", "Croatian", "German", "English"]
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Usluge Datamaksa",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Softver po mjeri", "description": "Web platforme i poslovne aplikacije razvijene po mjeri procesa firme." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI asistenti i automatizacija", "description": "AI asistenti i automatizacija poslovnih procesa za mala i srednja preduzeća." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Poslovna inteligencija i podaci (BI)", "description": "Business intelligence, izvještaji i objedinjavanje podataka u realnom vremenu." } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digitalizacija poslovanja", "description": "Prelazak sa Excela i papira na softver: praćenje proizvodnje, zaliha, narudžbi i projekata." } }
+      ]
+    },
+    "identifier": {
+      "@type": "PropertyValue",
+      "propertyID": "JIB",
+      "value": "4404883830006"
+    }
+  }
+  </script>
+
+  <!-- WebSite entitet (za agente/answer engine) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://datamaks.net/#website",
+    "url": "https://datamaks.net",
+    "name": "Datamaks",
+    "inLanguage": ["bs", "en", "de", "hr", "sr"],
+    "publisher": { "@id": "https://datamaks.net/#organization" }
+  }
+  </script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Koliko košta digitalizacija poslovanja?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cijena zavisi od obima projekta. Nudimo besplatan inicijalni razgovor gdje analiziramo vaše potrebe i dajemo procjenu. Radimo fazno, tako da ne morate investirati sve odjednom."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Šta je digitalizacija poslovanja?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Digitalizacija poslovanja je proces zamjene ručnih, papirnih procesa sa automatizovanim softverskim rješenjima. To uključuje automatizaciju svakodnevnih zadataka, centralizaciju podataka i kreiranje izvještaja za bolje poslovne odluke."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Koliko traje implementacija poslovnog softvera?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Vrijeme implementacije zavisi od kompleksnosti projekta. Jednostavnija rješenja mogu biti gotova za 2 do 4 sedmice, dok kompleksniji sistemi zahtijevaju 2 do 3 mjeseca. Radimo faznu implementaciju kako bi vidjeli rezultate što prije."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Da li radite sa malim firmama?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Da, specijalizovani smo upravo za mala i srednja preduzeća. Naša rješenja su prilagođena vašim potrebama i budžetu, ne plaćate funkcije koje vam ne trebaju."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Koji je prvi korak?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Javite nam se za besplatan razgovor od 20 minuta. Samo da vidimo možemo li vam pomoći i damo vam okvir šta je moguće."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Radite li za firme izvan Bosne i Hercegovine?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Da. Sarađujemo sa firmama u BiH, Srbiji, Crnoj Gori i Sjevernoj Makedoniji, kao i u Austriji i EU. Komunikacija ide na našem jeziku ili na njemačkom i engleskom, a rad je online uz povremene sastanke."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Šta je softver po mjeri i zašto ne kupiti gotov program?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Softver po mjeri je aplikacija napravljena tačno za vaš proces, umjesto da svoj posao prilagođavate tuđem programu. Gotova rješenja često imaju suvišne funkcije, a nemaju baš ono što vama treba. Po mjeri plaćate samo ono što koristite i lako se mijenja kako firma raste."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kako izgleda besplatni prototip i šta dobijam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Prije bilo kakvog plaćanja napravimo klikabilni prototip vašeg rješenja, koji izgleda i radi kao prava aplikacija. Na njemu vidite kako bi sistem funkcionisao u vašoj firmi i tek onda odlučujete da li idemo dalje."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Koje branše opslužujete?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Radimo sa malim i srednjim preduzećima u proizvodnji, veletrgovini i distribuciji, transportu i logistici, te uslužnim djelatnostima. Rješenje prilagođavamo konkretnom procesu."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Moram li odmah zamijeniti Excel i postojeće alate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ne. Krećemo od jednog najbolnijeg procesa i po potrebi se povezujemo sa alatima koje već koristite. Prelazak je postupan, tako da posao ne staje."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Gdje se čuvaju moji podaci i ko im ima pristup?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Vaši podaci ostaju vaši. Čuvaju se na sigurnom, pristup ima samo ko vi odredite, a pri izradi poštujemo privatnost i sigurnost podataka."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Nudite li AI asistente i automatizaciju?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Da. Pravimo AI asistente i automatizaciju koji preuzimaju ponavljajuće zadatke, na primjer obradu upita, izvještaje ili unos podataka, da tim radi na važnijim stvarima."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Početna",
+      "item": "https://datamaks.net/"
+    }]
+  }
+  </script>
+</head>
+<body>
+  <div style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;background:#f59e0b;color:#1f2937;font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;padding:7px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.2);pointer-events:none">PREVIEW · 3D hero (nije na produkciji)</div>
+  <a href="#kontakt" class="skip-link">Preskoči na sadržaj</a>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="assets/images/logo.png" alt="Datamaks" width="183" height="100">
+        </a>
+
+        <nav class="nav">
+          <ul class="nav-links">
+            <li><a href="#usluge" class="nav-link">Usluge</a></li>
+            <li><a href="#prototipi" class="nav-link">Prototipi</a></li>
+            <li><a href="#mockup" class="nav-link">Prototip</a></li>
+            <li><a href="#zasto-mi" class="nav-link">Zašto mi</a></li>
+            <li><a href="/blog/" class="nav-link">Blog</a></li>
+            <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+          </ul>
+
+          <div class="lang-switcher">
+            <button class="lang-toggle" aria-label="BS - Odaberi jezik">
+              <span class="lang-flag current-flag">🇧🇦</span>
+              <span class="current-lang">BS</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="lang-dropdown">
+              <a href="/" class="lang-btn active"><span class="lang-flag">🇧🇦</span><span class="lang-code">BS</span><span class="lang-name">Bosanski</span></a>
+              <a href="/hr/" class="lang-btn"><span class="lang-flag">🇭🇷</span><span class="lang-code">HR</span><span class="lang-name">Hrvatski</span></a>
+              <a href="/sr/" class="lang-btn"><span class="lang-flag">🇷🇸</span><span class="lang-code">SR</span><span class="lang-name">Srpski</span></a>
+              <a href="/en/" class="lang-btn"><span class="lang-flag">🇬🇧</span><span class="lang-code">EN</span><span class="lang-name">English</span></a>
+              <a href="/de/" class="lang-btn"><span class="lang-flag">🇩🇪</span><span class="lang-code">DE</span><span class="lang-name">Deutsch</span></a>
+            </div>
+          </div>
+
+          <a href="#kontakt" class="btn btn-primary">Zakažite razgovor</a>
+
+          <button class="mobile-toggle" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <h1>Vaš posao. <span>Vaš softver.</span></h1>
+          <p class="hero-tagline">Digitalizacija poslovanja. Bolje odluke, brži rezultati.</p>
+          <p class="lead">Za distribuciju, proizvodnju, veleprodaju i usluge. Od analize do live rješenja za 3 do 5 sedmica, bez gotovih rješenja kojima se vi morate prilagođavati.</p>
+          <div class="hero-cta">
+            <a href="#prototipi" class="btn btn-primary btn-large">Pogledajte žive prototipe</a>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <div class="hero-3d" id="hero3d" aria-label="Živi 3D prikaz skladišta">
+            <div class="hero-3d-poster" id="hero3dPoster">
+              <svg viewBox="0 0 120 90" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="h3g" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#16233f"/><stop offset="1" stop-color="#0e1830"/>
+                  </linearGradient>
+                </defs>
+                <rect width="120" height="90" fill="url(#h3g)"/>
+                <g fill="#2a3550" opacity=".9">
+                  <rect x="18" y="40" width="16" height="30"/><rect x="40" y="34" width="16" height="36"/>
+                  <rect x="62" y="38" width="16" height="32"/><rect x="84" y="30" width="16" height="40"/>
+                </g>
+                <g fill="#caa472"><rect x="20" y="44" width="5" height="5"/><rect x="27" y="44" width="5" height="5"/><rect x="42" y="38" width="5" height="5"/><rect x="49" y="38" width="5" height="5"/><rect x="86" y="34" width="5" height="5"/></g>
+                <g fill="#f59e0b"><rect x="20" y="52" width="5" height="5"/><rect x="42" y="46" width="5" height="5"/></g>
+                <rect x="4" y="30" width="6" height="40" fill="#37425e"/>
+                <rect x="6" y="60" width="9" height="9" fill="#29a3dc" opacity=".7"/>
+              </svg>
+              <span class="hero-3d-play">Živi 3D prikaz skladišta</span>
+            </div>
+          </div>
+          <p class="hero-3d-cap">Živi 3D prikaz skladišta. Kliknite na vozilo ili regal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problems Section -->
+  <section class="problems" id="problemi">
+    <div class="container">
+      <div class="section-header">
+        <h2>Prepoznajete li ove probleme?</h2>
+        <p>Većina malih i srednjih preduzeća se svakodnevno suočava sa ovim izazovima</p>
+      </div>
+
+      <div class="problems-grid">
+        <div class="problem-card">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16M15 4v16"/></svg></div>
+          <h3>Podaci razbacani u Excel tabelama</h3>
+          <p>Svaki odjel ima svoje tabele. Verzije se miješaju. Niko nije siguran koji podaci su tačni i ažurni.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> jedna centralna baza, svi rade nad istim i uvijek tačnim podacima.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Ručni procesi koji troše vrijeme</h3>
+          <p>Isti podaci se unose više puta. Copy-paste između sistema. Sati se gube na poslove koji bi mogli biti automatski.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> automatizacija ponavljajućih koraka i unos jednom umjesto više puta.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 2 5-6"/></svg></div>
+          <h3>Nedostatak uvida u poslovanje</h3>
+          <p>Teško je dobiti jasnu sliku. Izvještaji kasne. Odluke se donose na osnovu osjećaja, ne podataka.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> dashboard sa ključnim brojkama i izvještaj u par klikova.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12l-3-3M20 17H8l3 3"/></svg></div>
+          <h3>Informacije se gube između odjela</h3>
+          <p>Proizvodnja ne zna šta je prodaja obećala. Nabavka ne zna šta je prodato. Kupac pita, niko ne zna odgovor.</p>
+          <p class="problem-solution"><strong>Rješavamo:</strong> svi odjeli u istom sistemu, ista informacija dostupna svima.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <!-- Prototipi (showcase) -->
+  <section class="services proto-section" id="prototipi">
+    <div class="container">
+      <div class="section-header">
+        <h2>Ne pričamo o rješenjima. Pokažemo ih.</h2>
+        <p>Kliknite kroz prave prototipe. Isti tok i logika kao u produkciji, na izmišljenim podacima.</p>
+      </div>
+      <div class="proto-grid">
+        <a class="proto-card" href="/mockups/veletrade/?lang=bs&v=2">
+          <div class="proto-preview" aria-hidden="true">
+            <div class="proto-chrome"><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-url">datamaks.net/mockups/veletrade</span></div>
+            <div class="proto-appbar"><span class="proto-mono">VT</span><span class="proto-brandtxt"><b>Veletrade</b><small>Veleprodaja prehrane</small></span></div>
+            <div class="proto-tabs"><span class="on">Narudžbe</span><span>Zalihe</span><span>Kupci</span><span>Izvještaji</span></div>
+            <div class="proto-kpis"><span></span><span></span><span></span><span></span></div>
+            <div class="proto-rows"><i></i><i></i><i></i></div>
+          </div>
+          <div class="proto-body">
+            <span class="proto-badge">Prototip · izmišljeni podaci</span>
+            <h3>Veletrade</h3>
+            <p>Sistem za veleprodaju prehrane. Narudžbe kroz faze, zalihe sa alarmom niskog stanja, kartica kupca i izvještaji. Sve povezano i klikabilno.</p>
+            <ul class="proto-feats"><li>Narudžbe kroz faze</li><li>Zalihe sa alarmom</li><li>Kartica kupca</li><li>Izvještaji</li></ul>
+            <span class="proto-cta">Otvori prototip &rarr;</span>
+          </div>
+        </a>
+        <a class="proto-card sl" href="/mockups/studio-lumen/?lang=bs&v=2">
+          <div class="proto-preview" aria-hidden="true">
+            <div class="proto-chrome"><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-url">datamaks.net/mockups/studio-lumen</span></div>
+            <div class="proto-appbar"><span class="proto-mono">SL</span><span class="proto-brandtxt"><b>Studio Lumen</b><small>Frizerski i kozmetički salon</small></span></div>
+            <div class="proto-tabs"><span class="on">Termini</span><span>Klijenti</span><span>Usluge</span><span>Pregled</span></div>
+            <div class="proto-kpis"><span></span><span></span><span></span><span></span></div>
+            <div class="proto-rows"><i></i><i></i><i></i></div>
+          </div>
+          <div class="proto-body">
+            <span class="proto-badge">Prototip · izmišljeni podaci</span>
+            <h3>Studio Lumen</h3>
+            <p>Zakazivanje termina za salon. Dnevni i sedmični kalendar po radniku, statusi, provjera preklapanja, kartoni klijenata i izvještaji.</p>
+            <ul class="proto-feats"><li>Kalendar dan/sedmica</li><li>Provjera preklapanja</li><li>Kartoni klijenata</li><li>Izvještaji</li></ul>
+            <span class="proto-cta">Otvori prototip &rarr;</span>
+          </div>
+        </a>
+        <a class="proto-card lg" href="/mockups/lignum/?lang=bs&v=2">
+          <div class="proto-preview" aria-hidden="true">
+            <div class="proto-chrome"><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-dot"></span><span class="proto-url">datamaks.net/mockups/lignum</span></div>
+            <div class="proto-appbar"><span class="proto-mono">LG</span><span class="proto-brandtxt"><b>Lignum</b><small>Namještaj po mjeri</small></span></div>
+            <div class="proto-tabs"><span class="on">Tabla</span><span>Nalozi</span><span>Materijal</span><span>Pregled</span></div>
+            <div class="proto-kpis"><span></span><span></span><span></span><span></span></div>
+            <div class="proto-rows"><i></i><i></i><i></i></div>
+          </div>
+          <div class="proto-body">
+            <span class="proto-badge">Prototip · izmišljeni podaci</span>
+            <h3>Lignum</h3>
+            <p>Praćenje proizvodnje namještaja po mjeri. Kanban tabla naloga kroz faze, blokade, materijali sa alarmom zaliha, rok po fazi i isporuka.</p>
+            <ul class="proto-feats"><li>Kanban po fazama</li><li>Blokade i alarmi</li><li>Materijali/zalihe</li><li>Rok po fazi</li></ul>
+            <span class="proto-cta">Otvori prototip &rarr;</span>
+          </div>
+        </a>
+      </div>
+      <div class="proto-more">
+        <a class="btn btn-primary btn-large" href="/mockups/?lang=bs">Pogledaj sve prototipe</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prvo prototip, pa odluka (DWEB-21) -->
+  <section class="mockup-offer" id="mockup">
+    <div class="container">
+      <div class="mo-grid">
+        <div class="mo-intro">
+          <h2>Prvo prototip, pa odluka</h2>
+          <p class="lead">Opišete svoj posao i problem, a mi vam odmah napravimo klikabilni prototip. Vidite kako rješenje radi na vašim primjerima prije nego išta gradimo.</p>
+          <ol class="mo-steps">
+            <li><span class="mo-num">1</span><div><b>Opišete svoj slučaj</b><p>Par rečenica o tome čime se bavite i gdje gubite vrijeme.</p></div></li>
+            <li><span class="mo-num">2</span><div><b>Napravimo prototip</b><p>Klikabilan prototip vašeg procesa, na vašim primjerima, za par minuta.</p></div></li>
+            <li><span class="mo-num">3</span><div><b>Link stiže na mail</b><p>Probate tok i logiku, pa zajedno odlučujemo o izradi.</p></div></li>
+          </ol>
+        </div>
+        <div class="mo-form mo-cta">
+          <h3>Napravite prototip odmah</h3>
+          <p>Opišete svoj posao i problem u par rečenica, a mi vam napravimo klikabilni prototip na vašim primjerima. Link stiže na vaš mail za par minuta.</p>
+          <a class="btn btn-primary btn-large" style="width:100%;text-align:center;display:block;box-sizing:border-box" href="https://demo.datamaks.net/?utm_source=datamaks&utm_medium=site&utm_campaign=mockup">Napravite besplatan prototip →</a>
+          <p style="font-size:13px;color:#64748b;margin-top:12px;text-align:center">Besplatno · stiže na vaš mail · za par minuta</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="usluge">
+    <div class="container">
+      <div class="section-header">
+        <h2>Kako radimo</h2>
+        <p>Od prvog razgovora do live rješenja, i ostajemo uz vas nakon toga.</p>
+        <p class="process-rok">Tipično 3 do 5 sedmica do prvog upotrebljivog rješenja (MVP), pa nastavljamo fazno.</p>
+        <p class="process-hint">Kliknite na svaki korak za detaljnu priču i primjere.</p>
+      </div>
+
+      <div class="services-grid process-steps">
+        <div class="service-card step-clickable" role="button" tabindex="0" data-step="1" aria-haspopup="dialog" aria-label="Analiza procesa, otvori detalje">
+          <div class="service-number">1</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <h3>Analiza procesa</h3>
+          <p>Mapiramo vaše poslovne procese i identificiramo gdje se gubi vrijeme i gdje su prilike za unapređenje.</p>
+          <span class="step-more">Detaljnije <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+        </div>
+
+        <div class="service-card step-clickable" role="button" tabindex="0" data-step="2" aria-haspopup="dialog" aria-label="Dizajn rješenja, otvori detalje">
+          <div class="service-number">2</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+          <h3>Dizajn rješenja</h3>
+          <p>Projektujemo sistem prilagođen vašoj logici rada, ne „gotovo rješenje" kojem se vi morate prilagođavati.</p>
+          <span class="step-more">Detaljnije <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+        </div>
+
+        <div class="service-card step-clickable" role="button" tabindex="0" data-step="3" aria-haspopup="dialog" aria-label="Implementacija, otvori detalje">
+          <div class="service-number">3</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <h3>Implementacija</h3>
+          <p>Razvijamo i postavljamo sistem fazno, tako da vidite rezultate što prije i možete davati povratne informacije.</p>
+          <span class="step-more">Detaljnije <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+        </div>
+
+        <div class="service-card step-clickable" role="button" tabindex="0" data-step="4" aria-haspopup="dialog" aria-label="Podrška, otvori detalje">
+          <div class="service-number">4</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-5a9 9 0 0 1 18 0v5"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+          <h3>Podrška</h3>
+          <p>Ostajemo uz vas: obuka tima, tehnička podrška i prilagođavanja kako vaše poslovanje raste i mijenja se.</p>
+          <span class="step-more">Detaljnije <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us Section -->
+  <section class="why-us" id="zasto-mi">
+    <div class="container">
+      <div class="why-us-grid">
+        <div class="why-us-content">
+          <h2>Zašto baš mi?</h2>
+          <p class="lead">Zato što prvo napravimo klikabilni prototip, pa vi odlučujete. Radimo po mjeri vašeg procesa, ne obrnuto, i specijalizovani smo za mala i srednja preduzeća u BiH, regionu i EU.</p>
+          <p class="lead">Nismo velika korporacija koja prodaje skupe licence. Nismo freelanceri koji nestanu nakon projekta. Mi smo partner koji razumije vaše poslovanje.</p>
+
+          <ul class="benefits-list">
+            <li class="benefit-item">
+              <div class="benefit-icon">✓</div>
+              <div class="benefit-text"><strong>Rješenje po mjeri:</strong> ne plaćate funkcije koje vam ne trebaju</div>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">✓</div>
+              <div class="benefit-text"><strong>Razumljiv jezik:</strong> pričamo o vašem poslu, ne o tehnologiji</div>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">✓</div>
+              <div class="benefit-text"><strong>Fazna implementacija:</strong> brzo vidite rezultate, plaćate postepeno</div>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">✓</div>
+              <div class="benefit-text"><strong>Dugoročno partnerstvo:</strong> tu smo dok vam trebamo</div>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">✓</div>
+              <div class="benefit-text"><strong>Lokalni pristup:</strong> razumijemo tržište, jezik, način rada</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="why-us-image">
+          <img src="assets/images/partnership.webp" alt="Partnerski pristup, razgovor o vašem poslovanju" width="500" height="400" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Spremni za promjenu?</h2>
+      <p>20 minuta besplatnog razgovora. Vi opišete gdje gubite vrijeme, mi kažemo šta je moguće.</p>
+      <a href="#kontakt" class="btn btn-primary btn-large">Zakažite razgovor</a>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2>Česta pitanja</h2>
+        <p>Odgovori na najčešća pitanja o digitalizaciji poslovanja</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Koliko košta digitalizacija poslovanja?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Cijena zavisi od obima projekta. Nudimo besplatan inicijalni razgovor gdje analiziramo vaše potrebe i dajemo procjenu. Radimo fazno, tako da ne morate investirati sve odjednom.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Šta je digitalizacija poslovanja?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Digitalizacija poslovanja je proces zamjene ručnih, papirnih procesa sa automatizovanim softverskim rješenjima. To uključuje automatizaciju svakodnevnih zadataka, centralizaciju podataka i kreiranje izvještaja za bolje poslovne odluke.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Koliko traje implementacija poslovnog softvera?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Vrijeme implementacije zavisi od kompleksnosti projekta. Jednostavnija rješenja mogu biti gotova za 2 do 4 sedmice, dok kompleksniji sistemi zahtijevaju 2 do 3 mjeseca. Radimo faznu implementaciju kako bi vidjeli rezultate što prije.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Da li radite sa malim firmama?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Da, specijalizovani smo upravo za mala i srednja preduzeća. Naša rješenja su prilagođena vašim potrebama i budžetu, ne plaćate funkcije koje vam ne trebaju.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Koji je prvi korak?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Javite nam se za besplatan razgovor od 20 minuta. Samo da vidimo možemo li vam pomoći i damo vam okvir šta je moguće.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Radite li za firme izvan Bosne i Hercegovine?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Da. Sarađujemo sa firmama u BiH, Srbiji, Crnoj Gori i Sjevernoj Makedoniji, kao i u Austriji i EU. Komunikacija ide na našem jeziku ili na njemačkom i engleskom, a rad je online uz povremene sastanke.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Šta je softver po mjeri i zašto ne kupiti gotov program?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Softver po mjeri je aplikacija napravljena tačno za vaš proces, umjesto da svoj posao prilagođavate tuđem programu. Gotova rješenja često imaju suvišne funkcije, a nemaju baš ono što vama treba. Po mjeri plaćate samo ono što koristite i lako se mijenja kako firma raste.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Kako izgleda besplatni prototip i šta dobijam?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Prije bilo kakvog plaćanja napravimo klikabilni prototip vašeg rješenja, koji izgleda i radi kao prava aplikacija. Na njemu vidite kako bi sistem funkcionisao u vašoj firmi i tek onda odlučujete da li idemo dalje.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Koje branše opslužujete?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Radimo sa malim i srednjim preduzećima u proizvodnji, veletrgovini i distribuciji, transportu i logistici, te uslužnim djelatnostima. Rješenje prilagođavamo konkretnom procesu.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Moram li odmah zamijeniti Excel i postojeće alate?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Ne. Krećemo od jednog najbolnijeg procesa i po potrebi se povezujemo sa alatima koje već koristite. Prelazak je postupan, tako da posao ne staje.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Gdje se čuvaju moji podaci i ko im ima pristup?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Vaši podaci ostaju vaši. Čuvaju se na sigurnom, pristup ima samo ko vi odredite, a pri izradi poštujemo privatnost i sigurnost podataka.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Nudite li AI asistente i automatizaciju?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Da. Pravimo AI asistente i automatizaciju koji preuzimaju ponavljajuće zadatke, na primjer obradu upita, izvještaje ili unos podataka, da tim radi na važnijim stvarima.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="kontakt">
+    <div class="container">
+      <div class="booking-cta">
+        <div class="booking-cta-text">
+          <h2>Zakaži besplatan razgovor od 20 minuta</h2>
+          <p>Izaberi termin koji ti odgovara. Bez čekanja na odgovor mejlom.</p>
+        </div>
+        <a class="btn btn-primary btn-large" href="https://cal.com/datamaks-besplatan-razgovor/besplatan-razgovor" target="_blank" rel="noopener">📅 Izaberi termin</a>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Javite nam se</h2>
+          <p class="lead">Ispričajte nam o svom izazovu. Zajedno ćemo vidjeti da li i kako možemo pomoći.</p>
+
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="contact-method-icon">📧</div>
+              <div class="contact-method-text">
+                <span class="contact-method-label">Email</span>
+                <span class="contact-method-value"><a href="mailto:info@datamaks.net">info@datamaks.net</a></span>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method-icon">
+                <svg width="24" height="24" fill="#1e40af" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </div>
+              <div class="contact-method-text">
+                <span class="contact-method-label">LinkedIn</span>
+                <span class="contact-method-value"><a href="https://www.linkedin.com/company/datamaks" target="_blank" rel="noopener">Datamaks</a></span>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method-icon">📱</div>
+              <div class="contact-method-text">
+                <span class="contact-method-label">Telefon (BiH)</span>
+                <span class="contact-method-value"><a href="tel:+38765469565">+387 65 469 565</a></span>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method-icon">📱</div>
+              <div class="contact-method-text">
+                <span class="contact-method-label">Telefon (AT/EU)</span>
+                <span class="contact-method-value"><a href="tel:+436677970082">+43 667 797 0082</a></span>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-method-icon">📍</div>
+              <div class="contact-method-text">
+                <span class="contact-method-label">Adresa</span>
+                <span class="contact-method-value">Veljka Mladjenovica bb<br>78000 Banja Luka<br>Bosna i Hercegovina</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form" action="https://tjufkzervoxvyteomaww.supabase.co/functions/v1/contact" method="POST">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <input type="hidden" name="_subject" value="Nova poruka sa datamaks.net">
+
+          <div class="form-group">
+            <label for="name">Vaše ime *</label>
+            <input type="text" id="name" name="name" required placeholder="Ime i prezime">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email adresa *</label>
+            <input type="email" id="email" name="email" required placeholder="vas@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="company">Naziv firme</label>
+            <input type="text" id="company" name="company" placeholder="Vaša firma d.o.o.">
+          </div>
+
+          <div class="form-group">
+            <label for="topic">Šta vas najviše muči?</label>
+            <select id="topic" name="topic">
+              <option value="">Izaberite (opciono)</option>
+              <option>Podaci razbacani po Excel tabelama</option>
+              <option>Ručni procesi troše previše vremena</option>
+              <option>Nemam jasan uvid u poslovanje / izvještaje</option>
+              <option>Treba mi softver po mjeri</option>
+              <option>Nešto drugo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Poruka <span class="optional">(opciono)</span></label>
+            <textarea id="message" name="message" placeholder="Opišite ukratko vaš izazov ili pitanje..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">Pošaljite poruku</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  </main>
+
+  <!-- Redizajn (DWEB): stilovi za chat dugmad, select i "opciono" -->
+  <style>
+    .chat-float{position:fixed;right:20px;bottom:20px;z-index:9990;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+    .chat-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;color:#fff;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.18);transition:transform .15s ease, box-shadow .15s ease}
+    .chat-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.24)}
+    .chat-btn svg{width:24px;height:24px;fill:#fff;flex:0 0 auto}
+    .chat-btn.viber{background:#7360F2}
+    .chat-btn.whatsapp{background:#25D366}
+    @media(max-width:520px){.chat-btn .chat-text{display:none}.chat-btn{padding:14px;border-radius:50%}}
+    .contact-form select{width:100%;padding:12px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:15px;font-family:inherit;background:#fff;color:#0f172a}
+    .contact-form select:focus{outline:none;border-color:#1e40af}
+    .form-group .optional{color:#94a3b8;font-weight:400;font-size:.85em}
+    .booking-cta{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:22px 28px;margin-bottom:36px}
+    .booking-cta-text h2{margin:0 0 4px;font-size:1.25rem}
+    .booking-cta-text p{margin:0;color:#475569}
+    .problem-icon svg{width:26px;height:26px;color:#fff}
+    .problem-solution{margin-top:12px;font-size:.95rem;color:#334155}
+    .problem-solution strong{color:#1e40af}
+    .process-rok{margin-top:10px;display:inline-block;background:#eff6ff;color:#1e40af;font-weight:600;padding:8px 14px;border-radius:999px;font-size:.95rem}
+    body[data-theme="dark"] .process-rok{background:#1e293b;color:#93c5fd}
+    body[data-theme="dark"] .problem-solution{color:#cbd5e1}
+    /* Kako radimo - klikabilni koraci + modal (DWEB-30) */
+    .process-hint{margin-top:8px;color:#64748b;font-size:.92rem}
+    body[data-theme="dark"] .process-hint{color:#94a3b8}
+    .step-clickable{cursor:pointer;position:relative;transition:transform .18s ease,box-shadow .18s ease}
+    .step-clickable:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(30,64,175,.16)}
+    .step-clickable:focus-visible{outline:3px solid rgba(30,64,175,.35);outline-offset:3px}
+    .step-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;color:#1e40af;font-weight:600;font-size:.9rem;transition:gap .18s ease}
+    .step-clickable:hover .step-more{gap:11px}
+    body[data-theme="dark"] .step-more{color:#93c5fd}
+    .step-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px}
+    .step-modal[hidden]{display:none}
+    .step-modal__backdrop{position:absolute;inset:0;background:rgba(2,6,23,.62);backdrop-filter:blur(4px)}
+    .step-modal__card{position:relative;background:#fff;width:100%;max-width:640px;max-height:90vh;overflow:auto;border-radius:22px;box-shadow:0 30px 80px rgba(2,6,23,.45);animation:smUp .28s cubic-bezier(.2,.7,.3,1)}
+    @keyframes smUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    .step-modal__x{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border:none;border-radius:50%;background:rgba(255,255,255,.92);color:#0f172a;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 10px rgba(2,6,23,.18)}
+    .step-modal__x:hover{background:#fff}
+    .sm-head{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:30px 34px 26px;display:flex;align-items:center;gap:18px}
+    .sm-badge{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px}
+    .sm-head h3{margin:0;font-size:1.5rem;line-height:1.2;color:#fff}
+    .sm-tag{margin:4px 0 0;opacity:.9;font-size:.95rem}
+    .sm-illu{display:flex;justify-content:center;padding:24px 34px 4px}
+    .sm-illu svg{width:100%;max-width:330px;height:auto}
+    .sm-body{padding:10px 34px 32px}
+    .sm-body p{margin:0 0 14px;color:#334155;font-size:1rem;line-height:1.65}
+    .sm-list{list-style:none;margin:18px 0 24px;padding:0}
+    .sm-list li{position:relative;padding:9px 0 9px 32px;color:#0f172a;font-size:.98rem;border-bottom:1px solid #f1f5f9}
+    .sm-list li:before{content:"";position:absolute;left:2px;top:11px;width:18px;height:18px;border-radius:50%;background:#dbeafe}
+    .sm-list li:after{content:"";position:absolute;left:8px;top:14px;width:4px;height:9px;border-right:2px solid #1e40af;border-bottom:2px solid #1e40af;transform:rotate(45deg)}
+    body[data-theme="dark"] .step-modal__card{background:#0f172a}
+    body[data-theme="dark"] .step-modal__x{background:rgba(15,23,42,.9);color:#e2e8f0}
+    body[data-theme="dark"] .sm-body p{color:#cbd5e1}
+    body[data-theme="dark"] .sm-list li{color:#e2e8f0;border-bottom-color:#1e293b}
+    body[data-theme="dark"] .sm-list li:before{background:#1e293b}
+    @media(max-width:560px){.sm-head{padding:24px 22px}.sm-illu,.sm-body{padding-left:22px;padding-right:22px}.sm-head h3{font-size:1.3rem}}
+  </style>
+
+  <!-- Kontakt FAB se sada ubacuje centralno preko assets/js/consent.js (isti na cijelom sajtu) -->
+
+
+  <!-- Kako radimo - modal koraka (DWEB-30) -->
+  <div class="step-modal" id="stepModal" role="dialog" aria-modal="true" aria-labelledby="smTitle" hidden>
+    <div class="step-modal__backdrop" data-close></div>
+    <div class="step-modal__card">
+      <button class="step-modal__x" type="button" data-close aria-label="Zatvori">&times;</button>
+      <div id="stepModalContent"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <img src="assets/images/logo-white.png" alt="Datamaks" width="183" height="100">
+          </a>
+          <p>Digitalizacija poslovanja za mala i srednja preduzeća. Automatizacija procesa, bolje odluke, manji troškovi.</p>
+        
+          <div class="footer-social">
+            <a href="https://www.instagram.com/datamaks.digital" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <a href="https://www.facebook.com/datamaks.digital" target="_blank" rel="noopener" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="https://www.linkedin.com/company/datamaks" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h3>Usluge</h3>
+          <ul class="footer-links">
+            <li><a href="#usluge">Analiza procesa</a></li>
+            <li><a href="#usluge">Dizajn rješenja</a></li>
+            <li><a href="#usluge">Implementacija</a></li>
+            <li><a href="#usluge">Podrška</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Industrije</h3>
+          <ul class="footer-links">
+            <li><a href="#usluge">Distribucija</a></li>
+            <li><a href="#usluge">Proizvodnja</a></li>
+            <li><a href="#usluge">Veleprodaja</a></li>
+            <li><a href="#usluge">Usluge</a></li>
+            <li><a href="/softver-za-namjestaj-po-mjeri/">Softver za namještaj</a></li>
+            <li><a href="/blog/">Blog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Kontakt</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:info@datamaks.net">info@datamaks.net</a></li>
+            <li><a href="tel:+38765469565">+387 65 469 565</a></li>
+            <li><a href="tel:+436677970082">+43 667 797 0082</a></li>
+            <li>Veljka Mladjenovica bb<br>78000 Banja Luka, BiH</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Datamaks d.o.o. Sva prava zadržana. · <a href="/privatnost.html">Politika privatnosti</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        mobileToggle.classList.toggle('active');
+        mobileToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+      });
+      // Close menu when nav link clicked
+      navLinks.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          mobileToggle.classList.remove('active');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Language switcher dropdown
+    document.querySelectorAll('.lang-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const switcher = toggle.closest('.lang-switcher');
+        document.querySelectorAll('.lang-switcher').forEach(s => {
+          if (s !== switcher) s.classList.remove('open');
+        });
+        switcher.classList.toggle('open');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.lang-switcher').forEach(s => s.classList.remove('open'));
+    });
+
+    // Form submission with custom redirect
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Slanje...';
+        submitBtn.disabled = true;
+
+        const payload = {
+          ime: (form.querySelector('[name=name]')||{}).value||'',
+          email: (form.querySelector('[name=email]')||{}).value||'',
+          firma: (form.querySelector('[name=company]')||{}).value||'',
+          tip: (form.querySelector('[name=topic]')||{}).value||'',
+          poruka: (form.querySelector('[name=message]')||{}).value||'',
+          _gotcha: (form.querySelector('[name=_gotcha]')||{}).value||''
+        };
+        try {
+          const response = await fetch("https://tjufkzervoxvyteomaww.supabase.co/functions/v1/contact", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (response.ok) {
+            window.location.href = '/thank-you.html';
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          alert('Greška pri slanju. Molimo pokušajte ponovo.');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Mockup brief forma (DWEB-21) — isti Formspree tok kao kontakt
+    var mockupForm = document.getElementById('mockup-form');
+    if (mockupForm) {
+      mockupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const b = mockupForm.querySelector('button[type="submit"]');
+        const orig = b.textContent;
+        b.textContent = b.dataset.sending || orig;
+        b.disabled = true;
+        try {
+          const r = await fetch(mockupForm.action, { method: 'POST', body: new FormData(mockupForm), headers: { 'Accept': 'application/json' } });
+          if (r.ok) { window.location.href = '/thank-you.html'; }
+          else { throw new Error('failed'); }
+        } catch (err) {
+          alert(mockupForm.dataset.error || 'Greška pri slanju.');
+          b.textContent = orig;
+          b.disabled = false;
+        }
+      });
+    }
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        if (!isOpen) item.classList.add('active');
+        btn.setAttribute('aria-expanded', !isOpen);
+      });
+    });
+
+    // Kako radimo - modal koraka (DWEB-30)
+    (function(){
+      var I1 = '<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect x="66" y="22" width="150" height="156" rx="12" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/><rect x="86" y="46" width="110" height="10" rx="5" fill="#bfdbfe"/><rect x="86" y="68" width="90" height="8" rx="4" fill="#dbeafe"/><rect x="86" y="88" width="110" height="8" rx="4" fill="#dbeafe"/><rect x="86" y="108" width="70" height="8" rx="4" fill="#dbeafe"/><circle cx="206" cy="126" r="42" fill="rgba(37,99,235,.12)"/><circle cx="206" cy="126" r="31" fill="#fff" stroke="#2563eb" stroke-width="6"/><circle cx="206" cy="126" r="11" fill="#93c5fd"/><line x1="230" y1="150" x2="260" y2="180" stroke="#1e40af" stroke-width="11" stroke-linecap="round"/></svg>';
+      var I2 = '<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect x="58" y="28" width="224" height="152" rx="14" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/><path d="M58 42a14 14 0 0 1 14-14h196a14 14 0 0 1 14 14v11H58z" fill="#2563eb"/><circle cx="74" cy="40" r="3.6" fill="#fff"/><circle cx="86" cy="40" r="3.6" fill="#fff"/><circle cx="98" cy="40" r="3.6" fill="#fff"/><rect x="74" y="66" width="84" height="52" rx="9" fill="#dbeafe"/><rect x="168" y="66" width="100" height="22" rx="7" fill="#bfdbfe"/><rect x="168" y="96" width="100" height="22" rx="7" fill="#dbeafe"/><rect x="74" y="128" width="194" height="14" rx="7" fill="#dbeafe"/><rect x="74" y="150" width="120" height="14" rx="7" fill="#93c5fd"/></svg>';
+      var I3 = '<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><line x1="58" y1="172" x2="286" y2="172" stroke="#bfdbfe" stroke-width="3"/><rect x="74" y="122" width="36" height="50" rx="7" fill="#93c5fd"/><rect x="128" y="98" width="36" height="74" rx="7" fill="#60a5fa"/><rect x="182" y="72" width="36" height="100" rx="7" fill="#2563eb"/><rect x="236" y="46" width="36" height="126" rx="7" fill="#1e40af"/><circle cx="254" cy="34" r="17" fill="#22c55e"/><path d="M246 34l6 6 10-11" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var I4 = '<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><path d="M168 24l58 20v42c0 40-27 62-58 74-31-12-58-34-58-74V44z" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/><path d="M146 96l15 15 28-32" fill="none" stroke="#1e40af" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M246 150v-40" stroke="#22c55e" stroke-width="7" stroke-linecap="round"/><path d="M235 122l11-14 11 14" fill="none" stroke="#22c55e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var STEPS = {
+        '1': { title:'Analiza procesa', tag:'Razumijemo kako zaista radite', illu:I1,
+          body:['Sjednemo s vama i prođemo korak po korak kako vam danas teče posao. Od trenutka kad stigne nalog, preko materijala i proizvodnje, do isporuke i naplate.',
+                'Cilj nije da vam namećemo tuđi način rada, nego da tačno vidimo gdje se gubi vrijeme, gdje nastaju greške i gdje papir i tabele usporavaju tim.'],
+          list:['Mapa vašeg procesa, korak po korak','Popis uskih grla i gdje se gubi vrijeme','Jasni prioriteti: šta prvo digitalizovati','Realna procjena obima i troška'] },
+        '2': { title:'Dizajn rješenja', tag:'Sistem po vašoj logici, ne obratno', illu:I2,
+          body:['Na osnovu analize projektujemo rješenje koje prati vašu logiku rada. Ekrane, podatke i tok, tako da tim odmah zna gdje šta ide.',
+                'Prije nego se napiše i jedna linija koda, dobijate klikabilan prototip. Vidite kako sistem izgleda i radi, pa mijenjamo dok ne bude kako treba.'],
+          list:['Klikabilan prototip prije razvoja','Ekrani i tok prilagođeni vašem timu','Dogovorene funkcije, bez suvišnog','Vi potvrđujete izgled prije gradnje'] },
+        '3': { title:'Implementacija', tag:'Fazno, da rezultate vidite brzo', illu:I3,
+          body:['Gradimo i postavljamo sistem u fazama. Svaka faza je upotrebljiva, pa počnete koristiti prvi dio dok mi razvijamo ostalo.',
+                'Tako brzo vidite vrijednost i dajete povratne informacije usput, a nema rizika velikog prekida ni čekanja mjesecima na sve odjednom.'],
+          list:['Prvi upotrebljiv rezultat tipično za 3 do 5 sedmica','Isporuka u fazama, bez velikog prekida','Vaše povratne informacije ugrađujemo usput','Prenos podataka iz postojećih tabela'] },
+        '4': { title:'Podrška', tag:'Ostajemo uz vas i nakon lansiranja', illu:I4,
+          body:['Kad sistem zaživi, ne nestajemo. Obučimo vaš tim da ga koristi samostalno i sigurno, na vašem jeziku i primjerima.',
+                'Kako posao raste i mijenja se, sistem raste s vama. Tu smo za tehničku podršku, dorade i nove funkcije kad zatrebaju.'],
+          list:['Obuka tima na vašim primjerima','Tehnička podrška kad zatreba','Dorade i nove funkcije kako rastete','Dugoročno partnerstvo, ne jednokratni projekat'] }
+      };
+      var modal = document.getElementById('stepModal');
+      var content = document.getElementById('stepModalContent');
+      if(!modal || !content) return;
+      var lastFocus = null;
+      function render(n){
+        var s = STEPS[n]; if(!s) return;
+        var paras = s.body.map(function(p){return '<p>'+p+'</p>';}).join('');
+        var lis = s.list.map(function(x){return '<li>'+x+'</li>';}).join('');
+        content.innerHTML =
+          '<div class="sm-head"><div class="sm-badge">'+n+'</div><div><h3 id="smTitle">'+s.title+'</h3><p class="sm-tag">'+s.tag+'</p></div></div>'+
+          '<div class="sm-illu">'+s.illu+'</div>'+
+          '<div class="sm-body">'+paras+'<ul class="sm-list">'+lis+'</ul>'+
+          '<a href="#kontakt" class="btn btn-primary sm-cta" data-close data-scroll="kontakt">Zakažite razgovor</a></div>';
+      }
+      function openStep(n){
+        lastFocus = document.activeElement;
+        render(n);
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        var x = modal.querySelector('.step-modal__x'); if(x) x.focus();
+      }
+      function closeStep(scrollTo){
+        modal.hidden = true;
+        document.body.style.overflow = '';
+        if(lastFocus && lastFocus.focus) lastFocus.focus();
+        if(scrollTo){ var t = document.getElementById(scrollTo); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }
+      }
+      document.querySelectorAll('.step-clickable').forEach(function(card){
+        card.addEventListener('click', function(){ openStep(card.getAttribute('data-step')); });
+        card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openStep(card.getAttribute('data-step')); } });
+      });
+      modal.addEventListener('click', function(e){
+        var c = e.target.closest('[data-close]');
+        if(c){ e.preventDefault(); closeStep(c.getAttribute('data-scroll')); }
+      });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.hidden) closeStep(); });
+    })();
+  </script>
+
+  <script src="/assets/js/consent.js" defer></script>
+  <script src="/assets/js/anim.js?v=1" defer></script>
+
+  <!-- Hero 3D: importmap + lijeno ucitavanje (samo desktop, uz provjere) -->
+  <script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }}
+  </script>
+  <script>
+  (function(){
+    var mount = document.getElementById('hero3d');
+    if(!mount) return;
+    function canRun(){
+      // hero-image kolona je sakrivena na mobilnom (display:none) -> ne pokrecemo 3D tamo
+      if(mount.clientWidth < 360 || mount.offsetParent === null) return false;
+      var c = navigator.connection || {};
+      if(c.saveData) return false;
+      try{
+        var cv = document.createElement('canvas');
+        if(!(window.WebGLRenderingContext && (cv.getContext('webgl') || cv.getContext('experimental-webgl')))) return false;
+      }catch(e){ return false; }
+      return true;
+    }
+    function go(){
+      if(!canRun()) return; // ostaje poster
+      import('/assets/js/hero-3d.js?v=1').then(function(m){ m.initHero3D(mount); }).catch(function(){});
+    }
+    // ne diraj prvi render: pokreni poslije load + u praznom hodu
+    function schedule(){ (window.requestIdleCallback||function(f){setTimeout(f,400);})(go); }
+    if(document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule);
+  })();
+  </script>
+</body>
+</html>
