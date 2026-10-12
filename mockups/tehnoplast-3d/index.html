@@ -802,6 +802,11 @@ function onPick(e){
   }
   if(!html){ card.style.display='none'; return; }
   card.innerHTML = html; card.style.display='block';
+  if(window.tpTrack){
+    const _l = u.type==='Sektor'?u.ref.name : (u.type==='Artikal'?u.ref.id : (u.type==='Ekipa'?u.ref.naziv :
+      (u.type==='Kamion'?(u.incoming?'prijem '+u.id:'otprema '+u.id) : (u.ime||u.elem||u.id||u.nalog||''))));
+    window.tpTrack('click', { obj:u.type, lbl:String(_l).slice(0,40) });
+  }
   const cw = card.offsetWidth||320, ch = card.offsetHeight||260;
   const cx = Math.min(e.clientX+14, window.innerWidth - cw - 12);
   const cy = Math.min(e.clientY+14, window.innerHeight - ch - 12);
@@ -941,6 +946,35 @@ try{
 }catch(err){
   document.getElementById('loading').innerHTML = '<div style="max-width:340px;text-align:center;color:#334155">Vas pregledac ne podrzava 3D prikaz (WebGL). Otvorite na racunaru u Chrome ili Safari.</div>';
 }
+</script>
+
+<script>
+/* ===== PRACENJE PONASANJA (3D demo, nezavisno od GA4) -> api.datamaks.net ===== */
+(function(){try{
+  if(!/(^|\.)datamaks\.net$/i.test(location.hostname))return; // aktivno samo na objavljenom demou
+  var EP='https://api.datamaks.net/e';
+  var get=function(k){try{return localStorage.getItem(k);}catch(_){return null;}};
+  var set=function(k,v){try{localStorage.setItem(k,v);}catch(_){}};
+  var rid=function(){return Math.random().toString(36).slice(2,10);};
+  var vid=get('tp_vid'); if(!vid){vid=rid()+rid(); set('tp_vid',vid);}
+  var sid=rid()+Date.now().toString(36);
+  var t0=Date.now();
+  var q=[];
+  function push(type,extra){var e={t:type,r:'3d',ms:Date.now()-t0};if(extra)for(var k in extra)e[k]=extra[k];q.push(e);if(q.length>=25)flush();}
+  function flush(){if(!q.length)return;var p=JSON.stringify({sid:sid,vid:vid,href:location.href,ref:document.referrer,w:screen.width,h:screen.height,q:q});q=[];try{if(navigator.sendBeacon)navigator.sendBeacon(EP,p);else fetch(EP,{method:'POST',body:p,keepalive:true});}catch(_){}}
+  window.tpTrack=function(type,extra){try{push(type,extra);flush();}catch(_){}};
+  push('start',{land:'3d'}); flush();
+  // HUD dugmad i kartice (klik na objekte u sceni loguje modul preko window.tpTrack)
+  document.addEventListener('click',function(ev){try{
+    var el=ev.target.closest&&ev.target.closest('button,.kpi,.demo');
+    if(!el)return;
+    var lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,40);
+    push('click',{lbl:lbl,cls:(el.id||(''+el.className).split(' ')[0]||el.tagName)}); flush();
+  }catch(_){}},true);
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){push('hide',{total:Date.now()-t0});flush();}});
+  window.addEventListener('pagehide',function(){push('end',{total:Date.now()-t0});flush();});
+  setInterval(flush,8000);
+}catch(_){}})();
 </script>
 </body>
 </html>
