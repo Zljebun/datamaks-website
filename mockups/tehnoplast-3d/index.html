@@ -295,8 +295,8 @@ function init(){
   // pick samo na tap (ne na rotiranje/povlacenje) — vazno na telefonu
   let _dx=0,_dy=0,_dt=0,_moved=false;
   renderer.domElement.addEventListener('pointerdown', e=>{ _dx=e.clientX; _dy=e.clientY; _dt=Date.now(); _moved=false; });
-  renderer.domElement.addEventListener('pointermove', e=>{ if(Math.abs(e.clientX-_dx)>9 || Math.abs(e.clientY-_dy)>9) _moved=true; });
-  renderer.domElement.addEventListener('pointerup', e=>{ if(!_moved && Date.now()-_dt<600) onPick(e); });
+  renderer.domElement.addEventListener('pointermove', e=>{ if(Math.abs(e.clientX-_dx)>6 || Math.abs(e.clientY-_dy)>6) _moved=true; });
+  renderer.domElement.addEventListener('pointerup', e=>{ if(!_moved && Date.now()-_dt<450) onPick(e); });
   window.addEventListener('resize', onResize);
   document.getElementById('loading').style.display='none';
   animate();
