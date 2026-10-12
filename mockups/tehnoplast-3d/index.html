@@ -11,9 +11,9 @@
 <style>
   :root{ --brand:#d81f26; --brand2:#7f1012; --cyan:#0e7490; --ink:#0f172a; --warn:#f59e0b; --danger:#ef4444; --ok:#16a34a; }
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;overflow:hidden;background:#dce8f7;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a}
+  html,body{margin:0;height:100%;overflow:hidden;background:#dce8f7;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
   #app{position:fixed;inset:0}
-  canvas{display:block}
+  canvas{display:block;touch-action:none}
   .hud{position:absolute;pointer-events:none;z-index:5}
   #vig{position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(135% 120% at 50% 28%, transparent 52%, rgba(16,36,72,.16) 100%)}
   .panel{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(246,250,255,.9));border:1px solid rgba(255,255,255,.75);border-radius:16px;backdrop-filter:blur(13px) saturate(1.25);-webkit-backdrop-filter:blur(13px) saturate(1.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 2px 6px rgba(20,40,80,.07),0 16px 40px rgba(18,42,88,.19)}
@@ -71,11 +71,17 @@
   #loading .sp{width:34px;height:34px;border:3px solid rgba(40,70,120,.2);border-top-color:var(--brand);border-radius:50%;animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   @media(max-width:720px){
-    #kpis{width:188px}
-    #kgrid{grid-template-columns:1fr}
-    #log{width:300px}
+    #kpis{width:auto}
+    #kpis .khead{gap:7px;justify-content:flex-end;padding:8px 11px}
+    #kpis .khead > span:first-child{display:none}
+    #kpis.min #ksum{display:none}
+    #kgrid{grid-template-columns:1fr;width:152px}
+    #ksum{font-size:9.5px;padding:2px 7px}
+    #brand{padding:10px 13px}
+    #brand .t{font-size:15px}
+    #log{width:min(320px,calc(100vw - 20px))}
     #hint{display:none}
-    #card{max-width:280px}
+    #card{max-width:min(300px,calc(100vw - 20px))}
   }
 </style>
 </head>
@@ -229,10 +235,11 @@ function makeMachine(s){
   return g;
 }
 
+const IS_MOBILE = (window.innerWidth < 820) || ('ontouchstart' in window && window.innerWidth < 1024);
 function init(){
   const app = document.getElementById('app');
   renderer = new THREE.WebGLRenderer({ antialias:true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_MOBILE?1.5:2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -248,13 +255,14 @@ function init(){
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.035).texture;
 
-  camera = new THREE.PerspectiveCamera(46, window.innerWidth/window.innerHeight, 0.1, 600);
-  camera.position.set(46, 41, 58);
+  // na telefonu/portretu: sira FOV i kamera povucena da cijela scena stane
+  camera = new THREE.PerspectiveCamera(IS_MOBILE?60:46, window.innerWidth/window.innerHeight, 0.1, 600);
+  camera.position.set(IS_MOBILE?60:46, IS_MOBILE?54:41, IS_MOBILE?74:58);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(-2, 2, 2);
   controls.enableDamping = true; controls.dampingFactor = 0.08;
-  controls.maxPolarAngle = Math.PI/2.15; controls.minDistance = 16; controls.maxDistance = 130;
+  controls.maxPolarAngle = Math.PI/2.15; controls.minDistance = IS_MOBILE?22:16; controls.maxDistance = 150;
   // lagana kino-rotacija dok korisnik ne uhvati scenu
   controls.autoRotate = true; controls.autoRotateSpeed = 0.42;
   controls.addEventListener('start', ()=>{ controls.autoRotate = false; });
@@ -263,7 +271,7 @@ function init(){
   scene.add(new THREE.HemisphereLight(0xffffff, 0xccd8ea, 0.62));
   const sun = new THREE.DirectionalLight(0xfff4e2, 1.95);
   sun.position.set(38, 58, 26); sun.castShadow = true;
-  sun.shadow.mapSize.set(2048,2048);
+  sun.shadow.mapSize.set(IS_MOBILE?1024:2048, IS_MOBILE?1024:2048);
   const s = 66; const c = sun.shadow.camera;
   c.left=-s; c.right=s; c.top=s; c.bottom=-s; c.near=1; c.far=160; sun.shadow.bias=-0.0003;
   sun.shadow.radius=4; sun.shadow.normalBias=0.02;
@@ -284,7 +292,11 @@ function init(){
   pointer = new THREE.Vector2();
   clock = new THREE.Clock();
 
-  renderer.domElement.addEventListener('pointerdown', onPick);
+  // pick samo na tap (ne na rotiranje/povlacenje) — vazno na telefonu
+  let _dx=0,_dy=0,_dt=0,_moved=false;
+  renderer.domElement.addEventListener('pointerdown', e=>{ _dx=e.clientX; _dy=e.clientY; _dt=Date.now(); _moved=false; });
+  renderer.domElement.addEventListener('pointermove', e=>{ if(Math.abs(e.clientX-_dx)>9 || Math.abs(e.clientY-_dy)>9) _moved=true; });
+  renderer.domElement.addEventListener('pointerup', e=>{ if(!_moved && Date.now()-_dt<600) onPick(e); });
   window.addEventListener('resize', onResize);
   document.getElementById('loading').style.display='none';
   animate();
@@ -940,6 +952,7 @@ try{
   init();
   setupLogToggle();
   setupKpiToggle();
+  if(IS_MOBILE){ document.getElementById('kpis').classList.add('min'); document.getElementById('kpitog').textContent='Prikazi'; }
   kpis();
   [['PVC linija · nalog '+ORDER+' u varenju','done'],['Prijem profila PVC 70mm bijeli','mag'],['Kontrola kvaliteta: element gotov','done']].forEach(([t,c],i)=> setTimeout(()=>logEvent(t,c), i*250));
   setInterval(tick, 6500);
