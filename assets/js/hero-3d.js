@@ -376,7 +376,7 @@ export function initHero3D(mount){
   try{
     build();
     K.izd = Math.floor(rnd(120,200)); setK();
-    mount.classList.add('hero3d-ready');
+    mount.classList.add('hero-3d-ready');
     animate();
     for(let i=0;i<4;i++) setTimeout(tickEvent, i*300);
     evTimer = setInterval(tickEvent, 2800);

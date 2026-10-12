@@ -1204,7 +1204,7 @@
     }
     function go(){
       if(!canRun()) return; // ostaje poster
-      import('/assets/js/hero-3d.js?v=2').then(function(m){ m.initHero3D(mount); }).catch(function(){});
+      import('/assets/js/hero-3d.js?v=3').then(function(m){ m.initHero3D(mount); }).catch(function(){});
     }
     // ne diraj prvi render: pokreni poslije load + u praznom hodu
     function schedule(){ (window.requestIdleCallback||function(f){setTimeout(f,400);})(go); }
