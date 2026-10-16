@@ -143,8 +143,8 @@
     <button class="tab" data-view="apoteke" onclick="setView('apoteke')">Apoteke</button>
     <button class="tab" data-view="posjete" onclick="setView('posjete')">Posjete</button>
     <button class="tab" data-view="proizvodi" onclick="setView('proizvodi')">Proizvodi</button>
-    <button class="tab lock" onclick="zakljucano()">Izvještaji 🔒</button>
-    <button class="tab lock" onclick="zakljucano()">Narudžbe 🔒</button>
+    <button class="tab" data-view="izvjestaji" onclick="setView('izvjestaji')">Izvještaji</button>
+    <button class="tab" data-view="narudzbe" onclick="setView('narudzbe')">Narudžbe</button>
   </div>
 
   <div class="banner">
@@ -215,6 +215,36 @@
     <div id="prod"></div>
     <div class="sect">Udio u prezentacijama ovaj mjesec</div>
     <div class="block" id="prod-share"></div>
+  </div>
+
+  <!-- IZVJEŠTAJI -->
+  <div class="view" id="v-izvjestaji">
+    <div class="sect">Mjesečni pregled · uprava</div>
+    <div class="kgrid">
+      <div class="kpi"><div class="v" id="r-posjeta">0</div><div class="l">Posjeta ovaj mjesec</div><div class="sub" style="color:var(--ok)">svih 5 saradnika</div></div>
+      <div class="kpi"><div class="v" id="r-plan">0%</div><div class="l">Prosjek realizacije plana</div><div class="sub" id="r-plan-sub" style="color:var(--info)"></div></div>
+      <div class="kpi"><div class="v" id="r-narudzbe">0</div><div class="l">Narudžbi (iz posjeta danas)</div><div class="sub" style="color:var(--ok)">ishod „Narudžba"</div></div>
+      <div class="kpi"><div class="v" id="r-pokrivenost">0%</div><div class="l">Pokrivenost baze</div><div class="sub" id="r-pokr-sub" style="color:var(--info)"></div></div>
+    </div>
+
+    <div class="sect">Rang saradnika · realizacija plana</div>
+    <div class="block" id="r-rang"></div>
+
+    <div class="sect">Ishodi posjeta danas</div>
+    <div class="block" id="r-ishodi"></div>
+
+    <div class="sect">Učinak po gradu</div>
+    <div class="block" id="r-grad"></div>
+
+    <div class="sect">Udio proizvoda u narudžbama</div>
+    <div class="block" id="r-prodord"></div>
+  </div>
+
+  <!-- NARUDŽBE -->
+  <div class="view" id="v-narudzbe">
+    <div class="sect">Narudžbe iz apoteka · zadnjih 14 dana</div>
+    <div class="chips" id="ord-chips"></div>
+    <div id="ord"></div>
   </div>
 
 </div>
@@ -290,6 +320,19 @@ var POSJETE=[
   {t:'12:55',sar:'S3',tip:'Ljekar',ime:'Dr Zoran Pavić',pro:'Gliko',ish:'Prezentacija'},
   {t:'13:20',sar:'S5',tip:'Ljekar',ime:'Dr Goran Stanić',pro:'Gliko',ish:'Uzorci ostavljeni'}
 ];
+var NARUDZBE=[
+  {id:'N-1042',apo:'A1',dat:'danas',st:'U obradi',stavke:[{p:'New Iron',k:40},{p:'Gliko',k:25}]},
+  {id:'N-1041',apo:'A3',dat:'danas',st:'U obradi',stavke:[{p:'Latavin',k:30}]},
+  {id:'N-1040',apo:'A5',dat:'danas',st:'Potvrđena',stavke:[{p:'Tokorelax',k:20},{p:'Gliko',k:15}]},
+  {id:'N-1039',apo:'A8',dat:'danas',st:'Potvrđena',stavke:[{p:'New Iron',k:36}]},
+  {id:'N-1038',apo:'A2',dat:'prije 2 dana',st:'Isporučena',stavke:[{p:'Gliko',k:20},{p:'Latavin',k:18}]},
+  {id:'N-1037',apo:'A4',dat:'prije 3 dana',st:'Isporučena',stavke:[{p:'New Iron',k:48}]},
+  {id:'N-1036',apo:'A6',dat:'prije 4 dana',st:'Isporučena',stavke:[{p:'Tokorelax',k:24},{p:'New Iron',k:30}]},
+  {id:'N-1035',apo:'A7',dat:'prije 6 dana',st:'Isporučena',stavke:[{p:'Gliko',k:22}]},
+  {id:'N-1034',apo:'A1',dat:'prije 8 dana',st:'Isporučena',stavke:[{p:'Latavin',k:30},{p:'Gliko',k:15}]},
+  {id:'N-1033',apo:'A5',dat:'prije 11 dana',st:'Isporučena',stavke:[{p:'New Iron',k:40}]},
+  {id:'N-1032',apo:'A3',dat:'prije 13 dana',st:'Otkazana',stavke:[{p:'Tokorelax',k:15}]}
+];
 
 // ---------- helperi ----------
 function el(id){return document.getElementById(id);}
@@ -299,6 +342,10 @@ function specB(s){return s==='Urolog'?'<span class="b uro">Urolog</span>':'<span
 function potBox(p){return '<span class="pot p'+p+'">'+p+'</span>';}
 function ishB(x){var m={'Narudžba':'ok','Uzorci ostavljeni':'info','Prezentacija':'gray','Nije zatečen':'bad','Ponovna posjeta':'warn'};return '<span class="b '+(m[x]||'gray')+'">'+x+'</span>';}
 function ishColor(x){var m={'Narudžba':'#16a34a','Uzorci ostavljeni':'#2563eb','Prezentacija':'#94a3b8','Nije zatečen':'#dc2626','Ponovna posjeta':'#d97706'};return m[x]||'#94a3b8';}
+function apoById(id){for(var i=0;i<APOTEKE.length;i++)if(APOTEKE[i].id===id)return APOTEKE[i];return{naziv:'?',grad:'',sar:''};}
+function prodById(id){for(var i=0;i<PROIZVODI.length;i++)if(PROIZVODI[i].id===id)return PROIZVODI[i];return{boja:'#64748b',lin:''};}
+function ordB(x){var m={'Isporučena':'ok','Potvrđena':'info','U obradi':'warn','Otkazana':'bad'};return '<span class="b '+(m[x]||'gray')+'">'+x+'</span>';}
+function ordKom(o){var n=0;o.stavke.forEach(function(s){n+=s.k;});return n;}
 
 // ---------- render: pregled ----------
 function renderPregled(){
@@ -409,6 +456,94 @@ function renderProd(){
   el('prod-share').innerHTML=sh;
 }
 
+// ---------- render: izvještaji ----------
+function renderIzvjestaji(){
+  var posMj=0,ostvSum=0;
+  SARADNICI.forEach(function(s){posMj+=s.mj;ostvSum+=s.ostv;});
+  var planAvg=Math.round(ostvSum/SARADNICI.length);
+  var narDanas=POSJETE.filter(function(p){return p.ish==='Narudžba';}).length;
+  var ljPos=48,ljBaza=62,apPos=16,apBaza=18;
+  var pokr=Math.round((ljPos+apPos)/(ljBaza+apBaza)*100);
+  el('r-posjeta').textContent=posMj;
+  el('r-plan').textContent=planAvg+'%';
+  el('r-plan-sub').textContent='cilj 85% · '+(planAvg>=85?'iznad cilja':'ispod cilja');
+  el('r-narudzbe').textContent=narDanas;
+  el('r-pokrivenost').textContent=pokr+'%';
+  el('r-pokr-sub').textContent=(ljPos+apPos)+' od '+(ljBaza+apBaza)+' u bazi';
+
+  // rang saradnika
+  var rh='';
+  SARADNICI.slice().sort(function(a,b){return b.ostv-a.ostv;}).forEach(function(s,i){
+    var col=s.ostv>=90?'var(--ok)':(s.ostv>=80?'var(--warn)':'var(--bad)');
+    rh+='<div class="card" style="margin-bottom:8px" onclick="openSar(\''+s.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:'+s.boja+'">'+ini(s.ime)+'</div>'+
+      '<div class="cmain"><div class="cname">'+(i+1)+'. '+s.ime+'</div><div class="cmeta">'+s.ter+' · '+s.mj+' posjeta</div>'+
+      '<div class="bar"><i style="width:'+s.ostv+'%;background:'+col+'"></i></div></div>'+
+      '<div class="cright"><div style="font-weight:800;font-family:Plus Jakarta Sans;font-size:17px;color:'+col+'">'+s.ostv+'%</div></div>'+
+      '</div></div>';
+  });
+  el('r-rang').innerHTML=rh;
+
+  // ishodi posjeta danas
+  var cnt={};POSJETE.forEach(function(p){cnt[p.ish]=(cnt[p.ish]||0)+1;});
+  var ih='';var tot=POSJETE.length;
+  Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a];}).forEach(function(k){
+    var pct=Math.round(cnt[k]/tot*100);
+    ih+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+k+'</span><span>'+cnt[k]+' · '+pct+'%</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%;background:'+ishColor(k)+'"></i></div></div>';
+  });
+  el('r-ishodi').innerHTML=ih;
+
+  // učinak po gradu
+  var grad={};
+  LJEKARI.forEach(function(l){grad[l.grad]=grad[l.grad]||{lj:0,ap:0};grad[l.grad].lj++;});
+  APOTEKE.forEach(function(a){grad[a.grad]=grad[a.grad]||{lj:0,ap:0};grad[a.grad].ap++;});
+  var maxLj=1;Object.keys(grad).forEach(function(g){if(grad[g].lj>maxLj)maxLj=grad[g].lj;});
+  var gh='';
+  Object.keys(grad).forEach(function(g){
+    var pct=Math.round(grad[g].lj/maxLj*100);
+    gh+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+g+'</span><span>'+grad[g].lj+' ljekara · '+grad[g].ap+' apoteka</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div></div>';
+  });
+  el('r-grad').innerHTML=gh;
+
+  // udio proizvoda u narudžbama
+  var pk={};NARUDZBE.filter(function(o){return o.st!=='Otkazana';}).forEach(function(o){o.stavke.forEach(function(s){pk[s.p]=(pk[s.p]||0)+s.k;});});
+  var ukup=0;Object.keys(pk).forEach(function(p){ukup+=pk[p];});
+  var ph='';
+  Object.keys(pk).sort(function(a,b){return pk[b]-pk[a];}).forEach(function(p){
+    var pct=ukup?Math.round(pk[p]/ukup*100):0;
+    ph+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+p+'</span><span>'+pk[p]+' kom · '+pct+'%</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%;background:'+prodById(p).boja+'"></i></div></div>';
+  });
+  el('r-prodord').innerHTML=ph;
+}
+
+// ---------- render: narudžbe ----------
+var ordFilter='Sve';
+function renderOrdChips(){
+  var f=['Sve','U obradi','Potvrđena','Isporučena','New Iron','Latavin','Tokorelax','Gliko'];
+  el('ord-chips').innerHTML=f.map(function(x){return '<div class="chip'+(x===ordFilter?' on':'')+'" onclick="setOrd(\''+x+'\')">'+x+'</div>';}).join('');
+}
+function setOrd(x){ordFilter=x;renderOrdChips();renderOrd();}
+function renderOrd(){
+  var h='';
+  NARUDZBE.filter(function(o){
+    if(ordFilter==='Sve')return true;
+    if(ordFilter==='U obradi'||ordFilter==='Potvrđena'||ordFilter==='Isporučena')return o.st===ordFilter;
+    return o.stavke.some(function(s){return s.p===ordFilter;});
+  }).forEach(function(o){
+    var a=apoById(o.apo);var stavke=o.stavke.map(function(s){return s.p;}).join(', ');
+    h+='<div class="card" onclick="openOrd(\''+o.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:#0d9488">'+a.naziv.replace('Apoteka ','').slice(0,2).toUpperCase()+'</div>'+
+      '<div class="cmain"><div class="cname">'+a.naziv+'</div><div class="cmeta">'+o.id+' · '+a.grad+' · '+ordKom(o)+' kom</div>'+
+      '<div class="mini" style="margin-top:5px">'+stavke+'</div></div>'+
+      '<div class="cright">'+ordB(o.st)+'<div class="mini" style="margin-top:4px">'+o.dat+'</div></div>'+
+      '</div></div>';
+  });
+  el('ord').innerHTML=h||'<div class="mini" style="text-align:center;padding:20px">Nema narudžbi za ovaj filter.</div>';
+}
+
 // ---------- modali ----------
 function openM(title,sub,body){el('m-title').textContent=title;el('m-sub').innerHTML=sub;el('m-body').innerHTML=body;el('ov').classList.add('on');document.body.style.overflow='hidden';}
 function zatvori(){el('ov').classList.remove('on');document.body.style.overflow='';}
@@ -502,6 +637,26 @@ function openProd(id){
   openM(p.id,p.lin+' · '+p.pak,body);
 }
 
+function openOrd(id){
+  var o;NARUDZBE.forEach(function(x){if(x.id===id)o=x;});
+  var a=apoById(o.apo);var s=sar(a.sar);
+  var stH='';o.stavke.forEach(function(it){
+    var pr=prodById(it.p);
+    stH+='<div class="srow"><b><span class="pot" style="background:'+pr.boja+';width:auto;padding:0 7px;height:20px;border-radius:7px">'+it.p+'</span></b><span>'+it.k+' kom</span></div>';
+  });
+  var body=
+    '<div class="block"><div class="srow"><b>Broj narudžbe</b><span>'+o.id+'</span></div>'+
+    '<div class="srow"><b>Apoteka</b><span>'+a.naziv+'</span></div>'+
+    '<div class="srow"><b>Grad</b><span>'+a.grad+'</span></div>'+
+    '<div class="srow"><b>Saradnik</b><span>'+s.ime+'</span></div>'+
+    '<div class="srow"><b>Datum</b><span>'+o.dat+'</span></div>'+
+    '<div class="srow"><b>Status</b><span>'+ordB(o.st)+'</span></div>'+
+    '<div class="srow"><b>Ukupno</b><span>'+ordKom(o)+' kom</span></div></div>'+
+    '<div class="block"><h4>Stavke narudžbe</h4>'+stH+'</div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> narudžba ide direktno u veleprodaju, automatsko praćenje statusa isporuke, veza sa stanjem zaliha apoteke i mjesečni obračun po saradniku.</span></div>';
+  openM('Narudžba '+o.id,a.naziv+' · '+a.grad,body);
+}
+
 // ---------- navigacija ----------
 function setView(v){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.dataset.view===v);});
@@ -512,7 +667,7 @@ function setView(v){
 function zakljucano(){alert('Ova sekcija je dostupna u punoj verziji. Javite se da je aktiviramo za vašu firmu.');}
 
 // init
-renderPregled();renderReps();renderLjekChips();renderLjek();renderApo();renderPosChips();renderPos();renderProd();
+renderPregled();renderReps();renderLjekChips();renderLjek();renderApo();renderPosChips();renderPos();renderProd();renderIzvjestaji();renderOrdChips();renderOrd();
 </script>
 </body>
 </html>
