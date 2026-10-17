@@ -527,7 +527,7 @@ if (!S || !S.spots){ S = seed(); UI = freshUI(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify({S, UI:{device:UI.device, role:UI.role, hostId:UI.hostId, search:UI.search, maps:UI.maps}})); } catch(e){} }
 
 const stack = () => UI.device === 'web' ? UI.wstack : UI.mstack;
-const top = () => { const s = stack(); return s[s.length-1]; };
+const topScr = () => { const s = stack(); return s[s.length-1]; };
 function push(s, extra={}){ stack().push({s, ...extra}); UI.confirm = null; }
 function back(){ const s = stack(); if (s.length > 1) s.pop(); UI.confirm = null; }
 function resetTo(s, extra={}){ if (UI.device === 'web') UI.wstack = [{s, ...extra}]; else UI.mstack = [{s, ...extra}]; UI.confirm = null; }
@@ -908,7 +908,7 @@ const TABS = {
   host:[['h-spots','Mjesta','p'],['h-bookings','Rezervacije','cal'],['h-earn','Zarada','wallet'],['profile','Profil','user']]
 };
 function renderPhone(){
-  const plat = UI.device, t = top(), def = screenDef(t, plat), base = UI.mstack[0].s;
+  const plat = UI.device, t = topScr(), def = screenDef(t, plat), base = UI.mstack[0].s;
   const sbar = plat === 'ios'
     ? `<div class="sbar"><span>10:15</span><span class="island"></span><span class="sicons"><i style="width:17px;height:10px"></i><i style="width:15px;height:10px;border-radius:5px 5px 2px 2px"></i><i style="width:24px;height:11px;border-radius:3px"></i></span></div>`
     : `<div class="sbar"><span>10:15</span><span class="punch"></span><span class="sicons"><i style="width:14px;height:11px"></i><i style="width:12px;height:12px;border-radius:2px 2px 6px 6px"></i><i style="width:9px;height:14px"></i></span></div>`;
@@ -949,7 +949,7 @@ function notesHtml(){
 /* ===================== web ===================== */
 const WTABS = [['map','Pronađi parking'],['bookings','Moje rezervacije'],['h-spots','Domaćin'],['admin','Admin']];
 function renderWeb(){
-  const base = UI.wstack[0].s, t = top();
+  const base = UI.wstack[0].s, t = topScr();
   const hostTab = ['h-spots','h-bookings','h-earn','h-add'].includes(base);
   const user = base === 'admin' ? 'Admin · Datamaks' : hostTab ? hostById(UI.hostId).name : ME.name;
   let main = '';
@@ -1065,7 +1065,7 @@ function render(){
   document.querySelectorAll('#devseg button').forEach(b => b.classList.toggle('on', b.dataset.v === UI.device));
   $('#stage').innerHTML = UI.device === 'web' ? renderWeb() : `<div class="phone-stage">${renderPhone()}${notesHtml()}</div>`;
   document.querySelectorAll('[data-keep]').forEach(el => { if (keep[el.dataset.keep]) el.scrollTop = keep[el.dataset.keep]; });
-  const view = UI.device + ':' + (UI.device === 'web' && UI.wstack[0].s === 'admin' ? 'admin-' + UI.admin : top().s);
+  const view = UI.device + ':' + (UI.device === 'web' && UI.wstack[0].s === 'admin' ? 'admin-' + UI.admin : topScr().s);
   if (view !== lastView){ lastView = view; try { window.setView(view); } catch(e){} }
   save();
 }
