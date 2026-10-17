@@ -83,7 +83,7 @@ button{cursor:pointer}
 .quick{display:flex;gap:8px;flex-wrap:wrap}
 
 /* ---------- phone frames ---------- */
-.phone{width:390px;height:812px;flex:none;background:var(--bezel);padding:11px;border-radius:56px;box-shadow:0 30px 60px -20px rgba(10,20,40,.45),0 0 0 1px rgba(255,255,255,.06) inset;position:relative}
+.phone{width:390px;height:clamp(640px,calc(100vh - 100px),812px);flex:none;background:var(--bezel);padding:11px;border-radius:56px;box-shadow:0 30px 60px -20px rgba(10,20,40,.45),0 0 0 1px rgba(255,255,255,.06) inset;position:relative}
 .phone.android{border-radius:42px;padding:9px}
 .screen{width:100%;height:100%;border-radius:46px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column;position:relative;isolation:isolate}
 .android .screen{border-radius:34px;font-family:var(--f-android);font-size:14.5px}
@@ -313,6 +313,27 @@ tr.hl td{background:var(--sign-soft)}
 .hint{max-width:1280px;margin:0 auto 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
 .hint b{color:var(--ink)}
 
+/* leaflet (inline, v1.9.4) */
+.leaflet-image-layer,.leaflet-layer,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-pane,.leaflet-pane>canvas,.leaflet-pane>svg,.leaflet-tile,.leaflet-tile-container,.leaflet-zoom-box{position:absolute;left:0;top:0}.leaflet-container{overflow:hidden}.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile{-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-user-drag:none}.leaflet-tile::selection{background:0 0}.leaflet-safari .leaflet-tile{image-rendering:-webkit-optimize-contrast}.leaflet-safari .leaflet-tile-container{width:1600px;height:1600px;-webkit-transform-origin:0 0}.leaflet-marker-icon,.leaflet-marker-shadow{display:block}.leaflet-container .leaflet-overlay-pane svg{max-width:none!important;max-height:none!important}.leaflet-container .leaflet-marker-pane img,.leaflet-container .leaflet-shadow-pane img,.leaflet-container .leaflet-tile,.leaflet-container .leaflet-tile-pane img,.leaflet-container img.leaflet-image-layer{max-width:none!important;max-height:none!important;width:auto;padding:0}.leaflet-container img.leaflet-tile{mix-blend-mode:plus-lighter}.leaflet-container.leaflet-touch-zoom{-ms-touch-action:pan-x pan-y;touch-action:pan-x pan-y}.leaflet-container.leaflet-touch-drag{-ms-touch-action:pinch-zoom;touch-action:none;touch-action:pinch-zoom}.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom{-ms-touch-action:none;touch-action:none}.leaflet-container{-webkit-tap-highlight-color:transparent}.leaflet-container a{-webkit-tap-highlight-color:rgba(51,181,229,.4)}.leaflet-tile{filter:inherit;visibility:hidden}.leaflet-tile-loaded{visibility:inherit}.leaflet-zoom-box{width:0;height:0;-moz-box-sizing:border-box;box-sizing:border-box;z-index:800}.leaflet-overlay-pane svg{-moz-user-select:none}.leaflet-pane{z-index:400}.leaflet-tile-pane{z-index:200}.leaflet-overlay-pane{z-index:400}.leaflet-shadow-pane{z-index:500}.leaflet-marker-pane{z-index:600}.leaflet-tooltip-pane{z-index:650}.leaflet-popup-pane{z-index:700}.leaflet-map-pane canvas{z-index:100}.leaflet-map-pane svg{z-index:200}.leaflet-vml-shape{width:1px;height:1px}.lvml{display:inline-block;position:absolute}.leaflet-control{position:relative;z-index:800;pointer-events:visiblePainted;pointer-events:auto}.leaflet-bottom,.leaflet-top{position:absolute;z-index:1000;pointer-events:none}.leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}.leaflet-control{float:left;clear:both}.leaflet-right .leaflet-control{float:right}.leaflet-top .leaflet-control{margin-top:10px}.leaflet-bottom .leaflet-control{margin-bottom:10px}.leaflet-left .leaflet-control{margin-left:10px}.leaflet-right .leaflet-control{margin-right:10px}.leaflet-fade-anim .leaflet-popup{opacity:0;-webkit-transition:opacity .2s linear;-moz-transition:opacity .2s linear;transition:opacity .2s linear}.leaflet-fade-anim .leaflet-map-pane .leaflet-popup{opacity:1}.leaflet-zoom-animated{-webkit-transform-origin:0 0;-ms-transform-origin:0 0;transform-origin:0 0}svg.leaflet-zoom-animated{will-change:transform}.leaflet-zoom-anim .leaflet-zoom-animated{-webkit-transition:-webkit-transform .25s cubic-bezier(0,0,.25,1);-moz-transition:-moz-transform .25s cubic-bezier(0,0,.25,1);transition:transform .25s cubic-bezier(0,0,.25,1)}.leaflet-pan-anim .leaflet-tile,.leaflet-zoom-anim .leaflet-tile{-webkit-transition:none;-moz-transition:none;transition:none}.leaflet-zoom-anim .leaflet-zoom-hide{visibility:hidden}.leaflet-interactive{cursor:pointer}.leaflet-grab{cursor:-webkit-grab;cursor:-moz-grab;cursor:grab}.leaflet-crosshair,.leaflet-crosshair .leaflet-interactive{cursor:crosshair}.leaflet-control,.leaflet-popup-pane{cursor:auto}.leaflet-dragging .leaflet-grab,.leaflet-dragging .leaflet-grab .leaflet-interactive,.leaflet-dragging .leaflet-marker-draggable{cursor:move;cursor:-webkit-grabbing;cursor:-moz-grabbing;cursor:grabbing}.leaflet-image-layer,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-pane>svg path,.leaflet-tile-container{pointer-events:none}.leaflet-image-layer.leaflet-interactive,.leaflet-marker-icon.leaflet-interactive,.leaflet-pane>svg path.leaflet-interactive,svg.leaflet-image-layer.leaflet-interactive path{pointer-events:visiblePainted;pointer-events:auto}.leaflet-container{background:#ddd;outline-offset:1px}.leaflet-container a{color:#0078a8}.leaflet-zoom-box{border:2px dotted #38f;background:rgba(255,255,255,.5)}.leaflet-container{font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;font-size:12px;font-size:.75rem;line-height:1.5}.leaflet-bar{box-shadow:0 1px 5px rgba(0,0,0,.65);border-radius:4px}.leaflet-bar a{background-color:#fff;border-bottom:1px solid #ccc;width:26px;height:26px;line-height:26px;display:block;text-align:center;text-decoration:none;color:#000}.leaflet-bar a,.leaflet-control-layers-toggle{background-position:50% 50%;background-repeat:no-repeat;display:block}.leaflet-bar a:focus,.leaflet-bar a:hover{background-color:#f4f4f4}.leaflet-bar a:first-child{border-top-left-radius:4px;border-top-right-radius:4px}.leaflet-bar a:last-child{border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-bottom:none}.leaflet-bar a.leaflet-disabled{cursor:default;background-color:#f4f4f4;color:#bbb}.leaflet-touch .leaflet-bar a{width:30px;height:30px;line-height:30px}.leaflet-touch .leaflet-bar a:first-child{border-top-left-radius:2px;border-top-right-radius:2px}.leaflet-touch .leaflet-bar a:last-child{border-bottom-left-radius:2px;border-bottom-right-radius:2px}.leaflet-control-zoom-in,.leaflet-control-zoom-out{font:bold 18px 'Lucida Console',Monaco,monospace;text-indent:1px}.leaflet-touch .leaflet-control-zoom-in,.leaflet-touch .leaflet-control-zoom-out{font-size:22px}.leaflet-control-layers{box-shadow:0 1px 5px rgba(0,0,0,.4);background:#fff;border-radius:5px}.leaflet-control-layers-toggle{width:36px;height:36px}.leaflet-retina .leaflet-control-layers-toggle{background-size:26px 26px}.leaflet-touch .leaflet-control-layers-toggle{width:44px;height:44px}.leaflet-control-layers .leaflet-control-layers-list,.leaflet-control-layers-expanded .leaflet-control-layers-toggle{display:none}.leaflet-control-layers-expanded .leaflet-control-layers-list{display:block;position:relative}.leaflet-control-layers-expanded{padding:6px 10px 6px 6px;color:#333;background:#fff}.leaflet-control-layers-scrollbar{overflow-y:scroll;overflow-x:hidden;padding-right:5px}.leaflet-control-layers-selector{margin-top:2px;position:relative;top:1px}.leaflet-control-layers label{display:block;font-size:13px;font-size:1.08333em}.leaflet-control-layers-separator{height:0;border-top:1px solid #ddd;margin:5px -10px 5px -6px}.leaflet-container .leaflet-control-attribution{background:#fff;background:rgba(255,255,255,.8);margin:0}.leaflet-control-attribution,.leaflet-control-scale-line{padding:0 5px;color:#333;line-height:1.4}.leaflet-control-attribution a{text-decoration:none}.leaflet-control-attribution a:focus,.leaflet-control-attribution a:hover{text-decoration:underline}.leaflet-attribution-flag{display:inline!important;vertical-align:baseline!important;width:1em;height:.6669em}.leaflet-left .leaflet-control-scale{margin-left:5px}.leaflet-bottom .leaflet-control-scale{margin-bottom:5px}.leaflet-control-scale-line{border:2px solid #777;border-top:none;line-height:1.1;padding:2px 5px 1px;white-space:nowrap;-moz-box-sizing:border-box;box-sizing:border-box;background:rgba(255,255,255,.8);text-shadow:1px 1px #fff}.leaflet-control-scale-line:not(:first-child){border-top:2px solid #777;border-bottom:none;margin-top:-2px}.leaflet-control-scale-line:not(:first-child):not(:last-child){border-bottom:2px solid #777}.leaflet-touch .leaflet-bar,.leaflet-touch .leaflet-control-attribution,.leaflet-touch .leaflet-control-layers{box-shadow:none}.leaflet-touch .leaflet-bar,.leaflet-touch .leaflet-control-layers{border:2px solid rgba(0,0,0,.2);background-clip:padding-box}.leaflet-popup{position:absolute;text-align:center;margin-bottom:20px}.leaflet-popup-content-wrapper{padding:1px;text-align:left;border-radius:12px}.leaflet-popup-content{margin:13px 24px 13px 20px;line-height:1.3;font-size:13px;font-size:1.08333em;min-height:1px}.leaflet-popup-content p{margin:17px 0;margin:1.3em 0}.leaflet-popup-tip-container{width:40px;height:20px;position:absolute;left:50%;margin-top:-1px;margin-left:-20px;overflow:hidden;pointer-events:none}.leaflet-popup-tip{width:17px;height:17px;padding:1px;margin:-10px auto 0;pointer-events:auto;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#fff;color:#333;box-shadow:0 3px 14px rgba(0,0,0,.4)}.leaflet-container a.leaflet-popup-close-button{position:absolute;top:0;right:0;border:none;text-align:center;width:24px;height:24px;font:16px/24px Tahoma,Verdana,sans-serif;color:#757575;text-decoration:none;background:0 0}.leaflet-container a.leaflet-popup-close-button:focus,.leaflet-container a.leaflet-popup-close-button:hover{color:#585858}.leaflet-popup-scrolled{overflow:auto}.leaflet-oldie .leaflet-popup-content-wrapper{-ms-zoom:1}.leaflet-oldie .leaflet-popup-tip{width:24px;margin:0 auto}.leaflet-oldie .leaflet-control-layers,.leaflet-oldie .leaflet-control-zoom,.leaflet-oldie .leaflet-popup-content-wrapper,.leaflet-oldie .leaflet-popup-tip{border:1px solid #999}.leaflet-div-icon{background:#fff;border:1px solid #666}.leaflet-tooltip{position:absolute;padding:6px;background-color:#fff;border:1px solid #fff;border-radius:3px;color:#222;white-space:nowrap;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.4)}.leaflet-tooltip.leaflet-interactive{cursor:pointer;pointer-events:auto}.leaflet-tooltip-bottom:before,.leaflet-tooltip-left:before,.leaflet-tooltip-right:before,.leaflet-tooltip-top:before{position:absolute;pointer-events:none;border:6px solid transparent;background:0 0;content:""}.leaflet-tooltip-bottom{margin-top:6px}.leaflet-tooltip-top{margin-top:-6px}.leaflet-tooltip-bottom:before,.leaflet-tooltip-top:before{left:50%;margin-left:-6px}.leaflet-tooltip-top:before{bottom:0;margin-bottom:-12px;border-top-color:#fff}.leaflet-tooltip-bottom:before{top:0;margin-top:-12px;margin-left:-6px;border-bottom-color:#fff}.leaflet-tooltip-left{margin-left:-6px}.leaflet-tooltip-right{margin-left:6px}.leaflet-tooltip-left:before,.leaflet-tooltip-right:before{top:50%;margin-top:-6px}.leaflet-tooltip-left:before{right:0;margin-right:-12px;border-left-color:#fff}.leaflet-tooltip-right:before{left:0;margin-left:-12px;border-right-color:#fff}@media print{.leaflet-control{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.lmap{width:100%;height:100%;background:var(--map-land)}
+.lmap .leaflet-tile-pane{filter:saturate(.75) contrast(.96)}
+.lmap.dark-tiles .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(.9) saturate(.6)}
+.searchcard,.sheet{z-index:1100!important}
+.overlay{z-index:1200!important}
+.mapwrap .leaflet-bottom{bottom:8px}
+.leaflet-container{font-family:var(--f-body);background:var(--map-land)}
+.leaflet-control-attribution{font-size:10px;background:color-mix(in srgb,var(--surface) 80%,transparent)!important;color:var(--muted)}
+.leaflet-control-attribution a{color:var(--muted)}
+.leaflet-bar a{background:var(--surface);color:var(--ink);border-bottom-color:var(--line)}
+.leaflet-bar{border:1px solid var(--line)!important;box-shadow:var(--shadow)!important;border-radius:10px!important;overflow:hidden}
+.leaflet-touch .leaflet-bar a{width:36px;height:36px;line-height:36px}
+.lpin{position:relative;width:52px;height:24px;border-radius:12px;background:var(--sign);color:var(--sign-ink);border:1.5px solid var(--surface);font-family:var(--f-mono);font-weight:700;font-size:12px;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer}
+.lpin::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-5px;border:5px solid transparent;border-top:4px solid var(--sign);border-bottom:0}
+.lpin.off{background:var(--pin-off);color:var(--surface)}.lpin.off::after{border-top-color:var(--pin-off)}
+.lpin.sel{background:var(--mark);color:var(--mark-ink);transform:scale(1.15);transform-origin:50% 100%}.lpin.sel::after{border-top-color:var(--mark)}
+.lpin.new{background:var(--ok);color:#fff}.lpin.new::after{border-top-color:var(--ok)}
+.lme{width:16px;height:16px;border-radius:50%;background:var(--sign);border:3px solid var(--surface);box-shadow:0 0 0 8px color-mix(in srgb,var(--sign) 18%,transparent)}
+
 /* toast */
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:calc(100% - 32px)}
 .toast.show{opacity:1;transform:translateX(-50%)}
@@ -340,13 +361,6 @@ tr.hl td{background:var(--sign-soft)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<style>
-.viberCta{max-width:1280px;margin:14px auto 0;padding:14px 16px;border-radius:14px;background:var(--sign-soft);border:1px solid var(--line)}
-.viberCta .t{font-size:14px;line-height:1.55;margin-bottom:10px}
-.viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
-.viberCta a{padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
-.cta-wrap{padding-inline:16px}
-</style>
 </head>
 <body>
 <header class="rail"><div class="rail-in">
@@ -361,18 +375,11 @@ tr.hl td{background:var(--sign-soft)}
   <div class="clock">Demo vrijeme <b>Pon 19.10.2026. 10:15</b></div>
   <button class="linkbtn" data-act="reset">Reset demo</button>
 </div></header>
-<div class="cta-wrap"><div class="viberCta">
-  <div class="t"><b>Ovo je klikabilni prototip platforme Parkomat.</b> Vlasnici privatnih parking mjesta, garaža i dvorišta oglašavaju prostor za vrijeme kad ga ne koriste, a vozači ga pronađu na mapi, rezervišu i plate online. Gore birate kako izgleda na iPhone-u, Androidu i webu; sva tri dijele iste podatke, pa se rezervacija napravljena na telefonu odmah vidi kod domaćina i u admin pregledu, sa podjelom uplate 85 / 15. Imate komentar ili ideju? Javite se.</div>
-  <div class="btns">
-    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
-    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
-    <a href="tel:+38765469565" data-kanal="telefon" style="background:#141b2b">Pozovi</a>
-  </div>
-</div></div>
 
 <main class="stage" id="stage"></main>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ===================== konstante i pomoćne ===================== */
 const FEE = 0.15, PSP_PCT = 0.019, PSP_FIX = 0.30;          // provizija platforme; naknada provajdera (pretpostavka)
@@ -392,6 +399,18 @@ const HOSTS = [
   {id:'h4', name:'Stefan Marić', iban:'BA39 5672 •••• •••• 3310'},
   {id:'h5', name:'Igor Tomić', iban:'BA39 5550 •••• •••• 7702'}
 ];
+const CENTER = [44.7722, 17.1910];
+const HOODS_LL = [['Centar',44.7701,17.1895],['Borik',44.7707,17.2030],['Lauš',44.7784,17.1677],['Starčevica',44.7590,17.2000],
+  ['Paprikovac',44.7829,17.1838],['Univerzitetski grad',44.7752,17.2106],['Obilićevo',44.7620,17.1910],['Rosulje',44.7853,17.1996],
+  ['Nova varoš',44.7791,17.1922],['Ada',44.7684,17.2268],['Bulevar',44.7650,17.1864],['Aleja-centar',44.7762,17.2028]];
+// lokacije ulica iz OpenStreetMap-a (Nominatim, 17.10.2026); naselje prema OSM-u
+const SPOT_LL = {s1:[44.7693,17.1974,'Borik'], s2:[44.7689,17.1952,'Centar'], s3:[44.7739,17.1963,'Nova varoš'], s4:[44.7684,17.2268,'Ada'],
+  s5:[44.7620,17.2014,'Starčevica'], s6:[44.7831,17.1785,'Paprikovac'], s7:[44.7808,17.1832,'Paprikovac'], s8:[44.7743,17.2078,'Univerzitetski grad'],
+  s9:[44.7740,17.1859,'Centar'], s10:[44.7841,17.1930,'Nova varoš'], s11:[44.7650,17.1864,'Bulevar'], s12:[44.7686,17.1906,'Centar'], s13:[44.7643,17.1894,'Obilićevo']};
+// gruba veza skice (SVG 1000×700) i stvarnih koordinata, za mjesta dodata na jednoj od dvije mape
+const xy2ll = (x, y) => [r6(44.795 - y / 700 * 0.05), r6(17.150 + x / 1000 * 0.085)];
+const ll2xy = (lat, lng) => [Math.round((lng - 17.150) / 0.085 * 1000), Math.round((44.795 - lat) / 0.05 * 700)];
+const r6 = n => Math.round(n * 1e6) / 1e6;
 const HOODS = [['Centar',450,320],['Borik',740,170],['Lauš',240,140],['Starčevica',400,575],['Paprikovac',215,505],
   ['Univerzitetski grad',665,320],['Obilićevo',805,455],['Mejdan',700,575],['Rosulje',330,215]];
 const DRIVERS = [['Sanja Radić','K21-E-118'],['Bojan Lukić','A07-J-993'],['Mirza Hodžić','E55-T-240'],['Tijana Đurić','M12-O-671'],
@@ -436,7 +455,7 @@ function seed(){
     {id:'s11', host:'h5', type:'dvoriste', title:'Dvorište uz glavnu ulicu', addr:'Ulica Slavka Rodića 31', x:812, y:458, price:1.0, days:[1,2,3,4,5], from:8, to:16, feats:['Kapija','Za 2 auta'], desc:'Kapija se otvara na poziv domaćina.'},
     {id:'s12', host:'h3', type:'mjesto', title:'Mjesto kod Kastela', addr:'Ulica Kralja Petra I Karađorđevića 2', x:520, y:398, price:2.0, days:[6,0], from:8, to:20, feats:['Vikend','Blizu tvrđave'], desc:'Dostupno samo vikendom, idealno za izlazak u grad.'},
     {id:'s13', host:'h5', type:'garaza', title:'Garaža iza zgrade', addr:'Ulica Cara Lazara 47', x:704, y:566, price:1.1, days:[1,2,3,4,5], from:6, to:18, feats:['Natkriveno'], desc:'Garaža sa električnim vratima, kod se šalje nakon rezervacije.'}
-  ].map(s => ({...s, active:true, hood:hoodOf(s.x, s.y), rating:(4.5 + ((s.x*7+s.y)%5)/10).toFixed(1), reviews:8 + (s.x+s.y)%37}));
+  ].map(s => ({...s, active:true, lat:SPOT_LL[s.id][0], lng:SPOT_LL[s.id][1], hood:SPOT_LL[s.id][2], rating:(4.5 + ((s.x*7+s.y)%5)/10).toFixed(1), reviews:8 + (s.x+s.y)%37}));
 
   const bookings = [];
   let seedN = 11; const rnd = () => (seedN = (seedN*16807) % 2147483647) / 2147483647;
@@ -472,6 +491,11 @@ function seed(){
     return {id:'p'+(i+1), host:h.id, amount:r2(amt), date:'2026-10-12', ref:'ISP-2042-' + (i+1)};
   }).filter(p => p.amount > 0);
   return {spots, bookings, payouts, n:1000};
+}
+function hoodOfLL(lat, lng){
+  let best = HOODS_LL[0], bd = 1e9;
+  for (const h of HOODS_LL){ const d = (h[1]-lat)**2 + ((h[2]-lng)*0.71)**2; if (d < bd){ bd = d; best = h; } }
+  return best[0];
 }
 function hoodOf(x, y){
   let best = HOODS[0], bd = 1e9;
@@ -516,7 +540,7 @@ function hostBalance(hid){
 }
 
 /* ===================== stanje ===================== */
-const KEY = 'parkomat-demo-v1';
+const KEY = 'parkomat-demo-v3';
 let S, UI;
 function freshUI(device){
   return {device: device || 'ios', role:'driver', hostId:'h1', mstack:[{s:'map'}], wstack:[{s:'map'}],
@@ -524,7 +548,7 @@ function freshUI(device){
 }
 try { const raw = localStorage.getItem(KEY); if (raw){ const o = JSON.parse(raw); S = o.S; UI = {...freshUI(), ...o.UI, paying:false, confirm:null}; } } catch(e){}
 if (!S || !S.spots){ S = seed(); UI = freshUI(); }
-function save(){ try { localStorage.setItem(KEY, JSON.stringify({S, UI:{device:UI.device, role:UI.role, hostId:UI.hostId, search:UI.search, maps:UI.maps}})); } catch(e){} }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify({S, UI:{device:UI.device, role:UI.role, hostId:UI.hostId, search:UI.search, maps:UI.maps, lview:UI.lview}})); } catch(e){} }
 
 const stack = () => UI.device === 'web' ? UI.wstack : UI.mstack;
 const topScr = () => { const s = stack(); return s[s.length-1]; };
@@ -620,6 +644,7 @@ function pinSvg(sp, cls, label){
     <rect x="-24" y="-34" width="48" height="22" rx="11"/><path d="M-5 -13 L0 -5 L5 -13Z"/><text y="-19">${label}</text></g>`;
 }
 function mapHtml(key, {pins=[], sel=null, me=false, pick=null, ctlTop=null}={}){
+  if (MAPMODE === 'real'){ MAPCFG[key] = {pins, sel, me, pick}; return `<div class="map" data-map="${key}" data-slot="${key}"></div>`; }
   const vb = vbOf(key);
   const pinsSvg = pins.map(p => pinSvg(p.sp, (p.cls||'') + (p.sp.id === sel ? ' sel' : ''), p.label)).join('');
   const meSvg = me ? `<circle class="me-halo" cx="452" cy="318" r="22"/><circle class="me" cx="452" cy="318" r="7"/>` : '';
@@ -631,6 +656,62 @@ function mapHtml(key, {pins=[], sel=null, me=false, pick=null, ctlTop=null}={}){
       <button data-act="zoom" data-k="${key}" data-z="1.33" aria-label="Umanji">−</button>
     </div></div>`;
 }
+
+/* ===================== prava mapa (Leaflet + OpenStreetMap/CARTO) =====================
+   Kad se podloga mape ne može učitati (npr. u zatvorenom pregledu), ostaje stilizovana skica iznad. */
+let MAPMODE = 'svg';
+const MAPCFG = {}, LM = {};
+const isDark = () => { const t = document.documentElement.dataset.theme;
+  return t === 'dark' || (t !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); };
+const tileUrl = () => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const VIEW_DEFAULT = {phone:[[44.7718, 17.1945], 14], web:null, pick:[CENTER, 15]};
+function probeTiles(){
+  if (typeof L === 'undefined') return;
+  const img = new Image(); let done = false;
+  const t = setTimeout(() => { done = true; }, 5000);
+  img.onload = () => { if (done) return; clearTimeout(t); MAPMODE = 'real'; render(); };
+  img.onerror = () => { clearTimeout(t); };
+  img.src = 'https://tile.openstreetmap.org/13/4579/2964.png';
+}
+function lpin(sp, cls, label){
+  return L.divIcon({className:'', html:`<div class="lpin ${cls}">${label}</div>`, iconSize:[52,31], iconAnchor:[26,31]});
+}
+function mountMaps(){
+  if (MAPMODE !== 'real') return;
+  document.querySelectorAll('[data-slot]').forEach(slot => {
+    const key = slot.dataset.slot, cfg = MAPCFG[key] || {pins:[]};
+    let m = LM[key];
+    if (!m){
+      const el = document.createElement('div'); el.className = 'lmap'; slot.appendChild(el);
+      const map = L.map(el, {zoomControl:false, attributionControl:true, tap:true});
+      const v = UI.lview && UI.lview[key];
+      if (v) map.setView([v[0], v[1]], v[2]);
+      else if (VIEW_DEFAULT[key]) map.setView(VIEW_DEFAULT[key][0], VIEW_DEFAULT[key][1]);
+      else map.fitBounds(S.spots.map(sp => [sp.lat, sp.lng]), {padding:[40, 40]});
+      L.control.zoom({position:'bottomright'}).addTo(map);
+      map.attributionControl.setPrefix(false);
+      const tiles = L.tileLayer(tileUrl(), {maxZoom:19, attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+      const layer = L.layerGroup().addTo(map);
+      map.on('moveend', () => { const c = map.getCenter(); UI.lview = UI.lview || {}; UI.lview[key] = [r6(c.lat), r6(c.lng), map.getZoom()]; save(); });
+      if (key === 'pick') map.on('click', e => { const d = UI.draft; if (!d) return;
+        d.lat = r6(e.latlng.lat); d.lng = r6(e.latlng.lng); [d.x, d.y] = ll2xy(d.lat, d.lng); render(); });
+      m = LM[key] = {el, map, tiles, layer, lastSel:null};
+    } else slot.appendChild(m.el);
+    m.map.invalidateSize({pan:false});
+    m.el.classList.toggle('dark-tiles', isDark());
+    m.layer.clearLayers();
+    if (cfg.me) L.marker(CENTER, {icon:L.divIcon({className:'', html:'<div class="lme"></div>', iconSize:[16,16], iconAnchor:[8,8]}), interactive:false, keyboard:false}).addTo(m.layer);
+    for (const p of cfg.pins){
+      const sel = p.sp.id === cfg.sel;
+      L.marker([p.sp.lat, p.sp.lng], {icon:lpin(p.sp, (p.cls || '') + (sel ? ' sel' : ''), p.label), zIndexOffset: sel ? 1000 : (p.cls ? 0 : 500), title:p.sp.title})
+        .on('click', () => { ACT.pin({id:p.sp.id}); render(); }).addTo(m.layer);
+    }
+    if (cfg.pick) L.marker([cfg.pick.lat, cfg.pick.lng], {icon:lpin(null, 'new', 'NOVO'), interactive:false}).addTo(m.layer);
+    if (cfg.sel && cfg.sel !== m.lastSel){ const sp = spotById(cfg.sel); if (sp && !m.map.getBounds().pad(-0.15).contains([sp.lat, sp.lng])) m.map.panTo([sp.lat, sp.lng]); }
+    m.lastSel = cfg.sel;
+  });
+}
+if (window.matchMedia) try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render()); } catch(e){}
 
 /* ===================== zajednički sadržaji ekrana ===================== */
 function filtered(){ return S.spots.filter(sp => UI.search.type === 'sve' || sp.type === UI.search.type); }
@@ -817,7 +898,7 @@ function hostEarn(ctx){
 }
 
 /* ---------- dodavanje mjesta (čarobnjak) ---------- */
-function newDraft(){ return {step:1, type:'mjesto', title:'', addr:'', x:null, y:null, days:[1,2,3,4,5], from:8, to:17, price:'1,50', desc:'', photo:null}; }
+function newDraft(){ return {step:1, type:'mjesto', title:'', addr:'', x:null, y:null, lat:null, lng:null, days:[1,2,3,4,5], from:8, to:17, price:'1,50', desc:'', photo:null}; }
 function addContent(ctx){
   const d = UI.draft || (UI.draft = newDraft());
   const ind = `<div class="steps-ind">${[1,2,3].map(i => `<i class="${i <= d.step ? 'on' : ''}"></i>`).join('')}</div>`;
@@ -827,8 +908,8 @@ function addContent(ctx){
       <div class="field"><label>Tip prostora</label><div class="chips">${Object.keys(TYPES).map(t => `<button class="chip ${d.type === t ? 'on' : ''}" data-act="d-type" data-v="${t}">${TYPES[t].label}</button>`).join('')}</div></div>
       <div class="field"><label for="d-title-${ctx}">Naziv oglasa</label><input class="input" id="d-title-${ctx}" data-in="d-title" placeholder="npr. Mjesto u dvorištu zgrade" value="${esc(d.title)}"></div>
       <div class="field"><label for="d-addr-${ctx}">Adresa</label><input class="input" id="d-addr-${ctx}" data-in="d-addr" placeholder="Ulica i broj" value="${esc(d.addr)}"></div>
-      <div class="field"><label>Tačna lokacija ${d.x != null ? `<span class="pill ok">${esc(hoodOf(d.x, d.y))}</span>` : ''}</label>
-        <div class="pickmap">${mapHtml('pick', {pick: d.x != null ? {x:d.x, y:d.y} : null, ctlTop:10})}</div>
+      <div class="field"><label>Tačna lokacija ${d.x != null ? `<span class="pill ok">${esc(hoodOfLL(d.lat, d.lng))}</span>` : ''}</label>
+        <div class="pickmap">${mapHtml('pick', {pick: d.x != null ? {x:d.x, y:d.y, lat:d.lat, lng:d.lng} : null, ctlTop:10})}</div>
         <span class="fine">${d.x != null ? 'Lokacija je označena. Dodirni ponovo da je pomjeriš.' : 'Dodirni mapu tamo gdje je ulaz u parking.'}</span></div>
       <button class="btn primary block" data-act="d-next" ${d.addr.trim() && d.x != null ? '' : 'disabled'}>Dalje</button>`;
   } else if (d.step === 2){
@@ -844,7 +925,7 @@ function addContent(ctx){
       <div class="row"><button class="btn" style="flex:1" data-act="d-prev">Nazad</button><button class="btn primary" style="flex:2" data-act="d-next" ${d.days.length ? '' : 'disabled'}>Dalje</button></div>`;
   } else {
     const p = parseFloat(String(d.price).replace(',', '.')) || 0;
-    const hood = hoodOf(d.x, d.y), near = S.spots.filter(s => s.hood === hood);
+    const hood = hoodOfLL(d.lat, d.lng), near = S.spots.filter(s => s.hood === hood);
     const avg = near.length ? near.reduce((a, s) => a + s.price, 0) / near.length : 1.5;
     body = `<div class="eyebrow">Korak 3 od 3 · Cijena i opis</div>
       <div class="field"><label for="d-price-${ctx}">Cijena po satu (KM)</label><input class="input num" id="d-price-${ctx}" data-in="d-price" inputmode="decimal" value="${esc(d.price)}">
@@ -942,7 +1023,7 @@ function notesHtml(){
     </ol>
     <div class="quick"><button class="btn small" data-act="role" data-v="${host ? 'driver' : 'host'}">${ico('swap','sm')}Prebaci na ${host ? 'Vozač' : 'Domaćin'}</button></div>
     <div class="legend"><span><i class="dot"></i>slobodno</span><span><i class="dot off"></i>zauzeto</span><span><i class="dot sel"></i>izabrano</span></div>
-    <p class="fine">Mapa je stilizovana skica Banje Luke. U aplikaciji ide prava mapa (Google ili Apple Maps). Iznosi su u KM, provizija 15 %. Naknada provajdera je pretpostavka (1,9 % + 0,30 KM) do odgovora Monrija.</p>
+    <p class="fine">${MAPMODE === 'real' ? 'Mapa: OpenStreetMap. Mapu možeš pomjerati i zumirati, a lokacije mjesta su približne.' : 'Mapa je stilizovana skica Banje Luke.'} U aplikaciji ide Google ili Apple Maps. Iznosi su u KM, provizija 15 %. Naknada provajdera je pretpostavka (1,9 % + 0,30 KM) do odgovora Monrija.</p>
   </aside>`;
 }
 
@@ -1065,6 +1146,7 @@ function render(){
   document.querySelectorAll('#devseg button').forEach(b => b.classList.toggle('on', b.dataset.v === UI.device));
   $('#stage').innerHTML = UI.device === 'web' ? renderWeb() : `<div class="phone-stage">${renderPhone()}${notesHtml()}</div>`;
   document.querySelectorAll('[data-keep]').forEach(el => { if (keep[el.dataset.keep]) el.scrollTop = keep[el.dataset.keep]; });
+  mountMaps();
   const view = UI.device + ':' + (UI.device === 'web' && UI.wstack[0].s === 'admin' ? 'admin-' + UI.admin : topScr().s);
   if (view !== lastView){ lastView = view; try { window.setView(view); } catch(e){} }
   save();
@@ -1081,7 +1163,8 @@ function tabTo(v){
 }
 const ACT = {
   device(d){ UI.device = d.v; UI.paying = false; UI.confirm = null; },
-  reset(){ S = seed(); const dev = UI.device; UI = freshUI(dev); toast('Demo podaci su vraćeni na početak'); },
+  reset(){ S = seed(); const dev = UI.device; UI = freshUI(dev);
+    for (const k in LM){ const v = VIEW_DEFAULT[k]; if (v) LM[k].map.setView(v[0], v[1]); else LM[k].map.fitBounds(S.spots.map(sp => [sp.lat, sp.lng]), {padding:[40, 40]}); } toast('Demo podaci su vraćeni na početak'); },
   tab(d){ tabTo(d.v); },
   back(){ back(); },
   role(d){ UI.role = d.v; UI.sel = null; UI.mstack = [{s: d.v === 'host' ? 'h-spots' : 'map'}];
@@ -1115,7 +1198,7 @@ const ACT = {
   'cancel-yes'(d){ const b = S.bookings.find(x => x.id === d.id);
     b.refund = b.from - NOW >= 1 ? b.amount : r2(b.amount / 2); b.status = 'otkazana'; UI.confirm = null; toast(`Rezervacija otkazana. Povrat ${km(b.refund)} na karticu.`); },
   toggle(d){ const sp = spotById(d.id); sp.active = !sp.active; toast(sp.active ? 'Oglas je ponovo vidljiv vozačima' : 'Oglas je pauziran i skriven s mape'); },
-  add(){ UI.draft = newDraft(); if (UI.device === 'web') UI.wstack = [{s:'h-add'}]; else push('h-add'); },
+  add(){ UI.draft = newDraft(); if (LM.pick) LM.pick.map.setView(CENTER, 15); if (UI.device === 'web') UI.wstack = [{s:'h-add'}]; else push('h-add'); },
   'd-type'(d){ UI.draft.type = d.v; },
   'd-next'(){ UI.draft.step++; },
   'd-prev'(){ UI.draft.step--; },
@@ -1127,8 +1210,8 @@ const ACT = {
   'd-publish'(){
     const dr = UI.draft, price = parseFloat(String(dr.price).replace(',', '.'));
     S.n++;
-    const sp = {id:'s' + S.n, host:UI.hostId, type:dr.type, title:dr.title.trim() || TYPES[dr.type].label, addr:dr.addr.trim(), x:dr.x, y:dr.y, price:r2(price),
-      days:dr.days, from:dr.from, to:dr.to, feats:['Novo'], desc:dr.desc.trim() || 'Uputstvo domaćin još nije dodao.', active:true, hood:hoodOf(dr.x, dr.y), rating:'5.0', reviews:0, photo:dr.photo};
+    const sp = {id:'s' + S.n, host:UI.hostId, type:dr.type, title:dr.title.trim() || TYPES[dr.type].label, addr:dr.addr.trim(), x:dr.x, y:dr.y, lat:dr.lat, lng:dr.lng, price:r2(price),
+      days:dr.days, from:dr.from, to:dr.to, feats:['Novo'], desc:dr.desc.trim() || 'Uputstvo domaćin još nije dodao.', active:true, hood:hoodOfLL(dr.lat, dr.lng), rating:'5.0', reviews:0, photo:dr.photo};
     S.spots.push(sp); UI.draft = null;
     if (UI.device === 'web') UI.wstack = [{s:'h-spots'}]; else UI.mstack = [{s:'h-spots'}];
     toast('Oglas je objavljen. Vozači ga već vide na mapi.');
@@ -1150,7 +1233,8 @@ document.addEventListener('click', e => {
     // klik na mapu u čarobnjaku = označi lokaciju
     const svg = e.target.closest('.map[data-map="pick"] svg');
     if (svg && UI.draft){ const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
-      const p = pt.matrixTransform(svg.getScreenCTM().inverse()); UI.draft.x = Math.round(p.x); UI.draft.y = Math.round(p.y); render(); }
+      const p = pt.matrixTransform(svg.getScreenCTM().inverse()); UI.draft.x = Math.round(p.x); UI.draft.y = Math.round(p.y);
+      [UI.draft.lat, UI.draft.lng] = xy2ll(UI.draft.x, UI.draft.y); render(); }
     return;
   }
   const f = ACT[el.dataset.act]; if (!f) return;
@@ -1197,6 +1281,7 @@ document.addEventListener('pointermove', e => {
 document.addEventListener('pointerup', () => { if (drag && moved) save(); drag = null; setTimeout(() => moved = false, 0); });
 
 render();
+probeTiles();
 </script>
 <script>
 /* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
