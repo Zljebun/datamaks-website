@@ -68,10 +68,9 @@ button{cursor:pointer}
 
 /* ---------- stage ---------- */
 .stage{padding-inline:16px;padding-block:24px 40px}
-.phone-stage{max-width:1100px;margin:0 auto;display:flex;gap:40px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
-.notes{flex:0 1 320px;min-width:0;display:flex;flex-direction:column;gap:16px;padding-top:12px}
-.notes h2{font-family:var(--f-display);font-size:22px;margin:0;line-height:1.15;text-wrap:balance}
-.notes p{margin:0;color:var(--muted)}
+.phone-stage{display:flex;justify-content:center}
+/* demo kontrole u profilu: samo na pravom telefonu, gdje je gornja traka skrivena */
+.demo-m{display:none}
 .steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;counter-increment:s}
 .steps li::before{content:counter(s);width:24px;height:24px;border-radius:6px;background:var(--sign);color:var(--sign-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:13px;padding-top:2px}
@@ -225,6 +224,7 @@ textarea.input{resize:vertical;min-height:70px}
 
 /* map screen overlays */
 .mapwrap{position:relative;height:100%}
+.realmap{position:absolute;left:10px;bottom:10px;z-index:4;background:var(--surface);color:var(--sign);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;text-decoration:none;box-shadow:var(--shadow)}
 .searchcard{position:absolute;left:12px;right:12px;top:6px;z-index:4;background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
 .android .searchcard{border-radius:28px;padding:10px 14px}
 .sc-row{display:flex;align-items:center;gap:8px}
@@ -348,12 +348,15 @@ tr.hl td{background:var(--sign-soft)}
 @media (max-width:520px){
   .stage{padding-inline:0;padding-block:0}
   .phone{width:100%;height:calc(100dvh - 112px);min-height:600px;padding:0;border-radius:0;box-shadow:none;background:transparent}
+  /* iPhone/Android na telefonu: samo aplikacija preko cijelog ekrana, kao instalirana */
+  body.app .rail{display:none}
+  body.app .phone{height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:0}
+  .demo-m{display:flex}
   .screen,.android .screen{border-radius:0}
   .sbar,.home-ind,.gest{display:none}
   .ios .tabs{padding-bottom:10px}
   .android .tabs{padding-bottom:10px}
   .fab{bottom:84px}
-  .notes{padding:16px}
   .browser{border-radius:0;border-left:0;border-right:0}
   .hint{padding:12px 16px 0}
   .wbody{padding:16px}
@@ -543,7 +546,7 @@ function hostBalance(hid){
 const KEY = 'parkomat-demo-v3';
 let S, UI;
 function freshUI(device){
-  return {device: device || 'ios', role:'driver', hostId:'h1', mstack:[{s:'map'}], wstack:[{s:'map'}],
+  return {device: device || (/Android/i.test(navigator.userAgent) ? 'android' : 'ios'), role:'driver', hostId:'h1', mstack:[{s:'map'}], wstack:[{s:'map'}],
     search:{from:11, to:15, type:'sve'}, sel:null, co:null, paying:false, confirm:null, draft:null, maps:{}, admin:'pregled', hl:null};
 }
 try { const raw = localStorage.getItem(KEY); if (raw){ const o = JSON.parse(raw); S = o.S; UI = {...freshUI(), ...o.UI, paying:false, confirm:null}; } } catch(e){}
@@ -654,23 +657,25 @@ function mapHtml(key, {pins=[], sel=null, me=false, pick=null, ctlTop=null}={}){
     <div class="mapctl" style="${ctlTop != null ? `top:${ctlTop}px` : 'bottom:14px'}">
       <button data-act="zoom" data-k="${key}" data-z="0.75" aria-label="Uvećaj">+</button>
       <button data-act="zoom" data-k="${key}" data-z="1.33" aria-label="Umanji">−</button>
-    </div></div>`;
+    </div>${key !== 'pick' ? `<a class="realmap" href="${LIVE_URL}" target="_blank" rel="noopener">Prava mapa: datamaks.net ↗</a>` : ''}</div>`;
 }
 
 /* ===================== prava mapa (Leaflet + OpenStreetMap/CARTO) =====================
    Kad se podloga mape ne može učitati (npr. u zatvorenom pregledu), ostaje stilizovana skica iznad. */
 let MAPMODE = 'svg';
+const LIVE_URL = 'https://datamaks.net/mockups/parkomat/';
 const MAPCFG = {}, LM = {};
 const isDark = () => { const t = document.documentElement.dataset.theme;
   return t === 'dark' || (t !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); };
 const tileUrl = () => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const VIEW_DEFAULT = {phone:[[44.7718, 17.1945], 14], web:null, pick:[CENTER, 15]};
+/* Na datamaks.net (i lokalno) prava mapa odmah; drugdje samo ako se podloga stvarno učita. */
+const OWN_HOST = /(^|\.)datamaks\.net$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+if (OWN_HOST && typeof L !== 'undefined') MAPMODE = 'real';
 function probeTiles(){
-  if (typeof L === 'undefined') return;
-  const img = new Image(); let done = false;
-  const t = setTimeout(() => { done = true; }, 5000);
-  img.onload = () => { if (done) return; clearTimeout(t); MAPMODE = 'real'; render(); };
-  img.onerror = () => { clearTimeout(t); };
+  if (typeof L === 'undefined' || MAPMODE === 'real') return;
+  const img = new Image();
+  img.onload = () => { if (MAPMODE !== 'real'){ MAPMODE = 'real'; render(); } };
   img.src = 'https://tile.openstreetmap.org/13/4579/2964.png';
 }
 function lpin(sp, cls, label){
@@ -949,6 +954,10 @@ function profileContent(ctx){
       ${isHost ? `<div class="field"><label for="hsel-${ctx}">Demo domaćin</label><select class="select" id="hsel-${ctx}" data-ch="host">${HOSTS.map(h => `<option value="${h.id}" ${h.id === UI.hostId ? 'selected' : ''}>${h.name}</option>`).join('')}</select></div>` : ''}
     </div>
     <div class="card"><dl class="kv"><dt>Plaćanje</dt><dd>${ctx === 'ios' ? 'Apple Pay, Visa •• 1111' : 'Google Pay, Visa •• 1111'}</dd><dt>Obavještenja</dt><dd>Uključena</dd><dt>Jezik</dt><dd>Bosanski / srpski</dd></dl></div>
+    <div class="card stack demo-m" style="gap:10px">
+      <div class="between"><span class="eyebrow">Prototip</span><span class="demo-flag">DEMO · izmišljeni podaci</span></div>
+      <div class="chips">${[['ios','iPhone'],['android','Android'],['web','Web i admin']].map(([v, l]) => `<button class="chip ${UI.device === v ? 'on' : ''}" data-act="device" data-v="${v}">${l}</button>`).join('')}</div>
+    </div>
     <button class="btn block" data-act="reset">Reset demo podataka</button>
   </div>`;
 }
@@ -1007,26 +1016,6 @@ function renderPhone(){
     <div class="body ${def.full ? 'full' : ''}" data-keep="m-${t.s}">${def.body}</div>${fab}${tabs}${paying}
     ${plat === 'ios' ? '<div class="home-ind"></div>' : '<div class="gest"></div>'}</div></div>`;
 }
-function notesHtml(){
-  const host = UI.role === 'host';
-  return `<aside class="notes">
-    <h2>${host ? 'Domaćin: oglasi svoje mjesto' : 'Vozač: nađi i rezerviši mjesto'}</h2>
-    <ol class="steps">${host ? `
-      <li><span>U <b>Mjesta</b> vidiš svoje oglase i sljedeću rezervaciju. Prekidač pauzira oglas.</span></li>
-      <li><span>Dodaj novo mjesto: tip, lokacija na mapi, raspored (npr. Pon–Pet 08–17), cijena.</span></li>
-      <li><span>Prebaci na režim <b>Vozač</b>: novo mjesto je već na mapi.</span></li>
-      <li><span><b>Zarada</b> pokazuje podjelu 85 / 15 i sedmične isplate.</span></li>` : `
-      <li><span>Na mapi izaberi vrijeme (Od–Do). Plave cijene su slobodna mjesta, sive su zauzeta ili van rasporeda.</span></li>
-      <li><span>Dodirni mjesto, pa <b>Rezerviši</b> i plati ${UI.device === 'ios' ? 'Apple Pay-em' : 'Google Pay-em'} ili karticom.</span></li>
-      <li><span>Prebaci gore na <b>Web → Admin</b>: tvoja uplata je tamo, podijeljena na domaćina i proviziju.</span></li>
-      <li><span>U <b>Profilu</b> prebaci na režim <b>Domaćin</b> i dodaj svoje mjesto.</span></li>`}
-    </ol>
-    <div class="quick"><button class="btn small" data-act="role" data-v="${host ? 'driver' : 'host'}">${ico('swap','sm')}Prebaci na ${host ? 'Vozač' : 'Domaćin'}</button></div>
-    <div class="legend"><span><i class="dot"></i>slobodno</span><span><i class="dot off"></i>zauzeto</span><span><i class="dot sel"></i>izabrano</span></div>
-    <p class="fine">${MAPMODE === 'real' ? 'Mapa: OpenStreetMap. Mapu možeš pomjerati i zumirati, a lokacije mjesta su približne.' : 'Mapa je stilizovana skica Banje Luke.'} U aplikaciji ide Google ili Apple Maps. Iznosi su u KM, provizija 15 %. Naknada provajdera je pretpostavka (1,9 % + 0,30 KM) do odgovora Monrija.</p>
-  </aside>`;
-}
-
 /* ===================== web ===================== */
 const WTABS = [['map','Pronađi parking'],['bookings','Moje rezervacije'],['h-spots','Domaćin'],['admin','Admin']];
 function renderWeb(){
@@ -1144,7 +1133,8 @@ function render(){
   const keep = {};
   document.querySelectorAll('[data-keep]').forEach(el => keep[el.dataset.keep] = el.scrollTop);
   document.querySelectorAll('#devseg button').forEach(b => b.classList.toggle('on', b.dataset.v === UI.device));
-  $('#stage').innerHTML = UI.device === 'web' ? renderWeb() : `<div class="phone-stage">${renderPhone()}${notesHtml()}</div>`;
+  document.body.classList.toggle('app', UI.device !== 'web');
+  $('#stage').innerHTML = UI.device === 'web' ? renderWeb() : `<div class="phone-stage">${renderPhone()}</div>`;
   document.querySelectorAll('[data-keep]').forEach(el => { if (keep[el.dataset.keep]) el.scrollTop = keep[el.dataset.keep]; });
   mountMaps();
   const view = UI.device + ':' + (UI.device === 'web' && UI.wstack[0].s === 'admin' ? 'admin-' + UI.admin : topScr().s);
