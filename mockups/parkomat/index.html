@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parkomat · dijeljenje parking mjesta, rezervacija i online plaćanje (demo)</title>
+<meta name="description" content="Klikabilni demo prototip platforme Parkomat za Banju Luku: vlasnici oglašavaju slobodna parking mjesta, garaže i dvorišta, vozači ih pronalaze na mapi, rezervišu i plaćaju online. iPhone, Android i web, uz domaćinski i admin pregled sa raspodjelom uplata. Izmišljeni podaci, stvarna logika.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/parkomat/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%231c4fa0'/%3E%3Cpath%20d='M24%2048V16h11a10%2010%200%200%201%200%2020H24'%20fill='none'%20stroke='%23fff'%20stroke-width='7'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@500;700;800&family=Overpass+Mono:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: demo stage. A top rail with the brand sign and a device switcher; below it the device
+   (iPhone or Android frame, or a browser window for web) with a scenario rail beside the phones. */
+:root{
+  --paper:#eef1f5; --surface:#ffffff; --surface-2:#f4f6f9; --ink:#131820; --muted:#5b6676; --line:#d9dfe7;
+  --sign:#1c4fa0; --sign-ink:#ffffff; --sign-soft:#e3ebf8; --mark:#f2c230; --mark-ink:#1b1606;
+  --ok:#1d7f55; --ok-soft:#e1f2ea; --warn:#a0620c; --warn-soft:#fbefd9; --bad:#b4332a; --bad-soft:#f8e3e1;
+  --map-land:#e8ecf1; --map-park:#cfe3cc; --map-water:#9fc4e4; --map-road:#ffffff; --map-casing:#cdd5df; --map-minor:#fafbfc; --map-label:#6f7b8b;
+  --pin-off:#9aa5b4; --bezel:#0c0e12; --scrim:rgba(12,16,22,.42);
+  --shadow:0 1px 2px rgba(15,25,40,.08),0 8px 24px rgba(15,25,40,.10);
+  --f-display:"Overpass","Source Sans 3",system-ui,sans-serif;
+  --f-body:"Source Sans 3",system-ui,sans-serif;
+  --f-mono:"Overpass Mono",ui-monospace,Menlo,monospace;
+  --f-android:"Roboto",system-ui,sans-serif;
+  --f-ios:-apple-system,"SF Pro Text","Source Sans 3",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0d1117; --surface:#161b22; --surface-2:#1c222b; --ink:#e7ebf1; --muted:#9aa5b5; --line:#2a323d;
+  --sign:#6497ee; --sign-ink:#0a1427; --sign-soft:#1b2a44; --mark:#f2c230; --mark-ink:#1b1606;
+  --ok:#4cc38a; --ok-soft:#14301f; --warn:#e3a54a; --warn-soft:#33260f; --bad:#ef6b5f; --bad-soft:#3a1714;
+  --map-land:#171d25; --map-park:#1c2b22; --map-water:#1d3a57; --map-road:#2c3540; --map-casing:#1f262f; --map-minor:#232b35; --map-label:#8391a3;
+  --pin-off:#4b5563; --bezel:#000000; --scrim:rgba(0,0,0,.55);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0d1117; --surface:#161b22; --surface-2:#1c222b; --ink:#e7ebf1; --muted:#9aa5b5; --line:#2a323d;
+  --sign:#6497ee; --sign-ink:#0a1427; --sign-soft:#1b2a44; --mark:#f2c230; --mark-ink:#1b1606;
+  --ok:#4cc38a; --ok-soft:#14301f; --warn:#e3a54a; --warn-soft:#33260f; --bad:#ef6b5f; --bad-soft:#3a1714;
+  --map-land:#171d25; --map-park:#1c2b22; --map-water:#1d3a57; --map-road:#2c3540; --map-casing:#1f262f; --map-minor:#232b35; --map-label:#8391a3;
+  --pin-off:#4b5563; --bezel:#000000; --scrim:rgba(0,0,0,.55);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--sign);outline-offset:2px}
+.min0{min-width:0}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* ---------- top rail ---------- */
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);padding-inline:16px}
+.rail-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:-.01em}
+.psign{width:30px;height:30px;border-radius:7px;background:var(--sign);color:var(--sign-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:20px;line-height:1;padding-top:3px;box-shadow:inset 0 0 0 2px var(--surface),0 0 0 1px var(--sign)}
+.brand small{font-family:var(--f-body);font-weight:600;font-size:13px;color:var(--muted);letter-spacing:0}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:7px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.rail .spacer{flex:1}
+.demo-flag{background:var(--sign-soft);color:var(--sign);border-radius:6px;padding:3px 9px;font-size:12px;font-weight:700}
+.clock{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.clock b{color:var(--ink);font-weight:600}
+.linkbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600}
+
+/* ---------- stage ---------- */
+.stage{padding-inline:16px;padding-block:24px 40px}
+.phone-stage{max-width:1100px;margin:0 auto;display:flex;gap:40px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+.notes{flex:0 1 320px;min-width:0;display:flex;flex-direction:column;gap:16px;padding-top:12px}
+.notes h2{font-family:var(--f-display);font-size:22px;margin:0;line-height:1.15;text-wrap:balance}
+.notes p{margin:0;color:var(--muted)}
+.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;counter-increment:s}
+.steps li::before{content:counter(s);width:24px;height:24px;border-radius:6px;background:var(--sign);color:var(--sign-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:13px;padding-top:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:12px;height:12px;border-radius:4px;background:var(--sign);display:inline-block}
+.dot.off{background:var(--pin-off)}.dot.sel{background:var(--mark)}
+.fine{font-size:12.5px;color:var(--muted)}
+.quick{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- phone frames ---------- */
+.phone{width:390px;height:812px;flex:none;background:var(--bezel);padding:11px;border-radius:56px;box-shadow:0 30px 60px -20px rgba(10,20,40,.45),0 0 0 1px rgba(255,255,255,.06) inset;position:relative}
+.phone.android{border-radius:42px;padding:9px}
+.screen{width:100%;height:100%;border-radius:46px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column;position:relative;isolation:isolate}
+.android .screen{border-radius:34px;font-family:var(--f-android);font-size:14.5px}
+.ios .screen{font-family:var(--f-ios)}
+.sbar{height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:6px 30px 0 34px;font-weight:600;font-size:15px;position:relative;z-index:6}
+.android .sbar{height:34px;padding:0 20px;font-size:13px;font-weight:500}
+.island{position:absolute;left:50%;top:11px;width:118px;height:34px;border-radius:20px;background:#000;transform:translateX(-50%)}
+.punch{position:absolute;left:50%;top:10px;width:13px;height:13px;border-radius:50%;background:#000;transform:translateX(-50%)}
+.sicons{display:flex;gap:5px;align-items:center}
+.sicons i{display:block;background:currentColor;border-radius:2px}
+.home-ind{position:absolute;bottom:8px;left:50%;width:134px;height:5px;border-radius:3px;background:var(--ink);transform:translateX(-50%);z-index:9;opacity:.85}
+.android .gest{position:absolute;bottom:6px;left:50%;width:100px;height:4px;border-radius:2px;background:var(--ink);opacity:.6;transform:translateX(-50%);z-index:9}
+
+/* app bars */
+.abar{flex:none;display:flex;align-items:center;gap:6px;padding:0 10px;min-height:46px;position:relative;z-index:5;background:var(--paper)}
+.ios .abar .ttl{position:absolute;left:70px;right:70px;text-align:center;font-weight:600;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ios .abar .back{display:flex;align-items:center;gap:2px;border:0;background:none;color:var(--sign);font-size:17px;padding:6px 4px}
+.ios .abar .act{margin-left:auto;border:0;background:none;color:var(--sign);font-size:17px;font-weight:600;padding:6px}
+.ios .large{padding:2px 18px 8px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;background:var(--paper);flex:none}
+.ios .large h1{margin:0;font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.ios .large .act{border:0;background:var(--sign-soft);color:var(--sign);width:34px;height:34px;border-radius:50%;display:grid;place-items:center}
+.android .abar{min-height:60px;padding:0 6px 0 4px;gap:4px}
+.android .abar .back,.android .abar .act{border:0;background:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.android .abar .ttl{font-size:21px;font-weight:400;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:10px}
+.android .abar .back + .ttl{padding-left:2px}
+
+.body{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;padding:4px 16px 20px}
+.body.full{padding:0;overflow:hidden}
+/* tab bars */
+.tabs{flex:none;display:flex;border-top:1px solid var(--line);background:var(--surface);position:relative;z-index:5}
+.ios .tabs{padding:6px 6px 30px;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px)}
+.tabs button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:500;color:var(--muted);padding:4px 0}
+.tabs button.on{color:var(--sign)}
+.android .tabs{padding:10px 4px 22px;border-top:0;background:var(--surface-2)}
+.android .tabs button{font-size:12px;gap:4px;color:var(--muted)}
+.android .tabs button .ind{width:60px;height:30px;border-radius:15px;display:grid;place-items:center}
+.android .tabs button.on{color:var(--ink);font-weight:700}
+.android .tabs button.on .ind{background:var(--sign-soft);color:var(--sign)}
+.fab{position:absolute;right:16px;bottom:96px;z-index:7;border:0;background:var(--sign-soft);color:var(--sign);height:56px;border-radius:16px;padding:0 18px 0 14px;display:flex;align-items:center;gap:8px;font-weight:500;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+
+/* ---------- shared components ---------- */
+.ico{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ico.sm{width:18px;height:18px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:600;font-size:15.5px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+.btn.primary{background:var(--sign);color:var(--sign-ink);border-color:var(--sign)}
+.btn.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.danger{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.btn.ghost{background:transparent}
+.btn.block{width:100%}
+.btn.small{padding:7px 12px;font-size:13.5px;border-radius:9px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.android .btn{border-radius:22px;font-weight:500;letter-spacing:.01em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.android .card{border-radius:16px;border-color:transparent;background:var(--surface-2)}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.h2{font-size:20px;font-weight:700;margin:0;line-height:1.2;text-wrap:balance}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.info{background:var(--sign-soft);color:var(--sign)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.mute{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.chip.on{background:var(--sign);border-color:var(--sign);color:var(--sign-ink)}
+.android .chip{border-radius:8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;text-align:right;font-weight:600}
+.sum{border-top:1px dashed var(--line);padding-top:10px;display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
+.sum .num{font-size:20px}
+.plate{display:inline-flex;align-items:center;border:1.5px solid var(--ink);border-radius:5px;font-family:var(--f-mono);font-weight:700;font-size:13px;overflow:hidden;line-height:1}
+.plate b{background:var(--sign);color:var(--sign-ink);font-size:9px;padding:5px 4px 4px;align-self:stretch;display:grid;place-items:center}
+.plate span{padding:4px 7px 3px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:13px;font-weight:600;color:var(--muted)}
+.input,.select{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;font-size:15px}
+.android .input,.android .select{border-radius:6px;border-color:var(--muted)}
+.select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+textarea.input{resize:vertical;min-height:70px}
+.switch{width:46px;height:28px;border-radius:14px;background:var(--line);border:0;position:relative;flex:none;transition:background .15s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.switch.on{background:var(--ok)}
+.switch.on::after{transform:translateX(18px)}
+.list{display:flex;flex-direction:column}
+.li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;text-align:left;width:100%}
+.li:last-child{border-bottom:0}
+.li .t{font-weight:600;line-height:1.25}
+.li .s{font-size:13px;color:var(--muted)}
+.li .r{margin-left:auto;text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.empty{padding:28px 10px;text-align:center;color:var(--muted)}
+.notice{border-radius:12px;padding:12px 14px;font-size:14px;background:var(--sign-soft);color:var(--ink);display:flex;gap:10px;align-items:flex-start}
+.notice.warn{background:var(--warn-soft)}
+.notice .ico{color:var(--sign);margin-top:1px}
+.notice.warn .ico{color:var(--warn)}
+
+/* photo placeholder (illustrated, per space type) */
+.photo{border-radius:12px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--sign-soft),var(--surface-2));color:var(--sign);flex:none}
+.photo.sm{width:64px;height:64px;border-radius:10px}
+.photo.lg{width:100%;aspect-ratio:16/9;max-width:100%}
+.photo svg{width:46%;height:46%}
+.photo.lg svg{width:22%;height:40%}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo .ph-tag{position:absolute;left:10px;bottom:8px;font-size:11.5px;font-weight:700;background:var(--surface);color:var(--ink);padding:2px 8px;border-radius:6px}
+
+/* ---------- map ---------- */
+.map{position:relative;width:100%;height:100%;overflow:hidden;background:var(--map-land);touch-action:none;user-select:none;-webkit-user-select:none}
+.map svg{width:100%;height:100%;display:block;cursor:grab}
+.map.picking svg{cursor:crosshair}
+.map svg:active{cursor:grabbing}
+.m-land{fill:var(--map-land)}.m-park{fill:var(--map-park)}
+.m-water{fill:none;stroke:var(--map-water);stroke-linecap:round;stroke-linejoin:round}
+.m-casing{fill:none;stroke:var(--map-casing);stroke-width:15;stroke-linecap:round;stroke-linejoin:round}
+.m-road{fill:none;stroke:var(--map-road);stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+.m-minor{fill:none;stroke:var(--map-minor);stroke-width:4;stroke-linecap:round}
+.m-lbl{fill:var(--map-label);font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.m-poi{fill:var(--map-label);font-family:var(--f-body);font-style:italic;font-size:11px}
+.m-river{fill:var(--map-water);font-family:var(--f-body);font-style:italic;font-weight:600;font-size:13px;letter-spacing:.2em}
+.pin{cursor:pointer}
+.pin rect{fill:var(--sign);stroke:var(--surface);stroke-width:1.5}
+.pin path{fill:var(--sign)}
+.pin text{fill:var(--sign-ink);font-family:var(--f-mono);font-weight:700;font-size:11.5px;text-anchor:middle}
+.pin.off rect,.pin.off path{fill:var(--pin-off)}
+.pin.off text{fill:var(--surface)}
+.pin.sel rect,.pin.sel path{fill:var(--mark)}
+.pin.sel text{fill:var(--mark-ink)}
+.pin.new rect,.pin.new path{fill:var(--ok)}
+.pin.new text{fill:#fff}
+.pin.sel{transform-box:fill-box}
+.mapctl{position:absolute;right:12px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.mapctl button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:20px;font-weight:600;box-shadow:var(--shadow);display:grid;place-items:center;padding:0}
+.me{fill:var(--sign);stroke:var(--surface);stroke-width:3}
+.me-halo{fill:var(--sign);opacity:.16}
+
+/* map screen overlays */
+.mapwrap{position:relative;height:100%}
+.searchcard{position:absolute;left:12px;right:12px;top:6px;z-index:4;background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.android .searchcard{border-radius:28px;padding:10px 14px}
+.sc-row{display:flex;align-items:center;gap:8px}
+.sc-day{font-weight:700;font-size:14px;white-space:nowrap}
+.sc-time{display:flex;align-items:center;gap:4px;margin-left:auto}
+.sc-time select{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:5px 6px;font-family:var(--f-mono);font-weight:600;font-size:13px}
+.sc-count{font-size:12.5px;color:var(--muted)}
+.sc-count b{color:var(--ok)}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-radius:20px 20px 0 0;box-shadow:0 -8px 30px rgba(10,20,40,.18);padding:8px 16px 16px;display:flex;flex-direction:column;gap:12px;animation:up .22s ease-out}
+.android .sheet{border-radius:28px 28px 0 0;background:var(--surface-2)}
+.grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:0 auto}
+.sheet .t{font-weight:700;font-size:16.5px;line-height:1.2}
+.xbtn{margin-left:auto;align-self:flex-start;border:0;background:var(--surface-2);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--muted);flex:none}
+@keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+
+/* pay */
+.paym{display:flex;flex-direction:column;gap:8px}
+.paym label{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--surface);cursor:pointer;font-weight:600}
+.paym label.on{border-color:var(--sign);background:var(--sign-soft)}
+.paym input{accent-color:var(--sign);margin:0}
+.paym .logo{margin-left:auto;font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:6px;padding:2px 6px;background:var(--surface);color:var(--ink)}
+.monri{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface-2);display:flex;flex-direction:column;gap:8px}
+.monri .cardnum{font-family:var(--f-mono);font-weight:600;letter-spacing:.06em;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+.monri .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wallet{background:#000;color:#fff;border-color:#000}
+:root[data-theme="dark"] .wallet{background:#fff;color:#000;border-color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wallet{background:#fff;color:#000;border-color:#fff}}
+.overlay{position:absolute;inset:0;background:var(--scrim);z-index:30;display:grid;place-items:center}
+.overlay .box{background:var(--surface);border-radius:18px;padding:22px 26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-weight:600;box-shadow:var(--shadow)}
+.spin{width:34px;height:34px;border-radius:50%;border:3.5px solid var(--sign-soft);border-top-color:var(--sign);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.okbig{width:64px;height:64px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:8px auto 0}
+.okbig .ico{width:34px;height:34px;stroke-width:2.4}
+.code{font-family:var(--f-mono);font-weight:700;font-size:22px;letter-spacing:.08em;text-align:center}
+
+/* split bar */
+.split{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--surface-2)}
+.split i{display:block;height:100%}
+.split .s-host{background:var(--ok)}.split .s-psp{background:var(--warn)}.split .s-plat{background:var(--sign)}
+.split-legend{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;font-size:13.5px;align-items:center}
+.split-legend .sw{width:10px;height:10px;border-radius:3px}
+
+/* wizard */
+.steps-ind{display:flex;gap:6px}
+.steps-ind i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps-ind i.on{background:var(--sign)}
+.pickmap{height:230px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.daychips{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.daychips .chip{padding:7px 0;text-align:center}
+
+/* ---------- web ---------- */
+.browser{max-width:1280px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.chrome{display:flex;align-items:center;gap:12px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.lights{display:flex;gap:6px}.lights i{width:11px;height:11px;border-radius:50%;background:var(--line);display:block}
+.url{flex:1;max-width:520px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 12px;font-size:13px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.whead{display:flex;align-items:center;gap:18px;padding:12px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.wnav{display:flex;gap:4px;flex-wrap:wrap}
+.wnav button{border:0;background:none;padding:8px 12px;border-radius:8px;font-weight:600;color:var(--muted);font-size:14.5px}
+.wnav button.on{background:var(--sign-soft);color:var(--sign)}
+.wuser{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--sign);color:var(--sign-ink);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.avatar.lg{width:56px;height:56px;font-size:20px}
+.wfind{display:grid;grid-template-columns:400px 1fr;height:680px}
+.wpanel{border-right:1px solid var(--line);overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0;position:relative}
+.wmap{position:relative;min-width:0}
+.wbody{padding:22px 24px 30px;min-height:560px;display:flex;flex-direction:column;gap:18px;position:relative}
+.wsub{display:flex;gap:4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.wsub button{border:0;background:none;padding:10px 14px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.wsub button.on{color:var(--ink);border-bottom-color:var(--sign)}
+.wtwo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:24px;align-items:start}
+.wnarrow{max-width:620px;width:100%}
+.backlink{border:0;background:none;color:var(--sign);font-weight:600;display:inline-flex;align-items:center;gap:4px;padding:0;align-self:flex-start}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:4px}
+.kpi .v{font-family:var(--f-mono);font-weight:700;font-size:22px;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi.hl{background:var(--sign-soft);border-color:transparent}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-2);padding:10px 12px;white-space:nowrap}
+td{padding:10px 12px;border-top:1px solid var(--line);white-space:nowrap}
+td.r,th.r{text-align:right}
+td .num{font-weight:600}
+tr.hl td{background:var(--sign-soft)}
+.wh{font-family:var(--f-display);font-weight:800;font-size:24px;margin:0;letter-spacing:-.01em}
+.hint{max-width:1280px;margin:0 auto 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.hint b{color:var(--ink)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+/* responsive */
+@media (max-width:1000px){
+  .wfind{grid-template-columns:1fr;height:auto}
+  .wmap{height:380px;order:-1;border-bottom:1px solid var(--line)}
+  .wpanel{border-right:0;overflow:visible}
+  .wtwo{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .stage{padding-inline:0;padding-block:0}
+  .phone{width:100%;height:calc(100dvh - 112px);min-height:600px;padding:0;border-radius:0;box-shadow:none;background:transparent}
+  .screen,.android .screen{border-radius:0}
+  .sbar,.home-ind,.gest{display:none}
+  .ios .tabs{padding-bottom:10px}
+  .android .tabs{padding-bottom:10px}
+  .fab{bottom:84px}
+  .notes{padding:16px}
+  .browser{border-radius:0;border-left:0;border-right:0}
+  .hint{padding:12px 16px 0}
+  .wbody{padding:16px}
+  .rail .clock{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.viberCta{max-width:1280px;margin:14px auto 0;padding:14px 16px;border-radius:14px;background:var(--sign-soft);border:1px solid var(--line)}
+.viberCta .t{font-size:14px;line-height:1.55;margin-bottom:10px}
+.viberCta .btns{display:flex;gap:10px;flex-wrap:wrap}
+.viberCta a{padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;text-decoration:none;color:#fff}
+.cta-wrap{padding-inline:16px}
+</style>
+</head>
+<body>
+<header class="rail"><div class="rail-in">
+  <div class="brand"><span class="psign">P</span>Parkomat <small>prototip · Banja Luka</small></div>
+  <span class="demo-flag">DEMO · izmišljeni podaci</span>
+  <div class="seg" id="devseg" role="tablist" aria-label="Uređaj">
+    <button data-act="device" data-v="ios">iPhone</button>
+    <button data-act="device" data-v="android">Android</button>
+    <button data-act="device" data-v="web">Web</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="clock">Demo vrijeme <b>Pon 19.10.2026. 10:15</b></div>
+  <button class="linkbtn" data-act="reset">Reset demo</button>
+</div></header>
+<div class="cta-wrap"><div class="viberCta">
+  <div class="t"><b>Ovo je klikabilni prototip platforme Parkomat.</b> Vlasnici privatnih parking mjesta, garaža i dvorišta oglašavaju prostor za vrijeme kad ga ne koriste, a vozači ga pronađu na mapi, rezervišu i plate online. Gore birate kako izgleda na iPhone-u, Androidu i webu; sva tri dijele iste podatke, pa se rezervacija napravljena na telefonu odmah vidi kod domaćina i u admin pregledu, sa podjelom uplate 85 / 15. Imate komentar ili ideju? Javite se.</div>
+  <div class="btns">
+    <a href="viber://add?number=38765469565" data-kanal="viber" style="background:#7360F2">Pišite na Viber</a>
+    <a href="https://wa.me/436677970082" target="_blank" rel="noopener" data-kanal="whatsapp" style="background:#25D366">WhatsApp</a>
+    <a href="tel:+38765469565" data-kanal="telefon" style="background:#141b2b">Pozovi</a>
+  </div>
+</div></div>
+
+<main class="stage" id="stage"></main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===================== konstante i pomoćne ===================== */
+const FEE = 0.15, PSP_PCT = 0.019, PSP_FIX = 0.30;          // provizija platforme; naknada provajdera (pretpostavka)
+const TODAY = '2026-10-19', NOW = 10.25, DOW_TODAY = 1;     // demo: ponedjeljak 10:15
+const ME = {name:'Nikola Petrović', plate:'M34-K-512'};
+const DAYS = ['Ned','Pon','Uto','Sri','Čet','Pet','Sub'];
+const DAY_ORDER = [1,2,3,4,5,6,0];
+const TYPES = {
+  mjesto:{label:'Parking mjesto', short:'Mjesto'},
+  garaza:{label:'Garaža', short:'Garaža'},
+  dvoriste:{label:'Dvorište', short:'Dvorište'}
+};
+const HOSTS = [
+  {id:'h1', name:'Milica Jovanović', iban:'BA39 5620 •••• •••• 4521'},
+  {id:'h2', name:'Dragan Kovačević', iban:'BA39 5520 •••• •••• 1187'},
+  {id:'h3', name:'Jelena Savić', iban:'BA39 1610 •••• •••• 9034'},
+  {id:'h4', name:'Stefan Marić', iban:'BA39 5672 •••• •••• 3310'},
+  {id:'h5', name:'Igor Tomić', iban:'BA39 5550 •••• •••• 7702'}
+];
+const HOODS = [['Centar',450,320],['Borik',740,170],['Lauš',240,140],['Starčevica',400,575],['Paprikovac',215,505],
+  ['Univerzitetski grad',665,320],['Obilićevo',805,455],['Mejdan',700,575],['Rosulje',330,215]];
+const DRIVERS = [['Sanja Radić','K21-E-118'],['Bojan Lukić','A07-J-993'],['Mirza Hodžić','E55-T-240'],['Tijana Đurić','M12-O-671'],
+  ['Vladimir Popović','T40-K-305'],['Ivana Kostić','J88-A-416'],['Aleksandar Ilić','O63-M-227']];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const r2 = n => Math.round(n*100)/100;
+const kmn = n => r2(n).toFixed(2).replace('.', ',');
+const km = n => kmn(n) + ' KM';
+const hh = h => String(Math.floor(h)).padStart(2,'0') + ':' + (h % 1 ? '30' : '00');
+const dow = d => new Date(d + 'T12:00:00').getDay();
+const fdate = d => { const [, m, dd] = d.split('-'); return `${DAYS[dow(d)]} ${+dd}.${+m}.`; };
+const spotById = id => S.spots.find(x => x.id === id);
+const hostById = id => HOSTS.find(h => h.id === id) || {name:'—', iban:''};
+const initials = n => n.split(' ').map(x => x[0]).join('').slice(0,2);
+const short = n => { const p = n.split(' '); return p[0] + ' ' + (p[1] ? p[1][0] + '.' : ''); };
+
+function daysText(days){
+  const s = [...days].sort((a,b)=>DAY_ORDER.indexOf(a)-DAY_ORDER.indexOf(b)).join(',');
+  if (s === '1,2,3,4,5') return 'Pon–Pet';
+  if (s === '1,2,3,4,5,6') return 'Pon–Sub';
+  if (s === '1,2,3,4,5,6,0') return 'Svaki dan';
+  if (s === '6,0') return 'Sub–Ned';
+  return [...days].sort((a,b)=>DAY_ORDER.indexOf(a)-DAY_ORDER.indexOf(b)).map(d=>DAYS[d]).join(', ');
+}
+const schedText = sp => `${daysText(sp.days)} ${hh(sp.from)}–${hh(sp.to)}`;
+
+/* ===================== podaci (seed) ===================== */
+function seed(){
+  const spots = [
+    {id:'s1', host:'h1', type:'garaza', title:'Garaža u stambenoj zgradi', addr:'Ulica Kralja Alfonsa XIII 14', x:428, y:296, price:2.5, days:[1,2,3,4,5], from:7.5, to:16.5, feats:['Natkriveno','Daljinski za kapiju','Video nadzor'], desc:'Podzemna garaža, ulaz iz dvorišta. Daljinski se preuzima iz sandučića uz kod iz aplikacije.'},
+    {id:'s2', host:'h1', type:'mjesto', title:'Mjesto u dvorištu zgrade', addr:'Jevrejska 22', x:484, y:352, price:2.0, days:[1,2,3,4,5], from:8, to:17, feats:['Rampa','Blizu centra'], desc:'Obilježeno mjesto br. 7, rampa se otvara na poziv.'},
+    {id:'s3', host:'h1', type:'mjesto', title:'Mjesto ispred kuće', addr:'Aleja Svetog Save 5', x:458, y:262, price:2.2, days:[1,2,3,4,5,6,0], from:6, to:22, feats:['Otvoreno','Pet minuta do Gospodske'], desc:'Mjesto uz ulaz, pogodno za manja i srednja vozila.'},
+    {id:'s4', host:'h2', type:'dvoriste', title:'Dvorište porodične kuće', addr:'Bulevar vojvode Stepe Stepanovića 112', x:716, y:184, price:1.2, days:[1,2,3,4,5], from:7, to:16, feats:['Kapija','Mjesto za 1 auto'], desc:'Kapija je otvorena preko dana, parkirati lijevo od ulaza.'},
+    {id:'s5', host:'h2', type:'garaza', title:'Samostalna garaža', addr:'Ulica Majke Jugovića 8', x:772, y:146, price:1.5, days:[1,2,3,4,5,6], from:8, to:20, feats:['Natkriveno','Utičnica 230 V'], desc:'Zasebna garaža, ključ u šifrovanoj kutiji.'},
+    {id:'s6', host:'h3', type:'mjesto', title:'Mjesto kod UKC-a', addr:'Dvanaest beba 3', x:206, y:520, price:1.8, days:[1,2,3,4,5], from:7, to:15, feats:['3 min pješke do UKC','Otvoreno'], desc:'Idealno za posjete i preglede u Kliničkom centru.'},
+    {id:'s7', host:'h3', type:'dvoriste', title:'Dvorište sa nadstrešnicom', addr:'Ulica Lazarića 9', x:262, y:470, price:1.0, days:[1,2,3,4,5,6,0], from:6, to:22, feats:['Nadstrešnica','Mirna ulica'], desc:'Ulaz sa sporedne ulice, mjesto ispod nadstrešnice.'},
+    {id:'s8', host:'h4', type:'mjesto', title:'Mjesto kod Univerzitetskog grada', addr:'Bulevar vojvode Petra Bojovića 1', x:662, y:318, price:1.3, days:[1,2,3,4,5], from:8, to:18, feats:['Studenti','Otvoreno'], desc:'Mjesto u dvorištu zgrade preko puta kampusa.'},
+    {id:'s9', host:'h4', type:'garaza', title:'Garaža u nizu', addr:'Ulica Ive Andrića 16', x:408, y:584, price:1.4, days:[1,2,3,4,5], from:7, to:17, feats:['Natkriveno','Široka vrata'], desc:'Garaža broj 3 u nizu iza zgrade.'},
+    {id:'s10', host:'h5', type:'mjesto', title:'Mjesto u naselju', addr:'Ulica Krajiških brigada 140', x:238, y:152, price:0.9, days:[1,2,3,4,5,6,0], from:0, to:24, feats:['0–24','Otvoreno'], desc:'Dostupno cijeli dan, svaki dan.'},
+    {id:'s11', host:'h5', type:'dvoriste', title:'Dvorište uz glavnu ulicu', addr:'Ulica Slavka Rodića 31', x:812, y:458, price:1.0, days:[1,2,3,4,5], from:8, to:16, feats:['Kapija','Za 2 auta'], desc:'Kapija se otvara na poziv domaćina.'},
+    {id:'s12', host:'h3', type:'mjesto', title:'Mjesto kod Kastela', addr:'Ulica Kralja Petra I Karađorđevića 2', x:520, y:398, price:2.0, days:[6,0], from:8, to:20, feats:['Vikend','Blizu tvrđave'], desc:'Dostupno samo vikendom, idealno za izlazak u grad.'},
+    {id:'s13', host:'h5', type:'garaza', title:'Garaža iza zgrade', addr:'Ulica Cara Lazara 47', x:704, y:566, price:1.1, days:[1,2,3,4,5], from:6, to:18, feats:['Natkriveno'], desc:'Garaža sa električnim vratima, kod se šalje nakon rezervacije.'}
+  ].map(s => ({...s, active:true, hood:hoodOf(s.x, s.y), rating:(4.5 + ((s.x*7+s.y)%5)/10).toFixed(1), reviews:8 + (s.x+s.y)%37}));
+
+  const bookings = [];
+  let seedN = 11; const rnd = () => (seedN = (seedN*16807) % 2147483647) / 2147483647;
+  let n = 1;
+  const mk = (sp, date, from, to, driver, plate, method, extra={}) => {
+    const b = {id:'b'+(n++), code:'PK-' + (4000 + n*37).toString(36).toUpperCase(), spotId:sp.id, date, from, to,
+      amount:r2((to-from)*sp.price), refund:0, driver, plate, method, status:'ok', created:date, ...extra};
+    bookings.push(b); return b;
+  };
+  for (let d = 5; d <= 16; d++){
+    const date = `2026-10-${String(d).padStart(2,'0')}`, wd = dow(date);
+    for (const sp of spots){
+      if (!sp.days.includes(wd) || rnd() > 0.42) continue;
+      const span = Math.min(sp.to, 20) - Math.max(sp.from, 7);
+      const dur = 2 + Math.floor(rnd()*Math.min(5, Math.max(1, span-2)));
+      const start = Math.max(sp.from, 7) + Math.floor(rnd()*Math.max(1, span-dur));
+      const dr = DRIVERS[Math.floor(rnd()*DRIVERS.length)];
+      mk(sp, date, start, Math.min(start+dur, sp.to), dr[0], dr[1], ['Kartica','Apple Pay','Google Pay'][Math.floor(rnd()*3)]);
+    }
+  }
+  const sp = id => spots.find(s => s.id === id);
+  mk(sp('s5'), '2026-10-14', 9, 12, ME.name, ME.plate, 'Apple Pay');
+  mk(sp('s3'), '2026-10-16', 17, 19, ME.name, ME.plate, 'Kartica', {status:'otkazana', refund:4.4});
+  mk(sp('s2'), TODAY, 9, 13, 'Sanja Radić', 'K21-E-118', 'Google Pay');
+  mk(sp('s6'), TODAY, 7, 15, 'Bojan Lukić', 'A07-J-993', 'Kartica');
+  mk(sp('s4'), TODAY, 13, 16, 'Mirza Hodžić', 'E55-T-240', 'Apple Pay');
+  mk(sp('s10'), TODAY, 8, 12, 'Tijana Đurić', 'M12-O-671', 'Kartica');
+  mk(sp('s1'), TODAY, 15, 16.5, 'Ivana Kostić', 'J88-A-416', 'Google Pay');
+
+  const payouts = HOSTS.map((h, i) => {
+    const amt = bookings.filter(b => spots.find(s => s.id === b.spotId).host === h.id && b.date < '2026-10-12')
+      .reduce((a, b) => a + money(b).host, 0);
+    return {id:'p'+(i+1), host:h.id, amount:r2(amt), date:'2026-10-12', ref:'ISP-2042-' + (i+1)};
+  }).filter(p => p.amount > 0);
+  return {spots, bookings, payouts, n:1000};
+}
+function hoodOf(x, y){
+  let best = HOODS[0], bd = 1e9;
+  for (const h of HOODS){ const d = (h[1]-x)**2 + (h[2]-y)**2; if (d < bd){ bd = d; best = h; } }
+  return best[0];
+}
+
+/* novac: jedna uplata -> domaćin 85 %, platforma 15 % (iz koje plaća naknadu provajdera) */
+function money(b){
+  const eff = r2(b.amount - (b.refund || 0));
+  const fee = eff * FEE, host = eff - fee;
+  const psp = eff > 0 ? b.amount*PSP_PCT + PSP_FIX : 0;
+  return {eff, fee:r2(fee), host:r2(host), psp:r2(psp), net:r2(fee - psp)};
+}
+function status(b){
+  if (b.status === 'otkazana') return 'otkazana';
+  if (b.date < TODAY || (b.date === TODAY && b.to <= NOW)) return 'završena';
+  if (b.date === TODAY && b.from <= NOW) return 'aktivna';
+  return 'predstojeća';
+}
+const STATUS_PILL = {'aktivna':'ok', 'predstojeća':'info', 'završena':'mute', 'otkazana':'bad'};
+const pill = b => { const s = status(b); return `<span class="pill ${STATUS_PILL[s]}">${s[0].toUpperCase()+s.slice(1)}</span>`; };
+
+function covers(sp, wd, f, t){ return sp.active && sp.days.includes(wd) && f >= sp.from && t <= sp.to; }
+function overlaps(sp, date, f, t, ignore){
+  return S.bookings.some(b => b.spotId === sp.id && b.date === date && b.status !== 'otkazana' && b.id !== ignore && f < b.to && t > b.from);
+}
+const available = (sp, f, t) => covers(sp, DOW_TODAY, f, t) && !overlaps(sp, TODAY, f, t);
+function reason(sp, f, t){
+  if (!sp.active) return 'Domaćin je privremeno pauzirao oglas';
+  if (!sp.days.includes(DOW_TODAY)) return `Danas nije u rasporedu (${schedText(sp)})`;
+  if (f < sp.from || t > sp.to) return `Danas dostupno samo ${hh(sp.from)}–${hh(sp.to)}`;
+  if (overlaps(sp, TODAY, f, t)) return 'Već rezervisano u dijelu ovog termina';
+  return '';
+}
+function hostBalance(hid){
+  const mine = S.bookings.filter(b => spotById(b.spotId)?.host === hid);
+  const earned = mine.filter(b => status(b) !== 'predstojeća').reduce((a, b) => a + money(b).host, 0);
+  const pending = mine.filter(b => status(b) === 'predstojeća').reduce((a, b) => a + money(b).host, 0);
+  const paid = S.payouts.filter(p => p.host === hid).reduce((a, p) => a + p.amount, 0);
+  return {balance:r2(earned - paid), pending:r2(pending), earned:r2(earned), paid:r2(paid), count:mine.length};
+}
+
+/* ===================== stanje ===================== */
+const KEY = 'parkomat-demo-v1';
+let S, UI;
+function freshUI(device){
+  return {device: device || 'ios', role:'driver', hostId:'h1', mstack:[{s:'map'}], wstack:[{s:'map'}],
+    search:{from:11, to:15, type:'sve'}, sel:null, co:null, paying:false, confirm:null, draft:null, maps:{}, admin:'pregled', hl:null};
+}
+try { const raw = localStorage.getItem(KEY); if (raw){ const o = JSON.parse(raw); S = o.S; UI = {...freshUI(), ...o.UI, paying:false, confirm:null}; } } catch(e){}
+if (!S || !S.spots){ S = seed(); UI = freshUI(); }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify({S, UI:{device:UI.device, role:UI.role, hostId:UI.hostId, search:UI.search, maps:UI.maps}})); } catch(e){} }
+
+const stack = () => UI.device === 'web' ? UI.wstack : UI.mstack;
+const top = () => { const s = stack(); return s[s.length-1]; };
+function push(s, extra={}){ stack().push({s, ...extra}); UI.confirm = null; }
+function back(){ const s = stack(); if (s.length > 1) s.pop(); UI.confirm = null; }
+function resetTo(s, extra={}){ if (UI.device === 'web') UI.wstack = [{s, ...extra}]; else UI.mstack = [{s, ...extra}]; UI.confirm = null; }
+
+/* ===================== ikonice ===================== */
+const I = {
+  map:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/>',
+  ticket:'<path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M14 7v10" stroke-dasharray="2 2"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+  p:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 0 1 0 5h-3"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  wallet:'<path d="M3 7h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H3zM3 7l12-4v4"/><path d="M17 13.5h.01"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  back:'<path d="M15 5l-7 7 7 7"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  nav:'<path d="M3 11l18-8-8 18-2-8z"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/>',
+  star:'<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="currentColor" stroke="none"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7M2 20h20"/>',
+  swap:'<path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>'
+};
+const ico = (n, cls='') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true">${I[n]}</svg>`;
+
+/* ilustracija prostora (umjesto fotografije) */
+const TYPE_ART = {
+  garaza:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 20 24 6l20 14v22H4z"/><path d="M11 42V24h26v18M11 29h26M11 34h26M11 39h26"/></svg>',
+  mjesto:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="8" y="5" width="24" height="24" rx="4"/><path d="M16 23V11h6a4 4 0 0 1 0 8h-6"/><path d="M20 29v14M6 43h36M36 30v13M42 30v13" /></svg>',
+  dvoriste:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 42V18M44 42V18M4 24h40M4 36h40M11 18v24M18 14v28M25 12v30M32 14v28M39 18v24"/></svg>'
+};
+function photo(sp, size){
+  const img = sp.photo ? `<img src="${sp.photo}" alt="">` : '';
+  return `<div class="photo ${size}">${img || TYPE_ART[sp.type]}${size === 'lg' ? `<span class="ph-tag">${TYPES[sp.type].label}</span>` : ''}</div>`;
+}
+const plate = p => `<span class="plate"><b>BIH</b><span>${esc(p)}</span></span>`;
+
+/* ===================== mapa Banja Luke (stilizovana) ===================== */
+const MAP_BASE = `
+<rect class="m-land" x="-400" y="-400" width="1800" height="1500"/>
+<path class="m-park" d="M-60 560 C60 515 160 590 250 640 C310 672 340 720 340 820 L-60 820Z"/>
+<path class="m-park" d="M640 640 C720 600 840 590 940 610 C1000 625 1060 680 1060 820 L620 820Z"/>
+<ellipse class="m-park" cx="392" cy="342" rx="34" ry="22"/>
+<path class="m-park" d="M512 412 l52 -10 l14 40 l-54 14z"/>
+<ellipse class="m-park" cx="110" cy="300" rx="88" ry="48"/>
+<ellipse class="m-park" cx="900" cy="250" rx="70" ry="40"/>
+<g>${['M300 222 L560 240','M318 382 L548 382','M338 444 L520 474','M380 196 L398 486','M520 196 L538 300','M300 300 L318 462',
+ 'M650 152 L860 232','M700 252 L880 302','M690 382 L700 622','M760 382 L782 642','M620 522 L900 522','M250 200 L180 422',
+ 'M150 162 L350 122','M300 622 L520 642','M380 522 L560 562','M820 122 L900 362','M90 380 L300 400','M560 120 L640 60','M120 470 L300 560','M860 400 L960 560']
+ .map(d=>`<path class="m-minor" d="${d}"/>`).join('')}</g>
+<path class="m-water" stroke-width="7" d="M80 250 C200 270 260 300 340 312 S470 330 575 318"/>
+<path class="m-water" stroke-width="26" d="M590 780 C560 690 640 620 590 520 S520 420 588 318 S700 190 650 100 S600 10 630 -80"/>
+${['M462 -60 C466 120 472 240 480 330 S472 520 420 760',
+   'M-60 300 C180 312 350 302 480 330 S620 300 720 290 S900 262 1060 250',
+   'M612 300 C660 232 712 192 770 142 L1060 40',
+   'M462 200 C380 172 300 142 150 102 L-60 70',
+   'M472 420 C380 460 300 500 230 522 L-60 572',
+   'M480 420 C560 425 600 425 640 420 C720 440 800 452 1060 472',
+   'M640 420 C660 520 690 600 720 760'].map(d=>`<path class="m-casing" d="${d}"/>`).join('')}
+${['M462 -60 C466 120 472 240 480 330 S472 520 420 760',
+   'M-60 300 C180 312 350 302 480 330 S620 300 720 290 S900 262 1060 250',
+   'M612 300 C660 232 712 192 770 142 L1060 40',
+   'M462 200 C380 172 300 142 150 102 L-60 70',
+   'M472 420 C380 460 300 500 230 522 L-60 572',
+   'M480 420 C560 425 600 425 640 420 C720 440 800 452 1060 472',
+   'M640 420 C660 520 690 600 720 760'].map(d=>`<path class="m-road" d="${d}"/>`).join('')}
+<text class="m-river" transform="translate(628 215) rotate(-62)">VRBAS</text>
+<text class="m-lbl" x="398" y="236">Centar</text>
+<text class="m-lbl" x="740" y="118">Borik</text>
+<text class="m-lbl" x="196" y="120">Lauš</text>
+<text class="m-lbl" x="350" y="616">Starčevica</text>
+<text class="m-lbl" x="140" y="458">Paprikovac</text>
+<text class="m-lbl" x="690" y="370">Univerzitetski grad</text>
+<text class="m-lbl" x="828" y="430">Obilićevo</text>
+<text class="m-lbl" x="736" y="610">Mejdan</text>
+<text class="m-lbl" x="290" y="196">Rosulje</text>
+<text class="m-poi" x="530" y="450">Tvrđava Kastel</text>
+<text class="m-poi" x="352" y="374">Gradski park</text>
+<text class="m-poi" x="172" y="546">UKC Republike Srpske</text>
+<text class="m-poi" x="488" y="300">Hram Hrista Spasitelja</text>`;
+
+const VB_DEFAULT = {phone:[290,150,400,560], web:[60,40,880,620], pick:[300,170,360,300]};
+function vbOf(key){ return UI.maps[key] || VB_DEFAULT[key]; }
+
+function pinSvg(sp, cls, label){
+  return `<g class="pin ${cls}" ${sp.id === '_new' ? '' : 'data-act="pin"'} data-id="${sp.id}" transform="translate(${sp.x} ${sp.y})" role="button" aria-label="${esc(sp.title)}">
+    <rect x="-24" y="-34" width="48" height="22" rx="11"/><path d="M-5 -13 L0 -5 L5 -13Z"/><text y="-19">${label}</text></g>`;
+}
+function mapHtml(key, {pins=[], sel=null, me=false, pick=null, ctlTop=null}={}){
+  const vb = vbOf(key);
+  const pinsSvg = pins.map(p => pinSvg(p.sp, (p.cls||'') + (p.sp.id === sel ? ' sel' : ''), p.label)).join('');
+  const meSvg = me ? `<circle class="me-halo" cx="452" cy="318" r="22"/><circle class="me" cx="452" cy="318" r="7"/>` : '';
+  const pickSvg = pick ? pinSvg({id:'_new', x:pick.x, y:pick.y, title:'Novo mjesto'}, 'new', 'NOVO') : '';
+  return `<div class="map ${key === 'pick' ? 'picking' : ''}" data-map="${key}">
+    <svg viewBox="${vb.join(' ')}" preserveAspectRatio="xMidYMid slice" aria-label="Mapa Banje Luke">${MAP_BASE}${meSvg}${pinsSvg}${pickSvg}</svg>
+    <div class="mapctl" style="${ctlTop != null ? `top:${ctlTop}px` : 'bottom:14px'}">
+      <button data-act="zoom" data-k="${key}" data-z="0.75" aria-label="Uvećaj">+</button>
+      <button data-act="zoom" data-k="${key}" data-z="1.33" aria-label="Umanji">−</button>
+    </div></div>`;
+}
+
+/* ===================== zajednički sadržaji ekrana ===================== */
+function filtered(){ return S.spots.filter(sp => UI.search.type === 'sve' || sp.type === UI.search.type); }
+function timeOpts(sel, min, max){
+  let o = ''; for (let h = min; h <= max; h += 0.5) o += `<option value="${h}" ${h === sel ? 'selected' : ''}>${hh(h)}</option>`; return o;
+}
+function searchControls(ctx){
+  const {from, to, type} = UI.search;
+  return `<div class="sc-row"><span class="sc-day">Danas · Pon 19.10.</span>
+      <span class="sc-time"><select id="f-${ctx}" data-ch="from" aria-label="Od">${timeOpts(from, 10.5, 23.5)}</select><span class="muted">–</span>
+      <select id="t-${ctx}" data-ch="to" aria-label="Do">${timeOpts(to, from + 0.5, 24)}</select></span></div>
+    <div class="chips">${['sve','mjesto','garaza','dvoriste'].map(t =>
+      `<button class="chip ${type === t ? 'on' : ''}" data-act="type" data-v="${t}">${t === 'sve' ? 'Sve' : TYPES[t].short}</button>`).join('')}</div>`;
+}
+function countLine(){
+  const list = filtered(), n = list.filter(sp => available(sp, UI.search.from, UI.search.to)).length;
+  return `<div class="sc-count"><b>${n} slobodno</b> od ${list.length} mjesta za ${hh(UI.search.from)}–${hh(UI.search.to)} (${UI.search.to - UI.search.from} h)</div>`;
+}
+function mapPins(){
+  return filtered().map(sp => { const ok = available(sp, UI.search.from, UI.search.to);
+    return {sp, cls: ok ? '' : 'off', label: kmn(sp.price)}; });
+}
+
+function spotContent(sp, ctx){
+  const {from, to} = UI.search, hrs = to - from, total = r2(hrs * sp.price), why = reason(sp, from, to);
+  const h = hostById(sp.host);
+  return `<div class="stack">
+    ${photo(sp, 'lg')}
+    <div class="stack" style="gap:4px">
+      <div class="between"><span class="eyebrow">${esc(sp.hood)}</span><span class="row small" style="gap:3px;color:var(--warn)">${ico('star','sm')}<b>${sp.rating}</b><span class="muted">(${sp.reviews})</span></span></div>
+      <h2 class="h2">${esc(sp.title)}</h2>
+      <div class="row muted small" style="gap:6px">${ico('pin','sm')}${esc(sp.addr)}, Banja Luka</div>
+    </div>
+    <div class="chips">${sp.feats.map(f => `<span class="pill mute">${esc(f)}</span>`).join('')}</div>
+    <p class="muted" style="margin:0">${esc(sp.desc)}</p>
+    <div class="card stack" style="gap:10px">
+      <div class="between"><span class="eyebrow">Raspored domaćina</span><span class="small"><b>${schedText(sp)}</b></span></div>
+      <dl class="kv"><dt>Vaš termin</dt><dd>Danas ${hh(from)}–${hh(to)}</dd>
+      <dt>Cijena</dt><dd class="num">${km(sp.price)} / sat</dd>
+      <dt>Trajanje</dt><dd>${hrs} h</dd></dl>
+      <div class="sum"><span>Ukupno</span><span class="num">${km(total)}</span></div>
+    </div>
+    ${why ? `<div class="notice warn">${ico('info')}<span>${why}. Promijenite termin na mapi.</span></div>` : ''}
+    <div class="row small muted"><span class="avatar" style="width:28px;height:28px;font-size:11px">${initials(h.name)}</span>Domaćin: <b style="color:var(--ink)">${esc(h.name)}</b></div>
+    <button class="btn primary block" data-act="checkout" data-id="${sp.id}" ${why ? 'disabled' : ''}>Rezerviši za ${km(total)}</button>
+    <p class="fine" style="margin:0">Besplatno otkazivanje do 1 h prije početka termina.</p>
+  </div>`;
+}
+
+function checkoutContent(ctx){
+  const co = UI.co, sp = spotById(co.spotId), hrs = co.to - co.from, total = r2(hrs * sp.price);
+  const methods = ctx === 'ios' ? [['apple','Apple Pay'],['card','Platna kartica']]
+    : ctx === 'android' ? [['google','Google Pay'],['card','Platna kartica']]
+    : [['card','Platna kartica'],['google','Google Pay'],['apple','Apple Pay']];
+  if (!methods.some(m => m[0] === co.method)) co.method = methods[0][0];
+  const payBtn = co.method === 'apple' ? `<button class="btn block wallet" data-act="pay">Plati uz Apple Pay · ${km(total)}</button>`
+    : co.method === 'google' ? `<button class="btn block wallet" data-act="pay">Plati uz Google Pay · ${km(total)}</button>`
+    : `<button class="btn primary block" data-act="pay">Plati ${km(total)}</button>`;
+  return `<div class="stack">
+    <div class="card stack" style="gap:10px">
+      <div class="row">${photo(sp,'sm')}<div class="min0"><div style="font-weight:700">${esc(sp.title)}</div><div class="small muted">${esc(sp.addr)}</div></div></div>
+      <dl class="kv"><dt>Termin</dt><dd>Danas ${hh(co.from)}–${hh(co.to)}</dd>
+        <dt>Obračun</dt><dd class="num">${hrs} h × ${km(sp.price)}</dd></dl>
+      <div class="sum"><span>Za platiti</span><span class="num">${km(total)}</span></div>
+    </div>
+    <div class="field"><label for="plate-${ctx}">Registarska oznaka vozila</label>
+      <input class="input num" id="plate-${ctx}" data-in="plate" value="${esc(co.plate)}" autocomplete="off"></div>
+    <div class="field"><label>Način plaćanja</label>
+      <div class="paym">${methods.map(([v, l]) => `<label class="${co.method === v ? 'on' : ''}"><input type="radio" name="pm-${ctx}" data-ch="method" value="${v}" ${co.method === v ? 'checked' : ''}>${l}
+        <span class="logo">${v === 'card' ? 'VISA · MC' : v === 'apple' ? 'Wallet' : 'GPay'}</span></label>`).join('')}</div></div>
+    ${co.method === 'card' ? `<div class="monri"><div class="between"><span class="eyebrow">Sigurna forma provajdera</span><span class="small muted">Monri · primjer</span></div>
+      <div class="cardnum">4111 1111 1111 1111</div><div class="two"><div class="cardnum">12 / 28</div><div class="cardnum">•••</div></div>
+      <div class="small muted">Podaci kartice idu direktno provajderu. Parkomat ih ne vidi niti čuva.</div></div>` : ''}
+    <div class="notice">${ico('info')}<span>Iznos se odmah rezerviše na kartici, a naplaćuje kada termin počne. Domaćin dobija 85 %, Parkomat zadržava 15 % provizije.</span></div>
+    ${payBtn}
+  </div>`;
+}
+
+function successContent(b){
+  const sp = spotById(b.spotId), h = hostById(sp.host);
+  return `<div class="stack" style="text-align:center">
+    <div class="okbig">${ico('check')}</div>
+    <h2 class="h2">Rezervacija je potvrđena</h2>
+    <div class="code">${b.code}</div>
+    <div class="card stack" style="text-align:left;gap:8px">
+      <div style="font-weight:700">${esc(sp.title)}</div><div class="small muted">${esc(sp.addr)}, ${esc(sp.hood)}</div>
+      <dl class="kv"><dt>Termin</dt><dd>Danas ${hh(b.from)}–${hh(b.to)}</dd><dt>Vozilo</dt><dd>${plate(b.plate)}</dd>
+      <dt>Plaćeno</dt><dd class="num">${km(b.amount)} · ${b.method}</dd></dl>
+    </div>
+    <button class="btn primary block" data-act="navigate">${ico('nav','sm')}Navigacija do mjesta</button>
+    <button class="btn block" data-act="tab" data-v="bookings">Moje rezervacije</button>
+    <div class="notice" style="text-align:left">${ico('swap')}<span>Domaćin <b>${esc(h.name)}</b> je dobio obavještenje. Prebaci gore na <b>Web</b> → <b>Admin</b> ili <b>Domaćin</b> i vidi ovu rezervaciju i raspodjelu novca.</span></div>
+  </div>`;
+}
+
+function bookingsContent(ctx){
+  const mine = S.bookings.filter(b => b.driver === ME.name);
+  const cur = mine.filter(b => ['aktivna','predstojeća'].includes(status(b))).sort((a,b) => a.from - b.from);
+  const past = mine.filter(b => !['aktivna','predstojeća'].includes(status(b))).sort((a,b) => b.date.localeCompare(a.date));
+  const row = b => { const sp = spotById(b.spotId);
+    return `<button class="li" data-act="booking" data-id="${b.id}">${photo(sp,'sm')}<div class="min0"><div class="t">${esc(sp.title)}</div>
+      <div class="s">${b.date === TODAY ? 'Danas' : fdate(b.date)} · ${hh(b.from)}–${hh(b.to)}</div><div class="s">${esc(sp.hood)}</div></div>
+      <div class="r"><span class="num" style="font-weight:700">${km(b.amount - b.refund)}</span>${pill(b)}</div></button>`; };
+  return `<div class="stack">
+    <div class="eyebrow">Aktivne i predstojeće</div>
+    ${cur.length ? `<div class="list">${cur.map(row).join('')}</div>` : `<div class="empty">Nema aktivnih rezervacija.<br><button class="btn small primary" style="margin-top:10px" data-act="tab" data-v="map">Pronađi parking</button></div>`}
+    <div class="eyebrow" style="margin-top:6px">Ranije</div>
+    <div class="list">${past.map(row).join('') || '<div class="empty">Još nema ranijih rezervacija.</div>'}</div>
+  </div>`;
+}
+
+function bookingContent(b, ctx){
+  const sp = spotById(b.spotId), st = status(b), h = hostById(sp.host);
+  const canExt = ['aktivna','predstojeća'].includes(st) && b.to + 1 <= 24 && covers(sp, DOW_TODAY, b.from, b.to + 1) && !overlaps(sp, b.date, b.to, b.to + 1, b.id);
+  const refund = st === 'predstojeća' ? (b.from - NOW >= 1 ? b.amount : r2(b.amount / 2)) : 0;
+  return `<div class="stack">
+    <div class="between"><div class="code" style="font-size:18px">${b.code}</div>${pill(b)}</div>
+    ${photo(sp, 'lg')}
+    <div class="stack" style="gap:2px"><div class="h2">${esc(sp.title)}</div><div class="small muted">${esc(sp.addr)}, ${esc(sp.hood)}</div></div>
+    <div class="card"><dl class="kv">
+      <dt>Datum</dt><dd>${b.date === TODAY ? 'Danas, ' : ''}${fdate(b.date)}</dd>
+      <dt>Termin</dt><dd>${hh(b.from)}–${hh(b.to)}${b.ext ? ` <span class="pill info">+${b.ext} h</span>` : ''}</dd>
+      <dt>Vozilo</dt><dd>${plate(b.plate)}</dd>
+      <dt>Domaćin</dt><dd>${esc(h.name)}</dd>
+      <dt>Plaćeno</dt><dd class="num">${km(b.amount)}</dd>
+      ${b.refund ? `<dt>Povrat</dt><dd class="num" style="color:var(--ok)">−${km(b.refund)}</dd>` : ''}
+      <dt>Način</dt><dd>${b.method}</dd></dl></div>
+    ${st === 'aktivna' ? `<div class="notice">${ico('clock')}<span>Parking traje još <b>${Math.round((b.to - NOW) * 60)} min</b> (do ${hh(b.to)}).</span></div>` : ''}
+    ${['aktivna','predstojeća'].includes(st) ? `<button class="btn primary block" data-act="navigate">${ico('nav','sm')}Navigacija do mjesta</button>
+      <button class="btn block" data-act="extend" data-id="${b.id}" ${canExt ? '' : 'disabled'}>Produži 1 h (+${km(sp.price)})</button>
+      ${canExt ? '' : '<p class="fine" style="margin:0">Produženje nije moguće: mjesto je nakon toga zauzeto ili van rasporeda domaćina.</p>'}` : ''}
+    ${st === 'predstojeća' ? (UI.confirm === b.id
+      ? `<div class="card stack" style="gap:10px"><div><b>Otkazati rezervaciju?</b><div class="small muted">${refund === b.amount ? 'Otkazujete više od 1 h prije početka, pa je povrat pun.' : 'Manje od 1 h do početka, pa je povrat 50 %.'}</div></div>
+         <dl class="kv"><dt>Povrat na karticu</dt><dd class="num">${km(refund)}</dd></dl>
+         <div class="row"><button class="btn danger" style="flex:1" data-act="cancel-yes" data-id="${b.id}">Otkaži</button><button class="btn" style="flex:1" data-act="cancel-no">Odustani</button></div></div>`
+      : `<button class="btn danger block" data-act="cancel" data-id="${b.id}">Otkaži rezervaciju</button>`) : ''}
+  </div>`;
+}
+
+/* ---------- domaćin ---------- */
+function hostSpots(ctx){
+  const mine = S.spots.filter(sp => sp.host === UI.hostId);
+  return `<div class="stack">
+    ${ctx === 'web' ? `<div class="between"><h2 class="h2">Moja mjesta (${mine.length})</h2><button class="btn primary small" data-act="add">${ico('plus','sm')}Dodaj mjesto</button></div>` : ''}
+    ${mine.map(sp => {
+      const next = S.bookings.filter(b => b.spotId === sp.id && ['aktivna','predstojeća'].includes(status(b))).sort((a,b) => a.from - b.from)[0];
+      return `<div class="card stack" style="gap:10px">
+        <div class="row">${photo(sp,'sm')}<div class="min0" style="flex:1"><div style="font-weight:700;line-height:1.25">${esc(sp.title)}</div>
+          <div class="small muted">${esc(sp.addr)}</div><div class="small"><span class="num">${km(sp.price)}</span>/h · ${schedText(sp)}</div></div>
+          <button class="switch ${sp.active ? 'on' : ''}" data-act="toggle" data-id="${sp.id}" aria-label="Oglas aktivan" aria-pressed="${sp.active}"></button></div>
+        <div class="small ${next ? '' : 'muted'}">${next ? `${pill(next)} ${hh(next.from)}–${hh(next.to)} · ${esc(short(next.driver))} ${plate(next.plate)}` : (sp.active ? 'Danas nema rezervacija' : 'Oglas je pauziran i ne vidi se na mapi')}</div>
+      </div>`; }).join('') || '<div class="empty">Još nemate oglašenih mjesta.</div>'}
+  </div>`;
+}
+function hostBookings(ctx){
+  const mine = S.bookings.filter(b => spotById(b.spotId)?.host === UI.hostId);
+  const groups = [['Danas i predstojeće', mine.filter(b => ['aktivna','predstojeća'].includes(status(b))).sort((a,b) => a.from - b.from)],
+    ['Završene i otkazane', mine.filter(b => !['aktivna','predstojeća'].includes(status(b))).sort((a,b) => b.date.localeCompare(a.date) || b.from - a.from).slice(0, 12)]];
+  return `<div class="stack">${groups.map(([t, list]) => `<div class="eyebrow">${t}</div><div class="list">${list.map(b => { const sp = spotById(b.spotId), m = money(b);
+    return `<div class="li ${UI.hl === b.id ? 'hlrow' : ''}"><span class="avatar" style="background:var(--surface-2);color:var(--ink);border:1px solid var(--line)">${initials(b.driver)}</span>
+      <div class="min0"><div class="t">${esc(short(b.driver))} ${plate(b.plate)}</div><div class="s">${b.date === TODAY ? 'Danas' : fdate(b.date)} · ${hh(b.from)}–${hh(b.to)} · ${esc(sp.title)}</div></div>
+      <div class="r"><span class="num" style="font-weight:700;color:var(--ok)">+${km(m.host)}</span>${pill(b)}</div></div>`; }).join('') || '<div class="empty">Nema stavki.</div>'}</div>`).join('')}</div>`;
+}
+function hostEarn(ctx){
+  const hb = hostBalance(UI.hostId), h = hostById(UI.hostId);
+  const ex = S.bookings.filter(b => spotById(b.spotId)?.host === UI.hostId && b.status !== 'otkazana').slice(-1)[0];
+  const m = ex ? money(ex) : null;
+  const pays = S.payouts.filter(p => p.host === UI.hostId).slice().reverse();
+  return `<div class="stack">
+    <div class="card stack" style="gap:6px;background:var(--sign);color:var(--sign-ink);border-color:var(--sign)">
+      <span class="eyebrow" style="color:inherit;opacity:.8">Za isplatu</span>
+      <span class="num" style="font-size:32px;font-weight:700">${km(hb.balance)}</span>
+      <span class="small" style="opacity:.85">Još ${km(hb.pending)} iz predstojećih rezervacija. Isplata svakog ponedjeljka na ${esc(h.iban)}.</span>
+    </div>
+    ${m ? `<div class="card stack" style="gap:10px"><span class="eyebrow">Kako se dijeli zadnja uplata</span>
+      <div class="small">${esc(short(ex.driver))} je platio/la <b class="num">${km(m.eff)}</b> za ${esc(spotById(ex.spotId).title.toLowerCase())}</div>
+      <div class="split"><i class="s-host" style="width:85%"></i><i class="s-plat" style="width:15%"></i></div>
+      <div class="split-legend"><span class="sw" style="background:var(--ok)"></span><span>Vama (85 %)</span><b class="num">${km(m.host)}</b>
+      <span class="sw" style="background:var(--sign)"></span><span>Provizija Parkomat (15 %)</span><b class="num">${km(m.fee)}</b></div></div>` : ''}
+    <div class="card"><dl class="kv"><dt>Ukupno zarađeno</dt><dd class="num">${km(hb.earned)}</dd><dt>Isplaćeno</dt><dd class="num">${km(hb.paid)}</dd><dt>Rezervacija ukupno</dt><dd>${hb.count}</dd></dl></div>
+    <div class="eyebrow">Isplate</div>
+    <div class="list">${pays.map(p => `<div class="li"><span class="avatar" style="background:var(--ok-soft);color:var(--ok)">${ico('wallet','sm')}</span><div class="min0"><div class="t">${fdate(p.date)} · ${p.ref}</div><div class="s">Prenos na ${esc(h.iban)}</div></div><div class="r"><span class="num" style="font-weight:700">${km(p.amount)}</span><span class="pill ok">Poslano</span></div></div>`).join('') || '<div class="empty">Još nema isplata.</div>'}</div>
+  </div>`;
+}
+
+/* ---------- dodavanje mjesta (čarobnjak) ---------- */
+function newDraft(){ return {step:1, type:'mjesto', title:'', addr:'', x:null, y:null, days:[1,2,3,4,5], from:8, to:17, price:'1,50', desc:'', photo:null}; }
+function addContent(ctx){
+  const d = UI.draft || (UI.draft = newDraft());
+  const ind = `<div class="steps-ind">${[1,2,3].map(i => `<i class="${i <= d.step ? 'on' : ''}"></i>`).join('')}</div>`;
+  let body = '';
+  if (d.step === 1){
+    body = `<div class="eyebrow">Korak 1 od 3 · Prostor i lokacija</div>
+      <div class="field"><label>Tip prostora</label><div class="chips">${Object.keys(TYPES).map(t => `<button class="chip ${d.type === t ? 'on' : ''}" data-act="d-type" data-v="${t}">${TYPES[t].label}</button>`).join('')}</div></div>
+      <div class="field"><label for="d-title-${ctx}">Naziv oglasa</label><input class="input" id="d-title-${ctx}" data-in="d-title" placeholder="npr. Mjesto u dvorištu zgrade" value="${esc(d.title)}"></div>
+      <div class="field"><label for="d-addr-${ctx}">Adresa</label><input class="input" id="d-addr-${ctx}" data-in="d-addr" placeholder="Ulica i broj" value="${esc(d.addr)}"></div>
+      <div class="field"><label>Tačna lokacija ${d.x != null ? `<span class="pill ok">${esc(hoodOf(d.x, d.y))}</span>` : ''}</label>
+        <div class="pickmap">${mapHtml('pick', {pick: d.x != null ? {x:d.x, y:d.y} : null, ctlTop:10})}</div>
+        <span class="fine">${d.x != null ? 'Lokacija je označena. Dodirni ponovo da je pomjeriš.' : 'Dodirni mapu tamo gdje je ulaz u parking.'}</span></div>
+      <button class="btn primary block" data-act="d-next" ${d.addr.trim() && d.x != null ? '' : 'disabled'}>Dalje</button>`;
+  } else if (d.step === 2){
+    body = `<div class="eyebrow">Korak 2 od 3 · Kada je slobodno</div>
+      <div class="field"><label>Brzi izbor</label><div class="chips">
+        <button class="chip" data-act="d-preset" data-v="work">Radnim danima 08–17</button>
+        <button class="chip" data-act="d-preset" data-v="night">Svaku noć 18–07</button>
+        <button class="chip" data-act="d-preset" data-v="all">Uvijek 0–24</button></div></div>
+      <div class="field"><label>Dani</label><div class="daychips">${DAY_ORDER.map(dd => `<button class="chip ${d.days.includes(dd) ? 'on' : ''}" data-act="d-day" data-v="${dd}">${DAYS[dd]}</button>`).join('')}</div></div>
+      <div class="row"><div class="field" style="flex:1"><label for="d-from-${ctx}">Od</label><select class="select num" id="d-from-${ctx}" data-ch="d-from">${timeOpts(d.from, 0, 23.5)}</select></div>
+        <div class="field" style="flex:1"><label for="d-to-${ctx}">Do</label><select class="select num" id="d-to-${ctx}" data-ch="d-to">${timeOpts(d.to, d.from + 0.5, 24)}</select></div></div>
+      <div class="notice">${ico('cal')}<span>Oglas se ponavlja: <b>${d.days.length ? daysText(d.days) : '—'} ${hh(d.from)}–${hh(d.to)}</b>. Pojedinačne dane možete kasnije blokirati u kalendaru.</span></div>
+      <div class="row"><button class="btn" style="flex:1" data-act="d-prev">Nazad</button><button class="btn primary" style="flex:2" data-act="d-next" ${d.days.length ? '' : 'disabled'}>Dalje</button></div>`;
+  } else {
+    const p = parseFloat(String(d.price).replace(',', '.')) || 0;
+    const hood = hoodOf(d.x, d.y), near = S.spots.filter(s => s.hood === hood);
+    const avg = near.length ? near.reduce((a, s) => a + s.price, 0) / near.length : 1.5;
+    body = `<div class="eyebrow">Korak 3 od 3 · Cijena i opis</div>
+      <div class="field"><label for="d-price-${ctx}">Cijena po satu (KM)</label><input class="input num" id="d-price-${ctx}" data-in="d-price" inputmode="decimal" value="${esc(d.price)}">
+        <span class="fine">Prosjek za ${esc(hood)}: ${km(avg)}/h. Od svake uplate dobijate 85 %${p ? `, za 1 h to je ${km(p * 0.85)}` : ''}.</span></div>
+      <div class="field"><label for="d-desc-${ctx}">Uputstvo za vozača</label><textarea class="input" id="d-desc-${ctx}" data-in="d-desc" placeholder="Kako se ulazi, koje je mjesto, gdje je ključ…">${esc(d.desc)}</textarea></div>
+      <div class="field"><label for="d-photo-${ctx}">Fotografija</label>
+        <div class="row">${d.photo ? `<div class="photo sm"><img src="${d.photo}" alt=""></div>` : ''}<input type="file" accept="image/*" id="d-photo-${ctx}" data-ch="d-photo" class="small"></div></div>
+      <div class="row"><button class="btn" style="flex:1" data-act="d-prev">Nazad</button><button class="btn primary" style="flex:2" data-act="d-publish" ${p > 0 ? '' : 'disabled'}>Objavi oglas</button></div>`;
+  }
+  return `<div class="stack">${ind}${body}</div>`;
+}
+
+function profileContent(ctx){
+  const isHost = UI.role === 'host', name = isHost ? hostById(UI.hostId).name : ME.name;
+  return `<div class="stack">
+    <div class="row" style="gap:14px;padding:6px 0"><span class="avatar lg">${initials(name)}</span><div><div class="h2">${esc(name)}</div><div class="small muted">${isHost ? 'Domaćin · ' + S.spots.filter(s => s.host === UI.hostId).length + ' mjesta' : 'Vozač · ' + ME.plate}</div></div></div>
+    <div class="card stack" style="gap:10px">
+      <span class="eyebrow">Režim aplikacije</span>
+      <div class="chips"><button class="chip ${!isHost ? 'on' : ''}" data-act="role" data-v="driver">Vozač</button><button class="chip ${isHost ? 'on' : ''}" data-act="role" data-v="host">Domaćin</button></div>
+      <span class="small muted">Isti nalog može i parkirati i izdavati svoje mjesto.</span>
+      ${isHost ? `<div class="field"><label for="hsel-${ctx}">Demo domaćin</label><select class="select" id="hsel-${ctx}" data-ch="host">${HOSTS.map(h => `<option value="${h.id}" ${h.id === UI.hostId ? 'selected' : ''}>${h.name}</option>`).join('')}</select></div>` : ''}
+    </div>
+    <div class="card"><dl class="kv"><dt>Plaćanje</dt><dd>${ctx === 'ios' ? 'Apple Pay, Visa •• 1111' : 'Google Pay, Visa •• 1111'}</dd><dt>Obavještenja</dt><dd>Uključena</dd><dt>Jezik</dt><dd>Bosanski / srpski</dd></dl></div>
+    <button class="btn block" data-act="reset">Reset demo podataka</button>
+  </div>`;
+}
+
+/* ===================== mobilna aplikacija ===================== */
+function screenDef(t, plat){
+  const sp = t.id ? spotById(t.id) : null;
+  switch (t.s){
+    case 'map': return {bar:false, full:true, body:`<div class="mapwrap">
+        ${mapHtml('phone', {pins:mapPins(), sel:UI.sel, me:true, ctlTop:168})}
+        <div class="searchcard">${searchControls(plat)}${countLine()}</div>
+        ${UI.sel ? sheetHtml(spotById(UI.sel)) : ''}</div>`};
+    case 'spot': return {title:'Detalji', back:true, body:spotContent(sp, plat)};
+    case 'checkout': return {title:'Plaćanje', back:true, body:checkoutContent(plat)};
+    case 'success': return {title:'Potvrda', body:successContent(S.bookings.find(b => b.id === t.id))};
+    case 'bookings': return {title:'Rezervacije', large:true, body:bookingsContent(plat)};
+    case 'booking': return {title:'Rezervacija', back:true, body:bookingContent(S.bookings.find(b => b.id === t.id), plat)};
+    case 'profile': return {title:'Profil', large:true, body:profileContent(plat)};
+    case 'h-spots': return {title:'Moja mjesta', large:true, action:'add', body:hostSpots(plat)};
+    case 'h-bookings': return {title:'Rezervacije', large:true, body:hostBookings(plat)};
+    case 'h-earn': return {title:'Zarada', large:true, body:hostEarn(plat)};
+    case 'h-add': return {title:'Novo mjesto', back:true, body:addContent(plat)};
+  }
+}
+function sheetHtml(sp){
+  if (!sp) return '';
+  const {from, to} = UI.search, why = reason(sp, from, to), total = r2((to - from) * sp.price);
+  return `<div class="sheet"><div class="grab"></div>
+    <div class="row" style="align-items:flex-start">${photo(sp,'sm')}<div class="min0"><div class="t">${esc(sp.title)}</div>
+      <div class="small muted">${esc(sp.hood)} · ${TYPES[sp.type].label}</div>
+      <div class="small"><b class="num">${km(sp.price)}</b>/h ${why ? '' : `· ${to - from} h = <b class="num">${km(total)}</b>`}</div></div>
+      <button class="xbtn" data-act="desel" aria-label="Zatvori">${ico('x','sm')}</button></div>
+    ${why ? `<div class="notice warn">${ico('info')}<span>${why}</span></div>` : ''}
+    <button class="btn ${why ? '' : 'primary'} block" data-act="open" data-id="${sp.id}">${why ? 'Pogledaj detalje' : 'Pogledaj i rezerviši'}</button></div>`;
+}
+const TABS = {
+  driver:[['map','Mapa','map'],['bookings','Rezervacije','ticket'],['profile','Profil','user']],
+  host:[['h-spots','Mjesta','p'],['h-bookings','Rezervacije','cal'],['h-earn','Zarada','wallet'],['profile','Profil','user']]
+};
+function renderPhone(){
+  const plat = UI.device, t = top(), def = screenDef(t, plat), base = UI.mstack[0].s;
+  const sbar = plat === 'ios'
+    ? `<div class="sbar"><span>10:15</span><span class="island"></span><span class="sicons"><i style="width:17px;height:10px"></i><i style="width:15px;height:10px;border-radius:5px 5px 2px 2px"></i><i style="width:24px;height:11px;border-radius:3px"></i></span></div>`
+    : `<div class="sbar"><span>10:15</span><span class="punch"></span><span class="sicons"><i style="width:14px;height:11px"></i><i style="width:12px;height:12px;border-radius:2px 2px 6px 6px"></i><i style="width:9px;height:14px"></i></span></div>`;
+  let bar = '';
+  if (def.bar !== false){
+    if (def.large && plat === 'ios') bar = `<div class="large"><h1>${def.title}</h1>${def.action === 'add' ? `<button class="act" data-act="add" aria-label="Dodaj mjesto">${ico('plus')}</button>` : ''}</div>`;
+    else if (plat === 'ios') bar = `<div class="abar">${def.back ? `<button class="back" data-act="back">${ico('back')}Nazad</button>` : ''}<div class="ttl">${def.title}</div></div>`;
+    else bar = `<div class="abar">${def.back ? `<button class="back" data-act="back" aria-label="Nazad">${ico('back')}</button>` : ''}<div class="ttl">${def.title}</div></div>`;
+  }
+  const tabs = def.back || t.s === 'success' ? '' : `<nav class="tabs">${TABS[UI.role].map(([s, l, ic]) =>
+    `<button class="${base === s ? 'on' : ''}" data-act="tab" data-v="${s}">${plat === 'android' ? `<span class="ind">${ico(ic)}</span>` : ico(ic)}${l}</button>`).join('')}</nav>`;
+  const fab = plat === 'android' && def.action === 'add' ? `<button class="fab" data-act="add">${ico('plus')}Dodaj mjesto</button>` : '';
+  const paying = UI.paying ? `<div class="overlay"><div class="box"><div class="spin"></div>Obrada plaćanja…<span class="small muted">${UI.co.method === 'apple' ? 'Apple Pay' : UI.co.method === 'google' ? 'Google Pay' : 'Monri 3-D Secure'}</span></div></div>` : '';
+  return `<div class="phone ${plat}"><div class="screen">${sbar}${bar}
+    <div class="body ${def.full ? 'full' : ''}" data-keep="m-${t.s}">${def.body}</div>${fab}${tabs}${paying}
+    ${plat === 'ios' ? '<div class="home-ind"></div>' : '<div class="gest"></div>'}</div></div>`;
+}
+function notesHtml(){
+  const host = UI.role === 'host';
+  return `<aside class="notes">
+    <h2>${host ? 'Domaćin: oglasi svoje mjesto' : 'Vozač: nađi i rezerviši mjesto'}</h2>
+    <ol class="steps">${host ? `
+      <li><span>U <b>Mjesta</b> vidiš svoje oglase i sljedeću rezervaciju. Prekidač pauzira oglas.</span></li>
+      <li><span>Dodaj novo mjesto: tip, lokacija na mapi, raspored (npr. Pon–Pet 08–17), cijena.</span></li>
+      <li><span>Prebaci na režim <b>Vozač</b>: novo mjesto je već na mapi.</span></li>
+      <li><span><b>Zarada</b> pokazuje podjelu 85 / 15 i sedmične isplate.</span></li>` : `
+      <li><span>Na mapi izaberi vrijeme (Od–Do). Plave cijene su slobodna mjesta, sive su zauzeta ili van rasporeda.</span></li>
+      <li><span>Dodirni mjesto, pa <b>Rezerviši</b> i plati ${UI.device === 'ios' ? 'Apple Pay-em' : 'Google Pay-em'} ili karticom.</span></li>
+      <li><span>Prebaci gore na <b>Web → Admin</b>: tvoja uplata je tamo, podijeljena na domaćina i proviziju.</span></li>
+      <li><span>U <b>Profilu</b> prebaci na režim <b>Domaćin</b> i dodaj svoje mjesto.</span></li>`}
+    </ol>
+    <div class="quick"><button class="btn small" data-act="role" data-v="${host ? 'driver' : 'host'}">${ico('swap','sm')}Prebaci na ${host ? 'Vozač' : 'Domaćin'}</button></div>
+    <div class="legend"><span><i class="dot"></i>slobodno</span><span><i class="dot off"></i>zauzeto</span><span><i class="dot sel"></i>izabrano</span></div>
+    <p class="fine">Mapa je stilizovana skica Banje Luke. U aplikaciji ide prava mapa (Google ili Apple Maps). Iznosi su u KM, provizija 15 %. Naknada provajdera je pretpostavka (1,9 % + 0,30 KM) do odgovora Monrija.</p>
+  </aside>`;
+}
+
+/* ===================== web ===================== */
+const WTABS = [['map','Pronađi parking'],['bookings','Moje rezervacije'],['h-spots','Domaćin'],['admin','Admin']];
+function renderWeb(){
+  const base = UI.wstack[0].s, t = top();
+  const hostTab = ['h-spots','h-bookings','h-earn','h-add'].includes(base);
+  const user = base === 'admin' ? 'Admin · Datamaks' : hostTab ? hostById(UI.hostId).name : ME.name;
+  let main = '';
+  const paying = UI.paying ? `<div class="overlay"><div class="box"><div class="spin"></div>Obrada plaćanja…<span class="small muted">Monri 3-D Secure</span></div></div>` : '';
+  if (base === 'map'){
+    let left;
+    if (t.s === 'map'){
+      const list = filtered().map(sp => ({sp, ok:available(sp, UI.search.from, UI.search.to)})).sort((a, b) => (b.ok - a.ok) || a.sp.price - b.sp.price);
+      left = `<div class="stack" style="gap:8px">${searchControls('web')}${countLine()}</div>
+        <div class="list">${list.map(({sp, ok}) => `<button class="li" data-act="open" data-id="${sp.id}">${photo(sp,'sm')}<div class="min0"><div class="t">${esc(sp.title)}</div>
+          <div class="s">${esc(sp.hood)} · ${TYPES[sp.type].label}</div><div class="s">${ok ? schedText(sp) : esc(reason(sp, UI.search.from, UI.search.to))}</div></div>
+          <div class="r"><span class="num" style="font-weight:700">${km(sp.price)}</span><span class="pill ${ok ? 'ok' : 'mute'}">${ok ? km(r2((UI.search.to - UI.search.from) * sp.price)) : 'zauzeto'}</span></div></button>`).join('')}</div>`;
+    } else {
+      const sp = t.id ? spotById(t.id) : null;
+      const c = t.s === 'spot' ? spotContent(sp, 'web') : t.s === 'checkout' ? checkoutContent('web') : successContent(S.bookings.find(b => b.id === t.id));
+      left = `${t.s !== 'success' ? `<button class="backlink" data-act="back">${ico('back','sm')}Nazad</button>` : `<button class="backlink" data-act="tab" data-v="map">${ico('back','sm')}Nazad na pretragu</button>`}${c}`;
+    }
+    const selId = t.s === 'spot' ? t.id : (UI.co && t.s !== 'map' ? UI.co.spotId : null);
+    main = `<div class="wfind"><div class="wpanel" data-keep="w-${t.s}">${left}${paying}</div><div class="wmap">${mapHtml('web', {pins:mapPins(), sel:selId, me:true, ctlTop:14})}</div></div>`;
+  } else if (base === 'bookings'){
+    main = `<div class="wbody"><h1 class="wh">Moje rezervacije</h1><div class="wtwo"><div class="card">${bookingsContent('web')}</div>
+      <div>${t.s === 'booking' ? `<div class="card">${bookingContent(S.bookings.find(b => b.id === t.id), 'web')}</div>` : '<div class="card empty">Izaberite rezervaciju sa liste da vidite detalje, produžite je ili otkažete.</div>'}</div></div></div>`;
+  } else if (hostTab){
+    const subs = [['h-spots','Moja mjesta'],['h-bookings','Rezervacije'],['h-earn','Zarada'],['h-add','Dodaj mjesto']];
+    const content = base === 'h-spots' ? hostSpots('web') : base === 'h-bookings' ? hostBookings('web') : base === 'h-earn' ? hostEarn('web') : addContent('web');
+    main = `<div class="wbody"><div class="between" style="flex-wrap:wrap"><h1 class="wh">Domaćin</h1>
+        <div class="row small"><label for="hsel-w" class="muted">Demo domaćin</label><select class="select" style="width:auto" id="hsel-w" data-ch="host">${HOSTS.map(h => `<option value="${h.id}" ${h.id === UI.hostId ? 'selected' : ''}>${h.name}</option>`).join('')}</select></div></div>
+      <div class="wsub">${subs.map(([s, l]) => `<button class="${base === s ? 'on' : ''}" data-act="tab" data-v="${s}">${l}</button>`).join('')}</div>
+      <div class="wnarrow">${content}</div></div>`;
+  } else {
+    main = adminHtml();
+  }
+  const url = base === 'admin' ? 'admin.parkomat.ba/' + UI.admin : base === 'map' ? 'parkomat.ba/banja-luka' : hostTab ? 'parkomat.ba/domacin' : 'parkomat.ba/rezervacije';
+  return `<div class="hint">${ico('info','sm')}<span>Web dijeli iste podatke sa iPhone i Android aplikacijom. Rezerviši na telefonu, pa pogledaj <b>Admin</b> ili <b>Domaćin</b> ovdje.</span></div>
+  <div class="browser"><div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">${url}</span></div>
+    <div class="whead"><div class="brand" style="font-size:18px"><span class="psign" style="width:26px;height:26px;font-size:17px">P</span>Parkomat</div>
+      <nav class="wnav">${WTABS.map(([s, l]) => `<button class="${(s === base || (s === 'h-spots' && hostTab)) ? 'on' : ''}" data-act="tab" data-v="${s}">${l}</button>`).join('')}</nav>
+      <div class="wuser"><span class="avatar">${initials(user)}</span><span>${esc(user)}</span></div></div>
+    ${main}</div>`;
+}
+
+function adminHtml(){
+  const all = S.bookings;
+  const sum = f => r2(all.reduce((a, b) => a + f(b), 0));
+  const gross = sum(b => b.amount), refunds = sum(b => b.refund || 0), fee = sum(b => money(b).fee), psp = sum(b => money(b).psp), net = sum(b => money(b).net);
+  const hostTotal = sum(b => money(b).host), paid = r2(S.payouts.reduce((a, p) => a + p.amount, 0));
+  const todayB = all.filter(b => b.date === TODAY && b.status !== 'otkazana');
+  const sub = UI.admin;
+  const subs = [['pregled','Pregled'],['transakcije','Transakcije'],['isplate','Isplate domaćinima'],['mjesta','Mjesta']];
+  const latest = all.filter(b => b.status !== 'otkazana').slice(-1)[0], lm = latest ? money(latest) : null;
+  const txRow = b => { const sp = spotById(b.spotId), m = money(b);
+    return `<tr class="${UI.hl === b.id ? 'hl' : ''}"><td>${fdate(b.date)} ${hh(b.from)}–${hh(b.to)}</td><td class="num">${b.code}</td><td>${esc(b.driver)}</td><td>${esc(sp.title)}<div class="small muted">${esc(sp.hood)}</div></td><td>${esc(hostById(sp.host).name)}</td>
+      <td class="r num">${kmn(b.amount)}</td><td class="r num">${b.refund ? '−' + kmn(b.refund) : '—'}</td><td class="r num">${kmn(m.psp)}</td><td class="r num">${kmn(m.fee)}</td><td class="r num">${kmn(m.host)}</td><td>${b.method}</td><td>${pill(b)}</td></tr>`; };
+  const thead = `<tr><th>Termin</th><th>Šifra</th><th>Vozač</th><th>Mjesto</th><th>Domaćin</th><th class="r">Uplata</th><th class="r">Povrat</th><th class="r">Provajder</th><th class="r">Provizija</th><th class="r">Domaćinu</th><th>Način</th><th>Status</th></tr>`;
+  const sorted = all.slice().sort((a, b) => b.date.localeCompare(a.date) || (b.n || 0) - (a.n || 0) || b.from - a.from);
+  let content = '';
+  if (sub === 'pregled'){
+    content = `<div class="kpis">
+      <div class="kpi"><span class="l">Bruto uplate</span><span class="v">${km(gross)}</span><span class="small muted">${all.length} rezervacija od 5.10.</span></div>
+      <div class="kpi"><span class="l">Provizija 15 %</span><span class="v">${km(fee)}</span><span class="small muted">povrati: ${km(refunds)}</span></div>
+      <div class="kpi"><span class="l">Naknade provajdera</span><span class="v">${km(psp)}</span><span class="small muted">1,9 % + 0,30 KM (pretpostavka)</span></div>
+      <div class="kpi hl"><span class="l">Neto prihod Parkomata</span><span class="v">${km(net)}</span><span class="small muted">provizija minus naknade</span></div>
+      <div class="kpi"><span class="l">Obaveze prema domaćinima</span><span class="v">${km(hostTotal - paid)}</span><span class="small muted">isplaćeno ${km(paid)}</span></div>
+    </div>
+    <div class="wtwo">
+      <div class="stack"><div class="between"><h2 class="h2">Zadnje uplate</h2><button class="btn small" data-act="admin" data-v="transakcije">Sve transakcije</button></div>
+        <div class="tbl-wrap"><table><thead>${thead}</thead><tbody>${sorted.slice(0, 7).map(txRow).join('')}</tbody></table></div></div>
+      <div class="stack">
+        ${lm ? `<div class="card stack"><span class="eyebrow">Raspodjela zadnje uplate · ${latest.code}</span>
+          <div class="row" style="justify-content:space-between"><span>${esc(latest.driver)} → ${esc(hostById(spotById(latest.spotId).host).name)}</span><b class="num">${km(lm.eff)}</b></div>
+          <div class="split"><i class="s-host" style="width:${lm.host / lm.eff * 100}%"></i><i class="s-psp" style="width:${lm.psp / lm.eff * 100}%"></i><i class="s-plat" style="width:${Math.max(0, lm.net) / lm.eff * 100}%"></i></div>
+          <div class="split-legend"><span class="sw" style="background:var(--ok)"></span><span>Domaćin 85 %</span><b class="num">${km(lm.host)}</b>
+            <span class="sw" style="background:var(--warn)"></span><span>Provajder plaćanja</span><b class="num">${km(lm.psp)}</b>
+            <span class="sw" style="background:var(--sign)"></span><span>Parkomat neto</span><b class="num">${km(lm.net)}</b></div>
+          <p class="fine" style="margin:0">Provizija 15 % = ${km(lm.fee)}. Iz nje Parkomat plaća naknadu provajdera, a domaćin dobija punih 85 %.</p></div>` : ''}
+        <div class="card"><span class="eyebrow">Danas, ponedjeljak 19.10.</span><dl class="kv" style="margin-top:8px">
+          <dt>Aktivne rezervacije</dt><dd>${todayB.filter(b => status(b) === 'aktivna').length}</dd>
+          <dt>Predstojeće danas</dt><dd>${todayB.filter(b => status(b) === 'predstojeća').length}</dd>
+          <dt>Aktivni oglasi</dt><dd>${S.spots.filter(s => s.active).length} / ${S.spots.length}</dd>
+          <dt>Domaćini</dt><dd>${HOSTS.length}</dd></dl></div>
+      </div></div>`;
+  } else if (sub === 'transakcije'){
+    content = `<div class="tbl-wrap"><table><thead>${thead}</thead><tbody>${sorted.map(txRow).join('')}</tbody>
+      <tfoot><tr><td colspan="5"><b>Ukupno</b></td><td class="r num"><b>${kmn(gross)}</b></td><td class="r num">−${kmn(refunds)}</td><td class="r num">${kmn(psp)}</td><td class="r num"><b>${kmn(fee)}</b></td><td class="r num"><b>${kmn(hostTotal)}</b></td><td colspan="2"></td></tr></tfoot></table></div>`;
+  } else if (sub === 'isplate'){
+    content = `<p class="muted" style="margin:0">Domaćinima se isplaćuje sedmično, svakog ponedjeljka, za završene rezervacije. Iznos predstojećih čeka dok termin ne prođe.</p>
+      <div class="tbl-wrap"><table><thead><tr><th>Domaćin</th><th>Račun</th><th class="r">Zarađeno</th><th class="r">Isplaćeno</th><th class="r">Na čekanju</th><th class="r">Za isplatu</th><th></th></tr></thead><tbody>
+      ${HOSTS.map(h => { const hb = hostBalance(h.id);
+        return `<tr><td><b>${esc(h.name)}</b></td><td class="num small">${h.iban}</td><td class="r num">${kmn(hb.earned)}</td><td class="r num">${kmn(hb.paid)}</td><td class="r num">${kmn(hb.pending)}</td><td class="r num"><b>${kmn(hb.balance)}</b></td>
+        <td><button class="btn small primary" data-act="payout" data-h="${h.id}" ${hb.balance > 0 ? '' : 'disabled'}>Isplati</button></td></tr>`; }).join('')}
+      </tbody></table></div>
+      <h2 class="h2">Istorija isplata</h2>
+      <div class="tbl-wrap"><table><thead><tr><th>Datum</th><th>Referenca</th><th>Domaćin</th><th class="r">Iznos</th><th>Status</th></tr></thead><tbody>
+      ${S.payouts.slice().reverse().map(p => `<tr><td>${fdate(p.date)}</td><td class="num">${p.ref}</td><td>${esc(hostById(p.host).name)}</td><td class="r num">${kmn(p.amount)}</td><td><span class="pill ok">Poslano</span></td></tr>`).join('')}
+      </tbody></table></div>`;
+  } else {
+    content = `<div class="tbl-wrap"><table><thead><tr><th>Mjesto</th><th>Tip</th><th>Naselje</th><th>Domaćin</th><th>Raspored</th><th class="r">KM/h</th><th class="r">Rezervacija</th><th>Oglas</th></tr></thead><tbody>
+      ${S.spots.map(sp => `<tr><td><b>${esc(sp.title)}</b><div class="small muted">${esc(sp.addr)}</div></td><td>${TYPES[sp.type].label}</td><td>${esc(sp.hood)}</td><td>${esc(hostById(sp.host).name)}</td><td>${schedText(sp)}</td>
+        <td class="r num">${kmn(sp.price)}</td><td class="r num">${S.bookings.filter(b => b.spotId === sp.id).length}</td>
+        <td><button class="btn small ${sp.active ? '' : 'primary'}" data-act="toggle" data-id="${sp.id}">${sp.active ? 'Pauziraj' : 'Aktiviraj'}</button></td></tr>`).join('')}
+      </tbody></table></div>`;
+  }
+  return `<div class="wbody"><div class="between" style="flex-wrap:wrap"><h1 class="wh">Admin</h1><span class="pill info">Datamaks · interni pregled</span></div>
+    <div class="wsub">${subs.map(([s, l]) => `<button class="${sub === s ? 'on' : ''}" data-act="admin" data-v="${s}">${l}</button>`).join('')}</div>${content}</div>`;
+}
+
+/* ===================== render ===================== */
+window.setView = window.setView || function(){};
+let lastView = '';
+function render(){
+  const keep = {};
+  document.querySelectorAll('[data-keep]').forEach(el => keep[el.dataset.keep] = el.scrollTop);
+  document.querySelectorAll('#devseg button').forEach(b => b.classList.toggle('on', b.dataset.v === UI.device));
+  $('#stage').innerHTML = UI.device === 'web' ? renderWeb() : `<div class="phone-stage">${renderPhone()}${notesHtml()}</div>`;
+  document.querySelectorAll('[data-keep]').forEach(el => { if (keep[el.dataset.keep]) el.scrollTop = keep[el.dataset.keep]; });
+  const view = UI.device + ':' + (UI.device === 'web' && UI.wstack[0].s === 'admin' ? 'admin-' + UI.admin : top().s);
+  if (view !== lastView){ lastView = view; try { window.setView(view); } catch(e){} }
+  save();
+}
+let toastT;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3200); }
+
+/* ===================== akcije ===================== */
+function tabTo(v){
+  UI.sel = null; UI.hl = null;
+  if (UI.device === 'web'){ UI.wstack = [{s:v}]; if (v === 'h-add' && !UI.draft) UI.draft = newDraft(); return; }
+  if (v.startsWith('h-') && UI.role !== 'host') UI.role = 'host';
+  UI.mstack = [{s:v}];
+}
+const ACT = {
+  device(d){ UI.device = d.v; UI.paying = false; UI.confirm = null; },
+  reset(){ S = seed(); const dev = UI.device; UI = freshUI(dev); toast('Demo podaci su vraćeni na početak'); },
+  tab(d){ tabTo(d.v); },
+  back(){ back(); },
+  role(d){ UI.role = d.v; UI.sel = null; UI.mstack = [{s: d.v === 'host' ? 'h-spots' : 'map'}];
+    if (UI.device === 'web') UI.wstack = [{s: d.v === 'host' ? 'h-spots' : 'map'}]; },
+  type(d){ UI.search.type = d.v; if (UI.sel && d.v !== 'sve' && spotById(UI.sel).type !== d.v) UI.sel = null; },
+  pin(d){ if (UI.device === 'web'){ UI.wstack = [{s:'map'}, {s:'spot', id:d.id}]; } else { UI.sel = d.id; } },
+  desel(){ UI.sel = null; },
+  open(d){ push('spot', {id:d.id}); },
+  checkout(d){ UI.co = {spotId:d.id, from:UI.search.from, to:UI.search.to, plate:ME.plate, method: UI.device === 'ios' ? 'apple' : UI.device === 'android' ? 'google' : 'card'}; push('checkout'); },
+  pay(){
+    const co = UI.co, sp = spotById(co.spotId);
+    if (!available(sp, co.from, co.to)){ toast('Mjesto je u međuvremenu zauzeto. Izaberite drugi termin.'); return; }
+    UI.paying = true;
+    setTimeout(() => {
+      S.n++;
+      const b = {id:'b' + S.n, n:S.n, code:'PK-' + Math.random().toString(36).slice(2, 6).toUpperCase(), spotId:sp.id, date:TODAY, from:co.from, to:co.to,
+        amount:r2((co.to - co.from) * sp.price), refund:0, driver:ME.name, plate:(co.plate || ME.plate).toUpperCase(),
+        method: co.method === 'apple' ? 'Apple Pay' : co.method === 'google' ? 'Google Pay' : 'Kartica', status:'ok', created:TODAY + 'T10:15'};
+      S.bookings.push(b); UI.paying = false; UI.sel = null; UI.hl = b.id;
+      if (UI.device === 'web') UI.wstack = [{s:'map'}, {s:'success', id:b.id}]; else UI.mstack = [{s:'map'}, {s:'success', id:b.id}];
+      render(); toast(`Plaćeno ${km(b.amount)}. Domaćin ${short(hostById(sp.host).name)} je obaviješten.`);
+    }, 1200);
+  },
+  booking(d){ if (UI.device === 'web') UI.wstack = [{s:'bookings'}, {s:'booking', id:d.id}]; else push('booking', {id:d.id}); },
+  navigate(){ toast('U pravoj aplikaciji ovo otvara Google Maps ili Apple Maps s rutom do mjesta.'); },
+  extend(d){ const b = S.bookings.find(x => x.id === d.id), sp = spotById(b.spotId);
+    if (b.to + 1 > 24 || !covers(sp, DOW_TODAY, b.from, b.to + 1) || overlaps(sp, b.date, b.to, b.to + 1, b.id)){ toast('Produženje nije moguće u tom terminu.'); return; }
+    b.to += 1; b.amount = r2(b.amount + sp.price); b.ext = (b.ext || 0) + 1; toast(`Produženo do ${hh(b.to)}. Naplaćeno dodatnih ${km(sp.price)}.`); },
+  cancel(d){ UI.confirm = d.id; },
+  'cancel-no'(){ UI.confirm = null; },
+  'cancel-yes'(d){ const b = S.bookings.find(x => x.id === d.id);
+    b.refund = b.from - NOW >= 1 ? b.amount : r2(b.amount / 2); b.status = 'otkazana'; UI.confirm = null; toast(`Rezervacija otkazana. Povrat ${km(b.refund)} na karticu.`); },
+  toggle(d){ const sp = spotById(d.id); sp.active = !sp.active; toast(sp.active ? 'Oglas je ponovo vidljiv vozačima' : 'Oglas je pauziran i skriven s mape'); },
+  add(){ UI.draft = newDraft(); if (UI.device === 'web') UI.wstack = [{s:'h-add'}]; else push('h-add'); },
+  'd-type'(d){ UI.draft.type = d.v; },
+  'd-next'(){ UI.draft.step++; },
+  'd-prev'(){ UI.draft.step--; },
+  'd-day'(d){ const v = +d.v, ds = UI.draft.days; UI.draft.days = ds.includes(v) ? ds.filter(x => x !== v) : [...ds, v]; },
+  'd-preset'(d){ const dr = UI.draft;
+    if (d.v === 'work'){ dr.days = [1,2,3,4,5]; dr.from = 8; dr.to = 17; }
+    if (d.v === 'night'){ dr.days = [1,2,3,4,5,6,0]; dr.from = 18; dr.to = 24; toast('Noćni termin preko ponoći dolazi u punoj verziji. Za demo: 18–24.'); }
+    if (d.v === 'all'){ dr.days = [1,2,3,4,5,6,0]; dr.from = 0; dr.to = 24; } },
+  'd-publish'(){
+    const dr = UI.draft, price = parseFloat(String(dr.price).replace(',', '.'));
+    S.n++;
+    const sp = {id:'s' + S.n, host:UI.hostId, type:dr.type, title:dr.title.trim() || TYPES[dr.type].label, addr:dr.addr.trim(), x:dr.x, y:dr.y, price:r2(price),
+      days:dr.days, from:dr.from, to:dr.to, feats:['Novo'], desc:dr.desc.trim() || 'Uputstvo domaćin još nije dodao.', active:true, hood:hoodOf(dr.x, dr.y), rating:'5.0', reviews:0, photo:dr.photo};
+    S.spots.push(sp); UI.draft = null;
+    if (UI.device === 'web') UI.wstack = [{s:'h-spots'}]; else UI.mstack = [{s:'h-spots'}];
+    toast('Oglas je objavljen. Vozači ga već vide na mapi.');
+  },
+  admin(d){ UI.admin = d.v; },
+  payout(d){ const hb = hostBalance(d.h); S.n++;
+    S.payouts.push({id:'p' + S.n, host:d.h, amount:hb.balance, date:TODAY, ref:'ISP-2043-' + S.n});
+    toast(`Isplata ${km(hb.balance)} poslana domaćinu ${hostById(d.h).name}.`); },
+  zoom(d){ const vb = vbOf(d.k).slice(), z = +d.z, cx = vb[0] + vb[2]/2, cy = vb[1] + vb[3]/2;
+    vb[2] = Math.min(1100, Math.max(160, vb[2]*z)); vb[3] = Math.min(900, Math.max(130, vb[3]*z)); vb[0] = cx - vb[2]/2; vb[1] = cy - vb[3]/2;
+    UI.maps[d.k] = vb.map(Math.round); }
+};
+
+let drag = null, moved = false;
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (moved){ moved = false; if (e.target.closest('.map svg')) return; }
+  if (!el){
+    // klik na mapu u čarobnjaku = označi lokaciju
+    const svg = e.target.closest('.map[data-map="pick"] svg');
+    if (svg && UI.draft){ const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      const p = pt.matrixTransform(svg.getScreenCTM().inverse()); UI.draft.x = Math.round(p.x); UI.draft.y = Math.round(p.y); render(); }
+    return;
+  }
+  const f = ACT[el.dataset.act]; if (!f) return;
+  e.preventDefault(); f(el.dataset, el); render();
+});
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-ch]'); if (!el) return;
+  const k = el.dataset.ch, v = el.value;
+  if (k === 'from'){ UI.search.from = +v; if (UI.search.to <= UI.search.from) UI.search.to = Math.min(24, UI.search.from + 1); }
+  else if (k === 'to'){ UI.search.to = +v; }
+  else if (k === 'method'){ UI.co.method = v; }
+  else if (k === 'host'){ UI.hostId = v; if (UI.device === 'web' && UI.wstack[0].s === 'h-add') UI.wstack = [{s:'h-spots'}]; }
+  else if (k === 'd-from'){ UI.draft.from = +v; if (UI.draft.to <= UI.draft.from) UI.draft.to = Math.min(24, UI.draft.from + 1); }
+  else if (k === 'd-to'){ UI.draft.to = +v; }
+  else if (k === 'd-photo'){ const file = el.files && el.files[0]; if (!file) return;
+    const rd = new FileReader(); rd.onload = () => { UI.draft.photo = rd.result; render(); }; rd.readAsDataURL(file); return; }
+  render();
+});
+document.addEventListener('input', e => {
+  const el = e.target.closest('[data-in]'); if (!el) return;
+  const k = el.dataset.in;
+  if (k === 'plate') UI.co.plate = el.value;
+  else if (k.startsWith('d-')){ UI.draft[k.slice(2)] = el.value;
+    if (k === 'd-addr' || k === 'd-price'){ // osvježi samo dugme Dalje / Objavi, bez gubljenja fokusa
+      const d = UI.draft, btn = el.closest('.stack').querySelector('[data-act="d-next"],[data-act="d-publish"]');
+      if (btn) btn.disabled = k === 'd-addr' ? !(d.addr.trim() && d.x != null) : !(parseFloat(String(d.price).replace(',', '.')) > 0); }
+  }
+});
+/* pomjeranje mape prevlačenjem */
+document.addEventListener('pointerdown', e => {
+  const svg = e.target.closest('.map svg'); if (!svg) return;
+  const key = svg.parentElement.dataset.map;
+  drag = {svg, key, x:e.clientX, y:e.clientY, vb:vbOf(key).slice()}; moved = false;
+});
+document.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (!moved && Math.hypot(dx, dy) < 5) return;
+  moved = true;
+  const r = drag.svg.getBoundingClientRect(), upp = 1 / Math.max(r.width / drag.vb[2], r.height / drag.vb[3]);
+  const vb = [Math.max(-200, Math.min(1000, drag.vb[0] - dx*upp)), Math.max(-150, Math.min(700, drag.vb[1] - dy*upp)), drag.vb[2], drag.vb[3]];
+  drag.svg.setAttribute('viewBox', vb.join(' ')); UI.maps[drag.key] = vb.map(Math.round);
+});
+document.addEventListener('pointerup', () => { if (drag && moved) save(); drag = null; setTimeout(() => moved = false, 0); });
+
+render();
+</script>
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_parkomat_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=parkomat/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Neko je otvorio Parkomat prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/parkomat/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+<script>
+/* ===== PRACENJE PONASANJA (nezavisno od GA4) -> api.datamaks.net ===== */
+(function(){try{
+  if(!/(^|\.)datamaks\.net$/i.test(location.hostname)) return; // samo na objavljenom demou
+  var EP='https://api.datamaks.net/e';
+  var SLUG=(location.pathname.match(/\/mockups\/([^\/]+)/)||[])[1]||'demo';
+  var g=function(k){try{return localStorage.getItem(k);}catch(_){return null;}};
+  var s=function(k,v){try{localStorage.setItem(k,v);}catch(_){}};
+  try{ if(/[?&]owner=1/.test(location.search)) s('dm_owner','1'); if(/[?&]owner=0/.test(location.search)) localStorage.removeItem('dm_owner'); }catch(_){}
+  var own=g('dm_owner')?1:0;
+  var rid=function(){return Math.random().toString(36).slice(2,10);};
+  var vid=g('dm_vid'); if(!vid){vid=rid()+rid(); s('dm_vid',vid);}
+  var sid=rid()+Date.now().toString(36);
+  var t0=Date.now();
+  var at=document.querySelector('.tab.active');
+  var curView=(at&&at.dataset&&at.dataset.view)?at.dataset.view:'start';
+  var secMs={}, segStart=Date.now(), visible=(document.visibilityState!=='hidden');
+  function accrue(){ if(visible){ var n=Date.now(); secMs[curView]=(secMs[curView]||0)+(n-segStart); segStart=n; } }  // samo vidljivo vrijeme, bez preklapanja
+  var q=[];
+  function push(type,extra){var e={t:type,ms:Date.now()-t0};if(extra)for(var k in extra)e[k]=extra[k];q.push(e);if(q.length>=25)flush();}
+  function flush(){if(!q.length)return;var p=JSON.stringify({sid:sid,vid:vid,own:own,slug:SLUG,href:location.href,ref:document.referrer,w:screen.width,h:screen.height,q:q});q=[];try{if(navigator.sendBeacon)navigator.sendBeacon(EP,p);else fetch(EP,{method:'POST',body:p,keepalive:true});}catch(_){}}
+  push('start',{view:curView}); flush();
+  if(typeof window.setView==='function'){var _sv=window.setView;window.setView=function(v){try{accrue();push('view',{from:curView,to:String(v)});curView=String(v);segStart=Date.now();flush();}catch(_){}return _sv.apply(this,arguments);};}
+  document.addEventListener('click',function(ev){try{
+    var el=ev.target.closest&&ev.target.closest('a,button,.kpi,.card,.ncard,.rtask,[data-open],[onclick],tr[onclick],.chip,.btn');
+    if(!el) return;
+    if(el.hasAttribute&&el.hasAttribute('data-view')) return;        // promjena sekcije -> hvata se kao 'view'
+    var oc=(el.getAttribute&&el.getAttribute('onclick'))||'';
+    if(/setView\(/.test(oc)) return;
+    var lbl=(el.getAttribute&&el.getAttribute('data-open'))||'';
+    if(!lbl) lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,50);
+    var cls=(((el.className&&el.className.baseVal!==undefined)?el.className.baseVal:el.className)||el.tagName||'')+'';
+    push('click',{lbl:lbl,cls:cls.split(' ')[0]});
+  }catch(_){}},true);
+  document.addEventListener('visibilitychange',function(){try{
+    if(document.visibilityState==='hidden'){ accrue(); visible=false; push('hide',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }
+    else { visible=true; segStart=Date.now(); }
+  }catch(_){}});
+  window.addEventListener('pagehide',function(){try{ accrue(); push('end',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }catch(_){}});
+  setInterval(flush,8000);
+}catch(_){}})();
+</script>
+</body>
+</html>
