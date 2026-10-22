@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Salveo · teren stručnih saradnika (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#6d28d9; --grad:linear-gradient(135deg,#5b21b6,#7c3aed);
+    --ink:#0f172a; --mut:#64748b; --bg:#f1f5f9; --line:#e6eaf0; --card:#fff;
+    --ok:#16a34a; --warn:#d97706; --bad:#dc2626; --info:#2563eb;
+    --gyn:#db2777; --uro:#0891b2;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);
+    font-size:15px;line-height:1.45;-webkit-text-size-adjust:100%;overflow-x:hidden}
+  h1,h2,h3,.ttl{font-family:"Plus Jakarta Sans",Inter,sans-serif;margin:0}
+  .wrap{max-width:460px;width:100%;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:84px;overflow-x:hidden}
+  /* Header */
+  header{background:var(--grad);color:#fff;padding:14px 16px calc(14px + env(safe-area-inset-top));
+    position:sticky;top:0;z-index:40;box-shadow:0 2px 12px rgba(30,58,138,.25)}
+  .hrow{display:flex;align-items:center;gap:11px}
+  .hrow>.hmid{flex:1;min-width:0}
+  .logo{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:0 0 auto;letter-spacing:.5px}
+  .hname{font-weight:800;font-size:16.5px;line-height:1.15}
+  .hsub{font-size:11.5px;opacity:.85;margin-top:2px}
+  .demo{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.04em;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.3);padding:5px 8px;border-radius:999px;text-align:center;line-height:1.2;flex:0 0 auto}
+  /* Tabs */
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding:11px 12px;background:var(--card);border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:30;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--mut);font-weight:600;font-size:13px;
+    padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;font-family:inherit}
+  .tab.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .tab.lock{opacity:.7}
+  /* Banner */
+  .banner{margin:12px 12px 0;background:#eef4ff;border:1px solid #d7e3ff;color:#1e3a8a;border-radius:12px;
+    padding:10px 12px;font-size:12.5px;display:flex;gap:8px;align-items:flex-start}
+  .banner b{font-weight:700}
+  /* Views */
+  .view{display:none;padding:12px}
+  .view.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .sect{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);margin:16px 2px 8px}
+  .sect:first-child{margin-top:4px}
+  /* KPI */
+  .kgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 13px;cursor:pointer}
+  .kpi .v{font-family:"Plus Jakarta Sans";font-weight:800;font-size:24px;line-height:1}
+  .kpi .l{font-size:11.5px;color:var(--mut);margin-top:5px}
+  .kpi .sub{font-size:11px;margin-top:4px;font-weight:600}
+  .kpi.big{grid-column:1 / -1}
+  .bar{height:8px;border-radius:999px;background:#eef1f6;overflow:hidden;margin-top:9px}
+  .bar>i{display:block;height:100%;border-radius:999px;background:var(--grad)}
+  /* Cards / list */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:10px;cursor:pointer}
+  .card:active{background:#fafcff}
+  .cr{display:flex;align-items:center;gap:11px;min-width:0}
+  .av{width:40px;height:40px;border-radius:11px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:14px;color:#fff;font-family:"Plus Jakarta Sans"}
+  .cmain{flex:1;min-width:0}
+  .cname{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cmeta{font-size:12px;color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cright{text-align:right;flex:0 0 auto}
+  .chev{color:#c3cad6;font-size:20px;flex:0 0 auto;margin-left:2px}
+  /* Badges */
+  .b{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .b.gyn{background:rgba(219,39,119,.12);color:#be185d}
+  .b.uro{background:rgba(8,145,178,.12);color:#0e7490}
+  .b.ok{background:rgba(22,163,74,.13);color:#15803d}
+  .b.warn{background:rgba(217,119,6,.14);color:#b45309}
+  .b.bad{background:rgba(220,38,38,.12);color:#b91c1c}
+  .b.info{background:rgba(37,99,235,.12);color:#1d4ed8}
+  .b.gray{background:#eef1f6;color:#64748b}
+  .pot{width:24px;height:24px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff}
+  .pA{background:#16a34a}.pB{background:#d97706}.pC{background:#94a3b8}
+  /* Chips filter */
+  .chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:8px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--mut);font-size:12.5px;font-weight:600;
+    padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  /* Visit row */
+  .vrow{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+  .vtime{font-size:12px;font-weight:700;color:var(--mut);flex:0 0 42px;padding-top:2px;font-variant-numeric:tabular-nums}
+  .vdot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:0 0 auto}
+  .vmain{flex:1;min-width:0}
+  .vname{font-weight:700;font-size:14px}
+  .vmeta{font-size:12px;color:var(--mut);margin-top:2px}
+  /* Product */
+  .prod{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px;cursor:pointer}
+  .pbox{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:"Plus Jakarta Sans";font-size:16px;flex:0 0 auto}
+  /* Modal */
+  .ov{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:60;display:none;align-items:flex-end;justify-content:center}
+  .ov.on{display:flex;animation:fade .2s ease}
+  .sheet{background:var(--bg);width:100%;max-width:460px;max-height:92vh;border-radius:20px 20px 0 0;overflow:hidden;display:flex;flex-direction:column;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+  @keyframes up{from{transform:translateY(100%)}to{transform:none}}
+  .shead{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--line);padding:14px 14px;display:flex;align-items:center;gap:11px;z-index:2}
+  .sclose{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:20px;line-height:1;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .sbody{overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch}
+  .srow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .srow:last-child{border-bottom:0}
+  .srow b{color:var(--mut);font-weight:600}
+  .srow span{text-align:right;font-weight:600}
+  .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:11px}
+  .block h4{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);margin:0 0 8px;font-weight:700}
+  .step{display:flex;gap:10px;align-items:flex-start;padding:7px 0}
+  .sdot{width:22px;height:22px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;background:#cbd5e1}
+  .sdot.done{background:var(--ok)}.sdot.now{background:var(--brand)}
+  .locked{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:12px;color:var(--mut);font-size:12.5px;display:flex;gap:9px;align-items:flex-start}
+  /* CTA */
+  .cta{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:50;background:var(--grad);color:#fff;
+    font-weight:700;font-size:14px;padding:13px 20px;border-radius:999px;text-decoration:none;box-shadow:0 8px 24px rgba(30,58,138,.4);white-space:nowrap}
+  .mini{font-size:12px;color:var(--mut)}
+  .row2{display:flex;gap:9px}.row2>*{flex:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hrow">
+      <div class="logo">S</div>
+      <div class="hmid">
+        <div class="hname">Salveo · teren</div>
+        <div class="hsub">Stručni marketing na terenu</div>
+      </div>
+      <div class="demo">DEMO<br>izmišljeni podaci</div>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-view="pregled" onclick="setView('pregled')">Pregled</button>
+    <button class="tab" data-view="saradnici" onclick="setView('saradnici')">Saradnici</button>
+    <button class="tab" data-view="ljekari" onclick="setView('ljekari')">Ljekari</button>
+    <button class="tab" data-view="apoteke" onclick="setView('apoteke')">Apoteke</button>
+    <button class="tab" data-view="posjete" onclick="setView('posjete')">Posjete</button>
+    <button class="tab" data-view="proizvodi" onclick="setView('proizvodi')">Proizvodi</button>
+    <button class="tab" data-view="izvjestaji" onclick="setView('izvjestaji')">Izvještaji</button>
+    <button class="tab" data-view="narudzbe" onclick="setView('narudzbe')">Narudžbe</button>
+  </div>
+
+  <div class="banner">
+    <span>ℹ️</span>
+    <span>Ovo je vaš demo prototip, napravljen iz vašeg opisa. Puna verzija dodaje unos posjeta sa terena uživo, ciljeve po saradniku i proizvodu, te izvještaje za upravu. <b>Za punu verziju javite se.</b></span>
+  </div>
+
+  <!-- PREGLED -->
+  <div class="view active" id="v-pregled">
+    <div class="sect">Danas · ponedjeljak</div>
+    <div class="kgrid">
+      <div class="kpi big" onclick="setView('posjete')">
+        <div class="v" id="k-ost">50 / 60</div>
+        <div class="l">Posjeta danas (ostvareno / plan)</div>
+        <div class="bar"><i style="width:83%"></i></div>
+        <div class="sub" style="color:var(--warn)">83% plana · 10 posjeta preostalo</div>
+      </div>
+      <div class="kpi" onclick="setView('ljekari')">
+        <div class="v">48</div><div class="l">Ljekara posjećeno ovaj mjesec</div>
+        <div class="sub" style="color:var(--ok)">od 62 u bazi</div>
+      </div>
+      <div class="kpi" onclick="setView('apoteke')">
+        <div class="v">16</div><div class="l">Apoteka obiđeno</div>
+        <div class="sub" style="color:var(--ok)">od 18 u bazi</div>
+      </div>
+      <div class="kpi" onclick="setView('proizvodi')">
+        <div class="v" style="font-size:19px;padding-top:3px">Vitafem</div><div class="l">Najtraženiji proizvod</div>
+        <div class="sub" style="color:var(--info)">31% prezentacija</div>
+      </div>
+      <div class="kpi" onclick="setView('proizvodi')">
+        <div class="v">23</div><div class="l">Narudžbi iz apoteka</div>
+        <div class="sub" style="color:var(--ok)">ove sedmice</div>
+      </div>
+    </div>
+
+    <div class="sect">Saradnici danas · plan 10 ljekara + 2 apoteke</div>
+    <div id="pregled-reps"></div>
+  </div>
+
+  <!-- SARADNICI -->
+  <div class="view" id="v-saradnici">
+    <div class="sect">5 stručnih saradnika na terenu</div>
+    <div id="reps"></div>
+  </div>
+
+  <!-- LJEKARI -->
+  <div class="view" id="v-ljekari">
+    <div class="chips" id="ljek-chips"></div>
+    <div id="ljek"></div>
+  </div>
+
+  <!-- APOTEKE -->
+  <div class="view" id="v-apoteke">
+    <div class="sect">Apoteke u pokrivanju</div>
+    <div id="apo"></div>
+  </div>
+
+  <!-- POSJETE -->
+  <div class="view" id="v-posjete">
+    <div class="sect">Dnevnik posjeta · danas</div>
+    <div class="chips" id="pos-chips"></div>
+    <div id="pos"></div>
+  </div>
+
+  <!-- PROIZVODI -->
+  <div class="view" id="v-proizvodi">
+    <div class="sect">Linija proizvoda · šta ko favorizuje</div>
+    <div id="prod"></div>
+    <div class="sect">Udio u prezentacijama ovaj mjesec</div>
+    <div class="block" id="prod-share"></div>
+  </div>
+
+  <!-- IZVJEŠTAJI -->
+  <div class="view" id="v-izvjestaji">
+    <div class="sect">Mjesečni pregled · uprava</div>
+    <div class="kgrid">
+      <div class="kpi"><div class="v" id="r-posjeta">0</div><div class="l">Posjeta ovaj mjesec</div><div class="sub" style="color:var(--ok)">svih 5 saradnika</div></div>
+      <div class="kpi"><div class="v" id="r-plan">0%</div><div class="l">Prosjek realizacije plana</div><div class="sub" id="r-plan-sub" style="color:var(--info)"></div></div>
+      <div class="kpi"><div class="v" id="r-narudzbe">0</div><div class="l">Narudžbi (iz posjeta danas)</div><div class="sub" style="color:var(--ok)">ishod „Narudžba"</div></div>
+      <div class="kpi"><div class="v" id="r-pokrivenost">0%</div><div class="l">Pokrivenost baze</div><div class="sub" id="r-pokr-sub" style="color:var(--info)"></div></div>
+    </div>
+
+    <div class="sect">Rang saradnika · realizacija plana</div>
+    <div class="block" id="r-rang"></div>
+
+    <div class="sect">Ishodi posjeta danas</div>
+    <div class="block" id="r-ishodi"></div>
+
+    <div class="sect">Učinak po gradu</div>
+    <div class="block" id="r-grad"></div>
+
+    <div class="sect">Udio proizvoda u narudžbama</div>
+    <div class="block" id="r-prodord"></div>
+  </div>
+
+  <!-- NARUDŽBE -->
+  <div class="view" id="v-narudzbe">
+    <div class="sect">Narudžbe iz apoteka · zadnjih 14 dana</div>
+    <div class="chips" id="ord-chips"></div>
+    <div id="ord"></div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="ov" id="ov" onclick="if(event.target===this)zatvori()">
+  <div class="sheet">
+    <div class="shead">
+      <div style="flex:1;min-width:0">
+        <div class="ttl" id="m-title" style="font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+        <div class="mini" id="m-sub" style="margin-top:2px"></div>
+      </div>
+      <button class="sclose" onclick="zatvori()" aria-label="Zatvori">✕</button>
+    </div>
+    <div class="sbody" id="m-body"></div>
+  </div>
+</div>
+
+<a class="cta" href="https://datamaks.net/?utm_source=prototip&utm_medium=selfserve&utm_campaign=demo#kontakt">Napravi punu verziju →</a>
+
+<script>
+// ---------- izmišljeni podaci ----------
+var SARADNICI=[
+  {id:'S1',ime:'Nikola Perić',ter:'Sarajevo · KS',danas:11,plan:12,mj:214,ostv:92,boja:'#2563eb'},
+  {id:'S2',ime:'Jelena Marić',ter:'Banja Luka · Krajina',danas:9,plan:12,mj:198,ostv:88,boja:'#db2777'},
+  {id:'S3',ime:'Saša Jovanović',ter:'Tuzla · TK',danas:12,plan:12,mj:231,ostv:97,boja:'#0891b2'},
+  {id:'S4',ime:'Milica Kovač',ter:'Mostar · HNK',danas:8,plan:12,mj:176,ostv:79,boja:'#7c3aed'},
+  {id:'S5',ime:'Dejan Lukić',ter:'Zenica · ZDK',danas:10,plan:12,mj:205,ostv:90,boja:'#ea580c'}
+];
+var LJEKARI=[
+  {id:'L1',ime:'Dr Ana Simić',spec:'Ginekolog',ust:'Poliklinika Nova',grad:'Sarajevo',fav:'Vitafem',pot:'A',sar:'S1',zadnja:'prije 3 dana'},
+  {id:'L2',ime:'Dr Marko Ilić',spec:'Urolog',ust:'Dom zdravlja Centar',grad:'Sarajevo',fav:'Prostaxil',pot:'A',sar:'S1',zadnja:'danas'},
+  {id:'L3',ime:'Dr Tanja Vuković',spec:'Ginekolog',ust:'Dom zdravlja Centar',grad:'Sarajevo',fav:'Magnela',pot:'B',sar:'S1',zadnja:'prije 6 dana'},
+  {id:'L4',ime:'Dr Vesna Tadić',spec:'Ginekolog',ust:'Ordinacija Vita',grad:'Banja Luka',fav:'Folmama',pot:'B',sar:'S2',zadnja:'prije 2 dana'},
+  {id:'L5',ime:'Dr Nenad Bošković',spec:'Urolog',ust:'Poliklinika Medik',grad:'Banja Luka',fav:'Prostaxil',pot:'A',sar:'S2',zadnja:'danas'},
+  {id:'L6',ime:'Dr Boris Matić',spec:'Ginekolog',ust:'Poliklinika Nova',grad:'Banja Luka',fav:'Vitafem',pot:'C',sar:'S2',zadnja:'prije 11 dana'},
+  {id:'L7',ime:'Dr Ljiljana Kos',spec:'Ginekolog',ust:'Dom zdravlja Istok',grad:'Tuzla',fav:'Magnela',pot:'B',sar:'S3',zadnja:'danas'},
+  {id:'L8',ime:'Dr Zoran Pavić',spec:'Urolog',ust:'Bolnica Sveti Luka',grad:'Tuzla',fav:'Prostaxil',pot:'C',sar:'S3',zadnja:'prije 8 dana'},
+  {id:'L9',ime:'Dr Dragana Novak',spec:'Ginekolog',ust:'Poliklinika Zdravlje',grad:'Mostar',fav:'Vitafem',pot:'A',sar:'S4',zadnja:'prije 4 dana'},
+  {id:'L10',ime:'Dr Slaven Rajić',spec:'Urolog',ust:'Dom zdravlja Jug',grad:'Mostar',fav:'Prostaxil',pot:'B',sar:'S4',zadnja:'prije 5 dana'},
+  {id:'L11',ime:'Dr Mirjana Đurić',spec:'Ginekolog',ust:'Ordinacija Flora',grad:'Zenica',fav:'Folmama',pot:'A',sar:'S5',zadnja:'danas'},
+  {id:'L12',ime:'Dr Goran Stanić',spec:'Urolog',ust:'Poliklinika Panon',grad:'Zenica',fav:'Prostaxil',pot:'B',sar:'S5',zadnja:'prije 7 dana'}
+];
+var APOTEKE=[
+  {id:'A1',naziv:'Apoteka Melem',grad:'Sarajevo',sar:'S1',zadnja:'danas',stan:'Naručila Vitafem i Prostaxil'},
+  {id:'A2',naziv:'Apoteka Centar',grad:'Sarajevo',sar:'S1',zadnja:'prije 3 dana',stan:'Zalihe uredne'},
+  {id:'A3',naziv:'Apoteka Zdravlje',grad:'Banja Luka',sar:'S2',zadnja:'danas',stan:'Naručila Folmama'},
+  {id:'A4',naziv:'Apoteka Hygia Plus',grad:'Banja Luka',sar:'S2',zadnja:'prije 5 dana',stan:'Pri kraju Vitafem'},
+  {id:'A5',naziv:'Apoteka Vita Nova',grad:'Tuzla',sar:'S3',zadnja:'danas',stan:'Naručila Magnela i Prostaxil'},
+  {id:'A6',naziv:'Apoteka Sana',grad:'Tuzla',sar:'S3',zadnja:'prije 2 dana',stan:'Zalihe uredne'},
+  {id:'A7',naziv:'Apoteka Lijek',grad:'Mostar',sar:'S4',zadnja:'prije 6 dana',stan:'Pri kraju Prostaxil'},
+  {id:'A8',naziv:'Apoteka Semberija',grad:'Zenica',sar:'S5',zadnja:'danas',stan:'Naručila Vitafem'}
+];
+var PROIZVODI=[
+  {id:'Vitafem',lin:'Ginekologija',ind:'Vitaminsko-mineralni kompleks za žensko zdravlje i vitalnost',pak:'30 tableta',udio:31,boja:'#db2777'},
+  {id:'Folmama',lin:'Ginekologija',ind:'Folna kiselina i jod za planiranje trudnoće i trudnice',pak:'30 tableta',udio:27,boja:'#be185d'},
+  {id:'Magnela',lin:'Ginekologija',ind:'Magnezijum sa B6 za grčeve i PMS tegobe',pak:'20 kesica',udio:18,boja:'#9333ea'},
+  {id:'Prostaxil',lin:'Urologija',ind:'Ekstrakt sabala i cink za zdravlje prostate',pak:'60 kapsula',udio:24,boja:'#0891b2'}
+];
+var POSJETE=[
+  {t:'08:20',sar:'S1',tip:'Ljekar',ime:'Dr Marko Ilić',pro:'Prostaxil',ish:'Narudžba'},
+  {t:'08:55',sar:'S1',tip:'Ljekar',ime:'Dr Ana Simić',pro:'Vitafem, Folmama',ish:'Uzorci ostavljeni'},
+  {t:'09:10',sar:'S3',tip:'Ljekar',ime:'Dr Ljiljana Kos',pro:'Magnela',ish:'Prezentacija'},
+  {t:'09:35',sar:'S2',tip:'Ljekar',ime:'Dr Vesna Tadić',pro:'Folmama',ish:'Narudžba'},
+  {t:'09:50',sar:'S5',tip:'Ljekar',ime:'Dr Mirjana Đurić',pro:'Folmama, Vitafem',ish:'Uzorci ostavljeni'},
+  {t:'10:15',sar:'S4',tip:'Ljekar',ime:'Dr Dragana Novak',pro:'Vitafem',ish:'Prezentacija'},
+  {t:'10:40',sar:'S2',tip:'Ljekar',ime:'Dr Nenad Bošković',pro:'Prostaxil',ish:'Narudžba'},
+  {t:'11:05',sar:'S3',tip:'Apoteka',ime:'Apoteka Vita Nova',pro:'Magnela, Prostaxil',ish:'Narudžba'},
+  {t:'11:30',sar:'S1',tip:'Apoteka',ime:'Apoteka Melem',pro:'Vitafem, Prostaxil',ish:'Narudžba'},
+  {t:'11:45',sar:'S4',tip:'Ljekar',ime:'Dr Slaven Rajić',pro:'Prostaxil',ish:'Nije zatečen'},
+  {t:'12:10',sar:'S5',tip:'Apoteka',ime:'Apoteka Semberija',pro:'Vitafem',ish:'Narudžba'},
+  {t:'12:30',sar:'S2',tip:'Ljekar',ime:'Dr Boris Matić',pro:'Vitafem',ish:'Ponovna posjeta'},
+  {t:'12:55',sar:'S3',tip:'Ljekar',ime:'Dr Zoran Pavić',pro:'Prostaxil',ish:'Prezentacija'},
+  {t:'13:20',sar:'S5',tip:'Ljekar',ime:'Dr Goran Stanić',pro:'Prostaxil',ish:'Uzorci ostavljeni'}
+];
+var NARUDZBE=[
+  {id:'N-1042',apo:'A1',dat:'danas',st:'U obradi',stavke:[{p:'Vitafem',k:40},{p:'Prostaxil',k:25}]},
+  {id:'N-1041',apo:'A3',dat:'danas',st:'U obradi',stavke:[{p:'Folmama',k:30}]},
+  {id:'N-1040',apo:'A5',dat:'danas',st:'Potvrđena',stavke:[{p:'Magnela',k:20},{p:'Prostaxil',k:15}]},
+  {id:'N-1039',apo:'A8',dat:'danas',st:'Potvrđena',stavke:[{p:'Vitafem',k:36}]},
+  {id:'N-1038',apo:'A2',dat:'prije 2 dana',st:'Isporučena',stavke:[{p:'Prostaxil',k:20},{p:'Folmama',k:18}]},
+  {id:'N-1037',apo:'A4',dat:'prije 3 dana',st:'Isporučena',stavke:[{p:'Vitafem',k:48}]},
+  {id:'N-1036',apo:'A6',dat:'prije 4 dana',st:'Isporučena',stavke:[{p:'Magnela',k:24},{p:'Vitafem',k:30}]},
+  {id:'N-1035',apo:'A7',dat:'prije 6 dana',st:'Isporučena',stavke:[{p:'Prostaxil',k:22}]},
+  {id:'N-1034',apo:'A1',dat:'prije 8 dana',st:'Isporučena',stavke:[{p:'Folmama',k:30},{p:'Prostaxil',k:15}]},
+  {id:'N-1033',apo:'A5',dat:'prije 11 dana',st:'Isporučena',stavke:[{p:'Vitafem',k:40}]},
+  {id:'N-1032',apo:'A3',dat:'prije 13 dana',st:'Otkazana',stavke:[{p:'Magnela',k:15}]}
+];
+
+// ---------- helperi ----------
+function el(id){return document.getElementById(id);}
+function sar(id){for(var i=0;i<SARADNICI.length;i++)if(SARADNICI[i].id===id)return SARADNICI[i];return{ime:'?',boja:'#64748b'};}
+function ini(ime){var p=ime.replace('Dr ','').trim().split(' ');return ((p[0]||'')[0]||'')+((p[1]||'')[0]||'');}
+function specB(s){return s==='Urolog'?'<span class="b uro">Urolog</span>':'<span class="b gyn">Ginekolog</span>';}
+function potBox(p){return '<span class="pot p'+p+'">'+p+'</span>';}
+function ishB(x){var m={'Narudžba':'ok','Uzorci ostavljeni':'info','Prezentacija':'gray','Nije zatečen':'bad','Ponovna posjeta':'warn'};return '<span class="b '+(m[x]||'gray')+'">'+x+'</span>';}
+function ishColor(x){var m={'Narudžba':'#16a34a','Uzorci ostavljeni':'#2563eb','Prezentacija':'#94a3b8','Nije zatečen':'#dc2626','Ponovna posjeta':'#d97706'};return m[x]||'#94a3b8';}
+function apoById(id){for(var i=0;i<APOTEKE.length;i++)if(APOTEKE[i].id===id)return APOTEKE[i];return{naziv:'?',grad:'',sar:''};}
+function prodById(id){for(var i=0;i<PROIZVODI.length;i++)if(PROIZVODI[i].id===id)return PROIZVODI[i];return{boja:'#64748b',lin:''};}
+function ordB(x){var m={'Isporučena':'ok','Potvrđena':'info','U obradi':'warn','Otkazana':'bad'};return '<span class="b '+(m[x]||'gray')+'">'+x+'</span>';}
+function ordKom(o){var n=0;o.stavke.forEach(function(s){n+=s.k;});return n;}
+
+// ---------- render: pregled ----------
+function renderPregled(){
+  var h='';
+  SARADNICI.forEach(function(s){
+    var pct=Math.round(s.danas/s.plan*100);
+    var col=pct>=100?'var(--ok)':(pct>=75?'var(--warn)':'var(--bad)');
+    h+='<div class="card" onclick="openSar(\''+s.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:'+s.boja+'">'+ini(s.ime)+'</div>'+
+      '<div class="cmain"><div class="cname">'+s.ime+'</div><div class="cmeta">'+s.ter+'</div>'+
+      '<div class="bar"><i style="width:'+pct+'%;background:'+col+'"></i></div></div>'+
+      '<div class="cright"><div style="font-weight:800;font-family:Plus Jakarta Sans;font-size:17px">'+s.danas+'/'+s.plan+'</div><div class="mini">'+pct+'%</div></div>'+
+      '</div></div>';
+  });
+  el('pregled-reps').innerHTML=h;
+}
+// ---------- render: saradnici ----------
+function renderReps(){
+  var h='';
+  SARADNICI.forEach(function(s){
+    h+='<div class="card" onclick="openSar(\''+s.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:'+s.boja+'">'+ini(s.ime)+'</div>'+
+      '<div class="cmain"><div class="cname">'+s.ime+'</div><div class="cmeta">'+s.ter+'</div></div>'+
+      '<div class="cright"><div class="b ok">'+s.ostv+'% plan</div><div class="mini" style="margin-top:4px">'+s.mj+' posjeta / mj</div></div>'+
+      '<div class="chev">›</div></div></div>';
+  });
+  el('reps').innerHTML=h;
+}
+// ---------- render: ljekari ----------
+var ljekFilter='Svi';
+function renderLjekChips(){
+  var f=['Svi','Ginekolog','Urolog','Vitafem','Folmama','Magnela','Prostaxil'];
+  el('ljek-chips').innerHTML=f.map(function(x){return '<div class="chip'+(x===ljekFilter?' on':'')+'" onclick="setLjek(\''+x+'\')">'+x+'</div>';}).join('');
+}
+function setLjek(x){ljekFilter=x;renderLjekChips();renderLjek();}
+function renderLjek(){
+  var h='';
+  LJEKARI.filter(function(l){
+    if(ljekFilter==='Svi')return true;
+    if(ljekFilter==='Ginekolog'||ljekFilter==='Urolog')return l.spec===ljekFilter;
+    return l.fav===ljekFilter;
+  }).forEach(function(l){
+    h+='<div class="card" onclick="openLjek(\''+l.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:'+(l.spec==='Urolog'?'#0891b2':'#db2777')+'">'+ini(l.ime)+'</div>'+
+      '<div class="cmain"><div class="cname">'+l.ime+'</div><div class="cmeta">'+l.ust+' · '+l.grad+'</div>'+
+      '<div style="margin-top:6px">'+specB(l.spec)+' <span class="b gray">favorit: '+l.fav+'</span></div></div>'+
+      '<div class="cright">'+potBox(l.pot)+'<div class="mini" style="margin-top:4px">'+l.zadnja+'</div></div>'+
+      '</div></div>';
+  });
+  el('ljek').innerHTML=h||'<div class="mini" style="text-align:center;padding:20px">Nema ljekara za ovaj filter.</div>';
+}
+// ---------- render: apoteke ----------
+function renderApo(){
+  var h='';
+  APOTEKE.forEach(function(a){
+    h+='<div class="card" onclick="openApo(\''+a.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:#0d9488">'+a.naziv.replace('Apoteka ','').slice(0,2).toUpperCase()+'</div>'+
+      '<div class="cmain"><div class="cname">'+a.naziv+'</div><div class="cmeta">'+a.grad+' · saradnik '+sar(a.sar).ime.split(' ')[0]+'</div>'+
+      '<div class="mini" style="margin-top:5px">'+a.stan+'</div></div>'+
+      '<div class="cright"><div class="b '+(a.zadnja==='danas'?'ok':'gray')+'">'+a.zadnja+'</div></div>'+
+      '<div class="chev">›</div></div></div>';
+  });
+  el('apo').innerHTML=h;
+}
+// ---------- render: posjete ----------
+var posFilter='Sve';
+function renderPosChips(){
+  var f=['Sve','Ljekar','Apoteka','Narudžba','Vitafem','Folmama','Magnela','Prostaxil'];
+  el('pos-chips').innerHTML=f.map(function(x){return '<div class="chip'+(x===posFilter?' on':'')+'" onclick="setPos(\''+x+'\')">'+x+'</div>';}).join('');
+}
+function setPos(x){posFilter=x;renderPosChips();renderPos();}
+function renderPos(){
+  var h='';
+  POSJETE.filter(function(p){
+    if(posFilter==='Sve')return true;
+    if(posFilter==='Ljekar'||posFilter==='Apoteka')return p.tip===posFilter;
+    if(posFilter==='Narudžba')return p.ish==='Narudžba';
+    return p.pro.indexOf(posFilter)>=0;
+  }).forEach(function(p){
+    var s=sar(p.sar);
+    h+='<div class="vrow" onclick="openPos('+POSJETE.indexOf(p)+')">'+
+      '<div class="vtime">'+p.t+'</div>'+
+      '<div class="vdot" style="background:'+ishColor(p.ish)+'"></div>'+
+      '<div class="vmain"><div class="vname">'+p.ime+'</div>'+
+      '<div class="vmeta">'+(p.tip==='Apoteka'?'🏪 Apoteka':'🩺 Ljekar')+' · '+s.ime.split(' ')[0]+' · '+p.pro+'</div>'+
+      '<div style="margin-top:5px">'+ishB(p.ish)+'</div></div>'+
+      '</div>';
+  });
+  el('pos').innerHTML=h||'<div class="mini" style="text-align:center;padding:20px">Nema posjeta za ovaj filter.</div>';
+}
+// ---------- render: proizvodi ----------
+function renderProd(){
+  var h='';
+  PROIZVODI.forEach(function(p){
+    var kolko=LJEKARI.filter(function(l){return l.fav===p.id;}).length;
+    h+='<div class="prod" onclick="openProd(\''+p.id+'\')">'+
+      '<div class="pbox" style="background:'+p.boja+'">'+p.id.slice(0,2)+'</div>'+
+      '<div style="flex:1;min-width:0"><div style="font-weight:800;font-family:Plus Jakarta Sans">'+p.id+'</div>'+
+      '<div class="mini" style="margin-top:2px">'+(p.lin==='Urologija'?'<span class="b uro">Urologija</span>':'<span class="b gyn">Ginekologija</span>')+' · '+p.pak+'</div>'+
+      '<div class="mini" style="margin-top:5px">'+kolko+' ljekara favorizuje</div></div>'+
+      '<div class="chev">›</div></div>';
+  });
+  el('prod').innerHTML=h;
+  var sh='';
+  PROIZVODI.slice().sort(function(a,b){return b.udio-a.udio;}).forEach(function(p){
+    sh+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+p.id+'</span><span>'+p.udio+'%</span></div><div class="bar"><i style="width:'+p.udio+'%;background:'+p.boja+'"></i></div></div>';
+  });
+  el('prod-share').innerHTML=sh;
+}
+
+// ---------- render: izvještaji ----------
+function renderIzvjestaji(){
+  var posMj=0,ostvSum=0;
+  SARADNICI.forEach(function(s){posMj+=s.mj;ostvSum+=s.ostv;});
+  var planAvg=Math.round(ostvSum/SARADNICI.length);
+  var narDanas=POSJETE.filter(function(p){return p.ish==='Narudžba';}).length;
+  var ljPos=48,ljBaza=62,apPos=16,apBaza=18;
+  var pokr=Math.round((ljPos+apPos)/(ljBaza+apBaza)*100);
+  el('r-posjeta').textContent=posMj;
+  el('r-plan').textContent=planAvg+'%';
+  el('r-plan-sub').textContent='cilj 85% · '+(planAvg>=85?'iznad cilja':'ispod cilja');
+  el('r-narudzbe').textContent=narDanas;
+  el('r-pokrivenost').textContent=pokr+'%';
+  el('r-pokr-sub').textContent=(ljPos+apPos)+' od '+(ljBaza+apBaza)+' u bazi';
+
+  // rang saradnika
+  var rh='';
+  SARADNICI.slice().sort(function(a,b){return b.ostv-a.ostv;}).forEach(function(s,i){
+    var col=s.ostv>=90?'var(--ok)':(s.ostv>=80?'var(--warn)':'var(--bad)');
+    rh+='<div class="card" style="margin-bottom:8px" onclick="openSar(\''+s.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:'+s.boja+'">'+ini(s.ime)+'</div>'+
+      '<div class="cmain"><div class="cname">'+(i+1)+'. '+s.ime+'</div><div class="cmeta">'+s.ter+' · '+s.mj+' posjeta</div>'+
+      '<div class="bar"><i style="width:'+s.ostv+'%;background:'+col+'"></i></div></div>'+
+      '<div class="cright"><div style="font-weight:800;font-family:Plus Jakarta Sans;font-size:17px;color:'+col+'">'+s.ostv+'%</div></div>'+
+      '</div></div>';
+  });
+  el('r-rang').innerHTML=rh;
+
+  // ishodi posjeta danas
+  var cnt={};POSJETE.forEach(function(p){cnt[p.ish]=(cnt[p.ish]||0)+1;});
+  var ih='';var tot=POSJETE.length;
+  Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a];}).forEach(function(k){
+    var pct=Math.round(cnt[k]/tot*100);
+    ih+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+k+'</span><span>'+cnt[k]+' · '+pct+'%</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%;background:'+ishColor(k)+'"></i></div></div>';
+  });
+  el('r-ishodi').innerHTML=ih;
+
+  // učinak po gradu
+  var grad={};
+  LJEKARI.forEach(function(l){grad[l.grad]=grad[l.grad]||{lj:0,ap:0};grad[l.grad].lj++;});
+  APOTEKE.forEach(function(a){grad[a.grad]=grad[a.grad]||{lj:0,ap:0};grad[a.grad].ap++;});
+  var maxLj=1;Object.keys(grad).forEach(function(g){if(grad[g].lj>maxLj)maxLj=grad[g].lj;});
+  var gh='';
+  Object.keys(grad).forEach(function(g){
+    var pct=Math.round(grad[g].lj/maxLj*100);
+    gh+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+g+'</span><span>'+grad[g].lj+' ljekara · '+grad[g].ap+' apoteka</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div></div>';
+  });
+  el('r-grad').innerHTML=gh;
+
+  // udio proizvoda u narudžbama
+  var pk={};NARUDZBE.filter(function(o){return o.st!=='Otkazana';}).forEach(function(o){o.stavke.forEach(function(s){pk[s.p]=(pk[s.p]||0)+s.k;});});
+  var ukup=0;Object.keys(pk).forEach(function(p){ukup+=pk[p];});
+  var ph='';
+  Object.keys(pk).sort(function(a,b){return pk[b]-pk[a];}).forEach(function(p){
+    var pct=ukup?Math.round(pk[p]/ukup*100):0;
+    ph+='<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+p+'</span><span>'+pk[p]+' kom · '+pct+'%</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%;background:'+prodById(p).boja+'"></i></div></div>';
+  });
+  el('r-prodord').innerHTML=ph;
+}
+
+// ---------- render: narudžbe ----------
+var ordFilter='Sve';
+function renderOrdChips(){
+  var f=['Sve','U obradi','Potvrđena','Isporučena','Vitafem','Folmama','Magnela','Prostaxil'];
+  el('ord-chips').innerHTML=f.map(function(x){return '<div class="chip'+(x===ordFilter?' on':'')+'" onclick="setOrd(\''+x+'\')">'+x+'</div>';}).join('');
+}
+function setOrd(x){ordFilter=x;renderOrdChips();renderOrd();}
+function renderOrd(){
+  var h='';
+  NARUDZBE.filter(function(o){
+    if(ordFilter==='Sve')return true;
+    if(ordFilter==='U obradi'||ordFilter==='Potvrđena'||ordFilter==='Isporučena')return o.st===ordFilter;
+    return o.stavke.some(function(s){return s.p===ordFilter;});
+  }).forEach(function(o){
+    var a=apoById(o.apo);var stavke=o.stavke.map(function(s){return s.p;}).join(', ');
+    h+='<div class="card" onclick="openOrd(\''+o.id+'\')"><div class="cr">'+
+      '<div class="av" style="background:#0d9488">'+a.naziv.replace('Apoteka ','').slice(0,2).toUpperCase()+'</div>'+
+      '<div class="cmain"><div class="cname">'+a.naziv+'</div><div class="cmeta">'+o.id+' · '+a.grad+' · '+ordKom(o)+' kom</div>'+
+      '<div class="mini" style="margin-top:5px">'+stavke+'</div></div>'+
+      '<div class="cright">'+ordB(o.st)+'<div class="mini" style="margin-top:4px">'+o.dat+'</div></div>'+
+      '</div></div>';
+  });
+  el('ord').innerHTML=h||'<div class="mini" style="text-align:center;padding:20px">Nema narudžbi za ovaj filter.</div>';
+}
+
+// ---------- modali ----------
+function openM(title,sub,body){el('m-title').textContent=title;el('m-sub').innerHTML=sub;el('m-body').innerHTML=body;el('ov').classList.add('on');document.body.style.overflow='hidden';}
+function zatvori(){el('ov').classList.remove('on');document.body.style.overflow='';}
+
+function openSar(id){
+  var s=sar(id);
+  var mine=LJEKARI.filter(function(l){return l.sar===id;});
+  var apo=APOTEKE.filter(function(a){return a.sar===id;});
+  // ruta danas: 10 ljekara + 2 apoteke, obavljeno = s.danas
+  var ruta=[];
+  for(var i=0;i<10;i++)ruta.push({tip:'Ljekar',ime:mine[i%mine.length]?mine[i%mine.length].ime:'Dr (planirano)'});
+  for(var j=0;j<2;j++)ruta.push({tip:'Apoteka',ime:apo[j%apo.length]?apo[j%apo.length].naziv:'Apoteka (planirano)'});
+  var steps='';
+  ruta.forEach(function(r,i){
+    var cls=i<s.danas?'done':(i===s.danas?'now':'');
+    var lab=i<s.danas?'✓':(i+1);
+    steps+='<div class="step"><div class="sdot '+cls+'">'+lab+'</div><div style="flex:1"><div style="font-weight:600;font-size:13.5px">'+r.ime+'</div><div class="mini">'+(r.tip==='Apoteka'?'🏪 Apoteka':'🩺 Ljekar')+(i<s.danas?' · obavljeno':(i===s.danas?' · u toku':' · planirano'))+'</div></div></div>';
+  });
+  var body=
+    '<div class="block"><div class="srow"><b>Teritorija</b><span>'+s.ter+'</span></div>'+
+    '<div class="srow"><b>Danas</b><span>'+s.danas+' / '+s.plan+' posjeta</span></div>'+
+    '<div class="srow"><b>Ovaj mjesec</b><span>'+s.mj+' posjeta · '+s.ostv+'% plana</span></div>'+
+    '<div class="srow"><b>Ljekara u zoni</b><span>'+mine.length+'</span></div>'+
+    '<div class="srow"><b>Apoteka u zoni</b><span>'+apo.length+'</span></div></div>'+
+    '<div class="block"><h4>Ruta danas · 10 ljekara + 2 apoteke</h4>'+steps+'</div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> GPS ruta i redoslijed obilaska, prijava posjete jednim dodirom sa terena, automatsko slanje izvještaja menadžeru na kraju dana.</span></div>';
+  openM(s.ime,s.ter+' · stručni saradnik',body);
+}
+
+function openLjek(id){
+  var l;LJEKARI.forEach(function(x){if(x.id===id)l=x;});
+  var ist=[
+    {d:l.zadnja,p:l.fav,i:'Narudžba'},
+    {d:'prije 2 sedmice',p:l.fav,i:'Uzorci ostavljeni'},
+    {d:'prije 5 sedmica',p:l.spec==='Urolog'?'Prostaxil':'Vitafem',i:'Prezentacija'},
+    {d:'prije 2 mjeseca',p:l.fav,i:'Narudžba'}
+  ];
+  var istH='';ist.forEach(function(v){istH+='<div class="srow"><b>'+v.d+'</b><span>'+v.p+' · '+v.i+'</span></div>';});
+  var body=
+    '<div class="block"><div class="srow"><b>Specijalnost</b><span>'+l.spec+'</span></div>'+
+    '<div class="srow"><b>Ustanova</b><span>'+l.ust+'</span></div>'+
+    '<div class="srow"><b>Grad</b><span>'+l.grad+'</span></div>'+
+    '<div class="srow"><b>Zadužen saradnik</b><span>'+sar(l.sar).ime+'</span></div>'+
+    '<div class="srow"><b>Favorizuje</b><span style="color:var(--brand);font-weight:700">'+l.fav+'</span></div>'+
+    '<div class="srow"><b>Potencijal</b><span>'+potBox(l.pot)+' kategorija '+l.pot+'</span></div></div>'+
+    '<div class="block"><h4>Istorija posjeta</h4>'+istH+'</div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> bilješke sa svake posjete, podsjetnik za ponovni obilazak, praćenje rasta po proizvodu i preferencama ljekara kroz vrijeme.</span></div>';
+  openM(l.ime,l.ust+' · '+l.grad,body);
+}
+
+function openApo(id){
+  var a;APOTEKE.forEach(function(x){if(x.id===id)a=x;});
+  var nar=[
+    {p:'Vitafem',k:'40 kom'},{p:'Prostaxil',k:'25 kom'},{p:'Folmama',k:'30 kom'},{p:'Magnela',k:'15 kom'}
+  ];
+  var narH='';nar.forEach(function(n){narH+='<div class="srow"><b>'+n.p+'</b><span>'+n.k+'</span></div>';});
+  var body=
+    '<div class="block"><div class="srow"><b>Grad</b><span>'+a.grad+'</span></div>'+
+    '<div class="srow"><b>Zadužen saradnik</b><span>'+sar(a.sar).ime+'</span></div>'+
+    '<div class="srow"><b>Zadnja posjeta</b><span>'+a.zadnja+'</span></div>'+
+    '<div class="srow"><b>Status</b><span>'+a.stan+'</span></div></div>'+
+    '<div class="block"><h4>Narudžbe · zadnjih 30 dana</h4>'+narH+'</div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> stanje zaliha po proizvodu, prijedlog narudžbe, istorija prodaje po apoteci i upozorenje kad proizvod ide pri kraju.</span></div>';
+  openM(a.naziv,a.grad+' · apoteka',body);
+}
+
+function openPos(i){
+  var p=POSJETE[i];var s=sar(p.sar);
+  var body=
+    '<div class="block"><div class="srow"><b>Vrijeme</b><span>'+p.t+'</span></div>'+
+    '<div class="srow"><b>Tip</b><span>'+(p.tip==='Apoteka'?'🏪 Apoteka':'🩺 Ljekar')+'</span></div>'+
+    '<div class="srow"><b>Posjećen</b><span>'+p.ime+'</span></div>'+
+    '<div class="srow"><b>Saradnik</b><span>'+s.ime+'</span></div>'+
+    '<div class="srow"><b>Prezentovani proizvodi</b><span>'+p.pro+'</span></div>'+
+    '<div class="srow"><b>Ishod</b><span>'+ishB(p.ish)+'</span></div></div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> saradnik prijavljuje posjetu odmah sa terena (lokacija, proizvodi, ishod, bilješka), a vi vidite sve uživo bez čekanja izvještaja.</span></div>';
+  openM(p.ime,p.t+' · '+s.ime,body);
+}
+
+function openProd(id){
+  var p;PROIZVODI.forEach(function(x){if(x.id===id)p=x;});
+  var favL=LJEKARI.filter(function(l){return l.fav===id;});
+  var favH=favL.length?favL.map(function(l){return '<div class="srow"><b>'+l.ime+'</b><span>'+l.grad+' · '+l.spec+'</span></div>';}).join(''):'<div class="mini">Nema upisanih favorita.</div>';
+  var body=
+    '<div class="block"><div class="srow"><b>Linija</b><span>'+p.lin+'</span></div>'+
+    '<div class="srow"><b>Pakovanje</b><span>'+p.pak+'</span></div>'+
+    '<div class="srow"><b>Udio u prezentacijama</b><span>'+p.udio+'%</span></div></div>'+
+    '<div class="block"><h4>Namjena</h4><div style="font-size:13.5px">'+p.ind+'</div></div>'+
+    '<div class="block"><h4>Ljekari koji favorizuju</h4>'+favH+'</div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> prodaja po proizvodu i regionu, veza proizvod → ljekar → apoteka, ciljevi i realizacija po saradniku.</span></div>';
+  openM(p.id,p.lin+' · '+p.pak,body);
+}
+
+function openOrd(id){
+  var o;NARUDZBE.forEach(function(x){if(x.id===id)o=x;});
+  var a=apoById(o.apo);var s=sar(a.sar);
+  var stH='';o.stavke.forEach(function(it){
+    var pr=prodById(it.p);
+    stH+='<div class="srow"><b><span class="pot" style="background:'+pr.boja+';width:auto;padding:0 7px;height:20px;border-radius:7px">'+it.p+'</span></b><span>'+it.k+' kom</span></div>';
+  });
+  var body=
+    '<div class="block"><div class="srow"><b>Broj narudžbe</b><span>'+o.id+'</span></div>'+
+    '<div class="srow"><b>Apoteka</b><span>'+a.naziv+'</span></div>'+
+    '<div class="srow"><b>Grad</b><span>'+a.grad+'</span></div>'+
+    '<div class="srow"><b>Saradnik</b><span>'+s.ime+'</span></div>'+
+    '<div class="srow"><b>Datum</b><span>'+o.dat+'</span></div>'+
+    '<div class="srow"><b>Status</b><span>'+ordB(o.st)+'</span></div>'+
+    '<div class="srow"><b>Ukupno</b><span>'+ordKom(o)+' kom</span></div></div>'+
+    '<div class="block"><h4>Stavke narudžbe</h4>'+stH+'</div>'+
+    '<div class="locked"><span>🔒</span><span><b>U punoj verziji:</b> narudžba ide direktno u veleprodaju, automatsko praćenje statusa isporuke, veza sa stanjem zaliha apoteke i mjesečni obračun po saradniku.</span></div>';
+  openM('Narudžba '+o.id,a.naziv+' · '+a.grad,body);
+}
+
+// ---------- navigacija ----------
+function setView(v){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.dataset.view===v);});
+  document.querySelectorAll('.view').forEach(function(x){x.classList.remove('active');});
+  var tgt=el('v-'+v);if(tgt)tgt.classList.add('active');
+  window.scrollTo(0,0);
+}
+function zakljucano(){alert('Ova sekcija je dostupna u punoj verziji. Javite se da je aktiviramo za vašu firmu.');}
+
+// init
+renderPregled();renderReps();renderLjekChips();renderLjek();renderApo();renderPosChips();renderPos();renderProd();renderIzvjestaji();renderOrdChips();renderOrd();
+</script>
+
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_salveo-teren_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=salveo-teren/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Neko je otvorio Salveo teren prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/salveo-teren/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+<script>
+/* ===== PRACENJE PONASANJA (nezavisno od GA4) -> api.datamaks.net ===== */
+(function(){try{
+  if(!/(^|\.)datamaks\.net$/i.test(location.hostname)) return; // samo na objavljenom demou
+  var EP='https://api.datamaks.net/e';
+  var SLUG=(location.pathname.match(/\/mockups\/([^\/]+)/)||[])[1]||'demo';
+  var g=function(k){try{return localStorage.getItem(k);}catch(_){return null;}};
+  var s=function(k,v){try{localStorage.setItem(k,v);}catch(_){}};
+  try{ if(/[?&]owner=1/.test(location.search)) s('dm_owner','1'); if(/[?&]owner=0/.test(location.search)) localStorage.removeItem('dm_owner'); }catch(_){}
+  var own=g('dm_owner')?1:0;
+  var rid=function(){return Math.random().toString(36).slice(2,10);};
+  var vid=g('dm_vid'); if(!vid){vid=rid()+rid(); s('dm_vid',vid);}
+  var sid=rid()+Date.now().toString(36);
+  var t0=Date.now();
+  var at=document.querySelector('.tab.active');
+  var curView=(at&&at.dataset&&at.dataset.view)?at.dataset.view:'start';
+  var secMs={}, segStart=Date.now(), visible=(document.visibilityState!=='hidden');
+  function accrue(){ if(visible){ var n=Date.now(); secMs[curView]=(secMs[curView]||0)+(n-segStart); segStart=n; } }  // samo vidljivo vrijeme, bez preklapanja
+  var q=[];
+  function push(type,extra){var e={t:type,ms:Date.now()-t0};if(extra)for(var k in extra)e[k]=extra[k];q.push(e);if(q.length>=25)flush();}
+  function flush(){if(!q.length)return;var p=JSON.stringify({sid:sid,vid:vid,own:own,slug:SLUG,href:location.href,ref:document.referrer,w:screen.width,h:screen.height,q:q});q=[];try{if(navigator.sendBeacon)navigator.sendBeacon(EP,p);else fetch(EP,{method:'POST',body:p,keepalive:true});}catch(_){}}
+  push('start',{view:curView}); flush();
+  if(typeof window.setView==='function'){var _sv=window.setView;window.setView=function(v){try{accrue();push('view',{from:curView,to:String(v)});curView=String(v);segStart=Date.now();flush();}catch(_){}return _sv.apply(this,arguments);};}
+  document.addEventListener('click',function(ev){try{
+    var el=ev.target.closest&&ev.target.closest('a,button,.kpi,.card,.ncard,.rtask,[data-open],[onclick],tr[onclick],.chip,.btn');
+    if(!el) return;
+    if(el.hasAttribute&&el.hasAttribute('data-view')) return;        // promjena sekcije -> hvata se kao 'view'
+    var oc=(el.getAttribute&&el.getAttribute('onclick'))||'';
+    if(/setView\(/.test(oc)) return;
+    var lbl=(el.getAttribute&&el.getAttribute('data-open'))||'';
+    if(!lbl) lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,50);
+    var cls=(((el.className&&el.className.baseVal!==undefined)?el.className.baseVal:el.className)||el.tagName||'')+'';
+    push('click',{lbl:lbl,cls:cls.split(' ')[0]});
+  }catch(_){}},true);
+  document.addEventListener('visibilitychange',function(){try{
+    if(document.visibilityState==='hidden'){ accrue(); visible=false; push('hide',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }
+    else { visible=true; segStart=Date.now(); }
+  }catch(_){}});
+  window.addEventListener('pagehide',function(){try{ accrue(); push('end',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }catch(_){}});
+  setInterval(flush,8000);
+}catch(_){}})();
+</script>
+</body>
+</html>
