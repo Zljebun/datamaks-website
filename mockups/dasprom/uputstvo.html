@@ -1,0 +1,427 @@
+<!doctype html><html lang="bs"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Korisničko uputstvo: DAS-PROM ERP</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 16mm 16mm; }
+  *{box-sizing:border-box}
+  /* Usklađeno sa aplikacijom: tamni teal + aqua akcenat. */
+  :root{--brand:#0b5566;--brand2:#13849b;--aqua:#1fb5c9;--line:#d3e0e2;--muted:#566b6d;--bg:#eef4f5}
+  body{font-family:-apple-system,Segoe UI,Calibri,Arial,sans-serif;color:#16202b;font-size:12pt;line-height:1.5;margin:0;background:var(--bg)}
+  .page{max-width:940px;margin:0 auto;background:#fff;padding:34px 40px 48px}
+  p{orphans:2;widows:2}
+  a{color:var(--brand2)}
+
+  .brand{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--brand);padding-bottom:14px}
+  .brand .l{display:flex;align-items:center;gap:14px}
+  .mark{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;display:flex;align-items:center;justify-content:center}
+  .mark svg{width:24px;height:24px}
+  .brand .nm{font-weight:700;font-size:18px;color:var(--brand);line-height:1}
+  .brand .tg{font-size:11px;color:var(--aqua);letter-spacing:1.5px;margin-top:4px;font-weight:700}
+  .brand .t{text-align:right}
+  .brand .t h1{margin:0;color:var(--brand);font-size:22pt;letter-spacing:.5px}
+  .brand .t .sub{color:#555;font-size:10pt}
+  .accent{height:2px;background:linear-gradient(90deg,var(--aqua) 0%,#a8e6ee 100%);margin:0 0 14px}
+  .meta{color:#555;font-size:9.5pt;margin:0 0 18px}
+
+  h2{color:var(--brand);font-size:15pt;border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:30px}
+  h2::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;background:var(--aqua);border-radius:2px}
+  h3{color:var(--brand);font-size:12.5pt;margin-top:20px}
+  ul,ol{margin:8px 0 8px 4px;padding-left:22px}
+  li{margin:4px 0}
+  code{background:#eef1f5;padding:1px 6px;border-radius:5px;font-size:10.5pt}
+  .k{display:inline-block;background:#e6f6f8;color:var(--brand);border:1px solid #c5e8ed;border-radius:6px;padding:0 7px;font-size:10.5pt;font-weight:600;white-space:nowrap}
+
+  .toc{background:#f2f7f7;border:1px solid var(--line);border-radius:10px;padding:14px 20px;margin:6px 0 8px}
+  .toc h3{margin:0 0 8px}
+  .toc ol{columns:2;column-gap:30px;margin:0}
+  .toc a{text-decoration:none}
+
+  .note,.tip,.warn{border-radius:10px;padding:12px 16px;margin:12px 0;font-size:11pt}
+  .note{background:#eef4ff;border:1px solid #cfe0fb}
+  .tip{background:#eafaf1;border:1px solid #bfe8cf}
+  .warn{background:#fff4e5;border:1px solid #f0d2a8}
+  .note b,.tip b,.warn b{color:var(--brand)}
+
+  figure{margin:14px 0;text-align:center}
+  figure img{display:block;max-width:100%;height:auto;max-height:15cm;width:auto;margin:0 auto;border:1px solid var(--line);border-radius:8px;box-shadow:0 1px 6px rgba(20,40,70,.09);break-inside:avoid;page-break-inside:avoid}
+  figure.mali img{max-width:260px}
+  figcaption{margin-top:6px;color:var(--muted);font-size:9.5pt;font-style:italic}
+
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:11pt}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:#e3eef0;color:var(--brand)}
+
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0;font-size:10.5pt}
+  .flow span{background:#e6f6f8;border:1px solid #c5e8ed;color:var(--brand);border-radius:20px;padding:3px 11px;font-weight:600}
+  .flow i{color:var(--muted);font-style:normal}
+
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  figure,table{break-inside:avoid}
+
+  .toolbar{position:sticky;top:0;z-index:5;background:var(--brand);color:#fff;display:flex;gap:10px;align-items:center;padding:10px 16px;justify-content:space-between}
+  .toolbar a,.toolbar button{color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:inherit}
+  .toolbar a:hover,.toolbar button:hover{background:rgba(255,255,255,.28)}
+  .tb-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .zoom{display:flex;gap:4px;align-items:center;background:rgba(255,255,255,.08);border-radius:8px;padding:2px}
+  .zoom button{border-radius:6px;padding:6px 10px}
+  .zoom #zoomLbl{min-width:52px;text-align:center}
+  .footer{margin-top:30px;border-top:1px solid var(--line);padding-top:10px;color:#8794a3;font-size:9.5pt;text-align:center}
+
+  @media (max-width:640px){
+    .page{padding:18px 16px 30px}
+    .brand{flex-direction:column;align-items:flex-start;gap:10px}
+    .brand .t{text-align:left}
+    .brand .t h1{font-size:22px;letter-spacing:.3px;line-height:1.1}
+    .brand .t .sub{font-size:12px}
+    .toc ol{columns:1}
+    h2{font-size:16px}
+    h3{font-size:14px}
+    table,th,td{font-size:10.5pt}
+    .toolbar{flex-wrap:wrap}
+  }
+  @media print{ .toolbar{display:none} body{background:#fff} .page{padding:0;max-width:none} }
+</style></head>
+<body>
+
+<div class="toolbar">
+  <a href="index.html">← Nazad na aplikaciju</a>
+  <div class="tb-right">
+    <div class="zoom" title="Uvećanje (zumiranje)">
+      <button onclick="zumiraj(-1)" aria-label="Umanji">🔍−</button>
+      <button onclick="zumiraj(0)" id="zoomLbl" title="Vrati na 100%">100%</button>
+      <button onclick="zumiraj(1)" aria-label="Uvećaj">🔍+</button>
+    </div>
+    <button onclick="window.print()">🖨 Štampaj / sačuvaj kao PDF</button>
+  </div>
+</div>
+
+<div class="page">
+  <div class="brand">
+    <div class="l">
+      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></div>
+      <div><div class="nm">DAS-PROM</div><div class="tg">PROIZVODNI ERP</div></div>
+    </div>
+    <div class="t"><h1>KORISNIČKO UPUTSTVO</h1><div class="sub">DAS-PROM ERP: prodaja, proizvodnja, logistika i montaža</div></div>
+  </div>
+  <div class="accent"></div>
+  <div class="meta">Verzija 27.10.2026. (prototip) &nbsp;·&nbsp; Izradio: „Datamaks" d.o.o. Banja Luka &nbsp;·&nbsp; podrška: info@datamaks.net · datamaks.net</div>
+
+  <div class="toc">
+    <h3>Sadržaj</h3>
+    <ol>
+      <li><a href="#s1">Šta je ovo i kako pristupam</a></li>
+      <li><a href="#s2">Snalaženje po ekranu</a></li>
+      <li><a href="#s3">Danas (početni ekran)</a></li>
+      <li><a href="#s4">Prodaja: upiti i ponude</a></li>
+      <li><a href="#s5">Pravljenje ponude</a></li>
+      <li><a href="#s6">Od ponude do radnog naloga</a></li>
+      <li><a href="#s7">Radni nalozi</a></li>
+      <li><a href="#s8">Proizvodnja (tabla po stanicama)</a></li>
+      <li><a href="#s9">Logistika i montaža</a></li>
+      <li><a href="#s10">Magacin stakla</a></li>
+      <li><a href="#s11">Kupci i karta kupca</a></li>
+      <li><a href="#s12">Rad na telefonu</a></li>
+      <li><a href="#s13">Jedan posao od početka do kraja</a></li>
+      <li><a href="#s14">Savjeti i česta pitanja</a></li>
+      <li><a href="#s15">Rječnik pojmova</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2 id="s1">1. Šta je ovo i kako pristupam</h2>
+  <p><b>DAS-PROM ERP</b> je sistem u kojem staklara vodi svaki posao na jednom mjestu: od prvog poziva kupca, preko mjerenja i ponude, kroz sve stanice u pogonu (rezanje, brušenje, kaljenje, pjeskarenje, farbanje, laminiranje, IZO staklo), do isporuke ili montaže kod kupca. Umjesto Excel tabela koje svako drži kod sebe, svi vide <b>istu, najnoviju sliku</b>: šta je naručeno, dokle je staklo stiglo, gdje je zastoj i ko ide na teren.</p>
+  <p>Središte sistema je <b>radni nalog</b>. Svaki nalog je vezan za kupca i za ponudu iz koje je nastao, i zna kroz koje stanice staklo prolazi. Ne prolazi svako staklo kroz sve stanice: ogledalo ide samo na rezanje i brušenje, a kaljena ograda i na kaljenje. Ta lista stanica zove se <b>ruta</b> i sistem je sam izvodi iz obrada koje su upisane u ponudi.</p>
+  <p>Aplikacija radi u <b>web-browseru</b> (Chrome, Edge, Firefox, Safari), na računaru, tabletu i telefonu. Ne instalira se ništa. Na telefonu se meni sažima, a tabele se pretvaraju u pregledne kartice (vidi poglavlje 12).</p>
+  <div class="note"><b>Napomena o prototipu:</b> Ovo uputstvo opisuje klikabilni prototip. Svi podaci u njemu su izmišljeni primjeri, a datum u sistemu je namješten na <b>srijedu, 21.10.2026.</b> da bi primjeri bili smisleni. Većina dugmadi stvarno radi (pravljenje ponude, prihvatanje, završavanje stanice, zakazivanje montaže). Nekoliko akcija, poput pretrage, slanja maila i štampe radnog lista, samo prikazuje poruku „u punoj verziji". Izmjene u prototipu nestaju kad se stranica osvježi.</div>
+
+  <!-- 2 -->
+  <h2 id="s2">2. Snalaženje po ekranu</h2>
+  <figure class="mali"><img src="uputstvo-slike/02-meni.jpg" alt="Bočni meni"><figcaption>Bočni meni sa svim dijelovima sistema</figcaption></figure>
+  <p>Svaki ekran ima isti okvir. Lijevo je <b>bočni meni</b>, gore <b>traka sa naslovom</b>, a u sredini sadržaj.</p>
+  <p><b>Bočni meni</b> je podijeljen po poslu:</p>
+  <ul>
+    <li><b>Pregled:</b> <span class="k">Danas</span>, početni ekran sa stanjem cijele firme (poglavlje 3).</li>
+    <li><b>Prodaja:</b> <span class="k">Prodaja</span>, upiti, mjerenja, ponude i cjenovnik (poglavlja 4 do 6).</li>
+    <li><b>Proizvodnja:</b> <span class="k">Radni nalozi</span>, <span class="k">Proizvodnja</span> i <span class="k">Logistika i montaža</span> (poglavlja 7 do 9).</li>
+    <li><b>Ostalo:</b> <span class="k">Magacin stakla</span> i <span class="k">Kupci</span> (poglavlja 10 i 11).</li>
+    <li><b>Pomoć:</b> <span class="k">Uputstvo</span> otvara ovaj dokument u novoj kartici browsera, pa je uvijek pri ruci.</li>
+  </ul>
+  <p><b>Crveni broj</b> pored stavke menija znači da tu nešto čeka na vas: kod Prodaje broj novih upita na koje se još niko nije javio, a kod Logistike broj gotovih naloga kojima još nije zakazan termin isporuke.</p>
+  <p><b>Traka sa naslovom</b> pokazuje gdje ste (npr. „RN-1040" i naziv posla). Iznad sadržaja je i <b>putanja</b> (npr. <i>Logistika → RN-1035</i>): klik na prvi dio vraća vas tamo odakle ste došli.</p>
+  <div class="tip"><b>Savjet:</b> Gotovo sve je klikabilno. Klik na broj naloga otvara nalog, klik na ime kupca otvara njegovu kartu, a klik na broj upita otvara upit. Ne morate tražiti kroz menije.</div>
+
+  <!-- 3 -->
+  <h2 id="s3">3. Danas (početni ekran)</h2>
+  <figure><img src="uputstvo-slike/01-danas.jpg" alt="Ekran Danas"><figcaption>Ekran „Danas": stanje firme u jednom pogledu</figcaption></figure>
+  <p>Ovo je ekran za jutarnji pregled. Odgovara na pitanje „šta se danas dešava i gdje gori".</p>
+  <h3>Danas u brojevima</h3>
+  <p>Četiri kartice: <b>nalozi u proizvodnji</b>, <b>nalozi koji kasne</b> (rok je prošao, crveno), <b>spremno za isporuku</b> i <b>novi upiti</b>. <b>Klik na karticu</b> otvara listu sa tačno tim nalozima ili upitima.</p>
+  <h3>Opterećenje stanica</h3>
+  <p>Za svaku stanicu u pogonu vidi se koliko naloga trenutno stoji na njoj, a traka pokazuje koliko je stanica zauzeta. Tako se odmah vidi usko grlo, npr. ako se nalozi gomilaju na kaljenju. <b>Klik na stanicu</b> otvara Radne naloge filtrirane na naloge koji su upravo na toj stanici (vidi 7.1).</p>
+  <h3>Aktivni nalozi i isporuke</h3>
+  <ul>
+    <li><b>Aktivni nalozi:</b> najnoviji nalozi u radu, sa trakom napretka, trenutnom stanicom i statusom.</li>
+    <li><b>Isporuke / montaža danas i sutra:</b> ko ide na teren, kad i gdje, plus gotovi nalozi kojima termin još nije zakazan (oznaka <i>zakazati</i>). Link <b>Plan →</b> vodi u Logistiku.</li>
+  </ul>
+
+  <!-- 4 -->
+  <h2 id="s4">4. Prodaja: upiti i ponude</h2>
+  <p>Prodaja prati svaki posao od prvog javljanja kupca do prihvaćene ponude. Svaki upit prolazi kroz iste korake:</p>
+  <div class="flow"><span>Nov upit</span><i>→</i><span>Mjerenje</span><i>→</i><span>Ponuda u izradi</span><i>→</i><span>Kod kupca</span><i>→</i><span>Prihvaćeno</span><i>ili</i><span>Izgubljeno</span></div>
+  <p>Ekran Prodaja ima tri kartice: <b>Pregled toka</b>, <b>Upiti i ponude</b> i <b>Cjenovnik</b>.</p>
+
+  <h3>4.1 Pregled toka</h3>
+  <figure><img src="uputstvo-slike/03-prodaja-pregled.jpg" alt="Pregled toka prodaje"><figcaption>Pregled toka: brojke, tabla upita i lista „Za uraditi"</figcaption></figure>
+  <ul>
+    <li><b>Brojke na vrhu:</b> otvoreni upiti, vrijednost ponuda koje su kod kupca, prihvaćeno ovog mjeseca i konverzija ponuda. Klik na prve tri otvara listu tih upita.</li>
+    <li><b>Tok prodaje:</b> tabla gdje je svaka kolona jedan korak, a svaka kartica jedan upit (kupac, šta traži, vrijednost, komercijalista).</li>
+    <li><b>Za uraditi:</b> sistem sam slaže šta treba odraditi danas: kome se javiti na novi upit, koja ponuda predugo čeka odgovor, koje je mjerenje zakazano. Najhitnije je na vrhu.</li>
+    <li><b>Zašto gubimo ponude:</b> razlozi odbijenih ponuda (cijena, rok, konkurencija), da se vidi gdje se gubi posao.</li>
+  </ul>
+
+  <h3>4.2 Lista upita</h3>
+  <figure><img src="uputstvo-slike/04-upiti-lista.jpg" alt="Lista upita i ponuda"><figcaption>Kartica „Upiti i ponude" sa filterima po koraku</figcaption></figure>
+  <p>Svi upiti u tabeli. Dugmad iznad tabele (Novi, Mjerenje, U izradi, Poslate, Prihvaćeno, Odbijeno) filtriraju listu, a broj na dugmetu kaže koliko ih je. Klik na red otvara upit.</p>
+
+  <h3>4.3 Novi upit</h3>
+  <figure><img src="uputstvo-slike/05-novi-upit.jpg" alt="Novi upit kupca"><figcaption>Unos novog upita</figcaption></figure>
+  <ol>
+    <li>Kliknite <b>+ Novi upit</b> (u Prodaji ili na karti kupca).</li>
+    <li>Upišite <b>kupca</b>, <b>grad</b>, <b>kontakt osobu</b> i <b>telefon</b>, odakle je upit stigao (telefon, mail, salon, sajt, preporuka) i <b>vrstu posla</b> (tuš kabina, ograda, IZO staklo…).</li>
+    <li>U <b>opis</b> upišite šta kupac traži, svojim riječima.</li>
+    <li>Izaberite <b>komercijalistu</b> koji vodi posao i kliknite <b>Sačuvaj upit</b>.</li>
+  </ol>
+  <div class="tip"><b>Savjet:</b> Ako upit otvorite sa karte kupca, kupac i kontakt su već popunjeni. Ako upišete kupca kojeg nema u bazi, sistem ga sam dodaje u Kupce.</div>
+
+  <h3>4.4 Stranica upita</h3>
+  <figure><img src="uputstvo-slike/06-upit.jpg" alt="Stranica upita"><figcaption>Stranica upita: podaci, koraci, dugmad za sljedeći korak i ponuda</figcaption></figure>
+  <p>Gore su podaci o kupcu i vrijednost ponude, a ispod toga <b>koraci</b> (Upit, Mjerenje, Ponuda, Poslata kupcu, Prihvaćeno, Radni nalog): zeleno je urađeno, plavo je trenutni korak. Dugmad ispod koraka uvijek nude <b>samo ono što ima smisla u tom koraku</b>:</p>
+  <table>
+    <tr><th>Korak</th><th>Šta nudi</th></tr>
+    <tr><td>Nov upit</td><td><b>Zakaži mjerenje</b> (datum, vrijeme, ekipa) ili <b>Napravi ponudu bez mjerenja</b></td></tr>
+    <tr><td>Mjerenje</td><td><b>Mjerenje urađeno, napravi ponudu</b> ili <b>Pomjeri termin</b></td></tr>
+    <tr><td>Ponuda u izradi</td><td><b>Pošalji ponudu kupcu</b></td></tr>
+    <tr><td>Kod kupca</td><td><b>Kupac prihvatio → radni nalog</b>, <b>Kupac traži izmjenu → nova verzija</b> ili <b>Odbijeno</b></td></tr>
+    <tr><td>Prihvaćeno</td><td><b>Otvori radni nalog</b></td></tr>
+  </table>
+  <p>Na dnu su <b>Aktivnosti</b> (svaki poziv, mail, mjerenje i verzija ponude, sa datumom i imenom) i <b>Detalji</b> sa dokumentima (skice, fotografije, tlocrti). U polje <b>Dodaj bilješku</b> upišite dogovor sa kupcem, npr. „zove ponovo u petak".</p>
+
+  <!-- 5 -->
+  <h2 id="s5">5. Pravljenje ponude</h2>
+  <figure><img src="uputstvo-slike/07-editor.jpg" alt="Uređivač ponude"><figcaption>Uređivač ponude: pozicije stakla, okov i usluge, ruta i obračun</figcaption></figure>
+  <p>Ponuda se pravi na stranici upita, u bloku <b>Ponuda</b>. Sve se računa samo, dok kucate.</p>
+  <h3>Pozicije stakla</h3>
+  <ol>
+    <li>Za svaku poziciju upišite <b>naziv</b> (npr. „Bočni dio"), izaberite <b>staklo</b> iz cjenovnika i upišite <b>širinu i visinu u mm</b> i <b>broj komada</b>.</li>
+    <li>Kliknite <b>obrade</b> koje treba: brušenje, fazeta, pjeskarenje, farbanje, kaljenje, laminiranje. Uključene obrade su obojene. Za rupe upišite broj rupa po komadu.</li>
+    <li>Ispod svake pozicije piše <b>kako je cijena izračunata</b> (m² puta cijena, metri brušenja, rupe), da se može provjeriti.</li>
+    <li>Novu poziciju dodajete dugmetom <b>+ Dodaj poziciju</b>, a ✕ je briše.</li>
+  </ol>
+  <div class="note"><b>Kako sistem računa:</b> staklo i površinske obrade (kaljenje, pjeskarenje, farbanje, laminiranje) po m², sa <b>najmanje 0,25 m² po komadu</b>; brušenje i fazeta po dužnim metrima obima; rupe po komadu. Cijene dolaze iz Cjenovnika (vidi 6.4).</div>
+  <h3>Okov i usluge</h3>
+  <p>Ispod stakla se dodaju okov (držači, rukohvati, profili, set za tuš kabinu) i usluge (montaža po satu, dostava). Izaberite stavku iz liste, kliknite <b>+ Dodaj</b> i upišite količinu.</p>
+  <h3>Ruta, uslovi i obračun</h3>
+  <ul>
+    <li><b>Ruta u proizvodnji:</b> sistem iz izabranih obrada sam slaže kroz koje stanice staklo ide. Kad kupac prihvati, radni nalog već zna svoj put kroz pogon.</li>
+    <li><b>Avans</b>, <b>rok izrade</b> i <b>napomena</b> koja ide na dokument.</li>
+    <li><b>Obračun desno:</b> staklo i obrada, okov i usluge, rabat, osnovica, PDV 17%, ukupno za plaćanje i iznos avansa.</li>
+  </ul>
+  <div class="tip"><b>Savjet:</b> Rabat i avans se automatski preuzimaju iz <b>uslova saradnje</b> sa karte kupca (npr. partner 10% rabata, bez avansa). Ako treba drugačije za ovaj posao, samo ih promijenite u ponudi.</div>
+  <h3>Verzije ponude</h3>
+  <p>Svaka ponuda ima verziju (v1, v2…). Kad se verzija <b>pošalje kupcu, zaključava se</b> i više se ne može mijenjati, da uvijek znate šta je kupac tačno dobio. Ako kupac traži izmjenu (popust, drugo staklo), kliknite <b>Kupac traži izmjenu → nova verzija</b>: sistem kopira zadnju verziju u novu, koju slobodno mijenjate. Stare verzije ostaju za pregled (dugmad v1, v2 desno gore u bloku ponude).</p>
+  <h3>Dokument i slanje</h3>
+  <figure><img src="uputstvo-slike/08-dokument.jpg" alt="Pregled dokumenta ponude"><figcaption>Pregled dokumenta ponude, spreman za štampu ili PDF</figcaption></figure>
+  <p><b>Pregled dokumenta</b> pokazuje ponudu onako kako je kupac vidi: zaglavlje firme, kupac, pozicije, okov i usluge, obračun sa PDV-om, uslovi i rok važenja. Dugme <b>Štampaj / PDF</b> je štampa ili čuva kao PDF. <b>Pošalji ponudu kupcu</b> otvara mail sa ponudom u prilogu i bilježi slanje u aktivnosti.</p>
+
+  <!-- 6 -->
+  <h2 id="s6">6. Od ponude do radnog naloga</h2>
+  <h3>6.1 Kupac prihvatio</h3>
+  <figure><img src="uputstvo-slike/09-prihvati.jpg" alt="Prihvatanje ponude"><figcaption>Prihvatanje ponude pravi radni nalog sa gotovom rutom</figcaption></figure>
+  <ol>
+    <li>Na upitu u koraku „Kod kupca" kliknite <b>Kupac prihvatio → radni nalog</b>.</li>
+    <li>Provjerite vrijednost, rutu kroz stanice i način isporuke (dostava ili montaža).</li>
+    <li>Označite da li je <b>avans uplaćen</b> i upišite <b>rok isporuke</b>.</li>
+    <li>Kliknite <b>Napravi radni nalog</b>.</li>
+  </ol>
+  <p>Sistem odmah pravi radni nalog sa stavkama iz ponude i rutom kroz stanice. Ako je avans uplaćen (ili ga nema), nalog ide <b>pravo u proizvodnju</b>. Ako nije, nalog dobija status <b>Čeka avans</b> i ne ide u pogon dok neko ne klikne <b>Avans uplaćen, pusti u proizvodnju</b> na nalogu.</p>
+  <div class="warn"><b>Pažnja:</b> Ako kupac ima <b>dospjeli neplaćeni dug</b>, sistem to crveno upozorava i na karti kupca i pri prihvatanju ponude. Provjerite uplatu prije nego što pustite novi posao.</div>
+  <h3>6.2 Odbijena ponuda</h3>
+  <p>Klik na <b>Odbijeno</b> traži <b>razlog</b> (cijena, rok izrade, kupac odustao, konkurencija). Razlozi se skupljaju u „Zašto gubimo ponude" na Pregledu toka.</p>
+  <h3>6.3 Mjerenje na terenu</h3>
+  <p>Mjerenje se zakazuje sa upita (datum, vrijeme, ekipa) i automatski se pojavljuje u <b>rasporedu izlazaka</b> u Logistici, zajedno sa isporukama i montažama, jer iste ekipe idu i na mjerenja.</p>
+  <h3>6.4 Cjenovnik</h3>
+  <figure><img src="uputstvo-slike/20-cjenovnik.jpg" alt="Cjenovnik"><figcaption>Cjenovnik: staklo po m², obrade sa stanicom na koju idu, okov i usluge</figcaption></figure>
+  <p>Kartica <b>Cjenovnik</b> sadrži sve cijene iz kojih se računaju ponude: vrste stakla po m², obrade (uz svaku piše na koju stanicu u pogonu ide) i okov i usluge. Kad se cijena promijeni ovdje, sve nove ponude je koriste. Već poslate ponude ostaju sa starom cijenom.</p>
+
+  <!-- 7 -->
+  <h2 id="s7">7. Radni nalozi</h2>
+  <figure><img src="uputstvo-slike/10-nalozi.jpg" alt="Lista radnih naloga"><figcaption>Svi radni nalozi sa trenutnom stanicom, napretkom, rokom i statusom</figcaption></figure>
+  <p>Lista svih naloga. Za svaki se vidi kupac, proizvod, <b>trenutna stanica</b>, napredak u procentima, rok, vrijednost i status. Dugmad iznad liste filtriraju po statusu:</p>
+  <table>
+    <tr><th>Status</th><th>Značenje</th></tr>
+    <tr><td>Čeka avans</td><td>Ponuda prihvaćena, ali avans nije uplaćen; nalog još ne ide u pogon.</td></tr>
+    <tr><td>U proizvodnji</td><td>Staklo je u pogonu, na nekoj od stanica.</td></tr>
+    <tr><td>Kasni</td><td>Rok je prošao, a nalog nije gotov.</td></tr>
+    <tr><td>Spremno za isporuku</td><td>Sve stanice završene, staklo kompletirano; posao prelazi u Logistiku.</td></tr>
+    <tr><td>Isporučeno</td><td>Isporučeno ili montirano kod kupca; nalog je zatvoren i ide na fakturisanje.</td></tr>
+  </table>
+  <h3>7.1 Nalozi na jednoj stanici</h3>
+  <figure><img src="uputstvo-slike/13-stanica-filter.jpg" alt="Nalozi na stanici Kaljenje"><figcaption>Filter „Na stanici Kaljenje", otvoren klikom na stanicu na ekranu Danas</figcaption></figure>
+  <p>Kad na ekranu Danas kliknete stanicu u „Opterećenje stanica", ovdje se prikažu samo nalozi koji su upravo na njoj. Iznad liste piše npr. „Na stanici <b>Kaljenje</b>: 3 naloga", a ✕ uklanja filter.</p>
+  <h3>7.2 Detalj naloga</h3>
+  <figure><img src="uputstvo-slike/11-nalog.jpg" alt="Detalj radnog naloga"><figcaption>Detalj naloga: tok kroz staklaru, stavke i istorija</figcaption></figure>
+  <ul>
+    <li><b>Zaglavlje:</b> kupac (klik otvara kartu kupca), lokacija, rok, vrijednost, dostava ili montaža, i link na ponudu iz koje je nalog nastao.</li>
+    <li><b>Tok kroz staklaru:</b> stanice ovog naloga redom. Zelena kvačica znači da je stanica gotova, plavi krug je stanica na kojoj je staklo sada (sa procentom urađenog), a sivo je ono što slijedi.</li>
+    <li><b>Stavke naloga:</b> šta se radi, koliko komada i dimenzije.</li>
+    <li><b>Istorija naloga:</b> svaki korak sa vremenom i imenom (pušten u proizvodnju, stanica završena, zakazana montaža…).</li>
+  </ul>
+  <p>Dugme <b>Završi stanicu „…"</b> pomjera nalog na sljedeću stanicu i upisuje to u istoriju. Kad se završi i zadnja stanica, nalog postaje <b>Spremno za isporuku</b> i pojavljuje se u Logistici. <b>Radni list</b> je štampani list koji ide uz staklo kroz pogon.</p>
+  <div class="note"><b>Napomena:</b> U punoj verziji stanicu završava radnik na samoj stanici (tablet ili skener barkoda na radnom listu), pa rukovodilac vidi napredak uživo, bez obilaska pogona.</div>
+  <h3>7.3 Novi nalog bez ponude</h3>
+  <p>Za hitne ili interne poslove nalog se može otvoriti direktno: <b>+ Novi nalog</b> u listi naloga, izbor kupca, proizvoda i stanica kroz koje staklo ide, pa <b>Pusti u proizvodnju</b>. Uobičajen put je ipak preko ponude (poglavlje 6), jer tada nalog nosi cijenu, stavke i rutu bez prepisivanja.</p>
+
+  <!-- 8 -->
+  <h2 id="s8">8. Proizvodnja (tabla po stanicama)</h2>
+  <figure><img src="uputstvo-slike/12-proizvodnja.jpg" alt="Tabla proizvodnje"><figcaption>Tabla proizvodnje: svaka kolona je jedna stanica u pogonu</figcaption></figure>
+  <p>Pogled za šefa proizvodnje. <b>Svaka kolona je jedna stanica</b> (Rezanje, Brušenje, Kaljenje, Pjeskarenje, Farbanje, Laminiranje, IZO staklo), a kartice su nalozi koji su trenutno na njoj, sa kupcem i rokom. Nalog koji kasni ima crvenu oznaku. Kad se stanica završi, kartica „klizne" u sljedeću kolonu. Klik na karticu otvara nalog.</p>
+  <div class="tip"><b>Savjet:</b> Ako je jedna kolona puna, a sljedeća prazna, tu je usko grlo. Isto se vidi i na ekranu Danas u „Opterećenje stanica".</div>
+
+  <!-- 9 -->
+  <h2 id="s9">9. Logistika i montaža</h2>
+  <figure><img src="uputstvo-slike/14-logistika.jpg" alt="Logistika i montaža"><figcaption>Logistika: gotovo za zakazivanje, raspored izlazaka, isporučeno i ekipe</figcaption></figure>
+  <p>Ovdje su <b>samo nalozi završeni u proizvodnji</b>. Svaki prolazi kroz četiri koraka:</p>
+  <div class="flow"><span>Gotovo, čeka zakazivanje</span><i>→</i><span>Zakazano</span><i>→</i><span>Na terenu</span><i>→</i><span>Isporučeno / montirano</span></div>
+  <h3>9.1 Zakazivanje</h3>
+  <figure><img src="uputstvo-slike/15-zakazi.jpg" alt="Zakazivanje isporuke"><figcaption>Zakazivanje isporuke: termin, ekipa ili vozilo, adresa i napomena</figcaption></figure>
+  <ol>
+    <li>U bloku <b>Gotovo u proizvodnji, čeka zakazivanje</b> kliknite <b>Zakaži</b> pored naloga. Ako je rok već prošao, to piše crveno.</li>
+    <li>Izaberite <b>dostavu ili montažu</b>, <b>ekipu ili vozilo</b>, <b>datum</b> i <b>vrijeme</b>.</li>
+    <li>Izaberite <b>adresu</b>: sistem nudi objekte i adrese sa karte kupca.</li>
+    <li>Upišite <b>napomenu za ekipu</b> (npr. „najaviti se šefu gradilišta", „ključ kod vlasnika") i kliknite <b>Zakaži</b>.</li>
+  </ol>
+  <h3>9.2 Raspored izlazaka</h3>
+  <p>Raspored po danima (Danas, Sutra, pa dani u sedmici) sa svim izlascima na teren: <b>isporuke, montaže i mjerenja iz prodaje</b>, jer iste ekipe rade sve troje. Za svaki izlazak se vidi vrijeme, nalog, kupac, adresa, ekipa i napomena (narandžasto). Dugmad:</p>
+  <ul>
+    <li><b>Krenuli:</b> ekipa je izašla na teren (status <i>Na terenu</i>).</li>
+    <li><b>Pomjeri:</b> promjena termina, ekipe ili adrese.</li>
+    <li><b>Montirano / Isporučeno:</b> potvrda da je posao završen i upis <b>ko je primio</b>. Nalog se zatvara i ide na fakturisanje.</li>
+  </ul>
+  <h3>9.3 Ekipe i vozila</h3>
+  <p>Za svaku ekipu i vozilo piše šta trenutno radi: <i>na terenu</i> (i kod koga), <i>danas u …</i>, sljedeći zakazani izlazak ili <i>slobodna</i>. Računa se iz rasporeda, pa je uvijek tačno.</p>
+  <h3>9.4 Detalj gotovog naloga</h3>
+  <figure><img src="uputstvo-slike/16-nalog-montaza.jpg" alt="Detalj naloga spremnog za montažu"><figcaption>Gotov nalog: proizvodnja završena, kartica montaže sa terminom i ekipom</figcaption></figure>
+  <p>Kad otvorite nalog koji je gotov, sve stanice su zelene uz oznaku <b>proizvodnja završena</b>, a ispod je kartica <b>Isporuka</b> ili <b>Montaža</b> sa terminom, ekipom, adresom i napomenom. Dugmad su logistička (Zakaži, Ekipa krenula, Pomjeri termin, Montirano). Dugme <b>Nazad</b> vraća u Logistiku.</p>
+
+  <!-- 10 -->
+  <h2 id="s10">10. Magacin stakla</h2>
+  <figure><img src="uputstvo-slike/17-magacin.jpg" alt="Magacin stakla"><figcaption>Magacin: stanje, minimum i oznaka „Naruči"</figcaption></figure>
+  <p>Zalihe stakla i potrošnog materijala: float, extra clear, ogledalo, lamistal, Low-E, PVB folija, distanceri i materijal za IZO, okov i profili. Za svaki artikal piše <b>stanje</b> i <b>minimum</b>. Kad stanje padne ispod minimuma, artikal dobija crvenu oznaku <b>Naruči</b>, a broj takvih artikala je u kartici „Ispod minimuma".</p>
+  <div class="note"><b>Napomena:</b> U punoj verziji sistem sam skida staklo sa zalihe kad nalog krene u rezanje i javlja kad nešto padne ispod minimuma, pa nema iznenađenja da „nema table".</div>
+
+  <!-- 11 -->
+  <h2 id="s11">11. Kupci i karta kupca</h2>
+  <figure><img src="uputstvo-slike/18-kupci.jpg" alt="Lista kupaca"><figcaption>Baza kupaca sa filterom po tipu</figcaption></figure>
+  <p>Svi kupci na jednom mjestu. Filter po tipu: <b>firma, privatno, izvođač, investitor, javna ustanova</b>. Za svakog se vidi grad, šta je trenutno aktivno (nalozi, upiti), promet ove godine, <b>otvoreni dug</b> (crveno i oznaka <i>dospjelo</i> ako kasni) i komercijalista. Novi kupac se dodaje dugmetom <b>+ Novi kupac</b>.</p>
+  <h3>Karta kupca</h3>
+  <figure><img src="uputstvo-slike/19-karta-kupca.jpg" alt="Karta kupca"><figcaption>Karta kupca: sve o kupcu na jednom ekranu</figcaption></figure>
+  <ul>
+    <li><b>Upozorenje na dug:</b> crvena traka na vrhu ako kupac ima dospjelu neplaćenu fakturu.</li>
+    <li><b>Osnovni podaci:</b> adresa, JIB, od kada je kupac, komercijalista i promet ove godine; dugmad <b>Novi upit</b>, <b>Pozovi</b>, <b>Pošalji mail</b>.</li>
+    <li><b>Brojke:</b> ukupan promet, broj naloga, aktivni nalozi, otvorene ponude i dug.</li>
+    <li><b>Radni nalozi</b> i <b>Upiti i ponude</b> ovog kupca, uživo iz sistema.</li>
+    <li><b>Fakture i uplate:</b> svaka faktura sa iznosom, uplatom i statusom (plaćeno, djelimično, otvoreno, kasni X dana).</li>
+    <li><b>Kontakt osobe</b> (ko je za nabavku, ko za fakture, šef gradilišta), <b>uslovi saradnje</b> (cjenovnik, rabat, avans, rok plaćanja), <b>objekti i adrese montaže</b>, napomena i istorija saradnje.</li>
+  </ul>
+  <div class="tip"><b>Savjet:</b> Uslovi saradnje rade umjesto vas: rabat i avans se sami upisuju u svaku novu ponudu tom kupcu, a objekti se nude kao adresa pri zakazivanju montaže.</div>
+
+  <!-- 12 -->
+  <h2 id="s12">12. Rad na telefonu</h2>
+  <figure><img src="uputstvo-slike/21-telefon.jpg" alt="Prikaz na telefonu"><figcaption>Isti sistem na telefonu: Danas, detalj naloga i raspored izlazaka</figcaption></figure>
+  <p>Sve funkcije rade i na telefonu, što je zgodno za komercijaliste na terenu i za ekipe za montažu.</p>
+  <ul>
+    <li><b>Meni:</b> dugme ☰ gore lijevo otvara bočni meni.</li>
+    <li><b>Tabele</b> se pretvaraju u kartice: naslov gore, a ispod svi podaci jedan ispod drugog. Ništa ne bježi van ekrana.</li>
+    <li><b>Tok kroz staklaru</b> ide uspravno, stanica ispod stanice.</li>
+    <li><b>Dugme Nazad</b> na telefonu radi unutar aplikacije: vraća na prethodni ekran, a otvoren prozor ili meni prvo zatvori. Iz aplikacije se izlazi tek sa početnog ekrana.</li>
+  </ul>
+  <div class="tip"><b>Savjet:</b> Na telefonu sačuvajte adresu sistema na početni ekran (u Chromeu: meni ⋮ → „Dodaj na početni ekran"), pa se otvara kao aplikacija.</div>
+
+  <!-- 13 -->
+  <h2 id="s13">13. Jedan posao od početka do kraja</h2>
+  <p>Primjer: kupac zove za tuš kabinu.</p>
+  <table>
+    <tr><th>Ko</th><th>Šta radi u sistemu</th><th>Gdje</th></tr>
+    <tr><td>Komercijalista</td><td>Upisuje upit i zakazuje mjerenje.</td><td>Prodaja → + Novi upit</td></tr>
+    <tr><td>Ekipa</td><td>Mjeri na terenu; termin vidi u rasporedu.</td><td>Logistika → Raspored</td></tr>
+    <tr><td>Komercijalista</td><td>Pravi ponudu (staklo, obrade, okov, montaža), pregleda dokument i šalje.</td><td>Upit → Ponuda</td></tr>
+    <tr><td>Komercijalista</td><td>Kupac traži popust: nova verzija sa rabatom, ponovo slanje.</td><td>Upit → nova verzija</td></tr>
+    <tr><td>Komercijalista</td><td>Kupac prihvata i uplaćuje avans: pravi radni nalog.</td><td>Upit → Kupac prihvatio</td></tr>
+    <tr><td>Pogon</td><td>Rezanje, brušenje, kaljenje: svaka stanica završava svoj dio.</td><td>Proizvodnja / nalog</td></tr>
+    <tr><td>Logistika</td><td>Nalog je gotov: zakazuje montažu, ekipi piše napomenu.</td><td>Logistika → Zakaži</td></tr>
+    <tr><td>Ekipa</td><td>„Krenuli", montaža, „Montirano" i ko je primio.</td><td>Logistika → Raspored</td></tr>
+    <tr><td>Knjigovodstvo</td><td>Nalog zatvoren, faktura; uplata se vidi na karti kupca.</td><td>Kupci → karta kupca</td></tr>
+  </table>
+  <p>U svakom trenutku svako vidi isto: komercijalista zna dokle je staklo stiglo kad kupac nazove, šef proizvodnje vidi gdje je zastoj, a logistika zna šta je gotovo i čeka termin.</p>
+
+  <!-- 14 -->
+  <h2 id="s14">14. Savjeti i česta pitanja</h2>
+  <p><b>Kupac zove i pita dokle je njegova narudžba. Gdje gledam?</b><br>Otvorite kartu kupca (Kupci → klik na kupca) i u bloku Radni nalozi vidite napredak svakog naloga. Klik na nalog pokazuje tačno na kojoj je stanici i šta slijedi.</p>
+  <p><b>Ponuda je poslata, a kupac traži drugačiju cijenu. Da li mijenjam postojeću?</b><br>Ne. Poslata verzija je zaključana. Kliknite „Kupac traži izmjenu → nova verzija" i mijenjajte novu. Obje verzije ostaju sačuvane.</p>
+  <p><b>Zašto nalog ne ide u proizvodnju iako je ponuda prihvaćena?</b><br>Vjerovatno ima status „Čeka avans". Kad avans stigne, na nalogu kliknite „Avans uplaćen, pusti u proizvodnju".</p>
+  <p><b>Zašto staklo ne ide kroz sve stanice?</b><br>Ruta se pravi iz obrada u ponudi. Ako ogledalo nema kaljenje u ponudi, nema ni stanicu kaljenja u nalogu. Tako pogon ne gubi vrijeme na nepotrebne korake.</p>
+  <p><b>Nalog je gotov, a ne vidim ga u Proizvodnji.</b><br>Tako i treba. Gotovi nalozi prelaze u Logistiku, u blok „Gotovo u proizvodnji, čeka zakazivanje".</p>
+  <p><b>Kako znam da ekipa nije zauzeta kad zakazujem montažu?</b><br>Pogledajte „Ekipe i vozila" i raspored po danima u Logistici. Tu su i mjerenja iz prodaje, pa se vidi cijeli dan ekipe.</p>
+  <p><b>Šta znači crveni broj u meniju?</b><br>Kod Prodaje: novi upiti na koje se niko nije javio. Kod Logistike: gotovi nalozi bez zakazanog termina.</p>
+  <p><b>Kupac duguje. Da li sistem blokira novi posao?</b><br>Ne blokira, ali jasno upozorava na karti kupca i pri prihvatanju ponude. Odluka je na vama.</p>
+
+  <!-- 15 -->
+  <h2 id="s15">15. Rječnik pojmova</h2>
+  <table>
+    <tr><th>Pojam</th><th>Značenje</th></tr>
+    <tr><td>Upit</td><td>Prvo javljanje kupca: šta treba, kontakt i opis. Od upita počinje svaki posao.</td></tr>
+    <tr><td>Ponuda (predračun)</td><td>Obračun posla za kupca: pozicije stakla, obrade, okov, usluge, rabat, PDV i avans. Ima verzije.</td></tr>
+    <tr><td>Verzija ponude</td><td>v1, v2…; poslata verzija je zaključana, izmjena ide kroz novu verziju.</td></tr>
+    <tr><td>Radni nalog (RN)</td><td>Posao u pogonu, nastao iz prihvaćene ponude; nosi stavke, rok i rutu.</td></tr>
+    <tr><td>Stanica</td><td>Mjesto u pogonu gdje se radi jedna obrada: rezanje, brušenje, kaljenje, pjeskarenje, farbanje, laminiranje, IZO, kompletiranje, isporuka/montaža.</td></tr>
+    <tr><td>Ruta</td><td>Stanice kroz koje prolazi jedan nalog, redom; izvodi se iz obrada u ponudi.</td></tr>
+    <tr><td>Obračunska površina</td><td>Površina za cijenu: stvarna površina, ali najmanje 0,25 m² po komadu.</td></tr>
+    <tr><td>Avans</td><td>Dio iznosa koji kupac plaća unaprijed; dok nije uplaćen, nalog „Čeka avans".</td></tr>
+    <tr><td>Izlazak (na teren)</td><td>Isporuka, montaža ili mjerenje kod kupca; svi su u jednom rasporedu ekipa.</td></tr>
+    <tr><td>Karta kupca</td><td>Sve o kupcu na jednom ekranu: podaci, nalozi, ponude, fakture, dug, kontakti, uslovi, objekti.</td></tr>
+    <tr><td>Uslovi saradnje</td><td>Cjenovnik, rabat, avans i rok plaćanja dogovoreni sa kupcem; automatski se primjenjuju na nove ponude.</td></tr>
+    <tr><td>Minimum zalihe</td><td>Količina ispod koje artikal u magacinu treba naručiti.</td></tr>
+  </table>
+
+  <div class="footer">„Datamaks" d.o.o. Banja Luka · korisničko uputstvo · DAS-PROM ERP (prototip) · podrška: info@datamaks.net · datamaks.net</div>
+</div>
+
+<script>
+(function(){
+  var page=document.querySelector('.page');
+  var min=0.6,max=2.0,step=0.1;
+  var z=1;
+  try{ z=parseFloat(localStorage.getItem('uputstvo-zoom')||'1')||1; }catch(e){}
+  function oznaka(){
+    var l=document.getElementById('zoomLbl');
+    if(l) l.textContent=Math.round(z*100)+'%';
+    try{ localStorage.setItem('uputstvo-zoom',String(z)); }catch(e){}
+  }
+  // d: -1 umanji, +1 uvećaj, 0 vrati na 100%. Sadržaj na sredini ekrana ostaje na sredini.
+  window.zumiraj=function(d){
+    var prev=z;
+    if(d===0){ z=1; }
+    else { z=Math.min(max,Math.max(min,Math.round((z+d*step)*10)/10)); }
+    var centar=(window.scrollY + window.innerHeight/2)/prev;
+    page.style.zoom=z;
+    oznaka();
+    window.scrollTo(0, Math.max(0, centar*z - window.innerHeight/2));
+  };
+  page.style.zoom=z; oznaka();
+  // Štampa/PDF uvijek na 100% (pa vrati izbor korisnika).
+  window.addEventListener('beforeprint',function(){ page.style.zoom=1; });
+  window.addEventListener('afterprint',function(){ page.style.zoom=z; });
+})();
+</script>
+</body></html>

@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://datamaks.net/mockups/dasprom/">
+<title>DAS-PROM ERP za staklaru (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0f6e8c; --teal-2:#128ca8; --teal-3:#0b5468;
+  --aqua:#19b6c9; --aqua-2:#2fc6d6; --aqua-soft:#e4f6f9;
+  --bg:#f3f6f8; --card:#ffffff; --text:#162430; --muted:#657586;
+  --border:#e5ebf0; --border-2:#eef2f5;
+  --green:#15a34a; --green-soft:#e6f6ec;
+  --amber:#d9880a; --amber-soft:#fdf2e0;
+  --red:#d92c2c; --red-soft:#fdeaea;
+  --glass:rgba(25,182,201,.10);
+  --violet:#6b46c1; --violet-soft:#efeafd;
+  --shadow:0 1px 2px rgba(16,46,66,.04), 0 4px 16px rgba(16,46,66,.06);
+  --shadow-lg:0 8px 30px rgba(16,46,66,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{overflow-x:hidden;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:244px;background:linear-gradient(180deg,var(--teal) 0%,var(--teal-3) 100%);color:#dcecf0;display:flex;flex-direction:column;position:fixed;height:100vh;z-index:20;transition:transform .25s ease}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:11px}
+.sb-logo .mark{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(255,255,255,.22)}
+.sb-logo .mark svg{width:23px;height:23px;color:#fff}
+.sb-logo .txt b{display:block;font-size:17px;font-weight:800;color:#fff;letter-spacing:.5px}
+.sb-logo .txt span{font-size:9.5px;color:var(--aqua-2);letter-spacing:1.6px;font-weight:600}
+.sb-nav{padding:12px 11px;flex:1;overflow-y:auto}
+.sb-nav .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8fb6c2;padding:14px 12px 6px;font-weight:700}
+.nav-item{text-decoration:none;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:9px;color:#c3dbe2;font-weight:500;margin-bottom:2px;transition:.15s;width:100%;text-align:left;font-size:13.5px}
+.nav-item svg{width:19px;height:19px;flex-shrink:0;opacity:.85}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:linear-gradient(90deg,var(--aqua) 0%,var(--teal-2) 130%);color:#fff;box-shadow:0 4px 14px rgba(25,182,201,.35)}
+.nav-item.active svg{opacity:1}
+.nav-item .badge{margin-left:auto;background:var(--red);color:#fff;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:20px}
+.nav-item.active .badge{background:rgba(255,255,255,.28)}
+.sb-user{padding:13px 15px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:11px}
+.sb-user .av{width:34px;height:34px;border-radius:50%;background:var(--aqua);color:#073;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff}
+.sb-user .info b{display:block;font-size:12.5px;color:#fff}
+.sb-user .info span{font-size:11px;color:#9cc0cc}
+
+/* MAIN */
+.main{flex:1;margin-left:244px;display:flex;flex-direction:column;min-width:0}
+.topbar{min-height:64px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 26px;position:sticky;top:0;z-index:10}
+.topbar h1{font-size:18px;font-weight:700}
+.topbar .sub{font-size:12.5px;color:var(--muted);font-weight:400;margin-top:1px}
+.search{margin-left:auto;position:relative}
+.search input{width:250px;border:1px solid var(--border);background:var(--bg);border-radius:9px;padding:9px 12px 9px 36px;font-size:13px;outline:none;transition:.15s}
+.search input:focus{border-color:var(--aqua);background:#fff;box-shadow:0 0 0 3px var(--aqua-soft)}
+.search svg{position:absolute;left:11px;top:9px;width:17px;height:17px;color:var(--muted)}
+.topdate{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);font-weight:500;white-space:nowrap}
+.content{padding:24px 26px;max-width:1340px;width:100%}
+.hamburger{display:none;width:40px;height:40px;border-radius:9px;align-items:center;justify-content:center;color:var(--teal);background:var(--bg);flex-shrink:0}
+.hamburger svg{width:22px;height:22px}
+.sb-backdrop{display:none;position:fixed;inset:0;background:rgba(13,42,58,.5);z-index:15}
+.sb-backdrop.show{display:block}
+
+/* GENERIC */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.pill.green{background:var(--green-soft);color:var(--green)}
+.pill.amber{background:var(--amber-soft);color:var(--amber)}
+.pill.red{background:var(--red-soft);color:var(--red)}
+.pill.blue{background:var(--aqua-soft);color:var(--teal)}
+.pill.gray{background:#eef1f4;color:var(--muted)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
+.section-title{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:24px 0 12px;display:flex;align-items:center;gap:10px}
+.section-title:first-child{margin-top:0}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--teal-2);color:#fff;font-weight:600;font-size:13px;padding:9px 15px;border-radius:9px;transition:.15s}
+.btn:hover{background:var(--teal);box-shadow:0 4px 14px rgba(15,110,140,.3)}
+.btn svg{width:16px;height:16px}
+.btn.aqua{background:var(--aqua)}.btn.aqua:hover{background:var(--aqua-2)}
+.btn.ghost{background:#fff;color:var(--teal-2);border:1px solid var(--border)}
+.btn.ghost:hover{background:var(--bg);box-shadow:none}
+.btn.sm{padding:6px 11px;font-size:12px}
+.filt{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.filt button{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--muted);transition:.15s}
+.filt button:hover{background:var(--bg)}
+.filt button.on{background:var(--teal-2);border-color:var(--teal-2);color:#fff}
+.filt button .c{opacity:.7;margin-left:4px}
+.crumb{font-size:12.5px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.crumb button:hover{color:var(--aqua)}
+.progress{height:8px;background:#eef1f4;border-radius:20px;overflow:hidden}
+.progress .bar{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--aqua),var(--teal-2));transition:width .4s}
+.progress .bar.full{background:linear-gradient(90deg,#22c55e,#15a34a)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{display:block;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 17px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.15s;cursor:pointer;text-align:left;width:100%}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kpi .ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.kpi .ico svg{width:20px;height:20px}
+.kpi .num{font-size:27px;font-weight:800;line-height:1}
+.kpi .lab{font-size:12.5px;color:var(--muted);margin-top:5px;font-weight:500}
+.kpi.alert{border-color:#f6c9c9}.kpi.alert .num{color:var(--red)}
+.kpi.warn{border-color:#f5dfb3}.kpi.warn .num{color:var(--amber)}
+.ico.blue{background:var(--aqua-soft);color:var(--teal)}
+.ico.red{background:var(--red-soft);color:var(--red)}
+.ico.amber{background:var(--amber-soft);color:var(--amber)}
+.ico.green{background:var(--green-soft);color:var(--green)}
+.ico.teal{background:#e3eff2;color:var(--teal)}
+
+/* PIPELINE */
+.pipeline{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.stage{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 11px;box-shadow:var(--shadow);text-align:center;position:relative}
+.stage{cursor:pointer;transition:.12s}.stage:hover{border-color:var(--aqua);transform:translateY(-1px)}
+.st-filt{display:inline-flex;align-items:center;gap:8px;background:var(--aqua-soft);color:var(--teal-2);border-radius:20px;padding:6px 8px 6px 12px;font-size:12.5px;margin:-4px 0 14px}
+.st-filt button{width:22px;height:22px;border-radius:50%;color:var(--teal-2);font-size:12px}.st-filt button:hover{background:rgba(0,0,0,.06)}
+.stage .st-top{width:34px;height:34px;border-radius:9px;background:var(--aqua-soft);color:var(--teal);display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.stage .st-top svg{width:17px;height:17px}
+.stage .st-num{font-size:21px;font-weight:800}
+.stage .st-name{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+.stage .st-bar{height:4px;border-radius:20px;background:#eef1f4;margin-top:8px;overflow:hidden}
+.stage .st-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--aqua),var(--teal-2))}
+
+.two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.panel-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-2)}
+.panel-h b{font-size:14px}
+.panel-h .lnk{font-size:12.5px;color:var(--teal-2);font-weight:600}
+.list-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-2);cursor:pointer;transition:.12s}
+.list-row:last-child{border-bottom:none}
+.list-row:hover{background:#f8fafb}
+.list-row .r-main{flex:1;min-width:0}
+.list-row .r-main b{font-size:13.5px;font-weight:600}
+.list-row .r-main span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.list-row .r-act{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
+.list-row.izl .vr{width:44px;font-size:13px;flex-shrink:0;font-weight:700}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbfc;white-space:nowrap}
+table.tbl td{padding:12px 16px;border-bottom:1px solid var(--border-2);vertical-align:middle}
+table.tbl tr:last-child td{border-bottom:none}
+table.tbl tbody tr.clickable{cursor:pointer;transition:.12s}
+table.tbl tbody tr.clickable:hover{background:var(--aqua-soft)}
+.mono{font-variant-numeric:tabular-nums;font-weight:600}
+.avatar-sm{width:30px;height:30px;border-radius:8px;background:var(--teal-2);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+
+/* NALOG DETAIL */
+.detail-head{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.detail-head .dh-main{flex:1;min-width:260px}
+.dh-stat{text-align:right}.dh-pct{font-size:30px;font-weight:800;margin-top:8px}.dh-pl{font-size:11.5px;color:var(--muted)}
+.detail-head h2{font-size:23px;font-weight:800}
+.detail-head .meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px}
+.detail-head .meta .m b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+.detail-head .meta .m span{font-size:14px;font-weight:600}
+
+.phase-track{display:flex;align-items:flex-start;gap:0;margin:6px 0 4px;overflow-x:auto}
+.ph{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:64px;position:relative;padding-top:4px}
+.ph::before{content:"";position:absolute;top:17px;left:-50%;width:100%;height:2px;background:#e1e7ec;z-index:1}
+.ph:first-child::before{display:none}
+.ph.done::before,.ph.active::before{background:var(--aqua)}
+.ph .dot{width:28px;height:28px;border-radius:50%;background:#eef1f4;border:2px solid #dde3ea;display:flex;align-items:center;justify-content:center;z-index:2;color:var(--muted)}
+.ph .dot svg{width:14px;height:14px}
+.ph.done .dot{background:var(--green);border-color:var(--green);color:#fff}
+.ph.active .dot{background:var(--aqua);border-color:var(--aqua);color:#fff;box-shadow:0 0 0 4px var(--aqua-soft)}
+.ph .pl{font-size:10.5px;color:var(--muted);text-align:center;font-weight:500;line-height:1.3}
+.ph.done .pl,.ph.active .pl{color:var(--text);font-weight:600}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border-2);font-size:13px}
+.kv:last-child{border-bottom:none}
+.kv span{color:var(--muted)}
+.kv b{font-weight:600}
+.timeline{list-style:none}
+.timeline li{position:relative;padding:0 0 15px 22px;font-size:13px}
+.timeline li::before{content:"";position:absolute;left:4px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--aqua)}
+.timeline li::after{content:"";position:absolute;left:8px;top:13px;bottom:0;width:1px;background:var(--border)}
+.timeline li:last-child::after{display:none}
+.timeline li b{font-weight:600}
+.timeline li span{display:block;color:var(--muted);font-size:11.5px}
+
+/* KANBAN */
+.kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.kcol{min-width:200px;flex:1;background:#eef2f5;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:9px}
+.kcol-h{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 2px;font-size:12px;font-weight:700;color:var(--teal-3)}
+.kcol-h .cnt{background:#fff;border-radius:20px;padding:1px 8px;font-size:11px;color:var(--muted)}
+.kcard{background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 12px;box-shadow:0 1px 2px rgba(16,46,66,.05);cursor:pointer;transition:.12s}
+.kcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.kcard b{font-size:12.5px;font-weight:700}
+.kcard .kc-sub{font-size:11.5px;color:var(--muted);margin:3px 0 7px}
+.kcard .kc-foot{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted)}
+
+/* MODAL / TOAST */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(13,42,58,.45);z-index:40;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:520px;box-shadow:var(--shadow-lg);max-height:90vh;overflow:auto}
+.modal-h{padding:18px 22px;border-bottom:1px solid var(--border-2);display:flex;align-items:center;justify-content:space-between}
+.modal-h b{font-size:16px}
+.modal-h .x{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.modal-h .x:hover{background:var(--bg)}
+.modal-b{padding:20px 22px}
+.modal-f{padding:16px 22px;border-top:1px solid var(--border-2);display:flex;gap:10px;justify-content:flex-end}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--aqua);box-shadow:0 0 0 3px var(--aqua-soft)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--text);color:#fff;padding:13px 20px;border-radius:11px;font-size:13.5px;font-weight:500;box-shadow:var(--shadow-lg);z-index:60;transition:transform .35s cubic-bezier(.2,.9,.3,1.2);display:flex;align-items:center;gap:9px;max-width:92vw}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast svg{width:18px;height:18px;color:var(--aqua-2)}
+
+.mini-note{font-size:11.5px;color:var(--muted);background:var(--aqua-soft);border:1px solid #cdeaf0;border-radius:10px;padding:10px 13px;display:flex;gap:9px;align-items:flex-start}
+.mini-note svg{width:16px;height:16px;color:var(--teal);flex-shrink:0;margin-top:1px}
+
+.screen{display:none}
+.screen.active{display:block}
+
+/* PRODAJA */
+.pill.violet{background:var(--violet-soft);color:var(--violet)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto}
+.tabs button{padding:10px 14px;font-weight:600;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button.on{color:var(--teal-2);border-color:var(--teal-2)}
+.ed{width:100%;border:1px solid var(--border);border-radius:7px;padding:6px 8px;font:inherit;font-size:12.5px;background:var(--card);color:var(--text);outline:none}
+.ed:focus{border-color:var(--aqua);box-shadow:0 0 0 3px var(--aqua-soft)}
+.ed:disabled{background:transparent;border-color:transparent;color:var(--text);appearance:none;-webkit-appearance:none;opacity:1}
+.ed.num{width:76px;text-align:right}
+.tg{font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:var(--card)}
+.tg.on{background:var(--aqua-soft);border-color:#9fdbe5;color:var(--teal)}
+.tg:disabled{cursor:default}
+table.ped td{padding:8px 8px;vertical-align:middle}
+table.ped th{padding:10px 8px}
+table.ped tr.prow td{border-bottom:none;padding-bottom:4px}
+.brk{font-size:11px;color:var(--muted);padding-top:0!important}
+.brk b{font-weight:600;color:var(--text)}
+.x-del{width:26px;height:26px;border-radius:7px;color:var(--muted)}
+.x-del:hover{background:var(--red-soft);color:var(--red)}
+.tot .kv span{display:flex;align-items:center}
+.tot .kv.big{font-size:15px;border-top:2px solid var(--border);margin-top:4px;padding-top:12px}
+.tot .kv.big b{font-size:19px;color:var(--teal-2)}
+.bars .b{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:10px}
+.bars .tr{flex:1;height:8px;background:var(--border-2);border-radius:9px;overflow:hidden}
+.bars .tr i{display:block;height:100%;background:linear-gradient(90deg,var(--aqua),var(--teal-2))}
+.modal.wide{max-width:880px}
+.doc{background:#fff;color:#162430;padding:30px 34px;font-size:12px;border:1px solid #e5ebf0;border-radius:6px;box-shadow:0 2px 10px rgba(16,46,66,.08)}
+.doc-h{display:flex;justify-content:space-between;gap:20px;padding-bottom:16px;border-bottom:2px solid #0f6e8c;color:#4a5a68}
+.doc-logo{font-size:22px;font-weight:800;color:#0f6e8c;letter-spacing:.5px}
+.doc-t{font-size:15px;font-weight:800;color:#162430;margin-bottom:4px}
+.doc-k{margin:16px 0;padding:12px 14px;background:#f3f6f8;border-radius:6px}
+.doc-tb{width:100%;border-collapse:collapse}
+.doc-tb th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#657586;border-bottom:1px solid #d5dde3;padding:7px 6px}
+.doc-tb td{padding:7px 6px;border-bottom:1px solid #eef2f5;vertical-align:top}
+.doc-tb td span{color:#657586;font-size:11px}
+.doc-tb th:last-child,.doc-tb td:last-child{text-align:right}
+.doc-sum{margin:14px 0 0 auto;width:260px;max-width:100%}
+.doc-sum div{display:flex;justify-content:space-between;padding:4px 0}
+.doc-sum .g{border-top:2px solid #162430;margin-top:4px;padding-top:8px;font-size:14px}
+.doc-u{margin-top:18px;font-size:11.5px;color:#4a5a68;line-height:1.6}
+.doc-f{display:flex;justify-content:space-between;gap:12px;margin-top:22px;padding-top:10px;border-top:1px solid #eef2f5;font-size:10.5px;color:#8696a3}
+@media(max-width:560px){.doc{padding:18px 14px}.doc-h{flex-direction:column}.doc-h>div:last-child{text-align:left!important}}
+@media(max-width:560px){.phase-track{flex-direction:column;align-items:stretch;overflow:visible}
+.ph{flex-direction:row;align-items:center;gap:10px;min-width:0;padding:0 0 12px}
+.ph:last-child{padding-bottom:0}
+.ph::before{top:-12px;left:13px;width:2px;height:12px}
+.ph .dot{flex:none}
+.ph .pl{text-align:left;font-size:12.5px}
+.ph .pl br{display:none}.ph .pl span{margin-left:6px}}
+@media print{body *{visibility:hidden}.doc,.doc *{visibility:visible}.doc{position:absolute;left:0;top:0;width:100%;border:none;box-shadow:none}}
+
+/* KUPCI */
+.klink{color:var(--teal-2);font-weight:600;text-align:left}
+.klink:hover{text-decoration:underline}
+.warn-note{background:var(--red-soft);border-color:#f6c9c9;color:var(--text)}
+.warn-note svg{color:var(--red)}
+.kpi-grid.k5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:1280px){.kpi-grid.k5{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.kpi-grid.k5{grid-template-columns:1fr 1fr}}
+
+.day-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--teal-2);background:var(--bg);padding:7px 18px;border-bottom:1px solid var(--border-2)}
+
+/* RESPONSIVE */
+@media(max-width:1080px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.pipeline{grid-template-columns:repeat(4,1fr)}.two-col{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+@media(max-width:860px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .search{display:none}
+  .content{padding:18px 15px}
+}
+@media(max-width:560px){
+.topdate{display:none}
+.list-row>.r-act{flex:1 0 100%;justify-content:flex-start;padding-left:46px}
+.list-row.izl{align-items:flex-start}.list-row.izl .vr{padding-top:1px}.list-row.izl>.r-act{padding-left:56px}
+.list-row .r-main span{overflow-wrap:anywhere}
+.dh-main{flex-basis:calc(100% - 80px)!important;width:auto!important}
+/* tabele na telefonu: svaki red postaje kartica (oznake kolona dodaje stackTables) */
+table.tbl.stk,table.tbl.stk tbody,table.tbl.stk tr,table.tbl.stk td{display:block;width:100%}
+table.tbl.stk thead{display:none}
+table.tbl.stk tr{padding:10px 14px;border-bottom:1px solid var(--border-2)}
+table.tbl.stk tr:last-child{border-bottom:none}
+table.tbl.stk td{display:grid;grid-template-columns:38% 1fr;gap:10px;align-items:center;padding:3px 0!important;border:none!important;text-align:left!important;min-width:0!important;white-space:normal!important}
+table.tbl.stk td::before{content:attr(data-l);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+table.tbl.stk td:first-child{display:block;font-size:14px;padding-bottom:6px!important}
+table.tbl.stk td:first-child::before,table.tbl.stk td[colspan]::before{display:none}
+table.tbl.stk td[colspan]{display:block;text-align:center!important}
+table.tbl.stk td:empty{display:none}
+table.tbl.stk .progress{max-width:160px;display:inline-block;width:100%;vertical-align:middle;margin-right:8px}
+table.tbl.stk .tv br+.pill{margin-left:6px}table.tbl.stk .tv{min-width:0}
+.two-col>*,.grid-2>*{min-width:0}
+.list-row{flex-wrap:wrap;padding:12px 14px}
+.list-row>.progress{order:9;flex:1 0 calc(100% - 46px);width:auto!important;margin-left:46px}
+.list-row .r-main b{display:block}
+.detail-head{gap:14px}.detail-head .dh-main{min-width:0;width:100%}
+.detail-head .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.dh-stat{width:100%;display:flex;align-items:baseline;gap:8px;text-align:left;border-top:1px solid var(--border-2);padding-top:12px}
+.dh-stat .pill{margin-right:auto;align-self:center}.dh-pct{font-size:22px;margin-top:0}}
+@media(max-width:560px){.kpi-grid{grid-template-columns:1fr 1fr;gap:10px}.kpi .num{font-size:22px}.pipeline{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 14px}.detail-head h2{font-size:20px}}
+
+/* DARK */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1419; --card:#121d24; --text:#e6eef2; --muted:#93a6b2;
+    --border:#20303a; --border-2:#1a2831; --aqua-soft:#11313a;
+    --green-soft:#10271a; --amber-soft:#2a2008; --red-soft:#2a1313; --violet:#b49cf0; --violet-soft:#241b3d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.3);
+    --shadow-lg:0 8px 30px rgba(0,0,0,.5);
+  }
+  :root:not([data-theme="light"]) table.tbl th{background:#15232c}
+  :root:not([data-theme="light"]) .list-row:hover{background:#15232c}
+  :root:not([data-theme="light"]) .kcol{background:#0e1920}
+  :root:not([data-theme="light"]) .kcard{background:#15232c}
+  :root:not([data-theme="light"]) .search input{background:#0e1920}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></div>
+      <div class="txt"><b>DAS-PROM</b><span>PROIZVODNI ERP</span></div>
+    </div>
+    <nav class="sb-nav" id="nav"></nav>
+    <div class="sb-user">
+      <div class="av">NT</div>
+      <div class="info"><b>Nebojša T.</b><span>Rukovodilac</span></div>
+    </div>
+  </aside>
+  <div class="sb-backdrop" id="backdrop" onclick="toggleSb(false)"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSb(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div><h1 id="pgTitle">Danas</h1><div class="sub" id="pgSub">Pregled proizvodnje i prodaje</div></div>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Pretraži nalog, kupca…" onkeydown="if(event.key==='Enter')toast('Pretraga je u punoj verziji')"></div>
+      <div class="topdate"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>srijeda, 21. okt 2026.</span></div>
+    </header>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- IKONE ---------- */
+const I = {
+  danas:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v6h8V3zM3 21h8v-6H3z"/>',
+  prodaja:'<path d="M3 3h2l2.5 13h11L21 7H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>',
+  nalozi:'<path d="M9 3h6l1 2h3a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h3z"/><path d="M9 12h6M9 16h4"/>',
+  proizvodnja:'<path d="M3 21h18M5 21V9l5 3V9l5 3V7l4 2v12"/>',
+  logistika:'<rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="5" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/>',
+  magacin:'<path d="M3 9l9-5 9 5v10a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M3 9h18M8 20v-6h8v6"/>',
+  kupci:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M16 5a3 3 0 010 6M15 15c3 0 5 2 5 5"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  truck:'<rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="5" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/>',
+  box:'<path d="M3 9l9-5 9 5v10a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M3 9l9 5 9-5M12 14v7"/>',
+  alert:'<path d="M12 2L2 20h20z"/><path d="M12 9v5M12 17h.01"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>',
+  ruler:'<path d="M21.3 8.7L8.7 21.3a1 1 0 01-1.4 0l-4.6-4.6a1 1 0 010-1.4L15.3 2.7a1 1 0 011.4 0l4.6 4.6a1 1 0 010 1.4z"/><path d="M7.5 10.5l2 2M10.5 7.5l2 2M13.5 4.5l2 2M4.5 13.5l2 2"/>',
+  book:'<path d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5z"/><path d="M4 19.5A2.5 2.5 0 006.5 22H20v-5"/>',
+  edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',
+  file:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/>',
+};
+const ic=(k,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[k]||''}</svg>`;
+
+/* ---------- STANICE (tok stakla) ---------- */
+const STANICE = {
+  rez:{n:'Rezanje',i:'proizvodnja'}, brus:{n:'Brušenje',i:'proizvodnja'}, kal:{n:'Kaljenje',i:'proizvodnja'},
+  pjesk:{n:'Pjeskarenje',i:'proizvodnja'}, far:{n:'Farbanje',i:'proizvodnja'}, lam:{n:'Laminiranje',i:'proizvodnja'},
+  izo:{n:'IZO staklo',i:'box'}, komplet:{n:'Kompletiranje',i:'check'}, isporuka:{n:'Isporuka / montaža',i:'truck'}
+};
+const STORED = ['rez','brus','kal','pjesk','far','lam','izo','komplet','isporuka'];
+
+/* ---------- DEMO PODACI ---------- */
+// ruta = podskup stanica kroz koje nalog prolazi; faza = indeks trenutne stanice u ruti; pct = % trenutne
+const NALOZI = [
+  {id:'RN-1052', kupac:'Saloni kupatila Aqua', proizvod:'Tuš kabine, serija 6 kom (8mm)', grad:'Banja Luka', vrij:4380, rok:'29.10.', status:'u toku', montaza:false,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:0, pct:35,
+   stavke:[{s:'Kaljeno 8mm prozirno',kom:12,dim:'900×2000'},{s:'Kaljeno 8mm, rupe za šarke',kom:6,dim:'400×2000'},{s:'Set okova tuš kabine',kom:6,dim:'—'}],
+   log:[{t:'Puršten u proizvodnju',d:'21.10. 08:30 · Jelena'},{t:'Rezanje u toku',d:'21.10. 10:10 · Stanica 1'}]},
+  {id:'RN-1051', upit:'UP-311', kupac:'Apartmani Vrbas', proizvod:'Staklene ograde balkona (12 apartmana)', grad:'Banja Luka', vrij:11800, rok:'04.11.', status:'avans', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:0, pct:0,
+   stavke:[{s:'Polje ograde · Lamistal 8.8.4, Brušenje',kom:24,dim:'1000×1100'},{s:'Al U profil za ogradu',kom:24,dim:'—'}],
+   log:[{t:'Kreiran iz ponude P-311/1',d:'20.10. · Nebojša'},{t:'Čeka avans 40% (4.720 KM)',d:'20.10. · Nebojša'}]},
+  {id:'RN-1050', kupac:'Optika Fokus', proizvod:'Izlog i police (extra clear)', grad:'Doboj', vrij:3650, rok:'27.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:1, pct:20,
+   stavke:[{s:'Extra clear 10mm, polirane ivice',kom:3,dim:'1800×2400'},{s:'Police 8mm kaljeno',kom:10,dim:'800×300'}],
+   log:[{t:'Puršten u proizvodnju',d:'20.10. 09:00 · Dario'},{t:'Rezanje završeno',d:'21.10. 08:20 · Stanica 1'},{t:'Brušenje u toku',d:'21.10. 11:00 · Stanica 2'}]},
+  {id:'RN-1049', kupac:'Investgradnja Mrkonjić', proizvod:'IZO staklo, stambeni objekat (64 kom)', grad:'Mrkonjić Grad', vrij:18900, rok:'07.11.', status:'u toku', montaza:false,
+   ruta:['rez','brus','izo','komplet','isporuka'], faza:0, pct:25,
+   stavke:[{s:'IZO 4+16+4 Low-E',kom:64,dim:'razno'},{s:'Float 4mm',kom:128,dim:'razno'}],
+   log:[{t:'Puršten u proizvodnju',d:'21.10. 07:30 · Nebojša'},{t:'Rezanje u toku',d:'21.10. 08:00 · Stanica 1'}]},
+  {id:'RN-1048', kupac:'Montaža Plus s.p.', proizvod:'Pregrade kancelarija, lamistal 4.4.2', grad:'Banja Luka', vrij:2950, rok:'24.10.', status:'u toku', montaza:false,
+   ruta:['rez','brus','lam','komplet','isporuka'], faza:2, pct:40,
+   stavke:[{s:'Lamistal 4.4.2 mat folija',kom:7,dim:'1000×2600'}],
+   log:[{t:'Puršten u proizvodnju',d:'17.10. · Dario'},{t:'Rezanje završeno',d:'18.10.'},{t:'Brušenje završeno',d:'20.10.'},{t:'Laminiranje u toku',d:'21.10. 09:40'}]},
+  {id:'RN-1047', kupac:'Jovana Lazić', proizvod:'Kuhinjska zaštita iza ploče (farbano RAL 9010)', grad:'Banja Luka', vrij:540, rok:'23.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','far','kal','komplet','isporuka'], faza:3, pct:50,
+   stavke:[{s:'Farbano 6mm RAL 9010, izrezi za utičnice',kom:2,dim:'1600×600'}],
+   log:[{t:'Puršten u proizvodnju',d:'16.10. · Jelena'},{t:'Rezanje i brušenje završeno',d:'17.10.'},{t:'Farbanje završeno',d:'20.10.'},{t:'Kaljenje u toku',d:'21.10. 10:50'}]},
+  {id:'RN-1046', upit:'UP-310', kupac:'Vrtić Zvončić', proizvod:'Zaštitno laminirano staklo, vrata i pregrade', grad:'Gradiška', vrij:2280, rok:'20.10.', status:'kasni', montaza:true,
+   ruta:['rez','brus','lam','komplet','isporuka'], faza:2, pct:80,
+   stavke:[{s:'Lamistal 4.4.2 prozirno',kom:9,dim:'razno'}],
+   log:[{t:'Kreiran iz ponude P-310/1',d:'09.10. · Jelena'},{t:'Rezanje i brušenje završeno',d:'14.10.'},{t:'Laminiranje stalo: kasnila PVB folija od dobavljača',d:'17.10. · Stanica 6'},{t:'Folija stigla, laminiranje nastavljeno',d:'21.10. 07:30'}]},
+  {id:'RN-1045', kupac:'Dragan Simić', proizvod:'Staklena ograda terase + rukohvat', grad:'Prnjavor', vrij:4120, rok:'26.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:0, pct:70,
+   stavke:[{s:'Kaljeno 10mm prozirno',kom:9,dim:'1100×1000'},{s:'Inox rukohvat Ø42',kom:1,dim:'10 m'},{s:'Inox držači',kom:27,dim:'—'}],
+   log:[{t:'Puršten u proizvodnju',d:'20.10. · Nebojša'},{t:'Rezanje u toku',d:'21.10. 07:45 · Stanica 1'}]},
+  {id:'RN-1044', kupac:'Hotel Bosna', proizvod:'Tuš paravani, 3. sprat (8 kom)', grad:'Banja Luka', vrij:5200, rok:'30.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','pjesk','kal','komplet','isporuka'], faza:2, pct:25,
+   stavke:[{s:'Kaljeno 8mm, pjeskarena traka s logom',kom:8,dim:'900×2000'},{s:'Stezaljke zid-staklo',kom:16,dim:'—'}],
+   log:[{t:'Puršten u proizvodnju',d:'17.10. · Nebojša'},{t:'Rezanje završeno',d:'18.10.'},{t:'Brušenje završeno',d:'20.10.'},{t:'Pjeskarenje u toku',d:'21.10. 11:30 · Stanica 4'}]},
+  {id:'RN-1043', kupac:'Gradnja Kozara d.o.o.', proizvod:'IZO staklo, poslovni objekat Starčevica', grad:'Banja Luka', vrij:9750, rok:'31.10.', status:'u toku', montaza:false,
+   ruta:['rez','brus','kal','izo','komplet','isporuka'], faza:3, pct:10,
+   stavke:[{s:'IZO kaljeno 6+16+6',kom:28,dim:'razno'}],
+   log:[{t:'Puršten u proizvodnju',d:'14.10. · Nebojša'},{t:'Rezanje i brušenje završeno',d:'16.10.'},{t:'Kaljenje završeno',d:'20.10.'},{t:'Sklapanje IZO u toku',d:'21.10. 12:00 · Stanica 7'}]},
+  {id:'RN-1042', kupac:'Gradnja Kozara d.o.o.', proizvod:'Staklena ograda terase (18 polja)', grad:'Banja Luka', vrij:7850, rok:'23.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:2, pct:40,
+   stavke:[{s:'Kaljeno 10mm prozirno',kom:18,dim:'1200×1100'},{s:'Inox držači',kom:54,dim:'—'}],
+   log:[{t:'Puršten u proizvodnju',d:'20.10. 08:12 · Nebojša'},{t:'Rezanje završeno',d:'20.10. 11:40 · Stanica 1'},{t:'Brušenje završeno',d:'21.10. 09:05 · Stanica 2'},{t:'Kaljenje u toku',d:'21.10. 10:20 · Stanica 3'}]},
+  {id:'RN-1041', kupac:'Enterijer Lux', proizvod:'Tuš kabina L (8mm, pjeskareni dekor)', grad:'Prijedor', vrij:1240, rok:'22.10.', status:'u toku', montaza:false,
+   ruta:['rez','brus','pjesk','kal','komplet','isporuka'], faza:3, pct:15,
+   stavke:[{s:'Kaljeno 8mm',kom:3,dim:'900×2000'},{s:'Pjeskareni motiv',kom:1,dim:'900×2000'}],
+   log:[{t:'Puršten u proizvodnju',d:'19.10. 13:00 · Nebojša'},{t:'Rezanje završeno',d:'20.10. 08:30'},{t:'Brušenje završeno',d:'20.10. 14:10'},{t:'Pjeskarenje završeno',d:'21.10. 08:00'},{t:'Kaljenje u toku',d:'21.10. 10:45'}]},
+  {id:'RN-1040', kupac:'Stambena zgrada Borik', proizvod:'IZO staklo fasada (42 pozicije)', grad:'Banja Luka', vrij:14200, rok:'28.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','kal','izo','komplet','isporuka'], faza:1, pct:60,
+   stavke:[{s:'Float 6mm',kom:84,dim:'razno'},{s:'IZO 4+16+4 Low-E',kom:42,dim:'razno'}],
+   log:[{t:'Puršten u proizvodnju',d:'21.10. 07:50 · Nebojša'},{t:'Rezanje u toku',d:'21.10. 09:30 · Stanica 1'}]},
+  {id:'RN-1039', upit:'UP-302', kupac:'Vila Jelić (privatno)', proizvod:'Staklena stepeništa + ograda', grad:'Laktaši', vrij:9600, rok:'25.10.', status:'u toku', montaza:true,
+   ruta:['rez','brus','kal','lam','komplet','isporuka'], faza:3, pct:55,
+   stavke:[{s:'Lamistal 8.8.4',kom:12,dim:'razno'},{s:'Gazišta kaljena',kom:16,dim:'1100×320'}],
+   log:[{t:'Puršten u proizvodnju',d:'18.10.'},{t:'Rezanje završeno',d:'18.10.'},{t:'Brušenje završeno',d:'19.10.'},{t:'Kaljenje završeno',d:'20.10.'},{t:'Laminiranje u toku',d:'21.10. 09:00'}]},
+  {id:'RN-1038', kupac:'Kafe bar Mozaik', proizvod:'Pregrade bar (farbano staklo RAL 9005)', grad:'Gradiška', vrij:2180, rok:'21.10.', status:'kasni', montaza:false,
+   ruta:['rez','brus','far','kal','komplet','isporuka'], faza:2, pct:70,
+   stavke:[{s:'Farbano 6mm crno',kom:6,dim:'600×2400'}],
+   log:[{t:'Puršten u proizvodnju',d:'15.10.'},{t:'Rezanje završeno',d:'16.10.'},{t:'Brušenje završeno',d:'17.10.'},{t:'Farbanje u toku (čeka sušenje)',d:'21.10.'}]},
+  {id:'RN-1037', kupac:'Hotel Bosna', proizvod:'Ogledala sa fazetom (kupatila)', grad:'Banja Luka', vrij:1560, rok:'24.10.', status:'u toku', montaza:false,
+   ruta:['rez','brus','komplet','isporuka'], faza:1, pct:30,
+   stavke:[{s:'Ogledalo 4mm + fazeta',kom:24,dim:'600×800'}],
+   log:[{t:'Puršten u proizvodnju',d:'21.10. 10:00'},{t:'Rezanje završeno',d:'21.10. 11:15'},{t:'Brušenje/fazeta u toku',d:'21.10. 12:30'}]},
+  {id:'RN-1035', kupac:'Enterijer Lux', proizvod:'Stolovi, kaljene ploče', grad:'Prijedor', vrij:980, rok:'20.10.', status:'spremno', montaza:false,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 10mm',kom:8,dim:'1400×700'}],
+   log:[{t:'Puršten u proizvodnju',d:'16.10.'},{t:'Sve stanice završene',d:'20.10.'},{t:'Kompletirano, spremno za isporuku',d:'20.10. 16:00'}]},
+  {id:'RN-1036', kupac:'Enterijer Lux', proizvod:'Tuš kabina pravougaona 8mm', grad:'Prijedor', vrij:1380, rok:'21.10.', status:'spremno', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 8mm prozirno',kom:2,dim:'900×2000'},{s:'Set okova tuš kabine',kom:1,dim:'—'}],
+   isp:{tip:'montaza',datum:'21.10.',vrijeme:'09:00',ekipa:'Saša + 1',adresa:'Krajni kupac, Urije 14, Prijedor',nap:'',status:'teren'},
+   log:[{t:'Puršten u proizvodnju',d:'16.10.'},{t:'Kompletirano, spremno za isporuku',d:'20.10. 15:30'},{t:'Zakazana montaža 21.10. u 09:00 (Saša + 1)',d:'20.10. 16:00 · Nebojša'},{t:'Ekipa krenula na teren (Saša + 1)',d:'21.10. 08:15'}]},
+  {id:'RN-1034', kupac:'Gradnja Kozara d.o.o.', proizvod:'Staklena ograda balkona (stanovi 1–4)', grad:'Banja Luka', vrij:3420, rok:'22.10.', status:'spremno', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 10mm prozirno',kom:8,dim:'1150×1000'},{s:'Inox držači',kom:24,dim:'—'}],
+   isp:{tip:'montaza',datum:'22.10.',vrijeme:'08:00',ekipa:'Mićo + 2',adresa:'Stambeni objekat Borik, Borik, lamela C, Banja Luka',nap:'Najaviti se šefu gradilišta (Dejan Ilić 066 410 233).',status:'zakazano'},
+   log:[{t:'Puršten u proizvodnju',d:'14.10.'},{t:'Kompletirano, spremno za isporuku',d:'20.10. 12:00'},{t:'Zakazana montaža 22.10. u 08:00 (Mićo + 2)',d:'20.10. 13:10 · Nebojša'}]},
+  {id:'RN-1033', kupac:'Hotel Bosna', proizvod:'Staklene police (recepcija)', grad:'Banja Luka', vrij:640, rok:'22.10.', status:'spremno', montaza:false,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 8mm, polirane ivice',kom:6,dim:'900×300'}],
+   isp:{tip:'dostava',datum:'22.10.',vrijeme:'13:00',ekipa:'Kombi (Dragan)',adresa:'Kralja Petra I Karađorđevića 97, Banja Luka',nap:'',status:'zakazano'},
+   log:[{t:'Puršten u proizvodnju',d:'17.10.'},{t:'Kompletirano, spremno za isporuku',d:'21.10. 07:40'},{t:'Zakazana isporuka 22.10. u 13:00 (Kombi)',d:'21.10. 08:00 · Jelena'}]},
+  {id:'RN-1031', kupac:'Hotel Bosna', proizvod:'Ogledala hodnik (2. sprat)', grad:'Banja Luka', vrij:2240, rok:'20.10.', status:'isporuceno', montaza:true,
+   ruta:['rez','brus','komplet','isporuka'], faza:3, pct:100,
+   stavke:[{s:'Ogledalo 4mm + fazeta',kom:10,dim:'1000×1600'}],
+   isp:{tip:'montaza',datum:'20.10.',vrijeme:'10:00',ekipa:'Mićo + 2',adresa:'Kralja Petra I Karađorđevića 97, Banja Luka',nap:'Sve uredno.',status:'isporuceno',primio:'Vesna Popović'},
+   log:[{t:'Puršten u proizvodnju',d:'13.10.'},{t:'Kompletirano, spremno za isporuku',d:'17.10.'},{t:'Zakazana montaža 20.10. u 10:00',d:'17.10.'},{t:'Montirano, primila Vesna Popović',d:'20.10. 13:20 · Mićo + 2'}]},
+  {id:'RN-1032', kupac:'Saloni kupatila Aqua', proizvod:'Tuš kabine, serija 4 kom', grad:'Banja Luka', vrij:2760, rok:'22.10.', status:'spremno', montaza:false,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 8mm prozirno',kom:8,dim:'900×2000'},{s:'Set okova tuš kabine',kom:4,dim:'—'}],
+   log:[{t:'Puršten u proizvodnju',d:'15.10.'},{t:'Kompletirano, spremno za isporuku',d:'21.10. 09:30'}]},
+  {id:'RN-1030', kupac:'Optika Fokus', proizvod:'Ogledala salona sa fazetom', grad:'Doboj', vrij:1180, rok:'23.10.', status:'spremno', montaza:false,
+   ruta:['rez','brus','komplet','isporuka'], faza:3, pct:100,
+   stavke:[{s:'Ogledalo 4mm + fazeta',kom:5,dim:'700×1800'}],
+   isp:{tip:'dostava',datum:'23.10.',vrijeme:'10:00',ekipa:'Kombi (Dragan)',adresa:'Svetog Save 18, Doboj',nap:'Dostava do 11h, poslije je salon pun.',status:'zakazano'},
+   log:[{t:'Puršten u proizvodnju',d:'14.10.'},{t:'Kompletirano, spremno za isporuku',d:'20.10. 14:00'},{t:'Zakazana isporuka 23.10. u 10:00 (Kombi)',d:'20.10. 15:00 · Dario'}]},
+  {id:'RN-1029', kupac:'Montaža Plus s.p.', proizvod:'Staklena vrata kancelarija (4 kom)', grad:'Banja Luka', vrij:2340, rok:'23.10.', status:'spremno', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 10mm, rupe za okov',kom:4,dim:'900×2100'},{s:'Okov staklenih vrata',kom:4,dim:'—'}],
+   isp:{tip:'montaza',datum:'23.10.',vrijeme:'12:00',ekipa:'Mićo + 2',adresa:'Poslovni prostor, Bulevar cara Dušana 40, Banja Luka',nap:'Ključ kod Gorana (Montaža Plus).',status:'zakazano'},
+   log:[{t:'Puršten u proizvodnju',d:'13.10.'},{t:'Kompletirano, spremno za isporuku',d:'21.10. 08:00'},{t:'Zakazana montaža 23.10. u 12:00 (Mićo + 2)',d:'21.10. 08:30 · Dario'}]},
+  {id:'RN-1028', kupac:'Gradnja Kozara d.o.o.', proizvod:'Ograde balkona, lamela B', grad:'Banja Luka', vrij:6100, rok:'17.10.', status:'isporuceno', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 10mm prozirno',kom:14,dim:'1150×1000'}],
+   isp:{tip:'montaza',datum:'17.10.',vrijeme:'08:00',ekipa:'Mićo + 2',adresa:'Borik, lamela B, Banja Luka',nap:'',status:'isporuceno',primio:'Dejan Ilić'},
+   log:[{t:'Puršten u proizvodnju',d:'08.10.'},{t:'Kompletirano',d:'15.10.'},{t:'Montirano, primio Dejan Ilić',d:'17.10. 14:40 · Mićo + 2'}]},
+  {id:'RN-1027', kupac:'Enterijer Lux', proizvod:'Ogledala sa LED rasvjetom', grad:'Prijedor', vrij:1460, rok:'15.10.', status:'isporuceno', montaza:false,
+   ruta:['rez','brus','komplet','isporuka'], faza:3, pct:100,
+   stavke:[{s:'Ogledalo 4mm, pjeskarena LED traka',kom:4,dim:'800×1000'}],
+   isp:{tip:'dostava',datum:'15.10.',vrijeme:'11:00',ekipa:'Kombi (Dragan)',adresa:'Ulica kralja Petra I 45, Prijedor',nap:'',status:'isporuceno',primio:'Marina Đukić'},
+   log:[{t:'Puršten u proizvodnju',d:'09.10.'},{t:'Kompletirano',d:'14.10.'},{t:'Isporučeno, primila Marina Đukić',d:'15.10. 12:10 · Dragan'}]},
+  {id:'RN-1026', kupac:'Stambena zgrada Borik', proizvod:'IZO staklo fasada, faza 1 (lamela C)', grad:'Banja Luka', vrij:16900, rok:'16.10.', status:'isporuceno', montaza:true,
+   ruta:['rez','brus','kal','izo','komplet','isporuka'], faza:5, pct:100,
+   stavke:[{s:'IZO 4+16+4 Low-E',kom:48,dim:'razno'}],
+   isp:{tip:'montaza',datum:'16.10.',vrijeme:'07:30',ekipa:'Ekipa fasade',adresa:'Borik, lamela C, Banja Luka',nap:'Dizalica naručena.',status:'isporuceno',primio:'Saša Vukić'},
+   log:[{t:'Puršten u proizvodnju',d:'29.09.'},{t:'Kompletirano',d:'14.10.'},{t:'Montirano, primio nadzor Saša Vukić',d:'16.10. 17:20 · Ekipa fasade'}]},
+  {id:'RN-1025', kupac:'Apartmani Vrbas', proizvod:'Tuš kabine (6 apartmana)', grad:'Banja Luka', vrij:4980, rok:'14.10.', status:'isporuceno', montaza:true,
+   ruta:['rez','brus','kal','komplet','isporuka'], faza:4, pct:100,
+   stavke:[{s:'Kaljeno 8mm prozirno',kom:12,dim:'900×2000'},{s:'Set okova tuš kabine',kom:6,dim:'—'}],
+   isp:{tip:'montaza',datum:'14.10.',vrijeme:'09:00',ekipa:'Saša + 1',adresa:'Apartmani Vrbas, Obala Vrbasa 7, Banja Luka',nap:'',status:'isporuceno',primio:'Tamara Kecman'},
+   log:[{t:'Puršten u proizvodnju',d:'06.10.'},{t:'Kompletirano',d:'13.10.'},{t:'Montirano, primila Tamara Kecman',d:'14.10. 15:00 · Saša + 1'}]},
+];
+/* ---------- CJENOVNIK (demo cijene, KM bez PDV) ---------- */
+const MIN_M2 = 0.25; // obračunska površina: minimum po komadu
+const CJ = {
+  stakla:{
+    f4:{n:'Float 4mm',c:22}, f6:{n:'Float 6mm',c:32}, f8:{n:'Float 8mm',c:44}, f10:{n:'Float 10mm',c:56}, f12:{n:'Float 12mm',c:72},
+    eb10:{n:'Extra clear 10mm',c:98}, og4:{n:'Ogledalo 4mm',c:38}, l442:{n:'Lamistal 4.4.2',c:58}, l884:{n:'Lamistal 8.8.4',c:128},
+    izo:{n:'IZO 4+16+4',c:68,izo:true}, izoL:{n:'IZO 4+16+4 Low-E',c:88,izo:true}
+  },
+  obrade:{
+    brus:{n:'Brušenje ivica',kr:'Brušenje',j:'m',c:4.5,st:'brus'},
+    faz:{n:'Fazeta',kr:'Fazeta',j:'m',c:9,st:'brus'},
+    pjesk:{n:'Pjeskarenje',kr:'Pjeskarenje',j:'m²',c:32,st:'pjesk'},
+    far:{n:'Farbanje RAL',kr:'Farbanje',j:'m²',c:48,st:'far'},
+    kal:{n:'Kaljenje',kr:'Kaljenje',j:'m²',c:26,st:'kal'},
+    lam:{n:'Laminiranje',kr:'Laminiranje',j:'m²',c:62,st:'lam'},
+    rupe:{n:'Bušenje rupa',kr:'Rupe',j:'kom',c:6,st:'brus'}
+  },
+  usluge:[
+    {k:'drz',n:'Inox držač ograde',j:'kom',c:18},
+    {k:'ruk',n:'Inox rukohvat Ø42',j:'m',c:68},
+    {k:'pro',n:'Al U profil za ogradu',j:'m',c:52},
+    {k:'tus',n:'Set okova tuš kabine (šarke + ručka)',j:'set',c:145},
+    {k:'stez',n:'Stezaljka pregrade',j:'kom',c:12},
+    {k:'konz',n:'Inox konzola nadstrešnice',j:'kom',c:85},
+    {k:'mont',n:'Montaža (ekipa)',j:'sat',c:45,mont:true},
+    {k:'dost',n:'Dostava',j:'tura',c:60}
+  ]
+};
+const KOMERCIJALA=['Jelena','Nebojša','Dario'];
+const EKIPE=['Saša + 1','Mićo + 2','Ekipa fasade'];
+// šabloni prve pozicije kad se ponuda pravi iz upita
+const TEMPL={
+  'Tuš kabina':{stavke:[{opis:'Staklo tuš kabine',st:'f8',s:900,v:2000,kom:2,o:{brus:1,kal:1,rupe:2}}],usl:[{k:'tus',kol:1},{k:'mont',kol:3}]},
+  'Ograda':{stavke:[{opis:'Polje ograde',st:'l884',s:1000,v:1100,kom:1,o:{brus:1}}],usl:[{k:'pro',kol:1},{k:'ruk',kol:1},{k:'mont',kol:4}]},
+  'IZO staklo':{stavke:[{opis:'IZO staklo prozor',st:'izoL',s:1000,v:1200,kom:1,o:{}}],usl:[{k:'mont',kol:2},{k:'dost',kol:1}]},
+  'Ogledala':{stavke:[{opis:'Ogledalo',st:'og4',s:600,v:800,kom:1,o:{faz:1,rupe:4}}],usl:[{k:'dost',kol:1}]}
+};
+
+/* ---------- UPITI / PONUDE ---------- */
+// status: nov → mjerenje → izrada → poslata → prihvaceno | odbijeno
+// verzije = istorija ponude (v1, v2 …); zadnja verzija je aktuelna
+const UPITI = [
+  {id:'UP-316', kupac:'Jovana Lazić', kontakt:'Jovana Lazić', tel:'066 245 913', email:'jovana.lazic@gmail.com', izvor:'Telefon', kom:'Jelena', grad:'Banja Luka', datum:'21.10.',
+   tip:'Ogledala', naslov:'Ogledalo za hodnik sa fazetom', opis:'Zadovoljna kuhinjskom zaštitom, sad traži ogledalo 900×1800 za hodnik, sa rupama za montažu.', status:'nov', verzije:[], dok:[],
+   akt:[{t:'Poziv: traži i ogledalo za hodnik',d:'21.10. 11:05',ko:'Jelena',tip:'poziv'}]},
+  {id:'UP-315', kupac:'Montaža Plus s.p.', kontakt:'Goran Pejić', tel:'065 640 221', email:'montazaplus.bl@gmail.com', izvor:'Mail', kom:'Dario', grad:'Laktaši', datum:'21.10.',
+   tip:'Pregrade', naslov:'Staklene pregrade, poslovni prostor u Laktašima', opis:'Open space kancelarija, 5 pregrada lamistal 4.4.2 mat, visina 2,7 m. Šalju tlocrt.', status:'nov', verzije:[], dok:['tlocrt-laktasi.pdf'],
+   akt:[{t:'Upit primljen mailom sa tlocrtom',d:'21.10. 07:55',ko:'Dario',tip:'mail'}]},
+  {id:'UP-314', kupac:'Investgradnja Mrkonjić', kontakt:'Slobodan Đurić', tel:'065 118 404', email:'nabavka@investgradnja-mg.ba', izvor:'Telefon', kom:'Nebojša', grad:'Mrkonjić Grad', datum:'19.10.',
+   tip:'Ograda', naslov:'Staklena ograda balkona, lamela 2 (36 polja)', opis:'Isti objekat kao IZO staklo (RN-1049). Kaljeno 10mm u Al U profilu.', status:'mjerenje',
+   mjer:{datum:'22.10.',vrijeme:'10:00',ekipa:'Saša + 1',done:false}, verzije:[], dok:[],
+   akt:[{t:'Poziv: traže ponudu i za ograde',d:'19.10. 13:15',ko:'Nebojša',tip:'poziv'},{t:'Zakazano mjerenje 22.10. u 10:00 (Saša + 1)',d:'19.10. 13:30',ko:'Nebojša',tip:'mjerenje'}]},
+  {id:'UP-313', kupac:'Optika Fokus', kontakt:'Mirjana Tomić', tel:'053 224 610', email:'optikafokus.doboj@gmail.com', izvor:'Preporuka', kom:'Dario', grad:'Doboj', datum:'15.10.',
+   tip:'Pregrade', naslov:'Staklena vitrina za ramove naočala', opis:'Zidna vitrina, police 8mm kaljeno sa poliranim ivicama, 6 nivoa.', status:'poslata', dok:[],
+   verzije:[{v:1,datum:'16.10.',poslata:'16.10.',vazi:'31.10.',rabat:0,avans:50,rok:'7 radnih dana',nap:'',
+     stavke:[{opis:'Polica vitrine',st:'f8',s:1200,v:300,kom:12,o:{brus:1,kal:1}},{opis:'Bočna stranica',st:'f8',s:300,v:1800,kom:2,o:{brus:1,kal:1,rupe:6}}],
+     usl:[{k:'stez',kol:24},{k:'mont',kol:3},{k:'dost',kol:1}]}],
+   akt:[{t:'Preporuka (izlog RN-1050)',d:'15.10. 10:00',ko:'Dario',tip:'poziv'},{t:'Ponuda v1 poslata',d:'16.10. 14:30',ko:'Dario',tip:'ponuda'},{t:'Kupac traži da se javimo u ponedjeljak',d:'18.10. 09:40',ko:'Dario',tip:'poziv'}]},
+  {id:'UP-312', kupac:'Saloni kupatila Aqua', kontakt:'Bojan Kesić', tel:'065 990 312', email:'nabavka@aqua-saloni.ba', izvor:'Mail', kom:'Jelena', grad:'Banja Luka', datum:'19.10.',
+   tip:'Tuš kabina', naslov:'Tuš kabine za izlog salona (3 modela)', opis:'Izložbeni modeli: walk-in, ugaona i niša. Žele grafit staklo za jedan model.', status:'izrada', dok:['modeli-izlog-aqua.pdf'],
+   verzije:[{v:1,datum:'21.10.',poslata:null,vazi:null,rabat:10,avans:0,rok:'10 radnih dana',nap:'Partnerski rabat 10%.',
+     stavke:[{opis:'Walk-in fiksno',st:'f8',s:1200,v:2000,kom:1,o:{brus:1,kal:1}},{opis:'Ugaona kabina',st:'f8',s:900,v:2000,kom:2,o:{brus:1,kal:1,rupe:2}},{opis:'Vrata niše',st:'f8',s:800,v:2000,kom:1,o:{brus:1,kal:1,rupe:4}}],
+     usl:[{k:'tus',kol:2},{k:'dost',kol:1}]}],
+   akt:[{t:'Upit mailom sa katalogom modela',d:'19.10. 12:20',ko:'Jelena',tip:'mail'},{t:'Ponuda v1 u izradi',d:'21.10. 09:00',ko:'Jelena',tip:'ponuda'}]},
+  {id:'UP-311', kupac:'Apartmani Vrbas', kontakt:'Tamara Kecman', tel:'065 330 787', email:'info@apartmanivrbas.ba', izvor:'Telefon', kom:'Nebojša', grad:'Banja Luka', datum:'07.10.',
+   tip:'Ograda', naslov:'Staklene ograde balkona (12 apartmana)', opis:'Zamjena starih metalnih ograda staklom, lamistal u Al profilu.', status:'prihvaceno', nalog:'RN-1051', dok:[],
+   mjer:{datum:'09.10.',vrijeme:'09:00',ekipa:'Mićo + 2',done:true},
+   verzije:[{v:1,datum:'12.10.',poslata:'12.10.',vazi:'27.10.',rabat:5,avans:40,rok:'10 radnih dana',nap:'',
+     stavke:[{opis:'Polje ograde',st:'l884',s:1000,v:1100,kom:24,o:{brus:1}}],
+     usl:[{k:'pro',kol:24},{k:'mont',kol:30}]}],
+   akt:[{t:'Poziv, zadovoljni tuš kabinama (RN-1025)',d:'07.10.',ko:'Nebojša',tip:'poziv'},{t:'Mjerenje urađeno',d:'09.10.',ko:'Mićo + 2',tip:'mjerenje'},{t:'Ponuda v1 poslata',d:'12.10.',ko:'Nebojša',tip:'ponuda'},{t:'Prihvaćeno → RN-1051 (čeka avans)',d:'20.10.',ko:'Nebojša',tip:'ok'}]},
+  {id:'UP-310', kupac:'Vrtić Zvončić', kontakt:'Ljiljana Babić', tel:'051 813 402', email:'vrtic.zvoncic@gmail.com', izvor:'Mail', kom:'Jelena', grad:'Gradiška', datum:'01.10.',
+   tip:'Pregrade', naslov:'Zaštitno staklo za vrata i pregrade', opis:'Zamjena običnog stakla laminiranim (sigurnost djece), 9 pozicija.', status:'prihvaceno', nalog:'RN-1046', dok:['spisak-pozicija-vrtic.xlsx'],
+   mjer:{datum:'03.10.',vrijeme:'08:00',ekipa:'Saša + 1',done:true},
+   verzije:[{v:1,datum:'06.10.',poslata:'06.10.',vazi:'21.10.',rabat:0,avans:0,rok:'10 radnih dana',nap:'Plaćanje po fakturi, rok 30 dana.',
+     stavke:[{opis:'Staklo vrata/pregrada',st:'l442',s:800,v:1400,kom:9,o:{brus:1}}],
+     usl:[{k:'mont',kol:8},{k:'dost',kol:1}]}],
+   akt:[{t:'Upit mailom',d:'01.10.',ko:'Jelena',tip:'mail'},{t:'Mjerenje urađeno',d:'03.10.',ko:'Saša + 1',tip:'mjerenje'},{t:'Ponuda v1 poslata',d:'06.10.',ko:'Jelena',tip:'ponuda'},{t:'Prihvaćeno → RN-1046',d:'09.10.',ko:'Jelena',tip:'ok'}]},
+  {id:'UP-309', kupac:'Nikola Petrović', kontakt:'Nikola Petrović', tel:'065 214 778', email:'n.petrovic@gmail.com', izvor:'Sajt', kom:'Jelena', grad:'Banja Luka', datum:'21.10.',
+   tip:'IZO staklo', naslov:'Zamjena IZO stakla na 3 prozora', opis:'Pukao termopan u dnevnom boravku, traži zamjenu 3 krila. Mjere ima okvirno, treba izlazak na teren.', status:'nov', verzije:[], dok:[],
+   akt:[{t:'Upit stigao sa sajta (kontakt forma)',d:'21.10. 08:42',ko:'sistem',tip:'mail'}]},
+  {id:'UP-308', kupac:'Arhitektonski biro Kvadrat', kontakt:'Dragana Kovač', tel:'066 330 120', email:'ured@kvadrat-bl.ba', izvor:'Mail', kom:'Nebojša', grad:'Banja Luka', datum:'20.10.',
+   tip:'Ograda', naslov:'Staklena ograda stepeništa, lamistal ~22 m', opis:'Poslovni objekat, 3 etaže. Lamistal 8.8.4 u Al U profilu, inox rukohvat. Poslali skicu sa kotama.', status:'nov', verzije:[], dok:['skica-stepeniste-kvadrat.pdf'],
+   akt:[{t:'Upit primljen mailom sa skicom',d:'20.10. 14:05',ko:'Nebojša',tip:'mail'}]},
+  {id:'UP-306', kupac:'Gradnja Kozara d.o.o.', kontakt:'Milorad Kos', tel:'065 501 902', email:'nabavka@gradnjakozara.ba', izvor:'Telefon', kom:'Nebojša', grad:'Banja Luka', datum:'17.10.',
+   tip:'Tuš kabina', naslov:'Tuš kabine za projekt Borik (14 stanova)', opis:'14 kupatila, ista tipska kabina 8mm kaljeno. Izvođač traži rok do kraja novembra.', status:'mjerenje',
+   mjer:{datum:'23.10.',vrijeme:'09:00',ekipa:'Saša + 1',done:false}, verzije:[], dok:['tlocrt-kupatila-borik.pdf'],
+   akt:[{t:'Poziv: izvođač traži ponudu za 14 kabina',d:'17.10. 10:20',ko:'Nebojša',tip:'poziv'},{t:'Zakazano mjerenje 23.10. u 09:00 (Saša + 1)',d:'17.10. 10:35',ko:'Nebojša',tip:'mjerenje'}]},
+  {id:'UP-305', kupac:'Dom zdravlja Čelinac', kontakt:'Snježana Lukić', tel:'051 551 210', email:'nabavka@dzcelinac.ba', izvor:'Mail', kom:'Jelena', grad:'Čelinac', datum:'13.10.',
+   tip:'Pregrade', naslov:'Pregradni zidovi ordinacija, farbano staklo', opis:'8 pregrada između ordinacija, farbano RAL 7035, kaljeno 10mm, stezaljke.', status:'poslata', dok:['zahtjev-dz-celinac.pdf'],
+   verzije:[{v:1,datum:'14.10.',poslata:'14.10.',vazi:'29.10.',rabat:0,avans:50,rok:'10 radnih dana',nap:'',
+     stavke:[{opis:'Pregrada ordinacije',st:'f10',s:1000,v:2400,kom:8,o:{brus:1,far:1,kal:1,rupe:4}}],
+     usl:[{k:'stez',kol:32},{k:'mont',kol:12},{k:'dost',kol:1}]}],
+   akt:[{t:'Upit primljen mailom',d:'13.10. 09:10',ko:'Jelena',tip:'mail'},{t:'Ponuda v1 poslata na nabavka@dzcelinac.ba',d:'14.10. 15:40',ko:'Jelena',tip:'ponuda'}]},
+  {id:'UP-304', kupac:'Restoran Vidikovac', kontakt:'Goran Vidović', tel:'065 778 331', email:'vidikovac.laktasi@gmail.com', izvor:'Preporuka', kom:'Nebojša', grad:'Laktaši', datum:'10.10.',
+   tip:'Nadstrešnica', naslov:'Staklena nadstrešnica terase', opis:'Nadstrešnica iznad ljetne bašte, lamistal na inox konzolama, ~20 m².', status:'poslata', dok:['foto-terasa-1.jpg','foto-terasa-2.jpg'],
+   mjer:{datum:'11.10.',vrijeme:'13:00',ekipa:'Mićo + 2',done:true},
+   verzije:[
+    {v:1,datum:'13.10.',poslata:'13.10.',vazi:'28.10.',rabat:0,avans:50,rok:'12 radnih dana',nap:'',
+     stavke:[{opis:'Panel nadstrešnice',st:'l884',s:1200,v:2800,kom:6,o:{brus:1,rupe:4}}],
+     usl:[{k:'konz',kol:12},{k:'mont',kol:16},{k:'dost',kol:1}]},
+    {v:2,datum:'19.10.',poslata:'19.10.',vazi:'03.11.',rabat:5,avans:40,rok:'12 radnih dana',nap:'Rabat 5% i avans 40% po dogovoru sa vlasnikom.',
+     stavke:[{opis:'Panel nadstrešnice',st:'l884',s:1200,v:2800,kom:6,o:{brus:1,rupe:4}}],
+     usl:[{k:'konz',kol:12},{k:'mont',kol:16},{k:'dost',kol:1}]}],
+   akt:[{t:'Preporuka (Vila Jelić), poziv vlasnika',d:'10.10. 11:00',ko:'Nebojša',tip:'poziv'},{t:'Mjerenje na terenu urađeno',d:'11.10. 13:00',ko:'Mićo + 2',tip:'mjerenje'},{t:'Ponuda v1 poslata',d:'13.10. 16:20',ko:'Nebojša',tip:'ponuda'},{t:'Kupac traži popust i manji avans',d:'18.10. 09:15',ko:'Nebojša',tip:'poziv'},{t:'Ponuda v2 poslata (rabat 5%, avans 40%)',d:'19.10. 10:05',ko:'Nebojša',tip:'ponuda'}]},
+  {id:'UP-303', kupac:'Ivana Marić', kontakt:'Ivana Marić', tel:'066 902 144', email:'ivana.maric@yahoo.com', izvor:'Salon', kom:'Jelena', grad:'Banja Luka', datum:'18.10.',
+   tip:'Tuš kabina', naslov:'Walk-in tuš kabina 8mm', opis:'Walk-in sa bočnim dijelom, prozirno kaljeno, crni okov.', status:'izrada', dok:['skica-kupatilo-maric.jpg'],
+   mjer:{datum:'20.10.',vrijeme:'16:00',ekipa:'Saša + 1',done:true},
+   verzije:[{v:1,datum:'21.10.',poslata:null,vazi:null,rabat:0,avans:50,rok:'7 radnih dana',nap:'Okov u crnoj boji.',
+     stavke:[{opis:'Fiksno staklo walk-in',st:'f8',s:1200,v:2000,kom:1,o:{brus:1,kal:1}},{opis:'Bočni dio',st:'f8',s:300,v:2000,kom:1,o:{brus:1,kal:1,rupe:2}}],
+     usl:[{k:'tus',kol:1},{k:'mont',kol:3},{k:'dost',kol:1}]}],
+   akt:[{t:'Kupac došao u salon',d:'18.10. 12:30',ko:'Jelena',tip:'poziv'},{t:'Mjerenje urađeno',d:'20.10. 16:00',ko:'Saša + 1',tip:'mjerenje'},{t:'Ponuda v1 u izradi',d:'21.10. 08:10',ko:'Jelena',tip:'ponuda'}]},
+  {id:'UP-302', kupac:'Vila Jelić (privatno)', kontakt:'Branko Jelić', tel:'065 312 008', email:'b.jelic@gmail.com', izvor:'Telefon', kom:'Nebojša', grad:'Laktaši', datum:'08.10.',
+   tip:'Ograda', naslov:'Staklena stepeništa + ograda', opis:'Gazišta od lamistala i staklena ograda stepeništa.', status:'prihvaceno', nalog:'RN-1039', dok:[],
+   mjer:{datum:'09.10.',vrijeme:'10:00',ekipa:'Mićo + 2',done:true},
+   verzije:[{v:1,datum:'11.10.',poslata:'11.10.',vazi:'26.10.',rabat:3,avans:50,rok:'7 radnih dana',nap:'',
+     stavke:[{opis:'Gazišta stepeništa',st:'l884',s:1100,v:320,kom:16,o:{brus:1}},{opis:'Ograda stepeništa',st:'f10',s:1000,v:1100,kom:12,o:{brus:1,kal:1,rupe:4}}],
+     usl:[{k:'drz',kol:48},{k:'ruk',kol:11},{k:'mont',kol:24}]}],
+   akt:[{t:'Poziv kupca',d:'08.10.',ko:'Nebojša',tip:'poziv'},{t:'Mjerenje urađeno',d:'09.10.',ko:'Mićo + 2',tip:'mjerenje'},{t:'Ponuda v1 poslata',d:'11.10.',ko:'Nebojša',tip:'ponuda'},{t:'Prihvaćeno, avans uplaćen → RN-1039',d:'16.10.',ko:'Nebojša',tip:'ok'}]},
+  {id:'UP-301', kupac:'Stomatološka ordinacija Dent', kontakt:'dr Ana Savić', tel:'051 434 600', email:'dent.bl@gmail.com', izvor:'Telefon', kom:'Jelena', grad:'Banja Luka', datum:'06.10.',
+   tip:'Ogledala', naslov:'Ogledala sa fazetom (6 kom)', opis:'Ogledala za čekaonicu i toalete.', status:'odbijeno', razlog:'Cijena', dok:[],
+   verzije:[{v:1,datum:'07.10.',poslata:'07.10.',vazi:'22.10.',rabat:0,avans:50,rok:'5 radnih dana',nap:'',
+     stavke:[{opis:'Ogledalo sa fazetom',st:'og4',s:800,v:1000,kom:6,o:{faz:1,rupe:4}}],usl:[{k:'mont',kol:2},{k:'dost',kol:1}]}],
+   akt:[{t:'Poziv',d:'06.10.',ko:'Jelena',tip:'poziv'},{t:'Ponuda v1 poslata',d:'07.10.',ko:'Jelena',tip:'ponuda'},{t:'Odbijeno: našli jeftinije',d:'15.10.',ko:'Jelena',tip:'x'}]},
+
+  {id:'UP-300', kupac:'Kafe bar Mozaik', kontakt:'Igor Stanić', tel:'066 715 900', email:'mozaik.gradiska@gmail.com', izvor:'Telefon', kom:'Jelena', grad:'Gradiška', datum:'01.10.',
+   tip:'Pregrade', naslov:'Staklena zavjesa ljetne bašte', opis:'Klizni stakleni paneli za zatvaranje bašte preko zime.', status:'odbijeno', razlog:'Rok', dok:[],
+   verzije:[{v:1,datum:'03.10.',poslata:'03.10.',vazi:'18.10.',rabat:0,avans:50,rok:'20 radnih dana',nap:'',
+     stavke:[{opis:'Klizni panel',st:'f10',s:800,v:2200,kom:10,o:{brus:1,kal:1,rupe:2}}],usl:[{k:'mont',kol:10},{k:'dost',kol:1}]}],
+   akt:[{t:'Poziv',d:'01.10.',ko:'Jelena',tip:'poziv'},{t:'Ponuda v1 poslata',d:'03.10.',ko:'Jelena',tip:'ponuda'},{t:'Odbijeno: treba im za 2 sedmice, naš rok 4',d:'08.10.',ko:'Jelena',tip:'x'}]},];
+
+// kupci: matični podaci + uslovi saradnje + istorija (prije demo perioda) + fakture
+// n = naziv, mora se poklapati sa n.kupac / u.kupac u nalozima i upitima
+const KUPCI = [
+  {id:'K-014', n:'Gradnja Kozara d.o.o.', tip:'Izvođač', grad:'Banja Luka', adresa:'Kninska 12', jib:'4400000000014', od:'2019', kom:'Nebojša',
+   kontakti:[{ime:'Milorad Kos',uloga:'Nabavka',tel:'065 501 902',email:'nabavka@gradnjakozara.ba'},{ime:'Zoran Kos',uloga:'Direktor',tel:'065 501 900',email:'direktor@gradnjakozara.ba'},{ime:'Dejan Ilić',uloga:'Šef gradilišta Borik',tel:'066 410 233',email:''}],
+   uslovi:{rabat:7,rokPl:30,avans:30,cjen:'Izvođači (B)'}, ist:{nalozi:41,promet:286400,god:48300},
+   objekti:[{n:'Stambeni objekat Borik',a:'Borik, lamela C, Banja Luka'},{n:'Poslovni objekat Starčevica',a:'Bulevar Živojina Mišića bb'}],
+   fakture:[{br:'IF-26-0398',d:'12.09.',iznos:14200,pl:14200,dosp:'12.10.'},{br:'IF-26-0455',d:'02.10.',iznos:6800,pl:3000,dosp:'01.11.'}],
+   nap:'Ključni izvođač. Plaća u roku, ali traži rokove isporuke usklađene sa gradilištem.'},
+  {id:'K-022', n:'Enterijer Lux', tip:'Firma', grad:'Prijedor', adresa:'Ulica kralja Petra I 45', jib:'4400000000022', od:'2017', kom:'Jelena',
+   kontakti:[{ime:'Marina Đukić',uloga:'Vlasnica',tel:'065 880 117',email:'info@enterijerlux.ba'}],
+   uslovi:{rabat:10,rokPl:15,avans:0,cjen:'Partneri (A)'}, ist:{nalozi:63,promet:154900,god:26900},
+   objekti:[{n:'Salon Prijedor',a:'Ulica kralja Petra I 45'}],
+   fakture:[{br:'IF-26-0402',d:'15.09.',iznos:2300,pl:0,dosp:'15.10.'},{br:'IF-26-0471',d:'20.10.',iznos:1146.6,pl:0,dosp:'04.11.'}],
+   nap:'Preprodaje tuš kabine i namještaj sa staklom. Bez avansa po dogovoru.'},
+  {id:'K-031', n:'Stambena zgrada Borik', tip:'Investitor', grad:'Banja Luka', adresa:'Borik, lamela C', jib:'4400000000031', od:'2025', kom:'Nebojša',
+   kontakti:[{ime:'Saša Vukić',uloga:'Nadzorni organ',tel:'065 220 418',email:'nadzor.borik@gmail.com'}],
+   uslovi:{rabat:5,rokPl:30,avans:40,cjen:'Izvođači (B)'}, ist:{nalozi:2,promet:31100,god:31100},
+   objekti:[{n:'Fasada lamela C',a:'Borik, lamela C, Banja Luka'}],
+   fakture:[{br:'IF-26-0466',d:'15.10.',iznos:6645.6,pl:6645.6,dosp:'15.10.'}], nap:'Avans 40% za IZO fasadu uplaćen.'},
+  {id:'K-108', n:'Vila Jelić (privatno)', tip:'Privatno', grad:'Laktaši', adresa:'Aleksandrovac bb', jib:'', od:'2026', kom:'Nebojša',
+   kontakti:[{ime:'Branko Jelić',uloga:'Vlasnik',tel:'065 312 008',email:'b.jelic@gmail.com'}],
+   uslovi:{rabat:3,rokPl:0,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:1,promet:9600,god:9600},
+   objekti:[{n:'Porodična kuća',a:'Aleksandrovac bb, Laktaši'}],
+   fakture:[{br:'IF-26-0449',d:'16.10.',iznos:5616,pl:5616,dosp:'16.10.'}], nap:'Preporučio Restoran Vidikovac.'},
+  {id:'K-057', n:'Kafe bar Mozaik', tip:'Firma', grad:'Gradiška', adresa:'Vidovdanska 8', jib:'4400000000057', od:'2023', kom:'Jelena',
+   kontakti:[{ime:'Igor Stanić',uloga:'Vlasnik',tel:'066 715 900',email:'mozaik.gradiska@gmail.com'}],
+   uslovi:{rabat:0,rokPl:0,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:3,promet:7400,god:2180},
+   objekti:[{n:'Kafe bar',a:'Vidovdanska 8, Gradiška'}],
+   fakture:[{br:'IF-26-0431',d:'15.10.',iznos:1275.3,pl:1275.3,dosp:'15.10.'}], nap:'RN-1038 kasni (sušenje farbe). Javiti kupcu novi rok.'},
+  {id:'K-009', n:'Hotel Bosna', tip:'Firma', grad:'Banja Luka', adresa:'Kralja Petra I Karađorđevića 97', jib:'4400000000009', od:'2015', kom:'Nebojša',
+   kontakti:[{ime:'Vesna Popović',uloga:'Tehnička služba',tel:'051 215 775',email:'tehnika@hotelbosna.ba'},{ime:'Računovodstvo',uloga:'Fakture',tel:'051 215 700',email:'racunovodstvo@hotelbosna.ba'}],
+   uslovi:{rabat:5,rokPl:30,avans:0,cjen:'Partneri (A)'}, ist:{nalozi:28,promet:96200,god:12400},
+   objekti:[{n:'Hotel, kupatila 2. i 3. sprat',a:'Kralja Petra I Karađorđevića 97'}],
+   fakture:[{br:'IF-26-0388',d:'05.09.',iznos:3900,pl:3900,dosp:'05.10.'}], nap:'Fakture slati na mail računovodstva.'},
+  {id:'K-112', n:'Arhitektonski biro Kvadrat', tip:'Firma', grad:'Banja Luka', adresa:'Gundulićeva 22', jib:'4400000000112', od:'2024', kom:'Nebojša',
+   kontakti:[{ime:'Dragana Kovač',uloga:'Arhitekta',tel:'066 330 120',email:'ured@kvadrat-bl.ba'}],
+   uslovi:{rabat:5,rokPl:15,avans:50,cjen:'Partneri (A)'}, ist:{nalozi:4,promet:22800,god:0},
+   objekti:[], fakture:[], nap:'Projektant, dovodi investitore. Bitno brzo odgovoriti na upit.'},
+  {id:'K-090', n:'Dom zdravlja Čelinac', tip:'Javna ustanova', grad:'Čelinac', adresa:'Vojvode Mišića 10', jib:'4400000000090', od:'2026', kom:'Jelena',
+   kontakti:[{ime:'Snježana Lukić',uloga:'Nabavka',tel:'051 551 210',email:'nabavka@dzcelinac.ba'}],
+   uslovi:{rabat:0,rokPl:60,avans:0,cjen:'Javne nabavke'}, ist:{nalozi:0,promet:0,god:0},
+   objekti:[{n:'Ambulanta, prizemlje',a:'Vojvode Mišića 10, Čelinac'}], fakture:[], nap:'Javna ustanova: plaćanje po fakturi, rok 60 dana, bez avansa.'},
+  {id:'K-115', n:'Restoran Vidikovac', tip:'Firma', grad:'Laktaši', adresa:'Put za Kozaru bb', jib:'4400000000115', od:'2026', kom:'Nebojša',
+   kontakti:[{ime:'Goran Vidović',uloga:'Vlasnik',tel:'065 778 331',email:'vidikovac.laktasi@gmail.com'}],
+   uslovi:{rabat:0,rokPl:0,avans:40,cjen:'Maloprodaja'}, ist:{nalozi:0,promet:0,god:0},
+   objekti:[{n:'Ljetna bašta',a:'Put za Kozaru bb, Laktaši'}], fakture:[], nap:''},
+  {id:'K-116', n:'Ivana Marić', tip:'Privatno', grad:'Banja Luka', adresa:'Starčevica, Ive Andrića 31', jib:'', od:'2026', kom:'Jelena',
+   kontakti:[{ime:'Ivana Marić',uloga:'',tel:'066 902 144',email:'ivana.maric@yahoo.com'}],
+   uslovi:{rabat:0,rokPl:0,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:0,promet:0,god:0},
+   objekti:[{n:'Stan, kupatilo',a:'Ive Andrića 31, Banja Luka'}], fakture:[], nap:''},
+  {id:'K-117', n:'Nikola Petrović', tip:'Privatno', grad:'Banja Luka', adresa:'Lauš', jib:'', od:'2026', kom:'Jelena',
+   kontakti:[{ime:'Nikola Petrović',uloga:'',tel:'065 214 778',email:'n.petrovic@gmail.com'}],
+   uslovi:{rabat:0,rokPl:0,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:0,promet:0,god:0}, objekti:[], fakture:[], nap:''},
+  {id:'K-076', n:'Stomatološka ordinacija Dent', tip:'Firma', grad:'Banja Luka', adresa:'Jevrejska 5', jib:'4400000000076', od:'2024', kom:'Jelena',
+   kontakti:[{ime:'dr Ana Savić',uloga:'Vlasnica',tel:'051 434 600',email:'dent.bl@gmail.com'}],
+   uslovi:{rabat:0,rokPl:15,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:2,promet:3100,god:0}, objekti:[], fakture:[], nap:'Zadnja ponuda odbijena zbog cijene.'},
+
+  {id:'K-121', n:'Montaža Plus s.p.', tip:'Izvođač', grad:'Banja Luka', adresa:'Kozarska 61', jib:'4400000000121', od:'2021', kom:'Dario',
+   kontakti:[{ime:'Goran Pejić',uloga:'Vlasnik',tel:'065 640 221',email:'montazaplus.bl@gmail.com'}],
+   uslovi:{rabat:7,rokPl:30,avans:20,cjen:'Izvođači (B)'}, ist:{nalozi:18,promet:61300,god:14200},
+   objekti:[{n:'Poslovni prostor (kancelarije)',a:'Bulevar cara Dušana 40, Banja Luka'}],
+   fakture:[{br:'IF-26-0412',d:'22.09.',iznos:3860,pl:3860,dosp:'22.10.'},{br:'IF-26-0459',d:'10.10.',iznos:2740,pl:0,dosp:'09.11.'}],
+   nap:'Ugrađuje enterijere za poslovne prostore. Često hitni rokovi.'},
+  {id:'K-124', n:'Apartmani Vrbas', tip:'Firma', grad:'Banja Luka', adresa:'Obala Vrbasa 7', jib:'4400000000124', od:'2025', kom:'Nebojša',
+   kontakti:[{ime:'Tamara Kecman',uloga:'Upravnica',tel:'065 330 787',email:'info@apartmanivrbas.ba'}],
+   uslovi:{rabat:5,rokPl:15,avans:40,cjen:'Partneri (A)'}, ist:{nalozi:3,promet:9800,god:4980},
+   objekti:[{n:'Apartmani, 12 jedinica',a:'Obala Vrbasa 7, Banja Luka'}],
+   fakture:[{br:'IF-26-0437',d:'14.10.',iznos:5826.6,pl:5826.6,dosp:'29.10.'}], nap:'Renoviraju objekat u fazama. Sljedeće: ograde balkona.'},
+  {id:'K-127', n:'Vrtić Zvončić', tip:'Javna ustanova', grad:'Gradiška', adresa:'Vidovdanska 22', jib:'4400000000127', od:'2026', kom:'Jelena',
+   kontakti:[{ime:'Ljiljana Babić',uloga:'Direktorica',tel:'051 813 402',email:'vrtic.zvoncic@gmail.com'},{ime:'Računovodstvo',uloga:'Fakture',tel:'051 813 400',email:'racunovodstvo.zvoncic@gmail.com'}],
+   uslovi:{rabat:0,rokPl:30,avans:0,cjen:'Javne nabavke'}, ist:{nalozi:0,promet:0,god:0},
+   objekti:[{n:'Vrtić, prizemlje i sprat',a:'Vidovdanska 22, Gradiška'}], fakture:[],
+   nap:'RN-1046 kasni zbog PVB folije. Direktorica obaviještena 17.10., novi rok dogovoriti telefonom.'},
+  {id:'K-130', n:'Dragan Simić', tip:'Privatno', grad:'Prnjavor', adresa:'Karađorđeva 112', jib:'', od:'2026', kom:'Nebojša',
+   kontakti:[{ime:'Dragan Simić',uloga:'',tel:'065 731 556',email:'dragan.simic77@gmail.com'}],
+   uslovi:{rabat:0,rokPl:0,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:1,promet:4120,god:4120},
+   objekti:[{n:'Porodična kuća, terasa',a:'Karađorđeva 112, Prnjavor'}],
+   fakture:[{br:'IF-26-0451',d:'20.10.',iznos:2410.2,pl:2410.2,dosp:'20.10.'}], nap:'Avans 50% uplaćen. Ostatak pri montaži.'},
+  {id:'K-133', n:'Optika Fokus', tip:'Firma', grad:'Doboj', adresa:'Svetog Save 18', jib:'4400000000133', od:'2024', kom:'Dario',
+   kontakti:[{ime:'Mirjana Tomić',uloga:'Vlasnica',tel:'053 224 610',email:'optikafokus.doboj@gmail.com'}],
+   uslovi:{rabat:3,rokPl:15,avans:30,cjen:'Maloprodaja'}, ist:{nalozi:4,promet:8900,god:4830},
+   objekti:[{n:'Salon optike',a:'Svetog Save 18, Doboj'}],
+   fakture:[{br:'IF-26-0444',d:'14.10.',iznos:1281.15,pl:1281.15,dosp:'14.10.'}], nap:'Uređuje novi salon. Vitrina na ponudi (UP-313).'},
+  {id:'K-136', n:'Investgradnja Mrkonjić', tip:'Investitor', grad:'Mrkonjić Grad', adresa:'Trg kralja Petra I 3', jib:'4400000000136', od:'2026', kom:'Nebojša',
+   kontakti:[{ime:'Slobodan Đurić',uloga:'Nabavka',tel:'065 118 404',email:'nabavka@investgradnja-mg.ba'},{ime:'Petar Marić',uloga:'Nadzor',tel:'066 207 815',email:''}],
+   uslovi:{rabat:6,rokPl:45,avans:30,cjen:'Izvođači (B)'}, ist:{nalozi:1,promet:18900,god:18900},
+   objekti:[{n:'Stambeni objekat, lamele 1 i 2',a:'Ul. Jovana Dučića bb, Mrkonjić Grad'}],
+   fakture:[{br:'IF-26-0453',d:'20.10.',iznos:6633.9,pl:6633.9,dosp:'20.10.'}], nap:'Novi investitor, veliki potencijal (više lamela). Avans 30% za IZO uplaćen.'},
+  {id:'K-139', n:'Saloni kupatila Aqua', tip:'Firma', grad:'Banja Luka', adresa:'Jovana Dučića 25', jib:'4400000000139', od:'2018', kom:'Jelena',
+   kontakti:[{ime:'Bojan Kesić',uloga:'Nabavka',tel:'065 990 312',email:'nabavka@aqua-saloni.ba'},{ime:'Sanja Kesić',uloga:'Vlasnica',tel:'065 990 300',email:'sanja@aqua-saloni.ba'}],
+   uslovi:{rabat:10,rokPl:30,avans:0,cjen:'Partneri (A)'}, ist:{nalozi:57,promet:198400,god:38600},
+   objekti:[{n:'Salon i magacin',a:'Jovana Dučića 25, Banja Luka'}],
+   fakture:[{br:'IF-26-0391',d:'08.09.',iznos:4980,pl:4980,dosp:'08.10.'},{br:'IF-26-0420',d:'25.09.',iznos:3612,pl:1800,dosp:'25.10.'},{br:'IF-26-0448',d:'15.10.',iznos:2920.5,pl:0,dosp:'14.11.'}],
+   nap:'Najveći preprodavac tuš kabina. Serije po 4 do 6 kom svake 2 sedmice.'},
+  {id:'K-142', n:'Jovana Lazić', tip:'Privatno', grad:'Banja Luka', adresa:'Rosulje, Majke Jugovića 9', jib:'', od:'2026', kom:'Jelena',
+   kontakti:[{ime:'Jovana Lazić',uloga:'',tel:'066 245 913',email:'jovana.lazic@gmail.com'}],
+   uslovi:{rabat:0,rokPl:0,avans:50,cjen:'Maloprodaja'}, ist:{nalozi:1,promet:540,god:540},
+   objekti:[{n:'Stan, kuhinja',a:'Majke Jugovića 9, Banja Luka'}],
+   fakture:[{br:'IF-26-0441',d:'16.10.',iznos:315.9,pl:315.9,dosp:'16.10.'}], nap:''},];
+const MAGACIN = [
+  {art:'Float prozirno 4mm', jed:'m²', stanje:310, min:120},
+  {art:'Float prozirno 6mm', jed:'m²', stanje:142, min:150},
+  {art:'Float prozirno 8mm', jed:'m²', stanje:196, min:100},
+  {art:'Float 10mm (za kaljenje)', jed:'m²', stanje:88, min:60},
+  {art:'Float 12mm', jed:'m²', stanje:24, min:20},
+  {art:'Extra clear 10mm', jed:'m²', stanje:18, min:25},
+  {art:'Ogledalo 4mm', jed:'m²', stanje:96, min:40},
+  {art:'Lamistal 4.4.2', jed:'m²', stanje:52, min:30},
+  {art:'Lamistal 8.8.4', jed:'m²', stanje:34, min:40},
+  {art:'Low-E 4mm', jed:'m²', stanje:205, min:80},
+  {art:'Distancer 16mm (IZO)', jed:'m', stanje:620, min:200},
+  {art:'PVB folija 0,76', jed:'m²', stanje:12, min:50},
+  {art:'Butil + silikon (IZO)', jed:'kom', stanje:140, min:60},
+  {art:'Inox držač ograde', jed:'kom', stanje:210, min:100},
+  {art:'Set okova tuš kabine', jed:'set', stanje:9, min:12},
+  {art:'Al U profil za ogradu', jed:'m', stanje:86, min:40},
+].map(m=>Object.assign(m,{ok:m.stanje>=m.min}));
+
+/* ---------- STATUS PILL ---------- */
+function statusPill(s){
+  const m={'u toku':['blue','U proizvodnji'],'kasni':['red','Kasni'],'spremno':['green','Spremno za isporuku'],'isporuceno':['gray','Isporučeno'],'nov':['amber','Nov upit'],'mjerenje':['violet','Mjerenje'],'izrada':['violet','Ponuda u izradi'],'poslata':['blue','Kod kupca'],'avans':['amber','Čeka avans'],'prihvaceno':['green','Prihvaćeno'],'odbijeno':['gray','Odbijeno']};
+  const x=m[s]||['gray',s];
+  return `<span class="pill ${x[0]}"><span class="dot"></span>${x[1]||s}</span>`;
+}
+
+/* ---------- NAVIGACIJA ---------- */
+const PAGES=[
+  {k:'danas', n:'Danas', sub:'Pregled proizvodnje i prodaje', icon:'danas', grp:'PREGLED'},
+  {k:'prodaja', n:'Prodaja', sub:'Upiti i predračuni', icon:'prodaja', grp:'PRODAJA', badge:()=>UPITI.filter(u=>u.status==='nov').length},
+  {k:'nalozi', n:'Radni nalozi', sub:'Svi nalozi u sistemu', icon:'nalozi', grp:'PROIZVODNJA'},
+  {k:'proizvodnja', n:'Proizvodnja', sub:'Tabla po stanicama', icon:'proizvodnja'},
+  {k:'logistika', n:'Logistika i montaža', sub:'Isporuke i ekipe', icon:'logistika', badge:()=>NALOZI.filter(n=>n.status==='spremno'&&!n.isp).length},
+  {k:'magacin', n:'Magacin stakla', sub:'Zalihe i minimumi', icon:'magacin', grp:'OSTALO'},
+  {k:'kupci', n:'Kupci', sub:'Baza kupaca', icon:'kupci'},
+];
+function buildNav(){
+  let html='',lastGrp=null;
+  PAGES.forEach(p=>{
+    if(p.grp && p.grp!==lastGrp){html+=`<div class="lbl">${p.grp}</div>`;lastGrp=p.grp;}
+    html+=`<button class="nav-item" data-k="${p.k}" onclick="go('${p.k}')">${ic(p.icon)}<span>${p.n}</span>${(typeof p.badge==='function'?p.badge():p.badge)?`<span class="badge">${typeof p.badge==='function'?p.badge():p.badge}</span>`:''}</button>`;
+  });
+  html+=`<div class="lbl">POMOĆ</div><a class="nav-item" href="uputstvo.html" target="_blank" rel="noopener">${ic('book')}<span>Uputstvo</span></a>`;
+  document.getElementById('nav').innerHTML=html;
+}
+
+/* ---------- ROUTER ---------- */
+const VIEWS={danas:()=>viewDanas(),prodaja:()=>viewProdaja(),nalozi:()=>viewNalozi(),proizvodnja:()=>viewProizvodnja(),logistika:()=>viewLogistika(),magacin:()=>viewMagacin(),kupci:()=>viewKupci()};
+// promjena filtera bez resetovanja taba
+function setFilt(k,v,toList){FILT=v;if(k==='prodaja'&&toList)PTAB='lista';document.getElementById('content').innerHTML=VIEWS[k]();}
+let CUR='danas', FILT=null; // FILT = status filter liste (null = svi)
+function go(k,f){
+  CUR=k; FILT=f||null; if(k==='prodaja')PTAB=f?'lista':'pregled';
+  const p=PAGES.find(x=>x.k===k)||{n:'',sub:''};
+  document.getElementById('pgTitle').textContent=p.n;
+  document.getElementById('pgSub').textContent=p.sub;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.k===k));
+  const c=document.getElementById('content');
+  c.innerHTML=(VIEWS[k]||viewDanas)();
+  window.scrollTo(0,0);
+  toggleSb(false);
+}
+
+/* ---------- VIEW: DANAS ---------- */
+function viewDanas(){
+  const uToku=NALOZI.filter(n=>n.status==='u toku').length;
+  const kasni=NALOZI.filter(n=>n.status==='kasni').length;
+  const spremno=NALOZI.filter(n=>n.status==='spremno').length;
+  const noviUpiti=UPITI.filter(u=>u.status==='nov').length;
+  // broj naloga po stanici (trenutna aktivna)
+  const stages=['rez','brus','kal','pjesk','far','lam','izo','isporuka'];
+  const perSt={};stages.forEach(s=>perSt[s]=NALOZI.filter(n=>naStanici(n,s)).length);
+  return `
+  <div class="mini-note">${ic('info')}<div><b>Demo prototip napravljen za DAS-PROM.</b> Podaci su primjer. Cilj: zamijeniti Excel tabele. Svaki upit, predračun i nalog živi na jednom mjestu i vidi se dokle je stigao kroz staklaru.</div></div>
+  <div class="section-title" style="margin-top:18px">Danas u brojevima</div>
+  <div class="kpi-grid">
+    <button class="kpi" onclick="go('nalozi','u toku')"><div class="ico blue">${ic('nalozi')}</div><div class="num">${uToku}</div><div class="lab">Nalozi u proizvodnji</div></button>
+    <button class="kpi ${kasni?'alert':''}" onclick="go('nalozi','kasni')"><div class="ico red">${ic('alert')}</div><div class="num">${kasni}</div><div class="lab">Kasni (rok prošao)</div></button>
+    <button class="kpi ${spremno?'warn':''}" onclick="go('nalozi','spremno')"><div class="ico green">${ic('truck')}</div><div class="num">${spremno}</div><div class="lab">Spremno za isporuku</div></button>
+    <button class="kpi" onclick="go('prodaja','nov')"><div class="ico amber">${ic('prodaja')}</div><div class="num">${noviUpiti}</div><div class="lab">Novi upiti</div></button>
+  </div>
+
+  <div class="section-title">Opterećenje stanica (aktivni nalozi)</div>
+  <div class="pipeline">
+    ${stages.map(s=>`<div class="stage" onclick="go('nalozi','st:${s}')" title="Prikaži naloge na stanici ${STANICE[s].n}"><div class="st-top">${ic(STANICE[s].i,17)}</div><div class="st-num">${perSt[s]||0}</div><div class="st-name">${STANICE[s].n}</div><div class="st-bar"><i style="width:${Math.min(100,(perSt[s]||0)*34)}%"></i></div></div>`).join('')}
+  </div>
+
+  <div class="two-col" style="margin-top:22px">
+    <div class="card">
+      <div class="panel-h"><b>Aktivni nalozi</b><button class="lnk" onclick="go('nalozi')">Svi →</button></div>
+      ${NALOZI.filter(n=>!['spremno','isporuceno'].includes(n.status)).slice(0,5).map(n=>`
+        <div class="list-row" onclick="openNalog('${n.id}')">
+          <div class="avatar-sm">${initials(n.kupac)}</div>
+          <div class="r-main"><b>${n.id} · ${n.proizvod}</b><span>${n.kupac} · ${n.status==='avans'?'čeka avans':STANICE[n.ruta[n.faza]].n}</span></div>
+          <div style="width:120px" class="progress"><div class="bar" style="width:${rutaPct(n)}%"></div></div>
+          ${statusPill(n.status)}
+        </div>`).join('')}
+    </div>
+    <div class="card">
+      <div class="panel-h"><b>Isporuke / montaža danas i sutra</b><button class="lnk" onclick="go('logistika')">Plan →</button></div>
+      ${(()=>{const iz=izlasci().filter(x=>x.n&&dana(x.dat)<=0&&dana(x.dat)>=-1),ceka=NALOZI.filter(n=>n.status==='spremno'&&!n.isp);
+        return iz.map(x=>`<div class="list-row" onclick="${x.on}">
+          <div class="ico ${x.n.montaza?'teal':'blue'}" style="width:34px;height:34px;border-radius:9px">${ic(x.n.montaza?'logistika':'box',17)}</div>
+          <div class="r-main"><b>${x.n.proizvod}</b><span>${x.n.kupac} · ${danNaziv(x.dat).toLowerCase()} ${x.vr} · ${x.ekipa}</span></div>${ispPill(x.n)}</div>`).join('')
+        +ceka.map(n=>`<div class="list-row" onclick="openNalog('${n.id}')">
+          <div class="ico amber" style="width:34px;height:34px;border-radius:9px">${ic('box',17)}</div>
+          <div class="r-main"><b>${n.proizvod}</b><span>${n.kupac} · gotovo, termin nije zakazan</span></div><span class="pill amber">zakazati</span></div>`).join('')
+        ||'<div style="padding:18px;font-size:12.5px;color:var(--muted)">Nema isporuka danas i sutra.</div>';})()}
+    </div>
+  </div>`;
+}
+
+/* ---------- FILTER DUGMAD ---------- */
+function filtBar(page,list,opts){
+  return `<div class="filt">${[[null,'Svi']].concat(opts).map(([v,l])=>`<button class="${FILT===v?'on':''}" onclick="setFilt('${page}',${v?`'${v}'`:'null'})">${l}<span class="c">${v?list.filter(x=>x.status===v).length:list.length}</span></button>`).join('')}</div>`;
+}
+
+/* ---------- PRODAJA: helperi ---------- */
+const DANAS='21.10.', TODAY=new Date(2026,9,21);
+function pd(s){const [d,m]=s.split('.');return new Date(2026,+m-1,+d);}
+function fd(x){return String(x.getDate()).padStart(2,'0')+'.'+String(x.getMonth()+1).padStart(2,'0')+'.';}
+function addD(s,n){const x=pd(s);x.setDate(x.getDate()+n);return fd(x);}
+function dana(s){return Math.round((TODAY-pd(s))/864e5);}
+function dn(n){return n===1?'dan':'dana';}
+const fmt=n=>n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt0=n=>Math.round(n).toLocaleString('de-DE');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const uslItem=k=>CJ.usluge.find(u=>u.k===k);
+const zadnja=u=>u.verzije[u.verzije.length-1];
+const ponBr=u=>u.id.replace('UP','PON');
+const RUTA_RED=['rez','brus','pjesk','far','kal','lam','izo'];
+
+// kalkulacija jedne pozicije: staklo po m² (min površina po komadu) + obrade po m², dužnom metru ili komadu
+function calcSt(x){
+  const st=CJ.stakla[x.st];
+  const m2=Math.max(x.s*x.v/1e6,MIN_M2)*x.kom;
+  const obim=2*(x.s+x.v)/1000*x.kom;
+  const parts=[{n:st.n,q:m2,j:'m²',c:st.c}];
+  Object.keys(CJ.obrade).forEach(k=>{if(!x.o[k])return;const o=CJ.obrade[k];
+    parts.push({n:o.n,q:k==='rupe'?x.o.rupe*x.kom:(o.j==='m'?obim:m2),j:o.j,c:o.c});});
+  parts.forEach(p=>p.iz=p.q*p.c);
+  return {m2,parts,sum:parts.reduce((a,p)=>a+p.iz,0)};
+}
+function calcV(v){
+  const st=v.stavke.reduce((a,x)=>a+calcSt(x).sum,0);
+  const us=v.usl.reduce((a,u)=>a+uslItem(u.k).c*u.kol,0);
+  const mz=st+us, rab=mz*(v.rabat||0)/100, osn=mz-rab, pdv=osn*.17;
+  return {st,us,mz,rab,osn,pdv,uk:osn+pdv,m2:v.stavke.reduce((a,x)=>a+calcSt(x).m2,0)};
+}
+const vrijU=u=>{const v=zadnja(u);return v?calcV(v).osn:null;};
+// ruta kroz staklaru izvedena iz obrada na pozicijama (rezanje uvijek)
+function rutaIz(v){
+  const s=new Set(['rez']);
+  v.stavke.forEach(x=>{Object.keys(x.o).forEach(k=>{if(x.o[k])s.add(CJ.obrade[k].st);});if(CJ.stakla[x.st].izo)s.add('izo');});
+  return RUTA_RED.filter(k=>s.has(k)).concat(['komplet','isporuka']);
+}
+const obradeTxt=x=>Object.keys(x.o).filter(k=>x.o[k]).map(k=>k==='rupe'?x.o.rupe+' rupe':CJ.obrade[k].kr.toLowerCase()).join(', ');
+const AKT_IC={mail:'mail',poziv:'phone',mjerenje:'ruler',ponuda:'file',biljeska:'edit',ok:'check',x:'alert'};
+
+/* ---------- VIEW: PRODAJA (tabovi) ---------- */
+let PTAB='pregled';
+function setPTab(t){PTAB=t;FILT=null;document.getElementById('content').innerHTML=viewProdaja();}
+function viewProdaja(){
+  const tabs=[['pregled','Pregled toka'],['lista','Upiti i ponude'],['cjenovnik','Cjenovnik']];
+  return `
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+    <button class="btn" onclick="openModal(modalUpit())">${ic('plus',16)} Novi upit</button>
+    <button class="btn ghost" onclick="toast('Izvoz u Excel u punoj verziji')">${ic('file',16)} Izvoz</button>
+  </div>
+  <div class="tabs">${tabs.map(([k,l])=>`<button class="${PTAB===k?'on':''}" onclick="setPTab('${k}')">${l}</button>`).join('')}</div>
+  ${({pregled:prodPregled,lista:prodLista,cjenovnik:prodCjenovnik}[PTAB])()}`;
+}
+
+function zadaci(){
+  const z=[];
+  UPITI.forEach(u=>{
+    const v=zadnja(u);
+    if(u.status==='nov'){const d=dana(u.datum);
+      z.push({u,p:d>=1?1:2,ico:'clock',c:d>=1?'red':'amber',t:d>=1?`Upit čeka odgovor ${d} ${dn(d)}`:'Novi upit danas: javiti se kupcu',pill:d>=1?'kasni':'danas'});}
+    if(u.status==='mjerenje'&&u.mjer){const d=-dana(u.mjer.datum);
+      z.push({u,p:3,ico:'ruler',c:'blue',t:`Mjerenje ${d===1?'sutra':u.mjer.datum} u ${u.mjer.vrijeme} (${u.mjer.ekipa})`,pill:u.mjer.datum});}
+    if(u.status==='izrada')z.push({u,p:2,ico:'edit',c:'amber',t:`Ponuda v${v.v} u izradi: završiti i poslati`,pill:'u izradi'});
+    if(u.status==='poslata'){const d=dana(v.poslata), ist=-dana(v.vazi);
+      if(d>=5)z.push({u,p:1,ico:'phone',c:'red',t:`Nazvati kupca: ponuda bez odgovora ${d} ${dn(d)}`,pill:`poslata ${v.poslata}`});
+      else if(ist<=10)z.push({u,p:4,ico:'clock',c:'amber',t:`Ponuda važi još ${ist} ${dn(ist)}`,pill:`do ${v.vazi}`});}
+    if(u.status==='prihvaceno'){const n=NALOZI.find(x=>x.id===u.nalog);
+      if(n&&n.status==='avans')z.push({u,p:2,ico:'alert',c:'amber',t:`Čeka avans: ${n.id} ne može u proizvodnju`,pill:'avans'});}
+  });
+  return z.sort((a,b)=>a.p-b.p);
+}
+
+function prodPregled(){
+  const otv=UPITI.filter(u=>['nov','mjerenje','izrada'].includes(u.status));
+  const posl=UPITI.filter(u=>u.status==='poslata');
+  const prih=UPITI.filter(u=>u.status==='prihvaceno');
+  const sum=a=>a.reduce((s,u)=>s+(vrijU(u)||0),0);
+  const kol=[['nov','Nov upit'],['mjerenje','Mjerenje'],['izrada','Ponuda u izradi'],['poslata','Kod kupca'],['prihvaceno','Prihvaćeno'],['odbijeno','Izgubljeno']];
+  const z=zadaci();
+  const razlozi=[['Cijena',46],['Rok izrade',23],['Kupac odustao',18],['Konkurencija',13]];
+  return `
+  <div class="kpi-grid">
+    <button class="kpi" onclick="setFilt('prodaja','nov',1)"><div class="ico amber">${ic('prodaja')}</div><div class="num">${otv.length}</div><div class="lab">Otvoreni upiti (bez poslate ponude)</div></button>
+    <button class="kpi" onclick="setFilt('prodaja','poslata',1)"><div class="ico blue">${ic('file')}</div><div class="num">${fmt0(sum(posl))} <span style="font-size:14px">KM</span></div><div class="lab">${posl.length} ponude kod kupca, čeka se odgovor</div></button>
+    <button class="kpi" onclick="setFilt('prodaja','prihvaceno',1)"><div class="ico green">${ic('check')}</div><div class="num">${fmt0(sum(prih)+38450)} <span style="font-size:14px">KM</span></div><div class="lab">Prihvaćeno u oktobru (bez PDV)</div></button>
+    <div class="kpi" style="cursor:default"><div class="ico teal">${ic('clock')}</div><div class="num">41%</div><div class="lab">Konverzija ponuda · 90 dana<br>prosjek do ponude 1,6 dana</div></div>
+  </div>
+
+  <div class="section-title">Tok prodaje</div>
+  <div class="kanban">
+    ${kol.map(([s,l])=>{const a=UPITI.filter(u=>u.status===s);return `<div class="kcol" style="min-width:185px">
+      <div class="kcol-h"><span>${l}</span><span class="cnt">${a.length}</span></div>
+      ${a.map(u=>{const vr=vrijU(u);return `<div class="kcard" onclick="openUpit('${u.id}')">
+        <b>${u.kupac}</b><div class="kc-sub">${u.naslov}</div>
+        <div class="kc-foot"><span>${u.id} · ${u.kom}</span><span class="mono" style="color:var(--text)">${vr?fmt0(vr)+' KM':'—'}</span></div>
+      </div>`}).join('')||`<div style="font-size:11.5px;color:var(--muted);text-align:center;padding:14px 0">—</div>`}
+    </div>`}).join('')}
+  </div>
+
+  <div class="two-col" style="margin-top:22px">
+    <div class="card">
+      <div class="panel-h"><b>Za uraditi u prodaji</b><span class="pill gray">${z.length}</span></div>
+      ${z.map(x=>`<div class="list-row" onclick="openUpit('${x.u.id}')">
+        <div class="ico ${x.c}" style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center">${ic(x.ico,17)}</div>
+        <div class="r-main"><b>${x.t}</b><span>${x.u.kupac} · ${x.u.naslov}</span></div>
+        <span class="pill ${x.c==='red'?'red':x.c==='amber'?'amber':'gray'}">${x.pill}</span></div>`).join('')}
+    </div>
+    <div class="card" style="padding:18px">
+      <div class="panel-h" style="padding:0 0 14px"><b>Zašto gubimo ponude</b><span style="font-size:11.5px;color:var(--muted)">zadnjih 90 dana</span></div>
+      <div class="bars">${razlozi.map(([n,p])=>`<div class="b"><span style="width:110px">${n}</span><div class="tr"><i style="width:${p}%"></i></div><b class="mono" style="width:38px;text-align:right">${p}%</b></div>`).join('')}</div>
+      <div class="mini-note" style="margin-top:14px">${ic('info')}<div>Kod svake odbijene ponude bilježi se razlog. Kroz par mjeseci vidi se da li gubite na cijeni ili na roku, i po kojoj vrsti posla.</div></div>
+    </div>
+  </div>`;
+}
+
+function prodLista(){
+  const lista=FILT?UPITI.filter(u=>u.status===FILT):UPITI;
+  return `<div class="card">
+    <div style="padding:14px 18px 0">${filtBar('prodaja',UPITI,[['nov','Novi'],['mjerenje','Mjerenje'],['izrada','U izradi'],['poslata','Poslate'],['prihvaceno','Prihvaćeno'],['odbijeno','Odbijeno']])}</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Upit</th><th>Kupac</th><th>Šta traži</th><th>Izvor</th><th>Komerc.</th><th>Primljeno</th><th style="text-align:right">Vrijednost</th><th>Status</th></tr></thead>
+      <tbody>${lista.map(u=>{const vr=vrijU(u),v=zadnja(u);return `<tr class="clickable" onclick="openUpit('${u.id}')">
+        <td class="mono">${u.id}${v?`<br><span style="color:var(--muted);font-size:11px;font-weight:500">v${v.v}</span>`:''}</td>
+        <td><b>${u.kupac}</b><br><span style="color:var(--muted);font-size:12px">${u.grad}</span></td>
+        <td style="max-width:280px">${u.naslov}<br><span style="color:var(--muted);font-size:12px">${u.tip}</span></td>
+        <td>${u.izvor}</td><td>${u.kom}</td>
+        <td>${u.datum}<br><span style="color:var(--muted);font-size:11.5px">${dana(u.datum)===0?'danas':'prije '+dana(u.datum)+' '+dn(dana(u.datum))}</span></td>
+        <td class="mono" style="text-align:right">${vr?fmt0(vr)+' KM':'—'}</td><td>${statusPill(u.status)}</td></tr>`}).join('')}</tbody>
+    </table></div>
+  </div>`;
+}
+
+function prodCjenovnik(){
+  const row=(n,j,c)=>`<tr><td><b>${n}</b></td><td>${j}</td><td class="mono" style="text-align:right">${fmt(c)} KM</td></tr>`;
+  return `
+  <div class="mini-note" style="margin-bottom:16px">${ic('info')}<div>Cijene su demo. U punoj verziji uvozimo vaš postojeći Excel cjenovnik. Ponuda se računa sama: staklo po m² (najmanje ${String(MIN_M2).replace('.',',')} m² po komadu), brušenje i fazeta po dužnom metru obima, rupe po komadu, ostale obrade po m².</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="panel-h"><b>Staklo</b><button class="lnk" onclick="toast('Izmjena cijena u punoj verziji')">Izmijeni</button></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Vrsta</th><th>Jed.</th><th style="text-align:right">Cijena</th></tr></thead>
+      <tbody>${Object.values(CJ.stakla).map(s=>row(s.n,'m²',s.c)).join('')}</tbody></table></div></div>
+    <div>
+      <div class="card"><div class="panel-h"><b>Obrade</b><button class="lnk" onclick="toast('Izmjena cijena u punoj verziji')">Izmijeni</button></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Obrada</th><th>Jed.</th><th style="text-align:right">Cijena</th></tr></thead>
+        <tbody>${Object.values(CJ.obrade).map(o=>row(o.n+`<br><span style="color:var(--muted);font-size:11.5px;font-weight:500">stanica: ${STANICE[o.st].n}</span>`,o.j,o.c)).join('')}</tbody></table></div></div>
+      <div class="card" style="margin-top:16px"><div class="panel-h"><b>Okov i usluge</b></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Artikal</th><th>Jed.</th><th style="text-align:right">Cijena</th></tr></thead>
+        <tbody>${CJ.usluge.map(u=>row(u.n,u.j,u.c)).join('')}</tbody></table></div></div>
+    </div>
+  </div>`;
+}
+
+/* ---------- UPIT / PONUDA DETALJ ---------- */
+let VSEL=null; // indeks verzije koja se gleda
+function openUpit(id,keepV){
+  const u=UPITI.find(x=>x.id===id);if(!u)return;
+  if(!keepV)VSEL=u.verzije.length-1;
+  CUR='upit';
+  document.getElementById('pgTitle').textContent=u.id+' · '+u.kupac;
+  document.getElementById('pgSub').textContent=u.naslov;
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.k==='prodaja'));
+  const korak={nov:0,mjerenje:1,izrada:2,poslata:3,odbijeno:3,prihvaceno:6}[u.status];
+  const koraci=['Upit','Mjerenje','Ponuda','Poslata kupcu','Prihvaćeno','Radni nalog'];
+  const vr=vrijU(u);
+  document.getElementById('content').innerHTML=`
+  <div class="crumb"><button onclick="go('prodaja')">Prodaja</button> ${ic('arrow',13)} <b style="color:var(--text)">${u.id}</b></div>
+  <div class="card" style="padding:22px">
+    <div class="detail-head">
+      <div class="dh-main">
+        <h2>${u.naslov}</h2>
+        <div class="meta">
+          <div class="m"><b>Kupac</b><span>${kLink(u.kupac)}</span></div>
+          <div class="m"><b>Kontakt</b><span>${u.kontakt} · ${u.tel}</span></div>
+          <div class="m"><b>Email</b><span>${u.email}</span></div>
+          <div class="m"><b>Izvor</b><span>${u.izvor}</span></div>
+          <div class="m"><b>Komercijalista</b><span>${u.kom}</span></div>
+          <div class="m"><b>Primljeno</b><span>${u.datum}</span></div>
+        </div>
+      </div>
+      <div style="text-align:right">${statusPill(u.status)}<div style="font-size:26px;font-weight:800;margin-top:8px">${vr?fmt0(vr)+' KM':'—'}</div><div style="font-size:11.5px;color:var(--muted)">${vr?'bez PDV · v'+zadnja(u).v:'ponuda nije napravljena'}</div></div>
+    </div>
+    <p style="margin-top:14px;color:var(--muted);font-size:13px;max-width:760px">${u.opis}</p>
+    <div style="margin-top:18px"><div class="phase-track">
+      ${koraci.map((k,i)=>{const done=i<korak||(i===1&&korak>1),act=i===korak&&u.status!=='odbijeno';
+        return `<div class="ph ${done?'done':act?'active':''}"><div class="dot">${done?ic('check',14):i+1}</div><div class="pl">${k}</div></div>`}).join('')}
+    </div></div>
+    <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">${akcije(u)}</div>
+  </div>
+
+  <div id="editor" style="margin-top:16px">${u.verzije.length?editorHTML(u):`<div class="card" style="padding:26px;text-align:center;color:var(--muted)">
+    <div style="font-weight:600;color:var(--text);margin-bottom:4px">Ponuda još nije napravljena</div>
+    ${u.status==='mjerenje'?'Ponuda se pravi nakon mjerenja na terenu, sa tačnim mjerama.':'Napravi ponudu direktno ili prvo zakaži mjerenje na terenu.'}</div>`}</div>
+
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card" style="padding:18px">
+      <div class="panel-h" style="padding:0 0 14px"><b>Aktivnosti</b><span style="font-size:11.5px;color:var(--muted)">pozivi, mailovi, mjerenja, verzije</span></div>
+      <ul class="timeline">${u.akt.slice().reverse().map(a=>`<li><b>${a.t}</b><span>${a.d} · ${a.ko}</span></li>`).join('')}</ul>
+      <div style="display:flex;gap:8px;margin-top:6px"><input id="bilj" class="ed" placeholder="Dodaj bilješku, npr. kupac zove ponovo u petak" onkeydown="if(event.key==='Enter')biljeska('${u.id}')"><button class="btn sm" onclick="biljeska('${u.id}')">Dodaj</button></div>
+    </div>
+    <div class="card" style="padding:18px">
+      <div class="panel-h" style="padding:0 0 10px"><b>Detalji</b></div>
+      <div class="kv"><span>Vrsta posla</span><b>${u.tip}</b></div>
+      <div class="kv"><span>Lokacija</span><b>${u.grad}</b></div>
+      <div class="kv"><span>Mjerenje na terenu</span><b>${u.mjer?`${u.mjer.datum} ${u.mjer.vrijeme} · ${u.mjer.ekipa} ${u.mjer.done?'<span class="pill green">urađeno</span>':'<span class="pill violet">zakazano</span>'}`:'—'}</b></div>
+      ${u.status==='prihvaceno'?`<div class="kv"><span>Radni nalog</span><b><button class="lnk" style="color:var(--teal-2);font-weight:700" onclick="openNalog('${u.nalog}')">${u.nalog} →</button></b></div>`:''}
+      ${u.status==='odbijeno'?`<div class="kv"><span>Razlog odbijanja</span><b>${u.razlog}</b></div>`:''}
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 8px">Dokumenti</div>
+      ${(u.dok.length?u.dok:[]).map(d=>`<div class="list-row" style="padding:8px 0" onclick="toast('Otvaranje priloga u punoj verziji')">${ic('file',16)}<div class="r-main"><b style="font-size:12.5px">${d}</b></div></div>`).join('')||'<div style="font-size:12px;color:var(--muted)">Nema priloga.</div>'}
+      <button class="btn ghost sm" style="margin-top:10px" onclick="toast('Prilaganje skica i fotografija sa mjerenja u punoj verziji')">${ic('plus',14)} Priloži skicu / fotografiju</button>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);toggleSb(false);
+}
+
+function akcije(u){
+  const b=(cls,on,txt,icn)=>`<button class="btn ${cls}" onclick="${on}">${icn?ic(icn,16):''} ${txt}</button>`;
+  const v=zadnja(u), id=u.id, out=[];
+  if(u.status==='nov'){out.push(b('',`openModal(modalMjerenje('${id}'))`,'Zakaži mjerenje','ruler'),b('ghost',`napraviPonudu('${id}')`,'Napravi ponudu bez mjerenja','file'));}
+  if(u.status==='mjerenje'){out.push(b('',`napraviPonudu('${id}')`,'Mjerenje urađeno, napravi ponudu','check'),b('ghost',`openModal(modalMjerenje('${id}'))`,'Pomjeri termin','clock'));}
+  if(u.status==='izrada')out.push(b('',`openModal(modalPosalji('${id}'),1)`,`Pošalji ponudu v${v.v} kupcu`,'mail'));
+  if(u.status==='poslata'){out.push(b('',`openModal(modalPrihvati('${id}'))`,'Kupac prihvatio → radni nalog','check'),b('ghost',`novaVerzija('${id}')`,'Kupac traži izmjenu → nova verzija','edit'),b('ghost',`openModal(modalOdbij('${id}'))`,'Odbijeno','alert'));}
+  if(u.status==='prihvaceno')out.push(b('',`openNalog('${u.nalog}')`,`Otvori radni nalog ${u.nalog}`,'nalozi'));
+  if(v)out.push(b('ghost',`openModal(modalDok('${id}'),1)`,'Pregled dokumenta','file'));
+  out.push(b('ghost',`toast('Poziv se bilježi u aktivnosti (u punoj verziji i click-to-call)')`,'Pozovi '+u.tel,'phone'));
+  return out.join('');
+}
+
+/* ---------- EDITOR PONUDE ---------- */
+function edU(){return UPITI.find(x=>x.id===document.getElementById('editor').dataset.u);}
+function edV(){const u=edU();return u.verzije[VSEL];}
+function editorHTML(u){
+  const v=u.verzije[VSEL], last=VSEL===u.verzije.length-1, lock=!(last&&u.status==='izrada'), dis=lock?'disabled':'';
+  setTimeout(()=>{const e=document.getElementById('editor');if(e){e.dataset.u=u.id;v.stavke.forEach((_,i)=>updRow(i));updTot();}},0);
+  return `<div class="card">
+    <div class="panel-h" style="flex-wrap:wrap;gap:10px">
+      <div><b>Ponuda ${ponBr(u)}/${v.v}</b><span style="font-size:12px;color:var(--muted);margin-left:8px">napravljena ${v.datum}${v.poslata?' · poslata '+v.poslata+' · važi do '+v.vazi:' · nije poslata'}</span></div>
+      <div class="filt" style="margin:0">${u.verzije.map((x,i)=>`<button class="${i===VSEL?'on':''}" onclick="VSEL=${i};openUpit('${u.id}',1)">v${x.v}</button>`).join('')}</div>
+    </div>
+    ${lock?`<div class="mini-note" style="margin:14px 18px 0">${ic('info')}<div>${!last?`Ovo je starija verzija v${v.v}, samo za pregled.`:u.status==='poslata'?`Verzija v${v.v} je poslata kupcu i zaključana. Za izmjenu napravi novu verziju (stara ostaje sačuvana).`:'Ponuda je zaključana.'}</div></div>`:''}
+    <div class="tbl-wrap"><table class="tbl ped" style="min-width:1020px">
+      <thead><tr><th>#</th><th>Pozicija</th><th>Staklo</th><th>Š mm</th><th>V mm</th><th>Kom</th><th>Obrade</th><th>m²</th><th style="text-align:right">Iznos KM</th><th></th></tr></thead>
+      <tbody>${v.stavke.map((x,i)=>`<tr class="prow">
+        <td class="mono">${i+1}</td>
+        <td><input class="ed" style="min-width:160px" value="${esc(x.opis)}" oninput="edV().stavke[${i}].opis=this.value" ${dis}></td>
+        <td><select class="ed" onchange="edF(${i},'st',this.value)" ${dis}>${Object.entries(CJ.stakla).map(([k,s])=>`<option value="${k}" ${k===x.st?'selected':''}>${s.n}</option>`).join('')}</select></td>
+        <td><input class="ed num" type="number" min="0" value="${x.s}" oninput="edF(${i},'s',this.value)" ${dis}></td>
+        <td><input class="ed num" type="number" min="0" value="${x.v}" oninput="edF(${i},'v',this.value)" ${dis}></td>
+        <td><input class="ed num" style="width:56px" type="number" min="1" value="${x.kom}" oninput="edF(${i},'kom',this.value)" ${dis}></td>
+        <td><div style="display:flex;gap:4px;flex-wrap:wrap;width:250px">${['brus','faz','pjesk','far','kal','lam'].map(k=>`<button class="tg ${x.o[k]?'on':''}" onclick="edO(${i},'${k}')" ${dis}>${CJ.obrade[k].kr}</button>`).join('')}
+          <span class="tg ${x.o.rupe?'on':''}" style="display:inline-flex;align-items:center;gap:4px">Rupe/kom <input class="ed" style="width:40px;padding:1px 4px" type="number" min="0" value="${x.o.rupe||0}" oninput="edF(${i},'rupe',this.value)" ${dis}></span></div></td>
+        <td class="mono" id="m2-${i}"></td>
+        <td class="mono" id="iz-${i}" style="text-align:right"></td>
+        <td>${lock?'':`<button class="x-del" title="Ukloni" onclick="edV().stavke.splice(${i},1);rerenderEd()">✕</button>`}</td></tr>
+        <tr class="brk-row"><td></td><td colspan="9" class="brk" id="brk-${i}"></td></tr>`).join('')}</tbody>
+    </table></div>
+    ${lock?'':`<div style="padding:10px 18px"><button class="btn ghost sm" onclick="dodajStavku()">${ic('plus',14)} Dodaj poziciju</button></div>`}
+
+    <div class="panel-h" style="border-top:1px solid var(--border-2)"><b>Okov i usluge</b></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Artikal / usluga</th><th>Količina</th><th>Jed.</th><th style="text-align:right">Cijena</th><th style="text-align:right">Iznos KM</th><th></th></tr></thead>
+      <tbody>${v.usl.map((x,i)=>{const it=uslItem(x.k);return `<tr><td><b>${it.n}</b></td>
+        <td><input class="ed num" type="number" min="0" value="${x.kol}" oninput="edV().usl[${i}].kol=Math.max(0,+this.value||0);updTot()" ${dis}></td>
+        <td>${it.j}</td><td class="mono" style="text-align:right">${fmt(it.c)}</td><td class="mono" id="ui-${i}" style="text-align:right"></td>
+        <td>${lock?'':`<button class="x-del" onclick="edV().usl.splice(${i},1);rerenderEd()">✕</button>`}</td></tr>`}).join('')}</tbody></table></div>
+    ${lock?'':`<div style="padding:10px 18px;display:flex;gap:8px;flex-wrap:wrap"><select class="ed" id="uslAdd" style="width:auto">${CJ.usluge.map(x=>`<option value="${x.k}">${x.n} (${fmt(x.c)} KM/${x.j})</option>`).join('')}</select><button class="btn ghost sm" onclick="edV().usl.push({k:document.getElementById('uslAdd').value,kol:1});rerenderEd()">${ic('plus',14)} Dodaj</button></div>`}
+
+    <div class="grid-2" style="padding:18px;border-top:1px solid var(--border-2)">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">Ruta u proizvodnji (izvodi se iz obrada)</div>
+        <div id="ruta" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Kad kupac prihvati, nalog odmah zna kroz koje stanice staklo ide. Niko ne prepisuje iz Excela.</div>
+        <div class="grid-2" style="gap:10px;margin-top:16px">
+          <div class="fld" style="margin:0"><label>Avans</label><select class="ed" onchange="edV().avans=+this.value" ${dis}>${[0,30,40,50,100].map(p=>`<option value="${p}" ${p===v.avans?'selected':''}>${p?p+'% po prihvatanju':'bez avansa'}</option>`).join('')}</select></div>
+          <div class="fld" style="margin:0"><label>Rok izrade</label><input class="ed" value="${esc(v.rok)}" oninput="edV().rok=this.value" ${dis}></div>
+        </div>
+        <div class="fld" style="margin:10px 0 0"><label>Napomena na ponudi</label><textarea class="ed" rows="2" oninput="edV().nap=this.value" ${dis}>${esc(v.nap||'')}</textarea></div>
+      </div>
+      <div class="tot">
+        <div class="kv"><span>Staklo i obrada (<span id="t-m2"></span> m²)</span><b class="mono" id="t-st"></b></div>
+        <div class="kv"><span>Okov i usluge</span><b class="mono" id="t-us"></b></div>
+        <div class="kv"><span>Rabat <input class="ed num" style="width:56px;padding:2px 6px;margin-left:6px" type="number" min="0" max="50" value="${v.rabat||0}" oninput="edV().rabat=Math.min(50,Math.max(0,+this.value||0));updTot()" ${dis}> %</span><b class="mono" id="t-rab"></b></div>
+        <div class="kv"><span>Osnovica</span><b class="mono" id="t-osn"></b></div>
+        <div class="kv"><span>PDV 17%</span><b class="mono" id="t-pdv"></b></div>
+        <div class="kv big"><span>Ukupno za plaćanje</span><b class="mono" id="t-uk"></b></div>
+        <div class="kv"><span>Avans po prihvatanju</span><b class="mono" id="t-av"></b></div>
+      </div>
+    </div>
+  </div>`;
+}
+function rerenderEd(){const u=edU();document.getElementById('editor').innerHTML=editorHTML(u);}
+function edF(i,f,val){const x=edV().stavke[i];
+  if(f==='st'){x.st=val;}else if(f==='rupe'){x.o.rupe=Math.max(0,+val||0);}else{x[f]=Math.max(0,+val||0);}
+  updRow(i);updTot();}
+function edO(i,k){const x=edV().stavke[i];x.o[k]=x.o[k]?0:1;
+  if(k==='brus'&&x.o.brus)x.o.faz=0; if(k==='faz'&&x.o.faz)x.o.brus=0; // brušenje i fazeta se isključuju
+  rerenderEd();}
+function dodajStavku(){const v=edV();const p=v.stavke[v.stavke.length-1];
+  v.stavke.push(p?JSON.parse(JSON.stringify({...p,opis:'Pozicija '+(v.stavke.length+1)})):{opis:'Pozicija 1',st:'f6',s:1000,v:1000,kom:1,o:{brus:1}});rerenderEd();}
+function updRow(i){const x=edV().stavke[i],c=calcSt(x);
+  const e=id=>document.getElementById(id);if(!e('m2-'+i))return;
+  e('m2-'+i).textContent=fmt(c.m2);e('iz-'+i).textContent=fmt(c.sum);
+  e('brk-'+i).innerHTML=c.parts.map(p=>`${p.n} ${fmt(p.q)} ${p.j} × ${fmt(p.c)} = <b>${fmt(p.iz)}</b>`).join(' · ')+(x.s*x.v/1e6<MIN_M2&&x.s&&x.v?` <span class="pill amber" style="padding:0 7px">obračunato min ${String(MIN_M2).replace('.',',')} m²/kom</span>`:'');}
+function updTot(){const v=edV(),t=calcV(v),e=id=>document.getElementById(id);if(!e('t-st'))return;
+  e('t-m2').textContent=fmt(t.m2);e('t-st').textContent=fmt(t.st);e('t-us').textContent=fmt(t.us);
+  e('t-rab').textContent=t.rab?'− '+fmt(t.rab):'0,00';e('t-osn').textContent=fmt(t.osn);e('t-pdv').textContent=fmt(t.pdv);
+  e('t-uk').textContent=fmt(t.uk)+' KM';e('t-av').textContent=fmt(t.uk*(v.avans||0)/100)+' KM';
+  v.usl.forEach((x,i)=>{const el=e('ui-'+i);if(el)el.textContent=fmt(uslItem(x.k).c*x.kol);});
+  e('ruta').innerHTML=rutaIz(v).map((s,i)=>`${i?ic('arrow',12):''}<span class="pill ${['komplet','isporuka'].includes(s)?'gray':'blue'}">${STANICE[s].n}</span>`).join('');}
+
+/* ---------- AKCIJE NA UPITU ---------- */
+function upAkt(u,t,tip,ko){u.akt.push({t,d:DANAS+' '+new Date().toTimeString().slice(0,5),ko:ko||u.kom,tip});}
+function biljeska(id){const el=document.getElementById('bilj');if(!el.value.trim())return;const u=UPITI.find(x=>x.id===id);upAkt(u,el.value.trim(),'biljeska');openUpit(id,1);}
+function napraviPonudu(id){const u=UPITI.find(x=>x.id===id);
+  if(u.mjer&&!u.mjer.done){u.mjer.done=true;upAkt(u,'Mjerenje na terenu urađeno, mjere unesene','mjerenje',u.mjer.ekipa);}
+  const t=JSON.parse(JSON.stringify(TEMPL[u.tip]||{stavke:[{opis:'Pozicija 1',st:'f6',s:1000,v:1000,kom:1,o:{brus:1}}],usl:[{k:'dost',kol:1}]}));
+  const ku=kupacOf(u.kupac);
+  u.verzije.push({v:1,datum:DANAS,poslata:null,vazi:null,rabat:ku?ku.uslovi.rabat:0,avans:ku?ku.uslovi.avans:50,rok:'10 radnih dana',nap:'',...t});
+  u.status='izrada';upAkt(u,'Ponuda v1 u izradi','ponuda');
+  openUpit(id);toast('Ponuda otvorena: unesi pozicije, cijena se računa sama');
+  setTimeout(()=>document.getElementById('editor').scrollIntoView({behavior:'smooth'}),50);}
+function novaVerzija(id){const u=UPITI.find(x=>x.id===id);const n=JSON.parse(JSON.stringify(zadnja(u)));
+  n.v++;n.datum=DANAS;n.poslata=null;n.vazi=null;u.verzije.push(n);u.status='izrada';
+  upAkt(u,`Nova verzija v${n.v} (izmjena na zahtjev kupca)`,'ponuda');openUpit(id);toast(`Napravljena v${n.v}. Prethodna verzija ostaje sačuvana.`);}
+function potvrdiMjerenje(id){const u=UPITI.find(x=>x.id===id),g=k=>document.getElementById(k).value;
+  u.mjer={datum:g('mj-d'),vrijeme:g('mj-t'),ekipa:g('mj-e'),done:false};u.status='mjerenje';
+  upAkt(u,`Zakazano mjerenje ${u.mjer.datum} u ${u.mjer.vrijeme} (${u.mjer.ekipa})`,'mjerenje');closeModal();buildNav();openUpit(id);toast('Mjerenje zakazano, ekipa vidi termin u svom rasporedu');}
+function posalji(id){const u=UPITI.find(x=>x.id===id),v=zadnja(u);v.poslata=DANAS;v.vazi=addD(DANAS,15);u.status='poslata';
+  upAkt(u,`Ponuda v${v.v} poslata na ${document.getElementById('ps-to').value}`,'mail');closeModal();openUpit(id);toast('Ponuda poslata kupcu kao PDF');}
+function odbij(id){const u=UPITI.find(x=>x.id===id);u.razlog=document.getElementById('od-r').value;u.status='odbijeno';
+  upAkt(u,'Odbijeno: '+u.razlog.toLowerCase(),'x');closeModal();openUpit(id);}
+function prihvati(id){const u=UPITI.find(x=>x.id===id),v=zadnja(u),t=calcV(v);
+  const av=document.querySelector('input[name=av]:checked').value==='da'||!v.avans;
+  const num=Math.max(...NALOZI.map(n=>+n.id.split('-')[1]))+1;
+  const n={id:'RN-'+num,kupac:u.kupac,proizvod:u.naslov,grad:u.grad,vrij:Math.round(t.osn),rok:document.getElementById('pr-rok').value,
+    status:av?'u toku':'avans',montaza:v.usl.some(x=>uslItem(x.k).mont),ruta:rutaIz(v),faza:0,pct:0,upit:u.id,
+    stavke:v.stavke.map(x=>({s:x.opis+' · '+CJ.stakla[x.st].n+(obradeTxt(x)?', '+obradeTxt(x):''),kom:x.kom,dim:x.s+'×'+x.v})),
+    log:[{t:`Kreiran iz ponude ${ponBr(u)}/${v.v}`,d:DANAS+' · '+u.kom}].concat(av?[{t:v.avans?'Avans uplaćen, pušten u proizvodnju':'Pušten u proizvodnju',d:DANAS+' · '+u.kom}]:[])};
+  NALOZI.unshift(n);u.nalog=n.id;u.status='prihvaceno';
+  upAkt(u,`Prihvaćeno → radni nalog ${n.id}${av?'':' (čeka avans)'}`,'ok');closeModal();buildNav();openUpit(id);
+  toast(`Napravljen ${n.id} sa ${n.ruta.length-2} stanica${av?', u proizvodnji':', čeka avans'}`);}
+
+/* ---------- MODALI PRODAJE ---------- */
+function modalUpit(kid){const k=kid?KUPCI.find(x=>x.id===kid):null,c=k&&k.kontakti[0]||{};return `
+  <div class="modal-h"><b>Novi upit kupca</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="grid-2" style="gap:12px">
+      <div class="fld"><label>Kupac</label><input id="nu-k" list="kupciL" placeholder="Firma ili ime i prezime" value="${k?esc(k.n):''}"><datalist id="kupciL">${KUPCI.map(k=>`<option value="${k.n}">`).join('')}</datalist></div>
+      <div class="fld"><label>Grad</label><input id="nu-g" value="${k?esc(k.grad):'Banja Luka'}"></div>
+      <div class="fld"><label>Kontakt osoba</label><input id="nu-o" placeholder="Ime i prezime" value="${c.ime?esc(c.ime):''}"></div>
+      <div class="fld"><label>Telefon</label><input id="nu-t" placeholder="06x xxx xxx" value="${c.tel?esc(c.tel):''}"></div>
+      <div class="fld"><label>Izvor</label><select id="nu-i">${['Telefon','Mail','Salon','Sajt','Preporuka'].map(x=>`<option>${x}</option>`).join('')}</select></div>
+      <div class="fld"><label>Vrsta posla</label><select id="nu-v">${['Tuš kabina','Ograda','IZO staklo','Ogledala','Pregrade','Nadstrešnica','Ostalo'].map(x=>`<option>${x}</option>`).join('')}</select></div>
+    </div>
+    <div class="fld"><label>Šta traži (kratko)</label><input id="nu-n" placeholder="npr. Staklena ograda terase ~20 m"></div>
+    <div class="fld"><label>Detalji</label><textarea id="nu-d" rows="3" placeholder="Mjere, staklo, okov, rok, napomene kupca"></textarea></div>
+    <div class="fld"><label>Komercijalista</label><select id="nu-c">${KOMERCIJALA.map(x=>`<option ${k&&k.kom===x?'selected':''}>${x}</option>`).join('')}</select></div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="sacuvajUpit()">Sačuvaj upit</button></div>`;}
+function sacuvajUpit(){const g=k=>document.getElementById(k).value.trim();
+  const num=Math.max(...UPITI.map(u=>+u.id.split('-')[1]))+1;
+  const u={id:'UP-'+num,kupac:g('nu-k')||'Novi kupac',kontakt:g('nu-o')||g('nu-k')||'—',tel:g('nu-t')||'—',email:'—',izvor:g('nu-i'),kom:g('nu-c'),grad:g('nu-g'),datum:DANAS,
+    tip:g('nu-v'),naslov:g('nu-n')||g('nu-v'),opis:g('nu-d')||'—',status:'nov',verzije:[],dok:[],akt:[]};
+  const kk=kupacOf(u.kupac)||noviKupac(u.kupac,'Novi',u.grad,'','',u.kontakt,u.tel);const kc=kk.kontakti[0];if(kc&&kc.email)u.email=kc.email;
+  upAkt(u,'Upit unesen ('+u.izvor.toLowerCase()+')','poziv');UPITI.unshift(u);closeModal();buildNav();openUpit(u.id);toast('Upit '+u.id+' sačuvan');}
+function modalMjerenje(id){const u=UPITI.find(x=>x.id===id);return `
+  <div class="modal-h"><b>Mjerenje na terenu · ${u.kupac}</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="kv"><span>Adresa / lokacija</span><b>${u.grad}</b></div>
+    <div class="grid-2" style="gap:12px;margin-top:12px">
+      <div class="fld"><label>Datum</label><input id="mj-d" value="${u.mjer?u.mjer.datum:addD(DANAS,2)}"></div>
+      <div class="fld"><label>Vrijeme</label><input id="mj-t" value="${u.mjer?u.mjer.vrijeme:'10:00'}"></div>
+    </div>
+    <div class="fld"><label>Ekipa</label><select id="mj-e">${EKIPE.map(e=>`<option ${u.mjer&&u.mjer.ekipa===e?'selected':''}>${e}</option>`).join('')}</select></div>
+    <div class="mini-note">${ic('info')}<div>Ekipa dobija termin u rasporedu. Mjere i fotografije sa terena idu direktno u ponudu.</div></div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="potvrdiMjerenje('${id}')">Zakaži</button></div>`;}
+function modalOdbij(id){return `
+  <div class="modal-h"><b>Ponuda odbijena</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b"><div class="fld"><label>Razlog</label><select id="od-r">${['Cijena','Rok izrade','Kupac odustao','Konkurencija','Ostalo'].map(x=>`<option>${x}</option>`).join('')}</select></div>
+  <div class="mini-note">${ic('info')}<div>Razlog ulazi u statistiku „Zašto gubimo ponude".</div></div></div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="odbij('${id}')">Zabilježi</button></div>`;}
+function modalPrihvati(id){const u=UPITI.find(x=>x.id===id),v=zadnja(u),t=calcV(v),r=rutaIz(v),ku=kupacOf(u.kupac),kf=ku?kFin(ku):{dosp:0};return `
+  <div class="modal-h"><b>Prihvaćeno → radni nalog</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    ${kf.dosp?`<div class="mini-note warn-note" style="margin-bottom:12px">${ic('alert')}<div>Kupac ima dospjelo neplaćeno <b>${fmt(kf.dosp)} KM</b>.</div></div>`:''}
+    <div class="kv"><span>Ponuda</span><b>${ponBr(u)}/${v.v}</b></div>
+    <div class="kv"><span>Ukupno sa PDV</span><b>${fmt(t.uk)} KM</b></div>
+    <div class="kv"><span>Pozicija / komada</span><b>${v.stavke.length} / ${v.stavke.reduce((a,x)=>a+x.kom,0)}</b></div>
+    <div class="kv"><span>Isporuka</span><b>${v.usl.some(x=>uslItem(x.k).mont)?'Montaža (naša ekipa)':'Dostava'}</b></div>
+    <div style="font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 8px">Ruta kroz staklaru</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${r.map((s,i)=>`${i?ic('arrow',12):''}<span class="pill blue">${STANICE[s].n}</span>`).join('')}</div>
+    ${v.avans?`<div class="fld" style="margin-top:16px"><label>Avans ${v.avans}% (${fmt(t.uk*v.avans/100)} KM)</label>
+      <label style="display:flex;gap:8px;align-items:center;font-weight:500;color:var(--text);margin-bottom:6px"><input type="radio" name="av" value="da" checked style="width:auto"> Uplaćen, pusti odmah u proizvodnju</label>
+      <label style="display:flex;gap:8px;align-items:center;font-weight:500;color:var(--text)"><input type="radio" name="av" value="ne" style="width:auto"> Još nije uplaćen, nalog čeka avans</label></div>`:'<input type="radio" name="av" value="da" checked hidden>'}
+    <div class="fld"><label>Rok isporuke</label><input id="pr-rok" value="${addD(DANAS,14)}"></div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="prihvati('${id}')">Napravi radni nalog</button></div>`;}
+function docHTML(u,v){const t=calcV(v);return `<div class="doc">
+  <div class="doc-h"><div><div class="doc-logo">DAS-PROM</div><div>DAS-PROM d.o.o. Banja Luka</div><div>051/381-150 · info@das-prom.com · das-prom.com</div></div>
+    <div style="text-align:right"><div class="doc-t">PONUDA / PREDRAČUN</div><div>Broj: <b>${ponBr(u)}/${v.v}</b></div><div>Datum: ${v.datum}2026.</div><div>Važi do: ${(v.vazi||addD(v.datum,15))}2026.</div></div></div>
+  <div class="doc-k"><div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:#657586">Kupac</div><b>${u.kupac}</b><div>${u.kontakt} · ${u.grad} · ${u.tel}</div></div>
+  <table class="doc-tb"><thead><tr><th>#</th><th>Opis</th><th>Dimenzije mm</th><th>Kom</th><th>m²</th><th>Iznos KM</th></tr></thead><tbody>
+    ${v.stavke.map((x,i)=>{const c=calcSt(x);return `<tr><td>${i+1}</td><td><b>${x.opis}</b><br><span>${CJ.stakla[x.st].n}${obradeTxt(x)?', '+obradeTxt(x):''}</span></td><td>${x.s} × ${x.v}</td><td>${x.kom}</td><td>${fmt(c.m2)}</td><td>${fmt(c.sum)}</td></tr>`}).join('')}
+    ${v.usl.map((x,i)=>{const it=uslItem(x.k);return `<tr><td>${v.stavke.length+i+1}</td><td><b>${it.n}</b></td><td></td><td>${x.kol} ${it.j}</td><td></td><td>${fmt(it.c*x.kol)}</td></tr>`}).join('')}
+  </tbody></table>
+  <div class="doc-sum"><div><span>Međuzbir</span><b>${fmt(t.mz)}</b></div>${t.rab?`<div><span>Rabat ${v.rabat}%</span><b>− ${fmt(t.rab)}</b></div>`:''}<div><span>Osnovica</span><b>${fmt(t.osn)}</b></div><div><span>PDV 17%</span><b>${fmt(t.pdv)}</b></div><div class="g"><span>UKUPNO KM</span><b>${fmt(t.uk)}</b></div></div>
+  <div class="doc-u"><b>Uslovi:</b> ${v.avans?`avans ${v.avans}% (${fmt(t.uk*v.avans/100)} KM) po prihvatanju ponude, ostatak prije isporuke`:'plaćanje prije isporuke'}. Rok izrade: ${v.rok}${v.avans?' od uplate avansa':''}. Obračunska površina najmanje ${String(MIN_M2).replace('.',',')} m² po komadu.${v.nap?'<br><b>Napomena:</b> '+esc(v.nap):''}</div>
+  <div class="doc-f"><div>Ponudu sastavio: ${u.kom}</div><div>Ponuda je izrađena elektronski i važi bez pečata.</div></div>
+</div>`;}
+function modalDok(id){const u=UPITI.find(x=>x.id===id),v=u.verzije[VSEL]||zadnja(u);return `
+  <div class="modal-h"><b>${ponBr(u)}/${v.v} · pregled dokumenta</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b" style="background:var(--bg)">${docHTML(u,v)}</div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Zatvori</button><button class="btn ghost" onclick="window.print()">${ic('file',16)} Štampaj / PDF</button></div>`;}
+function modalPosalji(id){const u=UPITI.find(x=>x.id===id),v=zadnja(u),t=calcV(v);return `
+  <div class="modal-h"><b>Pošalji ponudu ${ponBr(u)}/${v.v}</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="grid-2" style="gap:12px"><div class="fld"><label>Za</label><input id="ps-to" value="${u.email}"></div><div class="fld"><label>Naslov</label><input value="Ponuda ${ponBr(u)}/${v.v}, DAS-PROM"></div></div>
+    <div class="fld"><label>Poruka</label><textarea rows="4">Poštovani,
+
+u prilogu Vam šaljemo ponudu za: ${u.naslov.toLowerCase()}. Ukupan iznos je ${fmt(t.uk)} KM sa PDV-om, ponuda važi 15 dana.
+
+Srdačan pozdrav,
+${u.kom}, DAS-PROM</textarea></div>
+    <div style="font-size:12px;font-weight:600;color:var(--muted);margin:4px 0 8px">Prilog: ${ponBr(u)}-${v.v}.pdf</div>
+    ${docHTML(u,v)}
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="posalji('${id}')">${ic('mail',16)} Pošalji</button></div>`;}
+
+/* ---------- VIEW: NALOZI ---------- */
+// nalog trenutno stoji na stanici s (isto pravilo za opterećenje na dashboardu i filter liste)
+function naStanici(n,s){
+  if(n.status==='u toku'||n.status==='kasni')return n.ruta[n.faza]===s;
+  return s==='isporuka'&&n.status==='spremno';
+}
+function viewNalozi(){
+  const st=FILT&&FILT.startsWith('st:')?FILT.slice(3):null;
+  const lista=st?NALOZI.filter(n=>naStanici(n,st)):FILT?NALOZI.filter(n=>n.status===FILT):NALOZI;
+  return `
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn" onclick="openModal(modalNoviNalog())">${ic('plus',16)} Novi nalog</button>
+  </div>
+  ${filtBar('nalozi',NALOZI,[['avans','Čeka avans'],['u toku','U proizvodnji'],['kasni','Kasni'],['spremno','Spremno za isporuku'],['isporuceno','Isporučeno']])}
+  ${st?`<div class="st-filt">${ic(STANICE[st].i,15)}<span>Na stanici <b>${STANICE[st].n}</b>: ${lista.length} ${lista.length===1?'nalog':'naloga'}</span><button onclick="setFilt('nalozi',null)" title="Ukloni filter">✕</button></div>`:''}
+  <div class="card"><div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Nalog</th><th>Kupac / proizvod</th><th>Trenutna stanica</th><th>Napredak</th><th>Rok</th><th>Vrijednost</th><th>Status</th></tr></thead>
+    <tbody>${lista.map(n=>`<tr class="clickable" onclick="openNalog('${n.id}')">
+      <td class="mono" style="white-space:nowrap">${n.id}</td>
+      <td><b>${n.proizvod}</b><br><span style="color:var(--muted);font-size:12px">${n.kupac} · ${n.grad}</span></td>
+      <td>${n.status==='avans'?'<span class="pill amber">Čeka avans</span>':(n.status==='spremno'||n.status==='isporuceno')?ispPill(n):`<span class="pill blue">${STANICE[n.ruta[n.faza]].n}</span>`}</td>
+      <td style="min-width:130px"><div class="progress"><div class="bar ${rutaPct(n)===100?'full':''}" style="width:${rutaPct(n)}%"></div></div><span style="font-size:11px;color:var(--muted)">${rutaPct(n)}%</span></td>
+      <td>${n.rok}</td><td class="mono">${n.vrij.toLocaleString('de-DE')} KM</td><td>${statusPill(n.status)}</td></tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:26px">Trenutno nema naloga na ovoj stanici.</td></tr>`}</tbody>
+  </table></div></div>`;
+}
+
+/* ---------- VIEW: PROIZVODNJA (kanban po stanicama) ---------- */
+function viewProizvodnja(){
+  const cols=['rez','brus','kal','pjesk','far','lam','izo'];
+  const byStanica={};cols.forEach(c=>byStanica[c]=[]);
+  NALOZI.forEach(n=>{if(n.status==='u toku'||n.status==='kasni'){const cur=n.ruta[n.faza];if(byStanica[cur])byStanica[cur].push(n);}});
+  return `
+  <div class="mini-note" style="margin-bottom:16px">${ic('info')}<div>Svaka kolona je jedna <b>stanica u staklari</b>. Kad radnik na stanici završi, nalog klizne u sljedeću, a rukovodilac uživo vidi gdje je zastoj. (U punoj verziji: tablet/skener na stanici.)</div></div>
+  <div class="kanban">
+    ${cols.map(c=>`<div class="kcol">
+      <div class="kcol-h"><span>${STANICE[c].n}</span><span class="cnt">${byStanica[c].length}</span></div>
+      ${byStanica[c].map(n=>`<div class="kcard" onclick="openNalog('${n.id}')">
+        <b>${n.id}</b><div class="kc-sub">${n.proizvod}</div>
+        <div class="kc-foot"><span>${n.kupac.split(' ')[0]}</span>${n.status==='kasni'?'<span class="pill red" style="padding:1px 7px">kasni</span>':`<span>rok ${n.rok}</span>`}</div>
+      </div>`).join('')||`<div style="font-size:11.5px;color:var(--muted);text-align:center;padding:14px 0">—</div>`}
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ---------- VIEW: LOGISTIKA ---------- */
+// u logistiku ulaze SAMO nalozi završeni u proizvodnji (status spremno/isporuceno).
+// n.isp = plan izlaska: {tip, datum, vrijeme, ekipa, adresa, nap, status: zakazano | teren | isporuceno}
+const TERENSKI=EKIPE.concat(['Kombi (Dragan)']);
+const ISP_ST={zakazano:['blue','Zakazano'],teren:['green','Na terenu'],isporuceno:['gray','Isporučeno']};
+const ispPill=n=>n.isp?`<span class="pill ${ISP_ST[n.isp.status][0]}">${n.isp.status==='isporuceno'&&n.montaza?'Montirano':ISP_ST[n.isp.status][1]}</span>`:'<span class="pill amber">Čeka zakazivanje</span>';
+const tipPill=n=>`<span class="pill ${n.montaza?'violet':'gray'}">${n.montaza?'Montaža':'Dostava'}</span>`;
+const ispBack=id=>{if(CUR==='nalog')openNalog(id);else go('logistika');};
+// izlasci na teren: isporuke/montaže + mjerenja iz prodaje (isti raspored ekipa)
+function izlasci(){
+  const a=NALOZI.filter(n=>n.isp&&n.isp.status!=='isporuceno').map(n=>({dat:n.isp.datum,vr:n.isp.vrijeme,ekipa:n.isp.ekipa,n,
+    t:`${n.id} · ${n.proizvod}`,s:`${n.kupac} · ${n.isp.adresa}`,on:`openNalog('${n.id}')`}));
+  const m=UPITI.filter(u=>u.status==='mjerenje'&&u.mjer&&!u.mjer.done).map(u=>({dat:u.mjer.datum,vr:u.mjer.vrijeme,ekipa:u.mjer.ekipa,u,
+    t:`Mjerenje · ${u.naslov}`,s:`${u.kupac} · ${u.grad}`,on:`openUpit('${u.id}')`}));
+  return a.concat(m).sort((x,y)=>pd(x.dat)-pd(y.dat)||x.vr.localeCompare(y.vr));
+}
+function danNaziv(d){const x=dana(d);return x===0?'Danas':x===-1?'Sutra':['nedjelja','ponedjeljak','utorak','srijeda','četvrtak','petak','subota'][pd(d).getDay()];}
+function viewLogistika(){
+  const ceka=NALOZI.filter(n=>n.status==='spremno'&&!n.isp);
+  const iz=izlasci(), danas=iz.filter(x=>x.dat===DANAS), teren=NALOZI.filter(n=>n.isp&&n.isp.status==='teren');
+  const gotovo=NALOZI.filter(n=>n.status==='isporuceno');
+  const dani=[...new Set(iz.map(x=>x.dat))];
+  const akc=n=>n.isp.status==='zakazano'
+    ?`<button class="btn sm" onclick="event.stopPropagation();krenuli('${n.id}')">Krenuli</button><button class="btn sm ghost" onclick="event.stopPropagation();openModal(modalZakazi('${n.id}'))">Pomjeri</button>`
+    :`<button class="btn sm" onclick="event.stopPropagation();openModal(modalIsporuceno('${n.id}'))">${ic('check',14)} ${n.montaza?'Montirano':'Isporučeno'}</button>`;
+  return `
+  <div class="kpi-grid">
+    <div class="kpi ${ceka.some(n=>dana(n.rok)>0)?'alert':ceka.length?'warn':''}" style="cursor:default"><div class="ico amber">${ic('box')}</div><div class="num">${ceka.length}</div><div class="lab">Gotovo, čeka zakazivanje</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico blue">${ic('clock')}</div><div class="num">${danas.length}</div><div class="lab">Izlazaka danas</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico green">${ic('truck')}</div><div class="num">${teren.length}</div><div class="lab">Ekipa na terenu sada</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico teal">${ic('check')}</div><div class="num">${gotovo.length}</div><div class="lab">Isporučeno ove sedmice</div></div>
+  </div>
+
+  <div class="two-col" style="margin-top:18px">
+    <div>
+      <div class="card">
+        <div class="panel-h"><b>Gotovo u proizvodnji, čeka zakazivanje</b><span class="pill gray">${ceka.length}</span></div>
+        ${ceka.length?ceka.map(n=>`<div class="list-row" onclick="openNalog('${n.id}')">
+          <div class="ico amber" style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center">${ic(n.montaza?'logistika':'box',17)}</div>
+          <div class="r-main"><b>${n.id} · ${n.proizvod}</b><span>${n.kupac} · ${n.grad} · rok ${n.rok}${dana(n.rok)>0?` <b style="color:var(--red)">(prošao prije ${dana(n.rok)} ${dn(dana(n.rok))})</b>`:''}</span></div>
+          <div class="r-act">${tipPill(n)}<button class="btn sm" onclick="event.stopPropagation();openModal(modalZakazi('${n.id}'))">Zakaži</button></div></div>`).join('')
+          :`<div style="padding:18px;font-size:12.5px;color:var(--muted)">Sve gotovo je zakazano.</div>`}
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="panel-h"><b>Raspored izlazaka na teren</b><span style="font-size:11.5px;color:var(--muted)">isporuke, montaže i mjerenja</span></div>
+        ${dani.map(d=>`<div class="day-h">${danNaziv(d)} · ${d}</div>
+          ${iz.filter(x=>x.dat===d).map(x=>`<div class="list-row izl" onclick="${x.on}">
+            <div class="mono vr">${x.vr}</div>
+            <div class="r-main"><b>${x.t}</b><span>${x.s} · ${x.ekipa}</span>${x.n&&x.n.isp.nap?`<span style="color:var(--amber)">${x.n.isp.nap}</span>`:''}</div>
+            <div class="r-act">${x.n?tipPill(x.n)+ispPill(x.n)+akc(x.n):'<span class="pill violet">Mjerenje</span>'}</div>
+          </div>`).join('')}`).join('')||`<div style="padding:18px;font-size:12.5px;color:var(--muted)">Nema zakazanih izlazaka.</div>`}
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="panel-h"><b>Isporučeno</b><span class="pill gray">${gotovo.length}</span></div>
+        ${gotovo.map(n=>`<div class="list-row" onclick="openNalog('${n.id}')">
+          <div class="ico green" style="width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center">${ic('check',17)}</div>
+          <div class="r-main"><b>${n.id} · ${n.proizvod}</b><span>${n.kupac} · ${n.isp.datum} · ${n.isp.ekipa}${n.isp.primio?' · primio: '+n.isp.primio:''}</span></div><div class="r-act">${tipPill(n)}</div></div>`).join('')||`<div style="padding:18px;font-size:12.5px;color:var(--muted)">—</div>`}
+      </div>
+    </div>
+
+    <div class="card" style="align-self:start">
+      <div class="panel-h"><b>Ekipe i vozila</b></div>
+      ${TERENSKI.map((e,i)=>{const t=teren.find(n=>n.isp.ekipa===e), nx=iz.find(x=>x.ekipa===e&&!(x.n&&x.n.isp.status==='teren'));
+        const [c,st,txt]=t?['green','na terenu',`${t.kupac} · ${t.isp.adresa}`]:nx?[nx.dat===DANAS?'amber':'gray',nx.dat===DANAS?'danas '+nx.vr:nx.dat,`Sljedeće: ${nx.t.split(' · ')[0]==='Mjerenje'?'mjerenje, ':''}${(nx.n||nx.u).kupac}`]:['gray','slobodna','Nema zakazanih izlazaka'];
+        return `<div class="list-row" style="cursor:default"><div class="avatar-sm" style="background:var(--${c==='gray'?'teal-2':c})">${e.startsWith('Kombi')?'K':'E'+(i+1)}</div>
+          <div class="r-main"><b>${e}</b><span>${t&&nx?txt+' · zatim '+(nx.dat===DANAS?'':nx.dat+' ')+nx.vr+' '+(nx.n||nx.u).kupac:txt}</span></div><span class="pill ${c}">${st}</span></div>`}).join('')}
+      <div class="mini-note" style="margin:14px 18px 18px">${ic('info')}<div>Ekipe vide svoj raspored na telefonu: adresa, kontakt, šta nose. Na licu mjesta potvrde montažu, kupac se obavještava, a nalog ide na fakturisanje.</div></div>
+    </div>
+  </div>`;
+}
+function modalZakazi(id){const n=NALOZI.find(x=>x.id===id),k=kupacOf(n.kupac),p=n.isp||{};
+  const adrese=(k?k.objekti.map(o=>o.n+', '+o.a):[]).concat(k?[k.adresa+', '+k.grad]:[n.grad]);
+  return `
+  <div class="modal-h"><b>${n.isp?'Pomjeri':'Zakaži'} ${n.montaza?'montažu':'isporuku'} · ${n.id}</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="kv"><span>Kupac</span><b>${n.kupac}</b></div>
+    <div class="kv"><span>Šta</span><b>${n.proizvod}</b></div>
+    <div class="grid-2" style="gap:12px;margin-top:12px">
+      <div class="fld"><label>Vrsta</label><select id="zk-tip"><option value="m" ${n.montaza?'selected':''}>Montaža (naša ekipa)</option><option value="d" ${!n.montaza?'selected':''}>Dostava</option></select></div>
+      <div class="fld"><label>Ekipa / vozilo</label><select id="zk-e">${TERENSKI.map(e=>`<option ${p.ekipa===e||(!p.ekipa&&!n.montaza&&e.startsWith('Kombi'))?'selected':''}>${e}</option>`).join('')}</select></div>
+      <div class="fld"><label>Datum</label><input id="zk-d" value="${p.datum||addD(DANAS,1)}"></div>
+      <div class="fld"><label>Vrijeme</label><input id="zk-v" value="${p.vrijeme||'08:00'}"></div>
+    </div>
+    <div class="fld"><label>Adresa</label><select id="zk-a">${[...new Set(adrese)].map(a=>`<option ${p.adresa===a?'selected':''}>${a}</option>`).join('')}</select></div>
+    <div class="fld"><label>Napomena za ekipu</label><input id="zk-n" value="${esc(p.nap||'')}" placeholder="npr. najaviti se pola sata ranije"></div>
+    <div class="mini-note">${ic('info')}<div>Kupac dobija SMS/mail sa terminom, ekipa vidi izlazak u svom rasporedu.</div></div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="zakazi('${id}')">${n.isp?'Sačuvaj termin':'Zakaži'}</button></div>`;}
+function zakazi(id){const n=NALOZI.find(x=>x.id===id),g=k=>document.getElementById(k).value;
+  n.montaza=g('zk-tip')==='m';
+  n.isp={tip:n.montaza?'montaza':'dostava',datum:g('zk-d'),vrijeme:g('zk-v'),ekipa:g('zk-e'),adresa:g('zk-a'),nap:g('zk-n'),status:'zakazano'};
+  n.log.push({t:`Zakazana ${n.montaza?'montaža':'isporuka'} ${n.isp.datum} u ${n.isp.vrijeme} (${n.isp.ekipa})`,d:'sad · demo'});
+  closeModal();buildNav();ispBack(id);toast('Termin zakazan, kupac obaviješten');}
+function krenuli(id){const n=NALOZI.find(x=>x.id===id);n.isp.status='teren';
+  n.log.push({t:'Ekipa krenula na teren ('+n.isp.ekipa+')',d:'sad · demo'});ispBack(id);toast('Ekipa na terenu');}
+function modalIsporuceno(id){const n=NALOZI.find(x=>x.id===id),k=kupacOf(n.kupac);return `
+  <div class="modal-h"><b>${n.montaza?'Montirano':'Isporučeno'} · ${n.id}</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="fld"><label>Primio (ime kupca / predstavnika)</label><input id="is-p" value="${k&&k.kontakti[0]?esc(k.kontakti[0].ime):''}"></div>
+    <div class="fld"><label>Napomena</label><input id="is-n" placeholder="npr. sve uredno, bez oštećenja"></div>
+    <button class="btn ghost sm" onclick="toast('Fotografija sa terena u punoj verziji')">${ic('plus',14)} Fotografija montaže</button>
+    <div class="mini-note" style="margin-top:14px">${ic('info')}<div>Nalog se zatvara i ide na fakturisanje ostatka iznosa.</div></div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="isporuci('${id}')">Potvrdi</button></div>`;}
+function isporuci(id){const n=NALOZI.find(x=>x.id===id),g=k=>document.getElementById(k).value.trim();
+  n.isp.status='isporuceno';n.isp.primio=g('is-p');if(g('is-n'))n.isp.nap=g('is-n');n.status='isporuceno';n.faza=n.ruta.length-1;
+  n.log.push({t:(n.montaza?'Montirano':'Isporučeno')+(n.isp.primio?', primio '+n.isp.primio:''),d:'sad · demo'});
+  closeModal();buildNav();ispBack(id);toast('Nalog zatvoren, ide na fakturisanje');}
+
+/* ---------- VIEW: MAGACIN ---------- */
+function viewMagacin(){
+  const nisko=MAGACIN.filter(m=>!m.ok).length;
+  return `
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px">
+    <div class="kpi" style="cursor:default"><div class="ico teal">${ic('magacin')}</div><div class="num">${MAGACIN.length}</div><div class="lab">Artikala na zalihama</div></div>
+    <div class="kpi ${nisko?'alert':''}" style="cursor:default"><div class="ico red">${ic('alert')}</div><div class="num">${nisko}</div><div class="lab">Ispod minimuma</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico green">${ic('check')}</div><div class="num">${MAGACIN.length-nisko}</div><div class="lab">Dovoljno</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Artikal</th><th>Jedinica</th><th>Stanje</th><th>Minimum</th><th>Status</th></tr></thead>
+    <tbody>${MAGACIN.map(m=>`<tr>
+      <td><b>${m.art}</b></td><td>${m.jed}</td><td class="mono">${m.stanje}</td><td class="mono" style="color:var(--muted)">${m.min}</td>
+      <td>${m.ok?'<span class="pill green">OK</span>':'<span class="pill red"><span class="dot"></span>Naruči</span>'}</td></tr>`).join('')}</tbody>
+  </table></div></div>
+  <div class="mini-note" style="margin-top:16px">${ic('info')}<div>Kad nalog krene u rezanje, sistem automatski skida staklo sa zalihe i javlja kad padne ispod minimuma, pa nema više iznenađenja da „nema table".</div></div>`;
+}
+
+/* ---------- VIEW: KUPCI ---------- */
+const kupacOf=n=>KUPCI.find(k=>k.n===n);
+const kLink=n=>kupacOf(n)?`<button class="klink" onclick="event.stopPropagation();openKupac('${kupacOf(n).id}')">${n}</button>`:n;
+// finansije kupca iz faktura: otvoreno i dospjelo neplaćeno
+function kFin(k){
+  const otv=k.fakture.reduce((a,f)=>a+f.iznos-f.pl,0);
+  const dosp=k.fakture.filter(f=>f.iznos>f.pl&&dana(f.dosp)>0);
+  return {otv,dosp:dosp.reduce((a,f)=>a+f.iznos-f.pl,0),dospDana:dosp.length?Math.max(...dosp.map(f=>dana(f.dosp))):0};
+}
+function kLive(k){
+  const nal=NALOZI.filter(n=>n.kupac===k.n), up=UPITI.filter(u=>u.kupac===k.n);
+  const akt=nal.filter(n=>!['spremno','isporuceno'].includes(n.status)), otvP=up.filter(u=>['nov','mjerenje','izrada','poslata'].includes(u.status));
+  return {nal,up,akt,otvP,otvV:otvP.reduce((a,u)=>a+(vrijU(u)||0),0)};
+}
+const TIP_PILL={'Privatno':'gray','Firma':'blue','Izvođač':'violet','Investitor':'violet','Javna ustanova':'amber','Novi':'gray'};
+function viewKupci(){
+  const tipovi=[...new Set(KUPCI.map(k=>k.tip))];
+  const lista=FILT?KUPCI.filter(k=>k.tip===FILT):KUPCI;
+  return `
+  <div style="margin-bottom:16px"><button class="btn" onclick="openModal(modalKupac())">${ic('plus',16)} Novi kupac</button></div>
+  <div class="card">
+    <div style="padding:14px 18px 0"><div class="filt">${[[null,'Svi']].concat(tipovi.map(t=>[t,t])).map(([v,l])=>`<button class="${FILT===v?'on':''}" onclick="setFilt('kupci',${v?`'${v}'`:'null'})">${l}<span class="c">${v?KUPCI.filter(k=>k.tip===v).length:KUPCI.length}</span></button>`).join('')}</div></div>
+    <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Kupac</th><th>Tip</th><th>Grad</th><th>Aktivno</th><th style="text-align:right">Promet 2026</th><th style="text-align:right">Otvoreno</th><th>Komerc.</th></tr></thead>
+    <tbody>${lista.map(k=>{const f=kFin(k),l=kLive(k);return `<tr class="clickable" onclick="openKupac('${k.id}')">
+      <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar-sm">${initials(k.n)}</div><div><b>${k.n}</b><br><span style="color:var(--muted);font-size:11.5px">${k.id} · kupac od ${k.od}.</span></div></div></td>
+      <td><span class="pill ${TIP_PILL[k.tip]||'gray'}">${k.tip}</span></td><td>${k.grad}</td>
+      <td style="font-size:12.5px">${l.akt.length?`${l.akt.length} ${l.akt.length===1?'nalog':'naloga'}`:''}${l.akt.length&&l.otvP.length?' · ':''}${l.otvP.length?`${l.otvP.length} ${l.otvP.length===1?'upit':'upita'}`:''}${!l.akt.length&&!l.otvP.length?'<span style="color:var(--muted)">—</span>':''}</td>
+      <td class="mono" style="text-align:right">${k.ist.god?fmt0(k.ist.god)+' KM':'—'}</td>
+      <td class="mono" style="text-align:right">${f.otv?`<span style="color:${f.dosp?'var(--red)':'var(--text)'}">${fmt0(f.otv)} KM</span>${f.dosp?'<br><span class="pill red" style="padding:0 7px;font-size:10.5px">dospjelo</span>':''}`:'—'}</td>
+      <td>${k.kom}</td></tr>`}).join('')}</tbody>
+  </table></div></div>`;
+}
+
+/* ---------- KARTA KUPCA ---------- */
+function openKupac(id){
+  const k=KUPCI.find(x=>x.id===id);if(!k)return;
+  const f=kFin(k), l=kLive(k);
+  CUR='kupac';
+  document.getElementById('pgTitle').textContent=k.n;
+  document.getElementById('pgSub').textContent='Karta kupca · '+k.id;
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.k==='kupci'));
+  // aktivnosti iz svih upita i naloga ovog kupca, najnovije prvo
+  const dOf=s=>{const m=/(\d\d)\.(\d\d)\./.exec(s);return m?pd(m[0]):TODAY;};
+  const akt=[].concat(
+    ...l.up.map(u=>u.akt.map(a=>({t:a.t,d:a.d+' · '+a.ko,ref:u.id,on:`openUpit('${u.id}')`,dt:dOf(a.d)}))),
+    ...l.nal.map(n=>n.log.map(a=>({t:a.t,d:a.d,ref:n.id,on:`openNalog('${n.id}')`,dt:dOf(a.d)})))
+  ).sort((a,b)=>b.dt-a.dt).slice(0,12);
+  const k1=k.kontakti[0]||{};
+  document.getElementById('content').innerHTML=`
+  <div class="crumb"><button onclick="go('kupci')">Kupci</button> ${ic('arrow',13)} <b style="color:var(--text)">${k.n}</b></div>
+  ${f.dosp?`<div class="mini-note warn-note" style="margin-bottom:14px">${ic('alert')}<div><b>Dospjelo neplaćeno ${fmt(f.dosp)} KM</b> (kasni ${f.dospDana} ${dn(f.dospDana)}). Prije puštanja novog naloga provjeriti uplatu.</div></div>`:''}
+  <div class="card" style="padding:22px">
+    <div class="detail-head">
+      <div style="width:56px;height:56px;border-radius:14px;background:var(--teal-2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;flex-shrink:0">${initials(k.n)}</div>
+      <div class="dh-main">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2>${k.n}</h2><span class="pill ${TIP_PILL[k.tip]||'gray'}">${k.tip}</span></div>
+        <div class="meta">
+          <div class="m"><b>Adresa</b><span>${k.adresa}, ${k.grad}</span></div>
+          ${k.jib?`<div class="m"><b>JIB</b><span>${k.jib}</span></div>`:''}
+          <div class="m"><b>Kupac od</b><span>${k.od}.</span></div>
+          <div class="m"><b>Komercijalista</b><span>${k.kom}</span></div>
+        </div>
+      </div>
+      <div class="dh-stat"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600">Promet 2026</div><div class="dh-pct" style="font-size:26px">${fmt0(k.ist.god)} KM</div><div style="font-size:11.5px;color:var(--muted)">bez PDV</div></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+      <button class="btn" onclick="openModal(modalUpit('${k.id}'))">${ic('plus',16)} Novi upit</button>
+      ${k1.tel?`<button class="btn ghost" onclick="toast('Poziv se bilježi u aktivnosti kupca')">${ic('phone',16)} Pozovi ${k1.tel}</button>`:''}
+      ${k1.email?`<button class="btn ghost" onclick="toast('Mail se šalje iz sistema i ostaje u istoriji kupca')">${ic('mail',16)} Pošalji mail</button>`:''}
+      <button class="btn ghost" onclick="toast('Izmjena matičnih podataka u punoj verziji')">${ic('edit',16)} Izmijeni podatke</button>
+    </div>
+  </div>
+
+  <div class="kpi-grid k5" style="margin-top:16px">
+    <div class="kpi" style="cursor:default"><div class="ico teal">${ic('clock')}</div><div class="num">${fmt0(k.ist.promet)}</div><div class="lab">Ukupan promet od ${k.od}. (KM)</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico blue">${ic('nalozi')}</div><div class="num">${k.ist.nalozi}</div><div class="lab">Naloga ukupno</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico blue">${ic('proizvodnja')}</div><div class="num">${l.akt.length}</div><div class="lab">Aktivnih naloga sada</div></div>
+    <div class="kpi" style="cursor:default"><div class="ico amber">${ic('file')}</div><div class="num">${fmt0(l.otvV)}</div><div class="lab">${l.otvP.length} otvorenih upita/ponuda (KM)</div></div>
+    <div class="kpi ${f.dosp?'alert':''}" style="cursor:default"><div class="ico ${f.dosp?'red':'green'}">${ic(f.dosp?'alert':'check')}</div><div class="num">${fmt0(f.otv)}</div><div class="lab">${f.dosp?'Dug, od toga dospjelo '+fmt0(f.dosp):'Otvoreno, ništa ne kasni'} (KM)</div></div>
+  </div>
+
+  <div class="two-col" style="margin-top:16px">
+    <div>
+      <div class="card">
+        <div class="panel-h"><b>Radni nalozi</b><span class="pill gray">${l.nal.length}</span></div>
+        ${l.nal.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nalog</th><th>Proizvod</th><th>Napredak</th><th>Rok</th><th>Status</th></tr></thead>
+        <tbody>${l.nal.map(n=>`<tr class="clickable" onclick="openNalog('${n.id}')"><td class="mono" style="white-space:nowrap">${n.id}</td><td>${n.proizvod}</td>
+          <td style="min-width:110px"><div class="progress"><div class="bar ${rutaPct(n)===100?'full':''}" style="width:${rutaPct(n)}%"></div></div><span style="font-size:11px;color:var(--muted)">${rutaPct(n)}%</span></td>
+          <td>${n.rok}</td><td>${statusPill(n.status)}</td></tr>`).join('')}</tbody></table></div>`
+          :`<div style="padding:18px;font-size:12.5px;color:var(--muted)">Nema naloga u sistemu.${k.ist.nalozi?` Starijih ${k.ist.nalozi} naloga se uvozi iz Excela.`:''}</div>`}
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="panel-h"><b>Upiti i ponude</b><span class="pill gray">${l.up.length}</span></div>
+        ${l.up.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Upit</th><th>Šta traži</th><th style="text-align:right">Vrijednost</th><th>Status</th></tr></thead>
+        <tbody>${l.up.map(u=>{const vr=vrijU(u);return `<tr class="clickable" onclick="openUpit('${u.id}')"><td class="mono" style="white-space:nowrap">${u.id}</td><td>${u.naslov}<br><span style="color:var(--muted);font-size:11.5px">${u.datum}</span></td>
+          <td class="mono" style="text-align:right">${vr?fmt0(vr)+' KM':'—'}</td><td>${statusPill(u.status)}</td></tr>`}).join('')}</tbody></table></div>`
+          :`<div style="padding:18px;font-size:12.5px;color:var(--muted)">Nema upita.</div>`}
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="panel-h"><b>Fakture i uplate</b><span style="font-size:11.5px;color:var(--muted)">iznosi sa PDV</span></div>
+        ${k.fakture.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Faktura</th><th>Datum</th><th>Dospijeće</th><th style="text-align:right">Iznos</th><th style="text-align:right">Uplaćeno</th><th>Status</th></tr></thead>
+        <tbody>${k.fakture.map(x=>{const ost=x.iznos-x.pl,kasni=ost>0&&dana(x.dosp)>0;return `<tr><td class="mono">${x.br}</td><td>${x.d}</td><td>${x.dosp}</td>
+          <td class="mono" style="text-align:right">${fmt(x.iznos)}</td><td class="mono" style="text-align:right">${fmt(x.pl)}</td>
+          <td>${ost<=0?'<span class="pill green">Plaćeno</span>':kasni?`<span class="pill red">Kasni ${dana(x.dosp)} ${dn(dana(x.dosp))}</span>`:x.pl?'<span class="pill amber">Djelimično</span>':'<span class="pill blue">Otvoreno</span>'}</td></tr>`}).join('')}</tbody></table></div>`
+          :`<div style="padding:18px;font-size:12.5px;color:var(--muted)">Nema faktura.</div>`}
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="padding:18px">
+        <div class="panel-h" style="padding:0 0 10px"><b>Kontakt osobe</b><button class="lnk" onclick="toast('Dodavanje kontakta u punoj verziji')">+ Dodaj</button></div>
+        ${k.kontakti.map(c=>`<div class="list-row" style="padding:10px 0"><div class="avatar-sm" style="background:var(--aqua)">${initials(c.ime)}</div>
+          <div class="r-main"><b>${c.ime}</b>${c.uloga?` <span class="pill gray" style="display:inline-flex;padding:0 7px;margin-left:4px">${c.uloga}</span>`:''}<span>${c.tel}${c.email?' · '+c.email:''}</span></div></div>`).join('')}
+      </div>
+      <div class="card" style="padding:18px;margin-top:16px">
+        <div class="panel-h" style="padding:0 0 10px"><b>Uslovi saradnje</b><button class="lnk" onclick="toast('Izmjena uslova u punoj verziji')">Izmijeni</button></div>
+        <div class="kv"><span>Cjenovnik</span><b>${k.uslovi.cjen}</b></div>
+        <div class="kv"><span>Rabat</span><b>${k.uslovi.rabat}%</b></div>
+        <div class="kv"><span>Avans</span><b>${k.uslovi.avans?k.uslovi.avans+'% po prihvatanju':'bez avansa'}</b></div>
+        <div class="kv"><span>Rok plaćanja</span><b>${k.uslovi.rokPl?k.uslovi.rokPl+' dana':'prije isporuke'}</b></div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Rabat i avans se automatski upisuju u svaku novu ponudu ovom kupcu.</div>
+      </div>
+      <div class="card" style="padding:18px;margin-top:16px">
+        <div class="panel-h" style="padding:0 0 10px"><b>Objekti / adrese montaže</b></div>
+        ${k.objekti.length?k.objekti.map(o=>`<div class="list-row" style="padding:9px 0" onclick="toast('Mapa i upute za ekipu u punoj verziji')">${ic('logistika',16)}<div class="r-main"><b style="font-size:12.5px">${o.n}</b><span>${o.a}</span></div></div>`).join(''):'<div style="font-size:12px;color:var(--muted)">Nema upisanih objekata.</div>'}
+      </div>
+      ${k.nap?`<div class="card" style="padding:18px;margin-top:16px"><div class="panel-h" style="padding:0 0 8px"><b>Napomena</b></div><div style="font-size:13px">${k.nap}</div></div>`:''}
+      <div class="card" style="padding:18px;margin-top:16px">
+        <div class="panel-h" style="padding:0 0 14px"><b>Istorija saradnje</b><span style="font-size:11.5px;color:var(--muted)">upiti i nalozi</span></div>
+        ${akt.length?`<ul class="timeline">${akt.map(a=>`<li style="cursor:pointer" onclick="${a.on}"><b>${a.t}</b><span>${a.ref} · ${a.d}</span></li>`).join('')}</ul>`:'<div style="font-size:12px;color:var(--muted)">Još nema aktivnosti.</div>'}
+      </div>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);toggleSb(false);
+}
+function modalKupac(){return `
+  <div class="modal-h"><b>Novi kupac</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="fld"><label>Naziv (firma ili ime i prezime)</label><input id="nk-n"></div>
+    <div class="grid-2" style="gap:12px">
+      <div class="fld"><label>Tip</label><select id="nk-t">${['Firma','Privatno','Izvođač','Investitor','Javna ustanova'].map(x=>`<option>${x}</option>`).join('')}</select></div>
+      <div class="fld"><label>JIB (za firme)</label><input id="nk-j"></div>
+      <div class="fld"><label>Adresa</label><input id="nk-a"></div>
+      <div class="fld"><label>Grad</label><input id="nk-g" value="Banja Luka"></div>
+      <div class="fld"><label>Kontakt osoba</label><input id="nk-o"></div>
+      <div class="fld"><label>Telefon</label><input id="nk-p"></div>
+    </div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="sacuvajKupca()">Sačuvaj</button></div>`;}
+function noviKupac(n,tip,grad,adresa,jib,ime,tel){
+  const num=Math.max(...KUPCI.map(k=>+k.id.split('-')[1]))+1;
+  const k={id:'K-'+String(num).padStart(3,'0'),n,tip,grad,adresa:adresa||'—',jib:jib||'',od:'2026',kom:'Jelena',
+    kontakti:ime||tel?[{ime:ime||n,uloga:'',tel:tel||'—',email:''}]:[],uslovi:{rabat:0,rokPl:0,avans:50,cjen:'Maloprodaja'},
+    ist:{nalozi:0,promet:0,god:0},objekti:[],fakture:[],nap:''};
+  KUPCI.push(k);return k;
+}
+function sacuvajKupca(){const g=x=>document.getElementById(x).value.trim();if(!g('nk-n')){toast('Upiši naziv kupca');return;}
+  const k=noviKupac(g('nk-n'),g('nk-t'),g('nk-g'),g('nk-a'),g('nk-j'),g('nk-o'),g('nk-p'));closeModal();openKupac(k.id);toast('Kupac '+k.id+' sačuvan');}
+
+/* ---------- NALOG DETALJ ---------- */
+let NBACK='nalozi'; // odakle je nalog otvoren (za povratak)
+function openNalog(id){
+  const n=NALOZI.find(x=>x.id===id);if(!n)return;
+  if(PAGES.some(p=>p.k===CUR))NBACK=CUR;
+  const gotov=n.status==='spremno'||n.status==='isporuceno';
+  const c=document.getElementById('content');
+  CUR='nalog';
+  document.getElementById('pgTitle').textContent=n.id;
+  document.getElementById('pgSub').textContent=n.proizvod;
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  c.innerHTML=`
+  <div class="crumb"><button onclick="go(NBACK)">${PAGES.find(p=>p.k===NBACK).n}</button> ${ic('arrow',13)} <b style="color:var(--text)">${n.id}</b></div>
+  <div class="card" style="padding:22px">
+    <div class="detail-head">
+      <div class="dh-main">
+        <h2>${n.proizvod}</h2>
+        <div class="meta">
+          <div class="m"><b>Kupac</b><span>${kLink(n.kupac)}</span></div>
+          <div class="m"><b>Lokacija</b><span>${n.grad}</span></div>
+          <div class="m"><b>Rok</b><span>${n.rok}</span></div>
+          <div class="m"><b>Vrijednost</b><span>${n.vrij.toLocaleString('de-DE')} KM</span></div>
+          <div class="m"><b>Isporuka</b><span>${n.montaza?'Montaža (naša ekipa)':'Dostava'}</span></div>
+          ${n.upit?`<div class="m"><b>Iz ponude</b><span><button style="color:var(--teal-2);font-weight:700" onclick="openUpit('${n.upit}')">${n.upit} →</button></span></div>`:''}
+        </div>
+      </div>
+      <div class="dh-stat">${statusPill(n.status)}<div class="dh-pct">${rutaPct(n)}%</div><div class="dh-pl">završeno</div></div>
+    </div>
+    <div style="margin-top:22px">
+      <div class="section-title" style="margin:0 0 14px">Tok kroz staklaru${gotov?' <span class="pill green" style="text-transform:none;letter-spacing:0">proizvodnja završena</span>':''}</div>
+      <div class="phase-track">
+        ${n.ruta.map((s,i)=>{const dn_=i<n.faza||n.status==='isporuceno',cls=dn_?'done':(i===n.faza?'active':'');return `<div class="ph ${cls}"><div class="dot">${dn_?ic('check',14):ic(STANICE[s].i,14)}</div><div class="pl">${STANICE[s].n}${i===n.faza&&n.status!=='spremno'?`<br><span style="color:var(--aqua)">${n.pct}%</span>`:''}</div></div>`}).join('')}
+      </div>
+    </div>
+  </div>
+
+  ${gotov?`<div class="card" style="margin-top:16px;padding:18px">
+    <div class="panel-h" style="padding:0 0 10px"><b>${n.montaza?'Montaža':'Isporuka'}</b>${ispPill(n)}</div>
+    ${n.isp?`<div class="kv"><span>Termin</span><b>${danNaziv(n.isp.datum)} ${n.isp.datum} u ${n.isp.vrijeme}</b></div>
+      <div class="kv"><span>${n.montaza?'Ekipa':'Vozilo'}</span><b>${n.isp.ekipa}</b></div>
+      <div class="kv"><span>Adresa</span><b>${n.isp.adresa}</b></div>
+      ${n.isp.nap?`<div class="kv"><span>Napomena</span><b>${n.isp.nap}</b></div>`:''}
+      ${n.isp.primio?`<div class="kv"><span>Primio</span><b>${n.isp.primio}</b></div>`:''}`
+    :`<div style="font-size:12.5px;color:var(--muted)">Staklo je gotovo i kompletirano. Termin ${n.montaza?'montaže':'isporuke'} još nije zakazan${dana(n.rok)>0?`, a rok ${n.rok} je prošao`:''}.</div>`}
+  </div>`:''}
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card">
+      <div class="panel-h"><b>Stavke naloga</b></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Stavka</th><th>Kom</th><th>Dimenzije (mm)</th></tr></thead>
+      <tbody>${n.stavke.map(s=>`<tr><td><b>${s.s}</b></td><td class="mono">${s.kom}</td><td>${s.dim}</td></tr>`).join('')}</tbody></table></div>
+    </div>
+    <div class="card" style="padding:18px">
+      <div class="panel-h" style="padding:0 0 14px"><b>Istorija naloga</b></div>
+      <ul class="timeline">${n.log.map(l=>`<li><b>${l.t}</b><span>${l.d}</span></li>`).join('')}</ul>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+    ${n.status==='avans'
+      ? `<button class="btn" onclick="pustiNalog('${n.id}')">${ic('check',16)} Avans uplaćen, pusti u proizvodnju</button>`
+      : n.status==='isporuceno' ? ''
+      : n.status==='spremno'
+      ? (!n.isp?`<button class="btn" onclick="openModal(modalZakazi('${n.id}'))">${ic('truck',16)} Zakaži ${n.montaza?'montažu':'isporuku'}</button>`
+        :n.isp.status==='zakazano'?`<button class="btn" onclick="krenuli('${n.id}')">${ic('truck',16)} Ekipa krenula</button><button class="btn ghost" onclick="openModal(modalZakazi('${n.id}'))">${ic('clock',16)} Pomjeri termin</button>`
+        :`<button class="btn" onclick="openModal(modalIsporuceno('${n.id}'))">${ic('check',16)} ${n.montaza?'Montirano':'Isporučeno'}</button>`)
+      : `<button class="btn" onclick="advance('${n.id}')">${ic('check',16)} Završi stanicu „${STANICE[n.ruta[n.faza]].n}"</button>`}
+    <button class="btn ghost" onclick="toast('Štampa radnog lista u punoj verziji')">${ic('file',16)} Radni list</button>
+    <button class="btn ghost" onclick="go(NBACK)">Nazad</button>
+  </div>`;
+  window.scrollTo(0,0);toggleSb(false);
+}
+function pustiNalog(id){const n=NALOZI.find(x=>x.id===id);n.status='u toku';n.log.push({t:'Avans uplaćen, pušten u proizvodnju',d:'sad · demo'});
+  const u=UPITI.find(x=>x.id===n.upit);if(u)upAkt(u,'Avans uplaćen, '+n.id+' pušten u proizvodnju','ok');toast('Nalog pušten u proizvodnju');openNalog(id);}
+// pomjeri nalog na sljedeću stanicu (demo interakcija)
+function advance(id){
+  const n=NALOZI.find(x=>x.id===id);if(!n)return;
+  n.log.push({t:STANICE[n.ruta[n.faza]].n+' završeno',d:'sad · demo'});
+  if(n.faza<n.ruta.length-1){n.faza++;n.pct=20;}
+  if(n.faza>=n.ruta.length-1){n.pct=100;n.status='spremno';}
+  if(n.status==='kasni')n.status='u toku';
+  toast('Stanica završena, nalog pomjeren dalje');
+  openNalog(id);
+}
+
+/* ---------- MODALI ---------- */
+function openModal(html,wide){const m=document.getElementById('modal');m.classList.toggle('wide',!!wide);m.innerHTML=html;document.getElementById('modalBg').classList.add('show');}
+function closeModal(){document.getElementById('modalBg').classList.remove('show');}
+function modalNoviNalog(){return `
+  <div class="modal-h"><b>Novi radni nalog</b><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b">
+    <div class="fld"><label>Kupac</label><select>${KUPCI.map(k=>`<option>${k.n}</option>`).join('')}</select></div>
+    <div class="fld"><label>Proizvod</label><input placeholder="npr. Tuš kabina 8mm"></div>
+    <div class="fld"><label>Stanice kroz koje prolazi</label>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">${['rez','brus','kal','pjesk','far','lam','izo'].map(s=>`<label style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 9px;cursor:pointer"><input type="checkbox" ${['rez','brus'].includes(s)?'checked':''} style="width:auto"> ${STANICE[s].n}</label>`).join('')}</div>
+    </div>
+    <div class="grid-2"><div class="fld"><label>Rok</label><input type="text" value="25.10."></div><div class="fld"><label>Montaža</label><select><option>Da, naša ekipa</option><option>Ne, dostava</option></select></div></div>
+  </div>
+  <div class="modal-f"><button class="btn ghost" onclick="closeModal()">Odustani</button><button class="btn" onclick="closeModal();go('nalozi');toast('Nalog kreiran i pušten u proizvodnju')">Pusti u proizvodnju</button></div>`;}
+
+/* ---------- HELPERI ---------- */
+function initials(s){return s.replace(/[^A-Za-zČĆŽŠĐčćžšđ ]/g,'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();}
+function rutaPct(n){ // % kroz cijelu rutu
+  if(n.status==='spremno'||n.status==='isporuceno')return 100;
+  const per=100/n.ruta.length;
+  return Math.round(n.faza*per + per*(n.pct/100));
+}
+function toast(msg){const t=document.getElementById('toast');t.innerHTML=ic('check',18)+'<span>'+msg+'</span>';t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600);}
+function toggleSb(open){document.getElementById('sidebar').classList.toggle('open',open);document.getElementById('backdrop').classList.toggle('show',open);}
+
+/* ---------- INIT ---------- */
+/* ---------- ISTORIJA (dugme Nazad na telefonu / u browseru) ----------
+   Svaki ekran je jedan korak u istoriji. Otvoren prozor ili meni je privremeni korak:
+   Nazad ga prvo zatvori, pa tek onda vraća na prethodni ekran. */
+let NAV_POP=false, CURST=null;
+const stKey=st=>JSON.stringify(st);
+function navPush(st){
+  const prev=CURST; CURST=st;
+  if(NAV_POP)return;
+  if(!history.state){history.replaceState(st,'');return;}
+  if(prev&&stKey(prev)===stKey(st))return; // ponovni prikaz istog ekrana (osvježavanje poslije akcije)
+  history.pushState(st,'');
+}
+const modalShown=()=>document.getElementById('modalBg').classList.contains('show');
+const sbShown=()=>document.getElementById('sidebar').classList.contains('open');
+{
+  const _go=go,_nal=openNalog,_upit=openUpit,_kup=openKupac,_tab=setPTab,_filt=setFilt,_om=openModal,_cm=closeModal,_sb=toggleSb;
+  go=function(k,f){_go(k,f);navPush(k==='prodaja'?{v:'go',k,f:f||null,t:PTAB}:{v:'go',k,f:f||null});};
+  openNalog=function(id){_nal(id);navPush({v:'nalog',id});};
+  openUpit=function(id,keepV){_upit(id,keepV);navPush({v:'upit',id});};
+  openKupac=function(id){_kup(id);navPush({v:'kupac',id});};
+  setPTab=function(t){_tab(t);navPush({v:'go',k:'prodaja',f:null,t});};
+  // filter ne pravi novi korak, samo se pamti na trenutnom ekranu
+  setFilt=function(k,v,toList){_filt(k,v,toList);CURST=k==='prodaja'?{v:'go',k,f:v||null,t:PTAB}:{v:'go',k,f:v||null};if(!NAV_POP)history.replaceState(CURST,'');};
+  openModal=function(html,wide){const was=modalShown();_om(html,wide);if(!was&&!NAV_POP)history.pushState(Object.assign({},CURST,{m:1}),'');};
+  closeModal=function(){_cm();if(history.state&&history.state.m)history.replaceState(CURST,'');};
+  toggleSb=function(open){const was=sbShown();_sb(open);
+    if(open&&!was)history.pushState(Object.assign({},CURST,{sb:1}),'');
+    else if(!open&&history.state&&history.state.sb)history.replaceState(CURST,'');};
+}
+addEventListener('popstate',e=>{
+  if(modalShown()){closeModal();return;}
+  if(sbShown()){toggleSb(false);return;}
+  const st=e.state;if(!st)return;
+  const scr=Object.assign({},st);delete scr.m;delete scr.sb;
+  if(CURST&&stKey(scr)===stKey(CURST)){history.back();return;} // prazan korak od zatvorenog prozora
+  NAV_POP=true;
+  try{
+    if(scr.v==='nalog')openNalog(scr.id);
+    else if(scr.v==='upit')openUpit(scr.id);
+    else if(scr.v==='kupac')openKupac(scr.id);
+    else{go(scr.k,scr.f);if(scr.k==='prodaja'&&scr.t&&scr.t!==PTAB){PTAB=scr.t;document.getElementById('content').innerHTML=viewProdaja();}}
+    CURST=scr;
+  }finally{NAV_POP=false;}
+});
+// telefon: tabelama u sadržaju dodaj oznake kolona, da CSS od svakog reda napravi karticu
+function stackTables(){document.querySelectorAll('#content table.tbl:not(.stk):not(.ped)').forEach(t=>{
+  const h=[...t.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+  t.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>{if(h[i]&&i>0){td.dataset.l=h[i];td.innerHTML='<div class="tv">'+td.innerHTML+'</div>';}}));
+  t.classList.add('stk');});}
+new MutationObserver(stackTables).observe(document.getElementById('content'),{childList:true,subtree:true});
+buildNav();go('danas');
+</script>
+<script>
+/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_dasprom_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=dasprom/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'DAS-PROM (Nebojsa Torbica) je otvorio ERP prototip i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/dasprom/'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+<script>
+/* ===== PRACENJE PONASANJA (nezavisno od GA4) -> api.datamaks.net ===== */
+(function(){try{
+  if(!/(^|\.)datamaks\.net$/i.test(location.hostname)) return; // samo na objavljenom demou
+  var EP='https://api.datamaks.net/e';
+  var SLUG=(location.pathname.match(/\/mockups\/([^\/]+)/)||[])[1]||'demo';
+  var g=function(k){try{return localStorage.getItem(k);}catch(_){return null;}};
+  var s=function(k,v){try{localStorage.setItem(k,v);}catch(_){}};
+  try{ if(/[?&]owner=1/.test(location.search)) s('dm_owner','1'); if(/[?&]owner=0/.test(location.search)) localStorage.removeItem('dm_owner'); }catch(_){}
+  var own=g('dm_owner')?1:0;
+  var rid=function(){return Math.random().toString(36).slice(2,10);};
+  var vid=g('dm_vid'); if(!vid){vid=rid()+rid(); s('dm_vid',vid);}
+  var sid=rid()+Date.now().toString(36);
+  var t0=Date.now();
+  var curView='danas';
+  var secMs={}, segStart=Date.now(), visible=(document.visibilityState!=='hidden');
+  function accrue(){ if(visible){ var n=Date.now(); secMs[curView]=(secMs[curView]||0)+(n-segStart); segStart=n; } }  // samo vidljivo vrijeme, bez preklapanja
+  var q=[];
+  function push(type,extra){var e={t:type,ms:Date.now()-t0};if(extra)for(var k in extra)e[k]=extra[k];q.push(e);if(q.length>=25)flush();}
+  function flush(){if(!q.length)return;var p=JSON.stringify({sid:sid,vid:vid,own:own,slug:SLUG,href:location.href,ref:document.referrer,w:screen.width,h:screen.height,q:q});q=[];try{if(navigator.sendBeacon)navigator.sendBeacon(EP,p);else fetch(EP,{method:'POST',body:p,keepalive:true});}catch(_){}}
+  push('start',{view:curView}); flush();
+  if(typeof window.go==='function'){var _sv=window.go;window.go=function(v){try{accrue();push('view',{from:curView,to:String(v)});curView=String(v);segStart=Date.now();flush();}catch(_){}return _sv.apply(this,arguments);};}
+  document.addEventListener('click',function(ev){try{
+    var el=ev.target.closest&&ev.target.closest('a,button,.kpi,.card,.ncard,.rtask,[data-open],[onclick],tr[onclick],.chip,.btn');
+    if(!el) return;
+    if(el.hasAttribute&&el.hasAttribute('data-view')) return;        // promjena sekcije -> hvata se kao 'view'
+    var oc=(el.getAttribute&&el.getAttribute('onclick'))||'';
+    if(/setView\(/.test(oc)) return;
+    var lbl=(el.getAttribute&&el.getAttribute('data-open'))||'';
+    if(!lbl) lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,50);
+    var cls=(((el.className&&el.className.baseVal!==undefined)?el.className.baseVal:el.className)||el.tagName||'')+'';
+    push('click',{lbl:lbl,cls:cls.split(' ')[0]});
+  }catch(_){}},true);
+  document.addEventListener('visibilitychange',function(){try{
+    if(document.visibilityState==='hidden'){ accrue(); visible=false; push('hide',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }
+    else { visible=true; segStart=Date.now(); }
+  }catch(_){}});
+  window.addEventListener('pagehide',function(){try{ accrue(); push('end',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }catch(_){}});
+  setInterval(flush,8000);
+}catch(_){}})();
+</script>
+</body>
+</html>
