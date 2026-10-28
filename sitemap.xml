@@ -120,6 +120,14 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Blog: kako vidjeti podatke od tabele do 3D prikaza -->
+  <url>
+    <loc>https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Blog: povezivanje softvera sa masinama -->
   <url>
     <loc>https://datamaks.net/blog/povezivanje-softvera-sa-masinama/</loc>

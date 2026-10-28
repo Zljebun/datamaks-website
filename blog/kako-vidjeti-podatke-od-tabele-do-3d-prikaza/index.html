@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kako da podatke vidite, a ne čitate: od tabele do 3D prikaza pogona | Datamaks</title>
+  <meta name="description" content="Tabela traži da čitate i sami sklopite sliku. Vizuelni prikaz pokaže stanje na prvi pogled, a za prostor i tok vrhunac je 3D prikaz skladišta i pogona. Evo kada 3D pomaže, a kada je dovoljan grafikon.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/">
+  <meta property="og:title" content="Kako da podatke vidite, a ne čitate: od tabele do 3D prikaza pogona">
+  <meta property="og:description" content="Vizuelni prikaz pokaže stanje na prvi pogled, a za prostor i tok vrhunac je 3D prikaz skladišta i pogona. Kada 3D pomaže, a kada je dovoljan grafikon.">
+  <meta property="og:image" content="https://datamaks.net/assets/images/og-image.jpg">
+  <meta property="og:locale" content="bs_BA">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kako da podatke vidite, a ne čitate: od tabele do 3D prikaza">
+  <meta name="twitter:description" content="Vizuelni i 3D prikaz podataka: kada pomaže, a kada je dovoljan grafikon.">
+  <meta name="twitter:image" content="https://datamaks.net/assets/images/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+
+  <!-- Fonts (non-render-blocking) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+
+  <link rel="stylesheet" href="/assets/css/style.min.css?v=15">
+
+  <!-- Schema: BlogPosting -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Kako da podatke vidite, a ne čitate: od tabele do 3D prikaza pogona",
+    "description": "Tabela traži da čitate i sami sklopite sliku. Vizuelni prikaz pokaže stanje na prvi pogled, a za prostor i tok vrhunac je 3D prikaz skladišta i pogona. Kada 3D pomaže, a kada je dovoljan grafikon.",
+    "image": "https://datamaks.net/assets/images/og-image.jpg",
+    "datePublished": "2026-10-28",
+    "dateModified": "2026-10-28",
+    "inLanguage": "bs",
+    "author": {"@type": "Organization", "name": "Datamaks", "url": "https://datamaks.net/"},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Datamaks",
+      "logo": {"@type": "ImageObject", "url": "https://datamaks.net/assets/images/logo.png"}
+    },
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"}
+  }
+  </script>
+  <!-- Schema: Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Početna", "item": "https://datamaks.net/"},
+      {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://datamaks.net/blog/"},
+      {"@type": "ListItem", "position": 3, "name": "Kako da podatke vidite, a ne čitate", "item": "https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"}
+    ]
+  }
+  </script>
+
+  <style>
+    .art-hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:132px 0 48px}
+    .art-hero .kicker{font-size:.86rem;letter-spacing:.06em;text-transform:uppercase;opacity:.82;margin:0 0 12px;font-weight:600}
+    .art-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:2.1rem;line-height:1.16;margin:0 0 14px;max-width:760px}
+    .art-hero .meta{font-size:.95rem;opacity:.9;margin:0}
+    .art-body{padding:52px 0 8px}
+    .art-prose{max-width:720px;margin:0 auto}
+    .art-prose p{color:#334155;font-size:1.06rem;line-height:1.75;margin:0 0 18px}
+    .art-prose h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.5rem;color:#0f172a;margin:38px 0 12px}
+    .art-prose h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.16rem;color:#1e40af;margin:26px 0 8px}
+    .art-prose ul{margin:0 0 18px;padding-left:22px}
+    .art-prose li{color:#334155;font-size:1.06rem;line-height:1.7;margin:0 0 8px}
+    .art-prose strong{color:#0f172a}
+    .art-lead{font-size:1.16rem;color:#475569;line-height:1.7;margin:0 0 26px;font-weight:500}
+    .art-quote{background:#eff6ff;border-left:4px solid #2563eb;border-radius:0 12px 12px 0;padding:18px 22px;margin:26px 0;color:#1e3a8a;font-size:1.08rem;line-height:1.65}
+    .art-band{max-width:720px;margin:34px auto 0;background:#eff6ff;border:1px solid #dbeafe;border-radius:18px;padding:28px 30px;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
+    .art-band h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;margin:0 0 6px;color:#0f172a}
+    .art-band p{margin:0;color:#334155}
+    .art-more{max-width:720px;margin:44px auto 0;padding-top:26px;border-top:1px solid #e6eaf0}
+    .art-more h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.05rem;color:#64748b;margin:0 0 12px;text-transform:uppercase;letter-spacing:.04em}
+    .art-more a{color:#2563eb;font-weight:600;text-decoration:none}
+    .art-more a:hover{text-decoration:underline}
+    body[data-theme="dark"] .art-prose p,body[data-theme="dark"] .art-prose li{color:#cbd5e1}
+    body[data-theme="dark"] .art-prose h2{color:#e2e8f0}
+    body[data-theme="dark"] .art-lead{color:#94a3b8}
+    body[data-theme="dark"] .art-band{background:#0f172a;border-color:#1e293b}
+    body[data-theme="dark"] .art-band h2{color:#e2e8f0}
+    body[data-theme="dark"] .art-quote{background:#0f172a;color:#bfdbfe}
+    body[data-theme="dark"] .art-more{border-color:#1e293b}
+    @media(max-width:560px){.art-hero h1{font-size:1.6rem}.art-prose p,.art-prose li,.art-lead{font-size:1rem}}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/assets/images/logo.png" alt="Datamaks" width="183" height="100">
+        </a>
+
+        <nav class="nav">
+          <ul class="nav-links">
+            <li><a href="/#usluge" class="nav-link">Usluge</a></li>
+            <li><a href="/#prototipi" class="nav-link">Prototipi</a></li>
+            <li><a href="/#zasto-mi" class="nav-link">Zašto mi</a></li>
+            <li><a href="/blog/" class="nav-link active">Blog</a></li>
+            <li><a href="/#kontakt" class="nav-link">Kontakt</a></li>
+          </ul>
+
+          <div class="lang-switcher">
+            <button class="lang-toggle" aria-label="BS - Odaberi jezik">
+              <span class="lang-flag current-flag">🇧🇦</span>
+              <span class="current-lang">BS</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="lang-dropdown">
+              <a href="/" class="lang-btn active"><span class="lang-flag">🇧🇦</span><span class="lang-code">BS</span><span class="lang-name">Bosanski</span></a>
+              <a href="/hr/" class="lang-btn"><span class="lang-flag">🇭🇷</span><span class="lang-code">HR</span><span class="lang-name">Hrvatski</span></a>
+              <a href="/sr/" class="lang-btn"><span class="lang-flag">🇷🇸</span><span class="lang-code">SR</span><span class="lang-name">Srpski</span></a>
+              <a href="/en/" class="lang-btn"><span class="lang-flag">🇬🇧</span><span class="lang-code">EN</span><span class="lang-name">English</span></a>
+              <a href="/de/" class="lang-btn"><span class="lang-flag">🇩🇪</span><span class="lang-code">DE</span><span class="lang-name">Deutsch</span></a>
+            </div>
+          </div>
+
+          <a href="/#kontakt" class="btn btn-primary">Zakažite razgovor</a>
+
+          <button class="mobile-toggle" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <article>
+    <section class="art-hero">
+      <div class="container">
+        <p class="kicker">Vizuelizacija podataka</p>
+        <h1>Kako da podatke vidite, a ne čitate: od tabele do 3D prikaza pogona</h1>
+        <p class="meta">Datamaks · 28. oktobar 2026. · 6 min čitanja</p>
+      </div>
+    </section>
+
+    <section class="art-body">
+      <div class="container">
+        <div class="art-prose">
+          <p class="art-lead">Većina poslovnog softvera podatke pokazuje kao ravne tabele, pa vlasnik mora da ih čita i u glavi sklapa sliku. Vizuelni prikaz radi suprotno: bojom, oblikom i rasporedom pokaže stanje na prvi pogled. Za prostor i tok, kao što su skladište, pogon i montaža, vrhunac je 3D prikaz u kojem se vidi gdje je šta i gdje zapinje. Takav prikaz nije zamjena za sistem ispod, nego sloj koji podatke čini razumljivim odmah.</p>
+
+          <h2>Zašto tabela ponekad nije dovoljna</h2>
+          <p>Tabela je savršena kada tražite tačan broj. Ali kada pitate kako stojimo, tabela traži da pročitate desetine redova i sami izvučete zaključak. Što je više podataka, to je skok od brojeva do odluke veći.</p>
+          <p>Ljudi sliku razumiju brže od teksta. Zato semafor na raskrsnici nije spisak pravila, nego boja. Isti princip vrijedi za podatke u firmi: dobar prikaz vam uštedi korak u kojem prvo čitate pa tek onda zaključujete.</p>
+
+          <h2>Četiri načina da se isti podatak pokaže</h2>
+          <p>Nije svaki prikaz za svaku svrhu. Ovako biramo, zavisno od pitanja na koje podatak treba da odgovori.</p>
+          <ul>
+            <li><strong>Tabela.</strong> Kada treba tačan broj i poređenje red po red, na primjer cjenovnik ili stanje zaliha po šifri. Precizna je, ali spora za opštu sliku.</li>
+            <li><strong>Grafikon.</strong> Kada je pitanje trend ili odnos, na primjer prihod po mjesecima ili najveći kupci. Odličan za finansije i izvještaje upravi.</li>
+            <li><strong>Kanban ili semafor.</strong> Kada je pitanje status i tok, na primjer koji nalog je u kojoj fazi i šta kasni. Stanje se vidi bojom i kolonom, bez čitanja.</li>
+            <li><strong>3D prikaz prostora.</strong> Kada su podaci vezani za fizički prostor i kretanje, na primjer skladište, pogon, gradilište ili montaža. Vidite raspored, zauzetost i uska grla tamo gdje stvarno nastaju.</li>
+          </ul>
+          <p>Pravilo je jednostavno: što je podatak više vezan za prostor i kretanje, to vizuelni i 3D prikaz više pomaže. Za čist finansijski izvještaj tabela i grafikon su bolji izbor.</p>
+
+          <h2>Šta smo napravili: 3D prikaz skladišta u pregledaču</h2>
+          <p>Da ne ostane na priči, napravili smo radni 3D prikaz skladišta koji se otvara u običnom pregledaču, bez instalacije. U njemu se kreću viljuškari i kamioni, pošiljke prolaze kroz faze, a sa strane stoje ključni pokazatelji i log događaja uživo. Izgleda kao igra, a ispod je ista logika kao u ozbiljnom sistemu.</p>
+          <p>Tehnologija je web 3D (three.js), pa radi i na računaru i na telefonu i dijeli se običnim linkom. Prototip smo sklopili brzo, uz pomoć AI alata, što znači da se ovakav prikaz može napraviti za konkretnu firmu bez velikog budžeta. Pogledajte ga ovdje: <a href="https://datamaks.net/mockups/dc-3d/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=vizuelizacija">3D prikaz skladišta uživo</a>.</p>
+
+          <div class="art-quote">Lijepa slika pogrešnih podataka samo brže pokaže pogrešno stanje. Vrijednost je u tačnim podacima, a 3D čini da ih shvatite na prvi pogled.</div>
+
+          <h2>Kada 3D ima smisla, a kada je samo šarenilo</h2>
+          <p>3D je snažan kada firma ima stvaran prostorni tok: skladište sa zonama, pogon sa linijama i stanicama, gradilišta, montažne ekipe na terenu. Tada 3D prikaz pokaže ono što tabela sakrije, na primjer da se roba gomila u jednoj zoni dok je druga prazna.</p>
+          <p>3D nema smisla kada je pitanje čisto brojčano, kao marža, dugovanja ili plan nabavke. Tu je grafikon jasniji i brži. I još važnije, 3D je sloj za razumijevanje i prezentaciju, a ne zamjena za sistem ispod. Vrijednost je u tačnim podacima, a prikaz je samo način da ih brže shvatite.</p>
+
+          <h2>Odakle početi</h2>
+          <p>Ne treba krenuti od 3D-a. Prvo podaci moraju da budu na jednom mjestu i tačni, pa biramo prikaz prema pitanju: tabela za broj, grafikon za trend, kanban za status, 3D za prostor. Kada firma ima prostorni tok koji se teško prati na papiru, 3D prikaz brzo pokaže korist.</p>
+          <p>Možemo napraviti mali prikaz baš za vaš prostor, sa izmišljenim podacima, da se vidi kako bi izgledalo prije nego se išta gradi. Zanima nas jedno: koje stanje u vašoj firmi trenutno najteže vidite na prvi pogled?</p>
+        </div>
+
+        <div class="art-band">
+          <div>
+            <h2>Napravite besplatan prototip za svoju firmu</h2>
+            <p>Opišite svoj proces, a mi vam pokažemo kako bi izgledao pregled, od table do 3D prikaza.</p>
+          </div>
+          <a href="https://demo.datamaks.net/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=vizuelizacija" class="btn btn-primary btn-large">Napravite prototip</a>
+        </div>
+
+        <div class="art-more">
+          <h3>Pročitajte još</h3>
+          <p><a href="/blog/povezivanje-softvera-sa-masinama/">Kako povezati softver sa mašinama u pogonu</a><br>
+          Kada se status obrade ne unosi ručno, nego se sam ažurira sa mašine.</p>
+          <p style="margin-top:14px"><a href="/blog/od-mjerenja-do-montaze/">Od mjerenja do montaže: digitalno praćenje kuhinje po mjeri</a><br>
+          Cijeli put jednog naloga na jednom mjestu, i gdje se nalozi najčešće izgube.</p>
+        </div>
+      </div>
+    </section>
+    </article>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Želite pregled poslovanja na jednom mjestu?</h2>
+        <p>20 minuta razgovora. Vi opišete kako radite, mi kažemo šta je moguće.</p>
+        <a href="/#kontakt" class="btn btn-primary btn-large">Zakažite razgovor</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <img src="/assets/images/logo-white.png" alt="Datamaks" width="183" height="100">
+          </a>
+          <p>Digitalizacija poslovanja za mala i srednja preduzeća. Automatizacija procesa, bolje odluke, manji troškovi.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/datamaks.digital" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <a href="https://www.facebook.com/datamaks.digital" target="_blank" rel="noopener" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="https://www.linkedin.com/company/datamaks" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3>Usluge</h3>
+          <ul class="footer-links">
+            <li><a href="/#usluge">Analiza procesa</a></li>
+            <li><a href="/#usluge">Dizajn rješenja</a></li>
+            <li><a href="/#usluge">Implementacija</a></li>
+            <li><a href="/#usluge">Podrška</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Rješenja</h3>
+          <ul class="footer-links">
+            <li><a href="/softver-za-namjestaj-po-mjeri/">Namještaj po mjeri</a></li>
+            <li><a href="/prototip/namjestaj/">Živi prototip</a></li>
+            <li><a href="/#prototipi">Portfolio</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Kontakt</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:info@datamaks.net">info@datamaks.net</a></li>
+            <li><a href="tel:+38765469565">+387 65 469 565</a></li>
+            <li><a href="tel:+436677970082">+43 667 797 0082</a></li>
+            <li>Veljka Mladjenovica bb<br>78000 Banja Luka, BiH</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Datamaks d.o.o. Sva prava zadržana. · <a href="/privatnost.html">Politika privatnosti</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    var header = document.getElementById('header');
+    window.addEventListener('scroll', function(){ if(window.scrollY>50){header.classList.add('scrolled');}else{header.classList.remove('scrolled');} });
+    // Mobile menu toggle
+    var mt = document.querySelector('.mobile-toggle'); var nl = document.querySelector('.nav-links');
+    if(mt){ mt.addEventListener('click', function(){ nl.classList.toggle('active'); mt.classList.toggle('active'); mt.setAttribute('aria-expanded', nl.classList.contains('active')); }); }
+    // Language dropdown
+    document.querySelectorAll('.lang-toggle').forEach(function(t){ t.addEventListener('click', function(e){ e.stopPropagation(); t.closest('.lang-switcher').classList.toggle('open'); }); });
+    document.addEventListener('click', function(){ document.querySelectorAll('.lang-switcher').forEach(function(s){ s.classList.remove('open'); }); });
+  </script>
+  <script src="/assets/js/consent.js" defer></script>
+</body>
+</html>
