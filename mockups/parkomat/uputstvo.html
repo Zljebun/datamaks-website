@@ -76,6 +76,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   .three{gap:10px}
 }
 </style>
+<style>#dm-fab{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -243,5 +244,75 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
 
   <footer>Prototip i uputstvo su dati samo na pregled. Svi podaci u prototipu su izmišljeni primjeri.</footer>
 </article></main>
+<script>
+/* beacon */
+(function(){
+  var TOPIC='datamaks-posjete-7g3x', KEY='dm_parkomat_uputstvo_ntfy', OWNER='dm_owner';
+  try{
+    if(/[?&]owner=1/.test(location.search)) localStorage.setItem(OWNER,'1');
+    if(/[?&]owner=0/.test(location.search)) localStorage.removeItem(OWNER);
+  }catch(e){}
+  try{ if(localStorage.getItem(OWNER)) return; }catch(e){}
+  try{ if(sessionStorage.getItem(KEY)) return; }catch(e){}
+  function send(){
+    try{ if(sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY,'1'); }catch(e){}
+    var ref = document.referrer ? (' · izvor: '+document.referrer.replace(/^https?:\/\//,'').split('/')[0]) : '';
+    var utm = /utm_content=parkomat/.test(location.search) ? ' (iz maila)' : '';
+    fetch('https://ntfy.sh/'+TOPIC,{method:'POST',
+      body:'Klijent je otvorio Parkomat uputstvo i zadrzao se na njemu'+utm+'.'+ref+'\nhttps://datamaks.net/mockups/parkomat/uputstvo.html'
+    }).catch(function(){});
+  }
+  var sec=0, iv=setInterval(function(){ if(document.visibilityState==='visible'){ sec++; if(sec>=12){ clearInterval(iv); send(); } } },1000);
+  ['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev, function h(){ document.removeEventListener(ev,h); setTimeout(send,3000); }, {once:true}); });
+})();
+</script>
+<script defer src="/assets/js/consent.js"></script>
+<script>
+/* analitika */
+(function(){try{
+  if(!/(^|\.)datamaks\.net$/i.test(location.hostname)) return; // samo na objavljenom demou
+  var EP='https://api.datamaks.net/e';
+  var SLUG=(location.pathname.match(/\/mockups\/([^\/]+)/)||[])[1]||'demo';
+  var g=function(k){try{return localStorage.getItem(k);}catch(_){return null;}};
+  var s=function(k,v){try{localStorage.setItem(k,v);}catch(_){}};
+  try{ if(/[?&]owner=1/.test(location.search)) s('dm_owner','1'); if(/[?&]owner=0/.test(location.search)) localStorage.removeItem('dm_owner'); }catch(_){}
+  var own=g('dm_owner')?1:0;
+  var rid=function(){return Math.random().toString(36).slice(2,10);};
+  var vid=g('dm_vid'); if(!vid){vid=rid()+rid(); s('dm_vid',vid);}
+  var sid=rid()+Date.now().toString(36);
+  var t0=Date.now();
+  var at=document.querySelector('.tab.active');
+  var curView='uputstvo';
+  var secMs={}, segStart=Date.now(), visible=(document.visibilityState!=='hidden');
+  function accrue(){ if(visible){ var n=Date.now(); secMs[curView]=(secMs[curView]||0)+(n-segStart); segStart=n; } }  // samo vidljivo vrijeme, bez preklapanja
+  var q=[];
+  function push(type,extra){var e={t:type,ms:Date.now()-t0};if(extra)for(var k in extra)e[k]=extra[k];q.push(e);if(q.length>=25)flush();}
+  function flush(){if(!q.length)return;var p=JSON.stringify({sid:sid,vid:vid,own:own,slug:SLUG,href:location.href,ref:document.referrer,w:screen.width,h:screen.height,q:q});q=[];try{if(navigator.sendBeacon)navigator.sendBeacon(EP,p);else fetch(EP,{method:'POST',body:p,keepalive:true});}catch(_){}}
+  push('start',{view:curView}); flush();
+  if(typeof window.setView==='function'){var _sv=window.setView;window.setView=function(v){try{accrue();push('view',{from:curView,to:String(v)});curView=String(v);segStart=Date.now();flush();}catch(_){}return _sv.apply(this,arguments);};}
+  document.addEventListener('click',function(ev){try{
+    var el=ev.target.closest&&ev.target.closest('a,button,.kpi,.card,.ncard,.rtask,[data-open],[onclick],tr[onclick],.chip,.btn');
+    if(!el) return;
+    if(el.hasAttribute&&el.hasAttribute('data-view')) return;        // promjena sekcije -> hvata se kao 'view'
+    var oc=(el.getAttribute&&el.getAttribute('onclick'))||'';
+    if(/setView\(/.test(oc)) return;
+    var lbl=(el.getAttribute&&el.getAttribute('data-open'))||'';
+    if(!lbl) lbl=(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,50);
+    var cls=(((el.className&&el.className.baseVal!==undefined)?el.className.baseVal:el.className)||el.tagName||'')+'';
+    push('click',{lbl:lbl,cls:cls.split(' ')[0]});
+  }catch(_){}},true);
+  document.addEventListener('visibilitychange',function(){try{
+    if(document.visibilityState==='hidden'){ accrue(); visible=false; push('hide',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }
+    else { visible=true; segStart=Date.now(); }
+  }catch(_){}});
+  window.addEventListener('pagehide',function(){try{ accrue(); push('end',{view:curView,total:Date.now()-t0,sections:secMs}); flush(); }catch(_){}});
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){try{es.forEach(function(en){
+    if(!en.isIntersecting) return; var v='uputstvo:'+en.target.id; if(v===curView) return;
+    accrue(); push('view',{from:curView,to:v}); curView=v; segStart=Date.now();
+  });}catch(_){}},{rootMargin:'0px 0px -60% 0px'});
+  document.querySelectorAll('h2[id]').forEach(function(h){io.observe(h);});}
+  setInterval(flush,8000);
+}catch(_){}})();
+</script>
 </body>
 </html>
