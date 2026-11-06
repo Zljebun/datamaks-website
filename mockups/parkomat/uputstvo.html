@@ -1,0 +1,249 @@
+<!-- © Datamaks d.o.o. Banja Luka. Sva prava zadržana. Prototip i uputstvo su dati samo na pregled; zabranjeno je umnožavanje, izmjena i korištenje kao specifikacije bez pisane saglasnosti Datamaksa. -->
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="copyright" content="© Datamaks d.o.o. Banja Luka. Sva prava zadržana.">
+<title>Uputstvo: Parkomat prototip</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231c4fa0'/%3E%3Ctext x='16' y='24' font-family='Arial,sans-serif' font-weight='800' font-size='22' fill='white' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Isti vizuelni jezik kao prototip: plava saobraćajnog znaka P, Overpass za naslove. */
+@page{size:A4;margin:16mm 14mm}
+:root{--paper:#eef1f5;--surface:#fff;--ink:#131820;--muted:#5b6676;--line:#d9dfe7;--sign:#1c4fa0;--sign-ink:#fff;--sign-soft:#e3ebf8;--warn-soft:#fbefd9;--warn:#a0620c;
+  --f-display:"Overpass","Source Sans 3",system-ui,sans-serif;--f-body:"Source Sans 3",system-ui,-apple-system,sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#0d1117;--surface:#161b22;--ink:#e7ebf1;--muted:#9aa5b5;--line:#2a323d;--sign:#6497ee;--sign-ink:#0a1427;--sign-soft:#1b2a44;--warn-soft:#33260f;--warn:#e3a54a;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0d1117;--surface:#161b22;--ink:#e7ebf1;--muted:#9aa5b5;--line:#2a323d;--sign:#6497ee;--sign-ink:#0a1427;--sign-soft:#1b2a44;--warn-soft:#33260f;--warn:#e3a54a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+a{color:var(--sign)}
+.bar{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line);padding-inline:16px}
+.bar-in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:19px}
+.psign{width:30px;height:30px;border-radius:7px;background:var(--sign);color:var(--sign-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:20px;padding-top:3px;box-shadow:inset 0 0 0 2px var(--surface),0 0 0 1px var(--sign)}
+.bar .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:7px 13px;font:600 14.5px var(--f-body);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--sign);border-color:var(--sign);color:var(--sign-ink)}
+main{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 56px}
+.page{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,4vw,44px)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,40px);line-height:1.1;margin:0 0 8px;text-wrap:balance;letter-spacing:-.01em}
+.lead{font-size:19px;color:var(--muted);margin:0 0 6px;max-width:62ch}
+.meta{font-size:14px;color:var(--muted);margin:0}
+h2{font-family:var(--f-display);font-weight:800;font-size:24px;line-height:1.2;margin:44px 0 10px;text-wrap:balance;display:flex;gap:12px;align-items:baseline}
+h2 .n{flex:none;width:30px;height:30px;border-radius:7px;background:var(--sign);color:var(--sign-ink);display:grid;place-items:center;font-size:16px;padding-top:2px;transform:translateY(3px)}
+h3{font-size:18px;margin:24px 0 6px}
+p,li{max-width:68ch}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin:5px 0}
+.k{display:inline-block;background:var(--sign-soft);color:var(--sign);border-radius:6px;padding:0 7px;font-weight:700;font-size:.92em;white-space:nowrap}
+.toc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:26px 0 0}
+.toc b{display:block;margin-bottom:6px}
+.toc ol{columns:2;column-gap:32px;margin:0}
+.toc a{text-decoration:none}
+.note{border-radius:12px;padding:13px 16px;margin:16px 0;background:var(--sign-soft);max-width:72ch}
+.note.warn{background:var(--warn-soft)}
+.note b:first-child{color:var(--sign)}
+.note.warn b:first-child{color:var(--warn)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:18px 0 6px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:18px 0 6px}
+figure{margin:0;min-width:0}
+figure img{display:block;width:100%;max-width:100%;height:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.phone img{border-radius:22px;max-width:300px;margin-inline:auto}
+figcaption{font-size:14px;color:var(--muted);margin-top:7px;text-align:center;text-wrap:balance}
+.wide{margin:18px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:15.5px;margin:12px 0}
+th,td{text-align:left;padding:9px 10px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-top:0}
+.tbl{overflow-x:auto}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+@media (max-width:700px){
+  .three,.two{grid-template-columns:1fr}
+  .phone img{max-width:280px}
+  .toc ol{columns:1}
+  body{font-size:16.5px}
+}
+@media print{
+  body{background:#fff;font-size:11pt;color:#000}
+  .bar{display:none}
+  main{padding:0;max-width:none}
+  .page{border:0;padding:0}
+  h2{break-after:avoid;margin-top:26px}
+  figure{break-inside:avoid}
+  .phone img{max-width:200px}
+  .three{gap:10px}
+}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="psign">P</span><span>Parkomat <span style="color:var(--muted)">uputstvo</span></span></div>
+  <div class="sp"></div>
+  <a class="btn primary" href="./">Otvori prototip</a>
+  <button class="btn" type="button" onclick="window.print()">Štampaj / PDF</button>
+</div></header>
+
+<main><article class="page">
+  <h1>Kako koristiti Parkomat prototip</h1>
+  <p class="lead">Platforma na kojoj vlasnici iznajmljuju svoje prazno parking mjesto, garažu ili dvorište, a vozači ga pronađu na mapi, rezervišu i plate online. Banja Luka, cijene u KM, provizija platforme 15 %.</p>
+  <p class="meta">Verzija 6.11.2026. · Izradio „Datamaks" d.o.o. Banja Luka · info@datamaks.net</p>
+
+  <nav class="toc" aria-label="Sadržaj"><b>Sadržaj</b><ol>
+    <li><a href="#sta-je">Šta vidite na linku</a></li>
+    <li><a href="#otvaranje">Kako otvoriti i prebacivati uređaje</a></li>
+    <li><a href="#pronadji">Vozač: pronađi mjesto</a></li>
+    <li><a href="#rezervisi">Vozač: rezerviši i plati</a></li>
+    <li><a href="#rezervacije">Vozač: produženje i otkazivanje</a></li>
+    <li><a href="#domacin">Domaćin: oglasi svoje mjesto</a></li>
+    <li><a href="#zarada">Domaćin: zarada i isplate</a></li>
+    <li><a href="#android">Razlike na Androidu</a></li>
+    <li><a href="#web">Web verzija za računar</a></li>
+    <li><a href="#admin">Admin: novac i isplate</a></li>
+    <li><a href="#tok">Probajte cijeli tok za 3 minute</a></li>
+    <li><a href="#demo">Šta je demo, a šta puna verzija</a></li>
+  </ol></nav>
+
+  <h2 id="sta-je"><span class="n">1</span>Šta vidite na linku</h2>
+  <p>Na jednom linku je prikaz <b>sve tri platforme</b> koje bi Parkomat imao:</p>
+  <ul>
+    <li><b>iPhone aplikacija</b>, sa izgledom i navikama iOS-a (Apple Pay, donji meni, veliki naslovi).</li>
+    <li><b>Android aplikacija</b>, sa izgledom Androida (Google Pay, plutajuće dugme za dodavanje).</li>
+    <li><b>Web za računar i tablet</b>: pretraga sa mapom, domaćinski dio i <b>admin</b> za upravu platforme.</li>
+  </ul>
+  <p>Sve tri dijele iste podatke. Ako rezervišete mjesto na telefonu, ta uplata se odmah vidi u adminu na webu, a domaćin je vidi u svojoj zaradi.</p>
+  <div class="note"><b>Napomena:</b> svi podaci su izmišljeni primjeri. Vrijeme u prototipu je namješteno na ponedjeljak, 19.10.2026. u 10:15, da bi rezervacije i rasporedi imali smisla. Plaćanje je simulirano i ne skida se novac. Vaše izmjene se pamte u pregledniku dok ne kliknete <span class="k">Reset demo</span>.</div>
+
+  <h2 id="otvaranje"><span class="n">2</span>Kako otvoriti i prebacivati uređaje</h2>
+  <h3>Na računaru</h3>
+  <p>Gore je traka sa izborom <span class="k">iPhone</span> <span class="k">Android</span> <span class="k">Web</span>. Za iPhone i Android na sredini ekrana vidite telefon i u njemu klikate kao prstom. Desno gore je <span class="k">Reset demo</span>, koji vraća podatke na početak.</p>
+  <h3>Na telefonu</h3>
+  <p>Link se otvara kao prava aplikacija, preko cijelog ekrana i bez ikakvih dodataka, tačno kako bi izgledala instalirana. Na Androidu se sam otvara Android izgled, na iPhoneu iOS izgled. Uređaj se mijenja u <span class="k">Profil</span>, u kartici <b>Prototip</b>. Tu su i dugme za web i admin i link na ovo uputstvo.</p>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/08-profil.jpg" alt="Profil sa izborom režima i karticom Prototip" loading="lazy"><figcaption>Profil: režim Vozač ili Domaćin i kartica Prototip</figcaption></figure>
+  </div>
+
+  <h2 id="pronadji"><span class="n">3</span>Vozač: pronađi mjesto</h2>
+  <p>Početni ekran je mapa Banje Luke sa slobodnim mjestima. Na vrhu birate <b>vrijeme od i do</b> i tip prostora (<b>Mjesto</b>, <b>Garaža</b>, <b>Dvorište</b>). Mapa se pomjera i zumira prstom ili mišem.</p>
+  <ul>
+    <li><b>Plava cijena</b> je slobodno mjesto za izabrano vrijeme (cijena po satu u KM).</li>
+    <li><b>Siva cijena</b> je mjesto koje je tada zauzeto ili van rasporeda domaćina.</li>
+    <li>Kad promijenite vrijeme, mapa se odmah preračuna: neka mjesta postanu slobodna, druga zauzeta.</li>
+  </ul>
+  <p>Dodirom na cijenu otvara se kartica mjesta sa nazivom, naseljem i ukupnom cijenom za vaš termin.</p>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/01-mapa.jpg" alt="Mapa sa slobodnim i zauzetim mjestima" loading="lazy"><figcaption>Mapa: plavo slobodno, sivo zauzeto</figcaption></figure>
+    <figure class="phone"><img src="uputstvo-slike/02-izabrano.jpg" alt="Izabrano mjesto sa karticom na dnu" loading="lazy"><figcaption>Izabrano mjesto i cijena za termin</figcaption></figure>
+  </div>
+
+  <h2 id="rezervisi"><span class="n">4</span>Vozač: rezerviši i plati</h2>
+  <ol>
+    <li>Na kartici mjesta dodirnite <span class="k">Pogledaj i rezerviši</span>. Vidite opis, pogodnosti, raspored domaćina i obračun (sati × cijena).</li>
+    <li>Dodirnite <span class="k">Rezerviši</span>. Na ekranu plaćanja potvrdite registarsku oznaku i izaberite način plaćanja: <b>Apple Pay</b> na iPhoneu, <b>Google Pay</b> na Androidu, ili <b>platnu karticu</b> preko sigurne forme provajdera plaćanja.</li>
+    <li>Nakon plaćanja dobijate potvrdu sa <b>šifrom rezervacije</b> (npr. PK-D22B), a domaćin obavještenje.</li>
+  </ol>
+  <p>Iznos se pri rezervaciji samo rezerviše na kartici, a naplati kad termin počne. Otkazivanje je besplatno do 1 sat prije početka termina.</p>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/03-detalji.jpg" alt="Detalji mjesta" loading="lazy"><figcaption>Detalji mjesta i obračun</figcaption></figure>
+    <figure class="phone"><img src="uputstvo-slike/04-placanje.jpg" alt="Ekran plaćanja" loading="lazy"><figcaption>Plaćanje: Apple Pay ili kartica</figcaption></figure>
+    <figure class="phone"><img src="uputstvo-slike/05-potvrda.jpg" alt="Potvrda rezervacije" loading="lazy"><figcaption>Potvrda sa šifrom rezervacije</figcaption></figure>
+  </div>
+
+  <h2 id="rezervacije"><span class="n">5</span>Vozač: produženje i otkazivanje</h2>
+  <p>U meniju <span class="k">Rezervacije</span> su aktivne i ranije rezervacije. Otvorite jednu da vidite detalje:</p>
+  <ul>
+    <li><span class="k">Navigacija do mjesta</span> u pravoj aplikaciji otvara Google Maps ili Apple Maps sa rutom.</li>
+    <li><span class="k">Produži 1 h</span> produžava termin i doplaćuje sat, ali samo ako je mjesto i tada slobodno i u rasporedu domaćina. Sistem ne dozvoljava preklapanje sa tuđom rezervacijom.</li>
+    <li><span class="k">Otkaži rezervaciju</span>: više od 1 sat prije početka vraća se cijeli iznos, kasnije pola iznosa.</li>
+  </ul>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/06-rezervacije.jpg" alt="Lista rezervacija" loading="lazy"><figcaption>Aktivne i ranije rezervacije</figcaption></figure>
+    <figure class="phone"><img src="uputstvo-slike/07-rezervacija.jpg" alt="Detalj rezervacije" loading="lazy"><figcaption>Detalj: navigacija, produženje, otkazivanje</figcaption></figure>
+  </div>
+
+  <h2 id="domacin"><span class="n">6</span>Domaćin: oglasi svoje mjesto</h2>
+  <p>Isti nalog može i parkirati i izdavati. U <span class="k">Profil</span> izaberite režim <b>Domaćin</b>. Meni se mijenja u <b>Mjesta</b>, <b>Rezervacije</b>, <b>Zarada</b> i <b>Profil</b>.</p>
+  <ul>
+    <li>U <b>Moja mjesta</b> su vaši oglasi sa cijenom, rasporedom i sljedećom rezervacijom. Prekidač desno <b>pauzira oglas</b> i skida ga sa mape.</li>
+    <li>Dugme <span class="k">+</span> (na Androidu <span class="k">Dodaj mjesto</span>) pokreće dodavanje u 3 koraka:
+      <ol>
+        <li><b>Prostor i lokacija:</b> tip, naziv, adresa i tačna lokacija dodirom na mapu.</li>
+        <li><b>Kada je slobodno:</b> brzi izbor (radnim danima od 8 do 17, svaku noć, uvijek) ili ručno dani i sati.</li>
+        <li><b>Cijena i opis:</b> cijena po satu, uputstvo za vozača (npr. kako se otvara kapija) i fotografija.</li>
+      </ol>
+    </li>
+    <li>Nakon <span class="k">Objavi oglas</span> prebacite se nazad na režim Vozač: novo mjesto je već na mapi.</li>
+  </ul>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/09-domacin.jpg" alt="Moja mjesta domaćina" loading="lazy"><figcaption>Moja mjesta i pauziranje oglasa</figcaption></figure>
+    <figure class="phone"><img src="uputstvo-slike/10-dodaj-korak1.jpg" alt="Dodavanje mjesta, korak 1" loading="lazy"><figcaption>Korak 1: tip i lokacija na mapi</figcaption></figure>
+    <figure class="phone"><img src="uputstvo-slike/11-dodaj-korak2.jpg" alt="Dodavanje mjesta, korak 2" loading="lazy"><figcaption>Korak 2: dani i sati</figcaption></figure>
+  </div>
+
+  <h2 id="zarada"><span class="n">7</span>Domaćin: zarada i isplate</h2>
+  <p>U <span class="k">Zarada</span> domaćin vidi iznos <b>za isplatu</b>, kako se dijeli zadnja uplata i istoriju isplata.</p>
+  <ul>
+    <li>Od svake uplate domaćin dobija <b>85 %</b>, a Parkomat zadržava <b>15 %</b> provizije.</li>
+    <li>Naknadu provajdera plaćanja plaća Parkomat iz svoje provizije, pa domaćin uvijek dobija punih 85 %.</li>
+    <li>Isplata ide <b>svakog ponedjeljka</b> na račun domaćina, za završene rezervacije. Iznos predstojećih rezervacija čeka dok termin ne prođe.</li>
+  </ul>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/12-zarada.jpg" alt="Zarada domaćina" loading="lazy"><figcaption>Zarada, podjela 85 / 15 i isplate</figcaption></figure>
+  </div>
+
+  <h2 id="android"><span class="n">8</span>Razlike na Androidu</h2>
+  <p>Funkcije su iste, a izgled prati Android: zaobljena pretraga, donji meni sa označenom ikonom, plutajuće dugme <span class="k">Dodaj mjesto</span> kod domaćina i <b>Google Pay</b> umjesto Apple Paya. Tako će izgledati i prave aplikacije: svaka u stilu svog sistema, sa istim podacima iza sebe.</p>
+  <div class="three">
+    <figure class="phone"><img src="uputstvo-slike/13-android.jpg" alt="Android izgled mape" loading="lazy"><figcaption>Android: ista mapa, izgled Androida</figcaption></figure>
+  </div>
+
+  <h2 id="web"><span class="n">9</span>Web verzija za računar</h2>
+  <p>Izaberite gore <span class="k">Web</span>. Prikazan je sajt u pregledniku, sa menijem <b>Pronađi parking</b>, <b>Moje rezervacije</b>, <b>Domaćin</b> i <b>Admin</b>. Pretraga ima listu mjesta lijevo i mapu desno. Lista je složena tako da su slobodna i jeftinija mjesta na vrhu. Rezervacija i plaćanje idu kao na telefonu, karticom.</p>
+  <figure class="wide"><img src="uputstvo-slike/14-web.jpg" alt="Web pretraga sa listom i mapom" loading="lazy"><figcaption>Web: lista slobodnih mjesta i mapa</figcaption></figure>
+
+  <h2 id="admin"><span class="n">10</span>Admin: novac i isplate</h2>
+  <p>Admin je interni pregled za upravu Parkomata. Ima četiri dijela:</p>
+  <ul>
+    <li><b>Pregled:</b> ukupne uplate, provizija, naknade provajdera, neto prihod i obaveze prema domaćinima. Tu je i grafički prikaz kako se dijeli zadnja uplata.</li>
+    <li><b>Transakcije:</b> svaka uplata sa šifrom, vozačem, mjestom, domaćinom, povratom, provizijom i iznosom za domaćina.</li>
+    <li><b>Isplate domaćinima:</b> koliko je ko zaradio, koliko mu je isplaćeno i koliko čeka. Dugme <span class="k">Isplati</span> šalje isplatu, a ona se upisuje u istoriju.</li>
+    <li><b>Mjesta:</b> svi oglasi na platformi i njihov status.</li>
+  </ul>
+  <div class="note warn"><b>Iznosi naknada:</b> naknade provajdera plaćanja u adminu su primjer za prikaz. Tačni iznosi zavise od ugovora sa bankom i provajderom plaćanja.</div>
+  <div class="two">
+    <figure><img src="uputstvo-slike/15-admin.jpg" alt="Admin pregled" loading="lazy"><figcaption>Pregled i raspodjela zadnje uplate</figcaption></figure>
+    <figure><img src="uputstvo-slike/16-admin-transakcije.jpg" alt="Admin transakcije" loading="lazy"><figcaption>Sve transakcije sa podjelom</figcaption></figure>
+  </div>
+  <figure class="wide"><img src="uputstvo-slike/17-admin-isplate.jpg" alt="Admin isplate domaćinima" loading="lazy"><figcaption>Isplate domaćinima, sedmično</figcaption></figure>
+
+  <h2 id="tok"><span class="n">11</span>Probajte cijeli tok za 3 minute</h2>
+  <ol>
+    <li>Na računaru izaberite <span class="k">iPhone</span>. Na mapi dodirnite plavu cijenu i rezervišite mjesto preko Apple Paya.</li>
+    <li>Izaberite <span class="k">Web</span>, pa <b>Admin</b>. Vaša uplata je prva u listi zadnjih uplata, podijeljena na domaćina i proviziju.</li>
+    <li>U webu otvorite <b>Domaćin</b> i u polju <b>Demo domaćin</b> izaberite vlasnika tog mjesta: vidi se nova rezervacija i zarada.</li>
+    <li>Izaberite <span class="k">Android</span>, pa <span class="k">Profil</span> i <b>Domaćin</b>. Dodajte novo mjesto u 3 koraka.</li>
+    <li>Vratite se na režim <b>Vozač</b>: vaše novo mjesto je na mapi i može se rezervisati.</li>
+    <li>Kliknite <span class="k">Reset demo</span> da sve vratite na početak.</li>
+  </ol>
+
+  <h2 id="demo"><span class="n">12</span>Šta je demo, a šta puna verzija</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>U prototipu</th><th>U punoj verziji</th></tr></thead>
+    <tbody>
+      <tr><td>Plaćanje je simulirano, novac se ne skida.</td><td>Stvarna naplata karticom, Apple Payom i Google Payom preko provajdera plaćanja, sa 3-D Secure provjerom.</td></tr>
+      <tr><td>Podaci se pamte samo u vašem pregledniku.</td><td>Centralna baza: svi korisnici vide iste, ažurne podatke.</td></tr>
+      <tr><td>Navigacija samo prikazuje poruku.</td><td>Otvara Google Maps ili Apple Maps sa rutom do mjesta.</td></tr>
+      <tr><td>Mapa je OpenStreetMap.</td><td>Google ili Apple mape, pretraga po adresi i trenutna lokacija korisnika.</td></tr>
+      <tr><td>Obavještenje domaćinu je poruka na ekranu.</td><td>Push obavještenja na telefonu, mail i SMS po potrebi.</td></tr>
+      <tr><td>Isplata domaćinu je dugme u adminu.</td><td>Sedmične isplate na račun domaćina, sa evidencijom i izvještajima.</td></tr>
+      <tr><td>Fotografija mjesta je ilustracija.</td><td>Prave fotografije koje domaćin snimi telefonom.</td></tr>
+    </tbody>
+  </table></div>
+
+  <footer>© „Datamaks" d.o.o. Banja Luka. Sva prava zadržana. Prototip i uputstvo su dati samo na pregled. Umnožavanje, izmjena i korištenje kao specifikacije nisu dozvoljeni bez pisane saglasnosti Datamaksa. Pitanja: info@datamaks.net · datamaks.net</footer>
+</article></main>
+</body>
+</html>
