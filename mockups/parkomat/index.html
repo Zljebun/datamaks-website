@@ -660,7 +660,7 @@ function mapHtml(key, {pins=[], sel=null, me=false, pick=null, ctlTop=null}={}){
     <div class="mapctl" style="${ctlTop != null ? `top:${ctlTop}px` : 'bottom:14px'}">
       <button data-act="zoom" data-k="${key}" data-z="0.75" aria-label="Uvećaj">+</button>
       <button data-act="zoom" data-k="${key}" data-z="1.33" aria-label="Umanji">−</button>
-    </div>${key !== 'pick' ? `<a class="realmap" href="${LIVE_URL}" target="_blank" rel="noopener">Prava mapa: datamaks.net ↗</a>` : ''}</div>`;
+    </div>${key !== 'pick' ? `<a class="realmap" href="${LIVE_URL}" target="_blank" rel="noopener">Otvori pravu mapu ↗</a>` : ''}</div>`;
 }
 
 /* ===================== prava mapa (Leaflet + OpenStreetMap/CARTO) =====================
@@ -672,7 +672,7 @@ const isDark = () => { const t = document.documentElement.dataset.theme;
   return t === 'dark' || (t !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); };
 const tileUrl = () => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const VIEW_DEFAULT = {phone:[[44.7718, 17.1945], 14], web:null, pick:[CENTER, 15]};
-/* Na datamaks.net (i lokalno) prava mapa odmah; drugdje samo ako se podloga stvarno učita. */
+/* Na objavljenom linku (i lokalno) prava mapa odmah; drugdje samo ako se podloga stvarno učita. */
 const OWN_HOST = /(^|\.)datamaks\.net$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
 if (OWN_HOST && typeof L !== 'undefined') MAPMODE = 'real';
 function probeTiles(){
@@ -1025,7 +1025,7 @@ const WTABS = [['map','Pronađi parking'],['bookings','Moje rezervacije'],['h-sp
 function renderWeb(){
   const base = UI.wstack[0].s, t = topScr();
   const hostTab = ['h-spots','h-bookings','h-earn','h-add'].includes(base);
-  const user = base === 'admin' ? 'Admin · Datamaks' : hostTab ? hostById(UI.hostId).name : ME.name;
+  const user = base === 'admin' ? 'Admin · Parkomat' : hostTab ? hostById(UI.hostId).name : ME.name;
   let main = '';
   const paying = UI.paying ? `<div class="overlay"><div class="box"><div class="spin"></div>Obrada plaćanja…<span class="small muted">Monri 3-D Secure</span></div></div>` : '';
   if (base === 'map'){
@@ -1126,7 +1126,7 @@ function adminHtml(){
         <td><button class="btn small ${sp.active ? '' : 'primary'}" data-act="toggle" data-id="${sp.id}">${sp.active ? 'Pauziraj' : 'Aktiviraj'}</button></td></tr>`).join('')}
       </tbody></table></div>`;
   }
-  return `<div class="wbody"><div class="between" style="flex-wrap:wrap"><h1 class="wh">Admin</h1><span class="pill info">Datamaks · interni pregled</span></div>
+  return `<div class="wbody"><div class="between" style="flex-wrap:wrap"><h1 class="wh">Admin</h1><span class="pill info">Interni pregled</span></div>
     <div class="wsub">${subs.map(([s, l]) => `<button class="${sub === s ? 'on' : ''}" data-act="admin" data-v="${s}">${l}</button>`).join('')}</div>${content}</div>`;
 }
 
@@ -1278,7 +1278,7 @@ render();
 probeTiles();
 </script>
 <script>
-/* ntfy beacon + owner-detection (Milanove posjete se ne javljaju) */
+/* beacon */
 (function(){
   var TOPIC='datamaks-posjete-7g3x', KEY='dm_parkomat_ntfy', OWNER='dm_owner';
   try{
@@ -1301,7 +1301,7 @@ probeTiles();
 </script>
 <script defer src="/assets/js/consent.js"></script>
 <script>
-/* ===== PRACENJE PONASANJA (nezavisno od GA4) -> api.datamaks.net ===== */
+/* analitika */
 (function(){try{
   if(!/(^|\.)datamaks\.net$/i.test(location.hostname)) return; // samo na objavljenom demou
   var EP='https://api.datamaks.net/e';
