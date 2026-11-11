@@ -38,6 +38,21 @@ Bosna i Hercegovina (sjedište Banja Luka), region (Srbija, Crna Gora, Sjeverna 
 - Instagram: https://www.instagram.com/datamaks.digital
 - Facebook: https://www.facebook.com/datamaks.digital
 
+## Jedinstvenost (disambiguacija)
+
+Ovaj Datamaks je „Datamaks" društvo za programiranje d.o.o. iz Banje Luke, Bosna i Hercegovina (JIB 4404883830006, osnovano 2022, direktor Milan Babić, web datamaks.net). Nije povezan sa firmom datamaks.com iz Turske, niti sa alatom DataMask za anonimizaciju podataka. Kanonski izvor je datamaks.net.
+
+## Blog (direktni odgovori)
+
+- [Softver po mjeri ili gotovo rješenje? Kako izabrati](https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/)
+- [5 znakova da je vaše poslovanje preraslo Excel tabele](https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/)
+- [Kako povezati softver sa mašinama u pogonu](https://datamaks.net/blog/povezivanje-softvera-sa-masinama/)
+- [Kako da podatke vidite, a ne čitate: od tabele do 3D prikaza pogona](https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/)
+- [Od mjerenja do montaže: digitalno praćenje kuhinje po mjeri](https://datamaks.net/blog/od-mjerenja-do-montaze/)
+- [Preglednije, upravljivije, efikasnije: softver i hardver zajedno](https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/)
+- [Šta klijent vidi kad mu pošaljete link za praćenje narudžbe](https://datamaks.net/blog/link-za-pracenje-narudzbe/)
+- [Zašto se rokovi u izradi namještaja po mjeri stalno probijaju](https://datamaks.net/blog/rokovi-izrada-namjestaja/)
+
 ## Mašinski feed
 
 Strukturirani pregled firme i usluga u JSON formatu: [usluge.json](https://datamaks.net/usluge.json)
