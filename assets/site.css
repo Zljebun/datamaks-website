@@ -535,3 +535,26 @@ details p{padding:0 0 18px;color:var(--mut);max-width:70ch}
 @keyframes kgh{0%,48%{opacity:0;transform:none}52%{opacity:1}56%{transform:translateX(-.8cqw)}60%{transform:translateX(.8cqw)}64%{transform:none}74%{opacity:1}80%,100%{opacity:0}}
 @keyframes kbell{0%,52%{opacity:0;transform:translateY(-120%)}60%,88%{opacity:1;transform:none}96%,100%{opacity:0;transform:translateY(-120%)}}
 @keyframes kring{0%,60%{transform:none}64%{transform:rotate(18deg)}68%{transform:rotate(-16deg)}72%{transform:rotate(10deg)}76%,100%{transform:none}}
+
+/* ---------- ilustracije bloga (SVG 16:9 umjesto gradijenta) ----------
+   Stari izgled: ?slike=stare (klasa .ss na <html>). Kicker (.tag) ima gotovo neprozirnu tamnu podlogu zbog kontrasta preko slike. */
+.bl-cover.im{aspect-ratio:16/9;background:#0b1530}
+.bl-cover.im::before,.bl-cover.im::after{display:none}
+.bl-cover.im>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block}
+.bl-cover.im .tag{background:rgba(7,13,32,.82);backdrop-filter:none;color:#fff}
+.hero-fig{margin:26px 0 0;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.16);box-shadow:0 24px 48px -20px rgba(0,0,0,.55);background:#0b1530;aspect-ratio:16/9;max-width:560px}
+.hero-fig img{display:block;width:100%;height:auto;aspect-ratio:16/9}
+@media(min-width:1000px){
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:48px;align-items:center}
+  .hero-fig{margin:0}
+}
+@media(min-width:760px){.bl-card.first .bl-cover.im{aspect-ratio:auto;min-height:100%}.bl-card.first .bl-cover.im>img{object-position:50% 40%}}
+.ss .bl-cover.im{aspect-ratio:16/7;background:linear-gradient(135deg,#1e3a8a,#2563eb)}
+.ss .bl-cover.im[data-c="1"]{background:linear-gradient(135deg,#0b1530,#0e7490)}
+.ss .bl-cover.im[data-c="2"]{background:linear-gradient(135deg,#1e3a8a,#7c3aed)}
+.ss .bl-cover.im[data-c="3"]{background:linear-gradient(135deg,#0f172a,#1e40af)}
+.ss .bl-cover.im::before,.ss .bl-cover.im::after{display:block}
+.ss .bl-cover.im>img,.ss .hero-fig{display:none}
+.ss .bl-cover.im .tag{background:rgba(255,255,255,.18);backdrop-filter:blur(6px)}
+@media(min-width:760px){.ss .bl-card.first .bl-cover.im{aspect-ratio:auto}}
+@media(min-width:1000px){.ss .hero-grid{display:block}}
