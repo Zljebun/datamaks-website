@@ -419,7 +419,8 @@ details p{padding:0 0 18px;color:var(--mut);max-width:70ch}
 .pr-grid{grid-template-columns:1fr}
 @media(min-width:760px){.pr-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1040px){.pr-grid{grid-template-columns:repeat(3,1fr)}}
-.pr-card .bl-cover{aspect-ratio:16/6}
+.pr-card .bl-cover{aspect-ratio:16/10}
+.ks .pr-card .bl-cover{aspect-ratio:16/6}
 .bl-card p.mono{margin-top:auto;font:500 13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#64748b}
 .pr-note{margin-top:28px;font-size:14px;color:var(--mut)}
 .lang-pg .ld a{min-height:44px}
@@ -453,3 +454,84 @@ details p{padding:0 0 18px;color:var(--mut);max-width:70ch}
 .kf .ffl a:hover{background:#fee2e2}
 .ty-ic{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
 .ty-ic svg{width:40px;height:40px}
+
+/* ---------- 16. animirane kartice prototipa (.kv) ----------
+   Zadano: mini zivi prikaz po branši. A/B: ?kartice=slike (klasa .ks na <html>) vraca stare slike/gradijent.
+   Osnovno stanje svakog elementa = lijepo zavrsno stanje (koristi se uz prefers-reduced-motion i bez JS-a).
+   Animacije se deklarisu samo uz .js, a pokrece ih kartice.js (klasa .on na roditelju, samo dok je vidljiv). */
+@property --n{syntax:'<integer>';inherits:false;initial-value:0}
+.ph-vt,.ph-lg,.ph-sl{background-color:var(--navy)}
+.ks .ph-vt{background-image:url(img/v6-kartica-veleprodaja.jpg)}
+.ks .ph-lg{background-image:url(img/korak-proizvodnja-linija.jpg)}
+.ks .ph-sl{background-image:url(img/v6-kartica-usluge.jpg)}
+.ph .ui{z-index:2}
+.cn i{display:none;font-style:normal}
+.cn{--n:var(--t);counter-reset:n var(--n)}
+.cn::after{content:counter(n)}
+.kv{position:absolute;inset:0;z-index:1;overflow:hidden;container-type:size;pointer-events:none;font-family:var(--fd);
+  background:radial-gradient(120% 90% at 85% 0,rgba(6,182,212,.22),transparent 55%),linear-gradient(140deg,#0b1530,#15367d)}
+.ks .kv{display:none}
+.kv .sc{position:absolute;left:4cqw;right:4cqw;top:4cqw;height:38cqw}
+/* veleprodaja: narudzbe kroz 4 faze + stubici zaliha */
+.vt .lane{position:absolute;left:0;right:0;top:0;height:8cqw}
+.vt .lane::before{content:"";position:absolute;left:5cqw;right:6cqw;top:3.5cqw;height:1cqw;border-radius:1cqw;background:rgba(255,255,255,.18)}
+.vt .nd{position:absolute;top:2cqw;left:calc(3cqw + var(--i)*27cqw);width:4cqw;height:4cqw;border-radius:50%;background:#0b1530;border:.6cqw solid rgba(255,255,255,.4)}
+.vt .nd:last-of-type{border-color:#10b981}
+.vt .tk{position:absolute;left:0;top:.5cqw;width:10cqw;height:7cqw;border-radius:2cqw;background:#2563eb;color:#fff;font:700 3cqw/7cqw var(--fd);text-align:center;transform:translateX(calc(var(--e)*270%));box-shadow:0 1cqw 2cqw rgba(0,0,0,.3)}
+.vt .tk.ok::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:2cqw;background:#10b981}
+.vt .st{position:absolute;left:0;right:0;top:12cqw;height:25cqw;display:flex;align-items:flex-end;gap:3cqw;padding:0 2cqw;border-bottom:.5cqw solid rgba(255,255,255,.22)}
+.vt .st::after{content:"";position:absolute;left:0;right:0;bottom:7cqw;border-top:.4cqw dashed rgba(251,191,36,.85)}
+.vt .st i{flex:1;height:calc(var(--h)*1%);border-radius:1cqw 1cqw 0 0;background:linear-gradient(#22d3ee,#2563eb);transform-origin:bottom}
+.vt .st i.lo{position:relative}
+.vt .st i.lo::before{content:"";position:absolute;inset:0;border-radius:inherit;background:#ef4444}
+/* namjestaj: kanban */
+.lg .cl{position:absolute;top:0;bottom:0;left:calc(var(--i)*23.5cqw);width:21.5cqw;border-radius:1.6cqw;background:rgba(255,255,255,.09)}
+.lg .cl::before{content:"";position:absolute;left:2cqw;right:2cqw;top:1.6cqw;height:1cqw;border-radius:1cqw;background:var(--c)}
+.lg .cd{position:absolute;left:1cqw;top:calc(5cqw + var(--r)*9.8cqw);width:19.5cqw;height:8.2cqw;border-radius:1.4cqw;background:#fff;box-shadow:0 1cqw 2cqw rgba(0,0,0,.3);transform:translateX(calc(var(--e)*120.5%))}
+.lg .cd::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1.4cqw;border-radius:1.4cqw 0 0 1.4cqw;background:var(--s)}
+.lg .cd::after{content:"";position:absolute;inset:0;background:linear-gradient(#cbd5e1,#cbd5e1) 3.6cqw 2.2cqw/11cqw 1cqw no-repeat,linear-gradient(#e2e8f0,#e2e8f0) 3.6cqw 4.8cqw/6.5cqw 1cqw no-repeat}
+/* usluge: kalendar po radniku + podsjetnik */
+.sl .bar{position:absolute;left:0;right:0;top:0;height:6cqw;display:flex;justify-content:space-between;align-items:center}
+.sl .bar b{width:24cqw;height:2.4cqw;border-radius:2cqw;background:rgba(255,255,255,.28)}
+.sl .bell{display:flex;align-items:center;gap:1.4cqw;height:6cqw;padding:0 2.6cqw;border-radius:3cqw;background:#fff;color:#0b1530;font:700 3cqw/1 var(--fd);box-shadow:0 1cqw 2cqw rgba(0,0,0,.3)}
+.sl .bell svg{width:3.6cqw;height:3.6cqw;fill:#f59e0b;transform-origin:50% 10%}
+.sl .gr{position:absolute;left:0;right:0;top:7.5cqw;bottom:0;display:grid;grid-template-columns:7cqw repeat(5,1fr);grid-template-rows:3.6cqw repeat(3,1fr);gap:.8cqw}
+.sl .h{grid-row:1;grid-column:var(--c);font:600 2.6cqw/3.6cqw var(--fd);color:rgba(255,255,255,.7);text-align:center}
+.sl .av{grid-row:var(--r);grid-column:1;align-self:center;justify-self:center;width:6cqw;height:6cqw;border-radius:50%;background:var(--c)}
+.sl .c{grid-row:var(--r);grid-column:var(--c);border-radius:1.2cqw;background:rgba(255,255,255,.08)}
+.sl .ap{grid-row:var(--r);grid-column:var(--c)/span var(--s);border-radius:1.4cqw;background:var(--b);box-shadow:0 .8cqw 1.6cqw rgba(0,0,0,.25);position:relative}
+.sl .ap::after{content:"";position:absolute;left:1.6cqw;top:2cqw;width:55%;max-width:9cqw;height:1cqw;border-radius:1cqw;background:rgba(255,255,255,.7)}
+.sl .gh{grid-row:2;grid-column:3/span 2;border-radius:1.4cqw;border:.5cqw dashed #ef4444;opacity:0}
+@media(prefers-reduced-motion:no-preference){
+.kv *,.kv *::before{animation-play-state:paused!important}
+.on .kv *,.on .kv *::before{animation-play-state:running!important}
+.js .vt .tk{animation:8s ease-in-out infinite var(--d) both}
+.js .vt .e1{animation-name:ktk1}.js .vt .e2{animation-name:ktk2}.js .vt .e3{animation-name:ktk3}
+.js .vt .st i{animation:kbar 8s ease-in-out infinite var(--d) both}
+.js .vt .st i.lo{animation:klo 8s ease-in-out infinite both}
+.js .vt .st i.lo::before{animation:kred 8s ease-in-out infinite both}
+.js .vt .tk.ok::before{animation:kfin 8s ease-in-out infinite both}
+.js .vt .tk.ok::before{animation-delay:var(--d)}
+.js .lg .cd{animation:8s ease-in-out infinite var(--d) both}
+.js .lg .e1{animation-name:kcd1}.js .lg .e2{animation-name:kcd2}.js .lg .e3{animation-name:kcd3}
+.js .lg .cd.bl::before{animation:kbl 1.4s ease-in-out infinite}
+.js .sl .ap{animation:kap 8s ease-out infinite var(--d) both}
+.js .sl .gh{animation:kgh 8s ease-in-out infinite}
+.js .sl .bell{animation:kbell 8s ease-in-out infinite both}
+.js .sl .bell svg{animation:kring 8s ease-in-out infinite both}
+}
+@keyframes ktk1{0%,6%{opacity:0;transform:none}12%,24%{opacity:1;transform:none}36%{transform:translateX(270%)}48%{transform:translateX(270%)}60%,86%{opacity:1;transform:translateX(270%)}94%,100%{opacity:0;transform:translateX(270%)}}
+@keyframes kcd1{0%,8%{opacity:0;transform:none}14%,24%{opacity:1;transform:none}36%,48%{transform:translateX(120.5%)}60%{transform:translateX(120.5%)}72%,86%{opacity:1;transform:translateX(120.5%)}94%,100%{opacity:0;transform:translateX(120.5%)}}
+@keyframes ktk2{0%,6%{opacity:0;transform:none}12%,24%{opacity:1;transform:none}36%{transform:translateX(270%)}48%{transform:translateX(540%)}60%,86%{opacity:1;transform:translateX(540%)}94%,100%{opacity:0;transform:translateX(540%)}}
+@keyframes kcd2{0%,8%{opacity:0;transform:none}14%,24%{opacity:1;transform:none}36%,48%{transform:translateX(120.5%)}60%{transform:translateX(241.0%)}72%,86%{opacity:1;transform:translateX(241.0%)}94%,100%{opacity:0;transform:translateX(241.0%)}}
+@keyframes ktk3{0%,6%{opacity:0;transform:none}12%,24%{opacity:1;transform:none}36%{transform:translateX(270%)}48%{transform:translateX(540%)}60%,86%{opacity:1;transform:translateX(810%)}94%,100%{opacity:0;transform:translateX(810%)}}
+@keyframes kcd3{0%,8%{opacity:0;transform:none}14%,24%{opacity:1;transform:none}36%,48%{transform:translateX(120.5%)}60%{transform:translateX(241.0%)}72%,86%{opacity:1;transform:translateX(361.5%)}94%,100%{opacity:0;transform:translateX(361.5%)}}
+@keyframes kfin{0%,52%{opacity:0}62%,100%{opacity:1}}
+@keyframes kbar{0%,100%{transform:scaleY(.4)}22%,78%{transform:none}}
+@keyframes kred{0%,26%{opacity:0}44%,88%{opacity:1}100%{opacity:0}}
+@keyframes klo{0%,22%{transform:scaleY(2.6)}48%,88%{transform:none}100%{transform:scaleY(2.6)}}
+@keyframes kbl{50%{opacity:.35}}
+@keyframes kap{0%,6%{opacity:0;transform:scale(.5)}14%{opacity:1;transform:scale(1.06)}20%,86%{opacity:1;transform:none}94%,100%{opacity:0;transform:scale(.8)}}
+@keyframes kgh{0%,48%{opacity:0;transform:none}52%{opacity:1}56%{transform:translateX(-.8cqw)}60%{transform:translateX(.8cqw)}64%{transform:none}74%{opacity:1}80%,100%{opacity:0}}
+@keyframes kbell{0%,52%{opacity:0;transform:translateY(-120%)}60%,88%{opacity:1;transform:none}96%,100%{opacity:0;transform:translateY(-120%)}}
+@keyframes kring{0%,60%{transform:none}64%{transform:rotate(18deg)}68%{transform:rotate(-16deg)}72%{transform:rotate(10deg)}76%,100%{transform:none}}
