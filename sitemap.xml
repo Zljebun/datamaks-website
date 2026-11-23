@@ -160,6 +160,14 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Blog: sta automatizovati u maloj firmi -->
+  <url>
+    <loc>https://datamaks.net/blog/sta-automatizovati-malo-preduzece/</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Blog: kad Excel vise nije dovoljan -->
   <url>
     <loc>https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/</loc>
