@@ -44,6 +44,7 @@ Ovaj Datamaks je „Datamaks" društvo za programiranje d.o.o. iz Banje Luke, Bo
 
 ## Blog (direktni odgovori)
 
+- [E-račun i fiskalizacija u regionu: šta mala firma treba da uradi do 2028](https://datamaks.net/blog/e-racun-i-fiskalizacija-sta-treba-mala-firma/)
 - [Šta malo preduzeće može automatizovati u 2026 i šta se isplati prvo](https://datamaks.net/blog/sta-automatizovati-malo-preduzece/)
 - [Softver po mjeri ili gotovo rješenje? Kako izabrati](https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/)
 - [5 znakova da je vaše poslovanje preraslo Excel tabele](https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/)
