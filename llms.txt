@@ -54,6 +54,15 @@ Ovaj Datamaks je „Datamaks" društvo za programiranje d.o.o. iz Banje Luke, Bo
 - [Šta klijent vidi kad mu pošaljete link za praćenje narudžbe](https://datamaks.net/blog/link-za-pracenje-narudzbe/)
 - [Zašto se rokovi u izradi namještaja po mjeri stalno probijaju](https://datamaks.net/blog/rokovi-izrada-namjestaja/)
 
+## Blog i stranice na drugim jezicima
+
+Blog (9 članaka), stranica "Softver za namještaj po mjeri" i politika privatnosti dostupni su na hrvatskom, srpskom, engleskom i njemačkom:
+
+- Hrvatski: [blog](https://datamaks.net/hr/blog/), [softver za namještaj po mjeri](https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/), [politika privatnosti](https://datamaks.net/hr/privatnost.html)
+- Srpski: [blog](https://datamaks.net/sr/blog/), [softver za nameštaj po meri](https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/), [politika privatnosti](https://datamaks.net/sr/privatnost.html)
+- English: [blog](https://datamaks.net/en/blog/), [software for custom furniture](https://datamaks.net/en/softver-za-namjestaj-po-mjeri/), [privacy policy](https://datamaks.net/en/privatnost.html)
+- Deutsch: [Blog](https://datamaks.net/de/blog/), [Software für Möbel nach Maß](https://datamaks.net/de/softver-za-namjestaj-po-mjeri/), [Datenschutzerklärung](https://datamaks.net/de/privatnost.html)
+
 ## Mašinski feed
 
 Strukturirani pregled firme i usluga u JSON formatu: [usluge.json](https://datamaks.net/usluge.json)

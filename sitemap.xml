@@ -107,95 +107,745 @@
   <!-- Rjesenje: softver za namjestaj po mjeri -->
   <url>
     <loc>https://datamaks.net/softver-za-namjestaj-po-mjeri/</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
   </url>
 
   <!-- Blog -->
   <url>
     <loc>https://datamaks.net/blog/</loc>
-    <lastmod>2026-10-02</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/"/>
   </url>
 
   <!-- Blog: kako vidjeti podatke od tabele do 3D prikaza -->
   <url>
     <loc>https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
   </url>
 
   <!-- Blog: povezivanje softvera sa masinama -->
   <url>
     <loc>https://datamaks.net/blog/povezivanje-softvera-sa-masinama/</loc>
-    <lastmod>2026-10-02</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
   </url>
 
   <!-- Blog: softver po mjeri ili gotovo rjesenje -->
   <url>
     <loc>https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
   </url>
 
   <!-- Blog: efikasnije poslovanje softver i hardver -->
   <url>
     <loc>https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
   </url>
 
   <!-- Blog: od mjerenja do montaze -->
   <url>
     <loc>https://datamaks.net/blog/od-mjerenja-do-montaze/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
   </url>
 
   <!-- Blog: sta automatizovati u maloj firmi -->
   <url>
     <loc>https://datamaks.net/blog/sta-automatizovati-malo-preduzece/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
   </url>
 
   <!-- Blog: kad Excel vise nije dovoljan -->
   <url>
     <loc>https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
   </url>
   <url>
     <loc>https://datamaks.net/blog/rokovi-izrada-namjestaja/</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
   </url>
 
   <!-- Blog: link za pracenje narudzbe -->
   <url>
     <loc>https://datamaks.net/blog/link-za-pracenje-narudzbe/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
   </url>
 
   <!-- Politika privatnosti -->
   <url>
     <loc>https://datamaks.net/privatnost.html</loc>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/privatnost.html"/>
   </url>
 
+
+  <!-- Blog, landing i privatnost: hr, sr, en, de -->
+  <url>
+    <loc>https://datamaks.net/hr/blog/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kako-vidjeti-podatke-od-tabele-do-3d-prikaza/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/povezivanje-softvera-sa-masinama/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/povezivanje-softvera-sa-masinama/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/povezivanje-softvera-sa-masinama/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/povezivanje-softvera-sa-masinama/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/povezivanje-softvera-sa-masinama/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/povezivanje-softvera-sa-masinama/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/softver-po-mjeri-ili-gotovo-rjesenje/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/softver-po-mjeri-ili-gotovo-rjesenje/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/softver-po-mjeri-ili-gotovo-rjesenje/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/softver-po-mjeri-ili-gotovo-rjesenje/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/softver-po-mjeri-ili-gotovo-rjesenje/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/efikasnije-poslovanje-softver-i-hardver/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/efikasnije-poslovanje-softver-i-hardver/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/efikasnije-poslovanje-softver-i-hardver/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/efikasnije-poslovanje-softver-i-hardver/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/efikasnije-poslovanje-softver-i-hardver/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/od-mjerenja-do-montaze/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/od-mjerenja-do-montaze/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/od-mjerenja-do-montaze/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/od-mjerenja-do-montaze/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/od-mjerenja-do-montaze/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/od-mjerenja-do-montaze/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/sta-automatizovati-malo-preduzece/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/sta-automatizovati-malo-preduzece/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/sta-automatizovati-malo-preduzece/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/sta-automatizovati-malo-preduzece/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/sta-automatizovati-malo-preduzece/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/sta-automatizovati-malo-preduzece/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/kad-excel-vise-nije-dovoljan/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/kad-excel-vise-nije-dovoljan/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/kad-excel-vise-nije-dovoljan/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/kad-excel-vise-nije-dovoljan/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/kad-excel-vise-nije-dovoljan/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/kad-excel-vise-nije-dovoljan/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/rokovi-izrada-namjestaja/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/rokovi-izrada-namjestaja/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/rokovi-izrada-namjestaja/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/rokovi-izrada-namjestaja/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/rokovi-izrada-namjestaja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/rokovi-izrada-namjestaja/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/blog/link-za-pracenje-narudzbe/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/blog/link-za-pracenje-narudzbe/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/blog/link-za-pracenje-narudzbe/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/blog/link-za-pracenje-narudzbe/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/blog/link-za-pracenje-narudzbe/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/blog/link-za-pracenje-narudzbe/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/softver-za-namjestaj-po-mjeri/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/softver-za-namjestaj-po-mjeri/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/softver-za-namjestaj-po-mjeri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/softver-za-namjestaj-po-mjeri/"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/hr/privatnost.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/privatnost.html"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/sr/privatnost.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/privatnost.html"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/en/privatnost.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/privatnost.html"/>
+  </url>
+  <url>
+    <loc>https://datamaks.net/de/privatnost.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="bs" href="https://datamaks.net/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="hr" href="https://datamaks.net/hr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://datamaks.net/sr/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://datamaks.net/en/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://datamaks.net/de/privatnost.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://datamaks.net/privatnost.html"/>
+  </url>
 </urlset>
