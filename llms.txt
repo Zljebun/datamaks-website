@@ -16,6 +16,7 @@ Mala i srednja preduzeća (proizvodnja, veletrgovina/distribucija, transport i l
 ## Ključne stranice
 
 - [Naslovna](https://datamaks.net/) — pregled firme i usluga.
+- [Softver po mjeri za proizvodnju i distribuciju](https://datamaks.net/softver-po-mjeri-proizvodnja/) — narudžbe, nalozi, zalihe, rokovi i kupci na jednom mjestu.
 - [Softver za namještaj po mjeri](https://datamaks.net/softver-za-namjestaj-po-mjeri/) — primjer rješenja za jednu branšu.
 - [Blog](https://datamaks.net/blog/) — tekstovi o digitalizaciji i automatizaciji.
 - [Politika privatnosti](https://datamaks.net/privatnost.html)

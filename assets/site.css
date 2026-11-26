@@ -37,6 +37,8 @@ h1,h2,h3{font-family:var(--fd);line-height:1.12;letter-spacing:-.02em}
 .btn-o{border-color:var(--p);color:var(--p);background:transparent}
 .btn-viber{background:#7360f2;color:#fff;border-color:#7360f2;box-shadow:0 8px 20px -6px rgba(115,96,242,.6)}
 .btn-viber:hover{background:#5a48d6;border-color:#5a48d6}
+.btn-whatsapp{background:#25d366;color:#fff;border-color:#25d366;box-shadow:0 8px 20px -6px rgba(37,211,102,.55)}
+.btn-whatsapp:hover{background:#1fb858;border-color:#1fb858}
 .btn-large{min-height:56px;padding:0 30px;font-size:17px}
 button.btn{font-family:var(--fs)}
 

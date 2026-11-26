@@ -1,7 +1,9 @@
 /* Landing: mjerenje kontakata (GA4/Pixel) i kratki upit. Preneseno iz postojece stranice; slanje je zasticeno van datamaks.net. */
 (function () {
+  var PAGES = { 'softver-za-namjestaj-po-mjeri': 'landing-softver', 'softver-po-mjeri-proizvodnja': 'landing-proizvodnja', 'ig': 'ig' };
+  var PAGE = PAGES[location.pathname.split('/').filter(Boolean).pop()] || 'landing';
   function dmTrack(name, kanal) {
-    if (window.gtag) { gtag('event', name, { kanal: kanal, stranica: 'landing-softver' }); }
+    if (window.gtag) { gtag('event', name, { kanal: kanal, stranica: PAGE }); }
     if (window.fbq) { fbq('track', 'Lead', { content_name: 'kontakt-' + kanal }); }
   }
   document.querySelectorAll('.lp-hero [data-kanal]').forEach(function (a) {
@@ -17,7 +19,7 @@
       alert(leadForm.dataset.preview || 'Preview: slanje upita je isključeno van datamaks.net.');
       return;
     }
-    if (window.gtag) { gtag('event', 'lead_form_submit', { stranica: 'landing-softver' }); }
+    if (window.gtag) { gtag('event', 'lead_form_submit', { stranica: PAGE }); }
     var btn = leadForm.querySelector('button[type=submit]');
     var orig = btn.textContent;
     btn.textContent = leadForm.dataset.sending || 'Slanje...';
@@ -28,7 +30,7 @@
       ime: val('name'),
       email: email || 'upit-bez-emaila@datamaks.net',
       firma: '',
-      tip: 'Softver za namjestaj (landing)' + (lang !== 'bs' ? ' [' + lang + ']' : ''),
+      tip: (leadForm.dataset.tip || 'Softver za namjestaj (landing)') + (lang !== 'bs' ? ' [' + lang + ']' : ''),
       poruka: (msg ? msg + '\n' : '') + 'Telefon/Viber: ' + phone,
       _gotcha: val('_gotcha')
     };
